@@ -48,7 +48,7 @@ public class Components {
 
     public void onEnable() {
         instance = this;
-        cooldowns.clear();
+        cooldowns.clear(); 
         checkDependencies();
         registerCooldowns();
         registerListeners();
