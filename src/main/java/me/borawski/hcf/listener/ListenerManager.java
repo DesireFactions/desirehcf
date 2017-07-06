@@ -1,37 +1,31 @@
 package me.borawski.hcf.listener;
 
-import me.borawski.hcf.Core;
-import org.bukkit.event.Listener;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Consumer;
+
+import org.bukkit.Bukkit;
+import org.bukkit.event.Listener;
+
+import me.borawski.hcf.Core;
 
 /**
  * Created by Ethan on 3/8/2017.
  */
 public class ListenerManager {
 
-    private List<Listener> listenerList;
+    private List<Listener> listeners;
 
     public ListenerManager() {
-        listenerList = new ArrayList<Listener>();
+        listeners = new ArrayList<Listener>();
     }
 
     public List<Listener> getListenerList() {
-        return listenerList;
+        return listeners;
     }
 
     public void addListener(Listener l) {
-        getListenerList().add(l);
+        listeners.add(l);
+        Bukkit.getPluginManager().registerEvents(l, Core.getInstance());
     }
-
-    public void registerAll() {
-        getListenerList().stream().forEach(new Consumer<Listener>() {
-            @Override
-            public void accept(Listener listener) {
-                Core.getInstance().getServer().getPluginManager().registerEvents(listener, Core.getInstance());
-            }
-        });
-    }
+    
 }
