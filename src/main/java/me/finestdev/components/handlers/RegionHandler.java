@@ -14,13 +14,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 
-import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.entity.Board;
+import com.massivecraft.factions.entity.BoardColl;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import me.borawski.hcf.Core;
-import me.finestdev.components.Components;
-import me.finestdev.components.utils.WorldGuard;
+import me.finestdev.components.utils.WorldGuardUtils;
 
 public class RegionHandler implements Listener {
 
@@ -39,9 +38,8 @@ public class RegionHandler implements Listener {
         Location from = playerMoveEvent.getFrom();
         Location to = playerMoveEvent.getTo();
         if (CombatHandler.tagged.contains(player)) {
-            for (ProtectedRegion protectedRegion2 : WorldGuard.getWorldGuard().getRegionManager(from.getWorld())
-                    .getRegions().values()) {
-                for (String s : Components.getInstance().getConfig().getStringList("glass-protected-regions")) {
+            for (ProtectedRegion protectedRegion2 : WorldGuardUtils.getWorldGuard().getRegionManager(from.getWorld()).getRegions().values()) {
+                for (String s : Core.getInstance().getConfig().getStringList("glass-protected-regions")) {
                     if (protectedRegion2 != null && protectedRegion2.getId().equals(s)) {
                         if (protectedRegion2.contains(to.getBlockX(), to.getBlockY(), to.getBlockZ())) {
                             playerMoveEvent.setTo(from);
@@ -51,7 +49,7 @@ public class RegionHandler implements Listener {
                 }
             }
             FLocation fLocation = new FLocation(to);
-            if (Board.getInstance().getFactionAt(fLocation).isNormal()) {
+            if (BoardColl.get().getFactionAt(fLocation).isNormal()) {
                 if (this.isInside(this.getValues(fLocation)[0], this.getValues(fLocation)[1], to.getBlockX())) {
                     playerMoveEvent.setTo(from);
                 }
@@ -59,7 +57,7 @@ public class RegionHandler implements Listener {
                     playerMoveEvent.setTo(from);
                 }
             }
-            FLocation relative = new FLocation(player.getLocation()).getRelative(0, 1);
+            Location relative = new Location(player.getLocation()).getRelative(0, 1);
             FLocation relative2 = new FLocation(player.getLocation()).getRelative(0, -1);
             FLocation relative3 = new FLocation(player.getLocation()).getRelative(1, 0);
             FLocation relative4 = new FLocation(player.getLocation()).getRelative(-1, 0);
@@ -67,28 +65,28 @@ public class RegionHandler implements Listener {
             FLocation relative6 = new FLocation(player.getLocation()).getRelative(1, -1);
             FLocation relative7 = new FLocation(player.getLocation()).getRelative(-1, 1);
             FLocation relative8 = new FLocation(player.getLocation()).getRelative(-1, -1);
-            if (Board.getInstance().getFactionAt(relative).isNormal()) {
+            if (BoardColl.get().getFactionAt(relative).isNormal()) {
                 this.renderGlassFaction(player, relative);
             }
-            if (Board.getInstance().getFactionAt(relative2).isNormal()) {
+            if (BoardColl.get().getFactionAt(relative2).isNormal()) {
                 this.renderGlassFaction(player, relative2);
             }
-            if (Board.getInstance().getFactionAt(relative3).isNormal()) {
+            if (BoardColl.get().getFactionAt(relative3).isNormal()) {
                 this.renderGlassFaction(player, relative3);
             }
-            if (Board.getInstance().getFactionAt(relative4).isNormal()) {
+            if (BoardColl.get().getFactionAt(relative4).isNormal()) {
                 this.renderGlassFaction(player, relative4);
             }
-            if (Board.getInstance().getFactionAt(relative5).isNormal()) {
+            if (BoardColl.get().getFactionAt(relative5).isNormal()) {
                 this.renderGlassFaction(player, relative5);
             }
-            if (Board.getInstance().getFactionAt(relative6).isNormal()) {
+            if (BoardColl.get().getFactionAt(relative6).isNormal()) {
                 this.renderGlassFaction(player, relative6);
             }
-            if (Board.getInstance().getFactionAt(relative7).isNormal()) {
+            if (BoardColl.get().getFactionAt(relative7).isNormal()) {
                 this.renderGlassFaction(player, relative7);
             }
-            if (Board.getInstance().getFactionAt(relative8).isNormal()) {
+            if (BoardColl.get().getFactionAt(relative8).isNormal()) {
                 this.renderGlassFaction(player, relative8);
             }
         } else {
@@ -100,10 +98,8 @@ public class RegionHandler implements Listener {
         if (protectedRegion == null) {
             return;
         }
-        int closest = this.closest(location.getBlockX(), protectedRegion.getMinimumPoint().getBlockX(),
-                protectedRegion.getMaximumPoint().getBlockX());
-        int closest2 = this.closest(location.getBlockZ(), protectedRegion.getMinimumPoint().getBlockZ(),
-                protectedRegion.getMaximumPoint().getBlockZ());
+        int closest = this.closest(location.getBlockX(), protectedRegion.getMinimumPoint().getBlockX(), protectedRegion.getMaximumPoint().getBlockX());
+        int closest2 = this.closest(location.getBlockZ(), protectedRegion.getMinimumPoint().getBlockZ(), protectedRegion.getMaximumPoint().getBlockZ());
         boolean b = Math.abs(location.getX() - closest) < 8.0;
         boolean b2 = Math.abs(location.getZ() - closest2) < 8.0;
         if (!b && !b2) {
@@ -113,10 +109,8 @@ public class RegionHandler implements Listener {
         if (b) {
             for (int i = -4; i < 5; ++i) {
                 for (int j = -7; j < 8; ++j) {
-                    if (this.isInside(protectedRegion.getMinimumPoint().getBlockZ(),
-                            protectedRegion.getMaximumPoint().getBlockZ(), location.getBlockZ() + j)) {
-                        Location location2 = new Location(location.getWorld(), Double.valueOf(closest),
-                                Double.valueOf(location.getBlockY() + i), Double.valueOf(location.getBlockZ() + j));
+                    if (this.isInside(protectedRegion.getMinimumPoint().getBlockZ(), protectedRegion.getMaximumPoint().getBlockZ(), location.getBlockZ() + j)) {
+                        Location location2 = new Location(location.getWorld(), Double.valueOf(closest), Double.valueOf(location.getBlockY() + i), Double.valueOf(location.getBlockZ() + j));
                         if (!list.contains(location2) && !location2.getBlock().getType().isOccluding()) {
                             list.add(location2);
                         }
@@ -127,10 +121,8 @@ public class RegionHandler implements Listener {
         if (b2) {
             for (int k = -4; k < 5; ++k) {
                 for (int l = -7; l < 8; ++l) {
-                    if (this.isInside(protectedRegion.getMinimumPoint().getBlockX(),
-                            protectedRegion.getMaximumPoint().getBlockX(), location.getBlockX() + l)) {
-                        Location location3 = new Location(location.getWorld(), Double.valueOf(location.getBlockX() + l),
-                                Double.valueOf(location.getBlockY() + k), Double.valueOf(closest2));
+                    if (this.isInside(protectedRegion.getMinimumPoint().getBlockX(), protectedRegion.getMaximumPoint().getBlockX(), location.getBlockX() + l)) {
+                        Location location3 = new Location(location.getWorld(), Double.valueOf(location.getBlockX() + l), Double.valueOf(location.getBlockY() + k), Double.valueOf(closest2));
                         if (!list.contains(location3) && !location3.getBlock().getType().isOccluding()) {
                             list.add(location3);
                         }
@@ -158,8 +150,7 @@ public class RegionHandler implements Listener {
             for (int i = -4; i < 5; ++i) {
                 for (int j = -4; j < 5; ++j) {
                     if (this.isInside(n4, n6, location.getBlockZ() + i)) {
-                        Location location2 = new Location(location.getWorld(), Double.valueOf(closest),
-                                Double.valueOf(location.getBlockY() + j), Double.valueOf(location.getBlockZ() + i));
+                        Location location2 = new Location(location.getWorld(), Double.valueOf(closest), Double.valueOf(location.getBlockY() + j), Double.valueOf(location.getBlockZ() + i));
                         if (!list.contains(location2) && !location2.getBlock().getType().isOccluding()) {
                             list.add(location2);
                         }
@@ -171,8 +162,7 @@ public class RegionHandler implements Listener {
             for (int k = -4; k < 5; ++k) {
                 for (int l = -4; l < 5; ++l) {
                     if (this.isInside(n3, n5, location.getBlockX() + k)) {
-                        Location location3 = new Location(location.getWorld(), Double.valueOf(location.getBlockX() + k),
-                                Double.valueOf(location.getBlockY() + l), Double.valueOf(closest2));
+                        Location location3 = new Location(location.getWorld(), Double.valueOf(location.getBlockX() + k), Double.valueOf(location.getBlockY() + l), Double.valueOf(closest2));
                         if (!list.contains(location3) && !location3.getBlock().getType().isOccluding()) {
                             list.add(location3);
                         }

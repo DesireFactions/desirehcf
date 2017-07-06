@@ -43,6 +43,7 @@ public class CombatHandler implements Listener {
                             System.out.println(id.toString() + " has been removed from combat");
                             Bukkit.getPlayer(id).sendMessage(Utils.chat(Core.getInstance().getConfig().getString("combattag_removed_message")));
                         } catch (Exception ignored) {
+                            ignored.printStackTrace();
                         }
                     }
                 });
