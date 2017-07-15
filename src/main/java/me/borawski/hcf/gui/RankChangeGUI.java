@@ -1,12 +1,9 @@
-package me.borawski.hcf.gui.custom.edit;
+package me.borawski.hcf.gui;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.gui.CustomIS;
-import me.borawski.hcf.gui.ItemGUI;
-import me.borawski.hcf.gui.MenuItem;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;

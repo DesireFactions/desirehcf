@@ -1,4 +1,4 @@
-package me.borawski.hcf.gui.custom.friends;
+package me.borawski.hcf.gui;
 
 import java.util.UUID;
 
@@ -7,9 +7,6 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import me.borawski.hcf.Core;
-import me.borawski.hcf.gui.CustomIS;
-import me.borawski.hcf.gui.ItemGUI;
-import me.borawski.hcf.gui.MenuItem;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.ChatUtils;
