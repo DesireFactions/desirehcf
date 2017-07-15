@@ -27,7 +27,6 @@ import me.borawski.hcf.handler.LootingBuffHandler;
 import me.borawski.hcf.handler.MobStackHandler;
 import me.borawski.hcf.handler.PotionLimiterHandler;
 import me.borawski.hcf.handler.PvPTimer;
-import me.borawski.hcf.handler.RegionHandler;
 import me.borawski.hcf.handler.SellSignHandler;
 import me.borawski.hcf.util.Cooldown;
 
@@ -67,7 +66,6 @@ public class Components {
         new GappleHandler();
         new EnderpearlHandler();
         new CreatureSpawnListener();
-        new RegionHandler();
         new CombatHandler();
         new EnderchestHandler();
         new BrewingSpeedHandler();

@@ -1,8 +1,5 @@
-package me.borawski.hcf.manual.server;
+package me.borawski.hcf.manual;
 
-import me.borawski.hcf.manual.Manual;
-import me.borawski.hcf.manual.ManualButton;
-import me.borawski.hcf.manual.ManualPage;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.util.ManualUtil;
 import org.bukkit.ChatColor;

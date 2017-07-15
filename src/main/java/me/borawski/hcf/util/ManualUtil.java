@@ -15,7 +15,7 @@ import io.netty.buffer.Unpooled;
 import me.borawski.hcf.Core;
 import me.borawski.hcf.manual.Manual;
 import me.borawski.hcf.manual.ManualPage;
-import me.borawski.hcf.manual.server.YouTuberManual;
+import me.borawski.hcf.manual.YouTuberManual;
 import me.borawski.hcf.session.Rank;
 import net.minecraft.server.v1_11_R1.PacketDataSerializer;
 import net.minecraft.server.v1_11_R1.PacketPlayOutCustomPayload;

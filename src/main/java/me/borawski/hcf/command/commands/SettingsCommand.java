@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 
 import me.borawski.hcf.Core;
 import me.borawski.hcf.command.CustomCommand;
-import me.borawski.hcf.gui.custom.settings.PlayerSettingsGUI;
+import me.borawski.hcf.gui.PlayerSettingsGUI;
 import me.borawski.hcf.session.Rank;
 
 /**
