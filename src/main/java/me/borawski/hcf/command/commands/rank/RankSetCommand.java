@@ -2,6 +2,7 @@ package me.borawski.hcf.command.commands.rank;
 
 import org.bukkit.command.CommandSender;
 
+import me.borawski.hcf.Core;
 import me.borawski.hcf.api.RankAPI;
 import me.borawski.hcf.command.CustomCommand;
 import me.borawski.hcf.session.Rank;
@@ -18,9 +19,9 @@ public class RankSetCommand extends CustomCommand {
             String name = args[0];
             String rank = args[1];
 
-            RankAPI.setRank(sender, label, name, rank);
+            RankAPI.setRank(sender, label, name, rank, true);
         } else {
-            sender.sendMessage(getDescription());
+            sender.sendMessage(Core.getLangHandler().getString("usage-message").replace("%usage%", "/" + label + " [target] [rank]"));
         }
     }
 }
