@@ -1,4 +1,4 @@
-package me.finestdev.components.utils;
+package me.borawski.hcf.util;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

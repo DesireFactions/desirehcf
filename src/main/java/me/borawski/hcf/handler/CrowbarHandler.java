@@ -1,4 +1,4 @@
-package me.finestdev.components.handlers;
+package me.borawski.hcf.handler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -23,11 +23,11 @@ import com.massivecraft.factions.entity.MPlayer;
 import com.massivecraft.massivecore.ps.PS;
 
 import me.borawski.hcf.Core;
+import me.borawski.hcf.MscAchievements;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
-import me.finestdev.components.MscAchievements;
-import me.finestdev.components.utils.CrowbarUtils;
-import me.finestdev.components.utils.Utils;
+import me.borawski.hcf.util.CrowbarUtils;
+import me.borawski.hcf.util.Utils;
 
 public class CrowbarHandler implements Listener {
 

@@ -1,11 +1,11 @@
-package me.finestdev.components.commands;
+package me.borawski.hcf.command.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.finestdev.components.handlers.CrowbarHandler;
+import me.borawski.hcf.handler.CrowbarHandler;
 
 public class CrowbarCommand implements CommandExecutor {
 

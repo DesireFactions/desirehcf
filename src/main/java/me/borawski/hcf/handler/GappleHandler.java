@@ -1,4 +1,4 @@
-package me.finestdev.components.handlers;
+package me.borawski.hcf.handler;
 
 import java.util.Map;
 import java.util.UUID;
@@ -11,15 +11,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
+import me.borawski.hcf.Components;
 import me.borawski.hcf.Core;
+import me.borawski.hcf.MscAchievements;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
-import me.finestdev.components.Components;
-import me.finestdev.components.MscAchievements;
-import me.finestdev.components.utils.Cooldown;
-import me.finestdev.components.utils.Cooldown.CooldownBase;
-import me.finestdev.components.utils.Cooldown.Time;
-import me.finestdev.components.utils.Utils;
+import me.borawski.hcf.util.Cooldown;
+import me.borawski.hcf.util.Utils;
+import me.borawski.hcf.util.Cooldown.CooldownBase;
+import me.borawski.hcf.util.Cooldown.Time;
 
 public class GappleHandler implements Listener {
 

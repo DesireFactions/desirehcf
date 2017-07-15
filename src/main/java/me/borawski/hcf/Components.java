@@ -1,4 +1,4 @@
-package me.finestdev.components;
+package me.borawski.hcf;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -9,28 +9,27 @@ import java.util.Scanner;
 
 import org.bukkit.Bukkit;
 
-import me.borawski.hcf.Core;
-import me.finestdev.components.commands.CrowbarCommand;
-import me.finestdev.components.commands.EnderchestCommand;
-import me.finestdev.components.commands.LivesCommand;
-import me.finestdev.components.commands.SetEndCommand;
-import me.finestdev.components.handlers.BrewingSpeedHandler;
-import me.finestdev.components.handlers.CombatHandler;
-import me.finestdev.components.handlers.CreatureSpawnListener;
-import me.finestdev.components.handlers.CrowbarHandler;
-import me.finestdev.components.handlers.DeathBanHandler;
-import me.finestdev.components.handlers.EnchantmentLimiterHandler;
-import me.finestdev.components.handlers.EnderchestHandler;
-import me.finestdev.components.handlers.EnderpearlHandler;
-import me.finestdev.components.handlers.FurnaceSpeedHandler;
-import me.finestdev.components.handlers.GappleHandler;
-import me.finestdev.components.handlers.LootingBuffHandler;
-import me.finestdev.components.handlers.MobStackHandler;
-import me.finestdev.components.handlers.PotionLimiterHandler;
-import me.finestdev.components.handlers.PvPTimer;
-import me.finestdev.components.handlers.RegionHandler;
-import me.finestdev.components.handlers.SellSignHandler;
-import me.finestdev.components.utils.Cooldown;
+import me.borawski.hcf.command.commands.CrowbarCommand;
+import me.borawski.hcf.command.commands.EnderchestCommand;
+import me.borawski.hcf.command.commands.LivesCommand;
+import me.borawski.hcf.command.commands.SetEndCommand;
+import me.borawski.hcf.handler.BrewingSpeedHandler;
+import me.borawski.hcf.handler.CombatHandler;
+import me.borawski.hcf.handler.CreatureSpawnListener;
+import me.borawski.hcf.handler.CrowbarHandler;
+import me.borawski.hcf.handler.DeathBanHandler;
+import me.borawski.hcf.handler.EnchantmentLimiterHandler;
+import me.borawski.hcf.handler.EnderchestHandler;
+import me.borawski.hcf.handler.EnderpearlHandler;
+import me.borawski.hcf.handler.FurnaceSpeedHandler;
+import me.borawski.hcf.handler.GappleHandler;
+import me.borawski.hcf.handler.LootingBuffHandler;
+import me.borawski.hcf.handler.MobStackHandler;
+import me.borawski.hcf.handler.PotionLimiterHandler;
+import me.borawski.hcf.handler.PvPTimer;
+import me.borawski.hcf.handler.RegionHandler;
+import me.borawski.hcf.handler.SellSignHandler;
+import me.borawski.hcf.util.Cooldown;
 
 public class Components {
 

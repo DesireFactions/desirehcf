@@ -1,4 +1,4 @@
-package me.finestdev.components.handlers;
+package me.borawski.hcf.handler;
 
 import java.util.ArrayList;
 
@@ -19,9 +19,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import me.borawski.hcf.Components;
 import me.borawski.hcf.Core;
-import me.finestdev.components.Components;
-import me.finestdev.components.utils.Utils;
+import me.borawski.hcf.util.Utils;
 
 public class PotionLimiterHandler implements Listener {
 
