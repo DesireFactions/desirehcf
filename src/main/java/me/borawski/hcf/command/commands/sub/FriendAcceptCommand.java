@@ -1,4 +1,4 @@
-package me.borawski.hcf.command.commands.friends;
+package me.borawski.hcf.command.commands.sub;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -13,10 +13,10 @@ import me.borawski.hcf.util.ChatUtils;
 import me.borawski.hcf.util.FriendUtils;
 import me.borawski.hcf.util.PlayerUtils;
 
-public class FriendDeclineCommand extends CustomCommand {
+public class FriendAcceptCommand extends CustomCommand {
 
-    public FriendDeclineCommand() {
-        super("decline", "Decline a friend request.", Rank.GUEST, "deny");
+    public FriendAcceptCommand() {
+        super("accept", "Accept a friend request.", Rank.GUEST, "confirm");
     }
 
     @Override
@@ -38,13 +38,19 @@ public class FriendDeclineCommand extends CustomCommand {
             }
 
             if (!FriendUtils.hasRequest(session, target.getUniqueId())) {
-                sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You don't have a request from " + ChatUtils.getNameWithRankColor(target.getUniqueId(), false) + ChatColor.GRAY + "!");
+                // Sender has not already sent a friend request to this
+                // player. //
+                sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You don't have a request from " + ChatUtils.getNameWithRankColor(target.getUniqueId(), false));
                 return;
             }
 
-            FriendUtils.denyFriendRequest(session, target.getUniqueId(), true);
-            FriendUtils.denyFriendRequest(target, session.getUniqueId(), false);
-            sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You denied " + ChatUtils.getNameWithRankColor(target.getUniqueId(), false) + ChatColor.GRAY + "'s friend invite!");
+            sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You accepted a request from " + ChatUtils.getNameWithRankColor(target.getUniqueId(), false));
+            sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You are now friends with " + ChatUtils.getNameWithRankColor(target.getUniqueId(), false) + ChatColor.GRAY + "!");
+
+            FriendUtils.acceptFriendRequest(session, target.getUniqueId(), true);
+            FriendUtils.acceptFriendRequest(target, session.getUniqueId(), false);
+        } else {
+            sender.sendMessage(Core.getLangHandler().getString("usage-header") + "§7/friend " + label + " [player]");
         }
     }
 

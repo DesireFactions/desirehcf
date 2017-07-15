@@ -1,4 +1,4 @@
-package me.borawski.hcf.command.commands.friends;
+package me.borawski.hcf.command.commands.sub;
 
 import java.util.UUID;
 
