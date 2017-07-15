@@ -1,4 +1,4 @@
-package me.finestdev.components.handlers;
+package me.borawski.hcf.handler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;

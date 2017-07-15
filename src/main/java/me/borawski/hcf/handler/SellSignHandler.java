@@ -1,4 +1,4 @@
-package me.finestdev.components.handlers;
+package me.borawski.hcf.handler;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +21,7 @@ import me.borawski.hcf.Core;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
-import me.finestdev.components.utils.Utils;
+import me.borawski.hcf.util.Utils;
 
 public class SellSignHandler implements Listener {
 

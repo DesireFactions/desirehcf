@@ -1,4 +1,4 @@
-package me.finestdev.components;
+package me.borawski.hcf;
 
 import me.borawski.hcf.session.Achievement;
 

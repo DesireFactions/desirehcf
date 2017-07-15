@@ -1,4 +1,4 @@
-package me.finestdev.components.handlers;
+package me.borawski.hcf.handler;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -14,13 +14,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import me.borawski.hcf.Components;
 import me.borawski.hcf.Core;
+import me.borawski.hcf.MscAchievements;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
-import me.finestdev.components.Components;
-import me.finestdev.components.MscAchievements;
-import me.finestdev.components.utils.Cooldown;
-import me.finestdev.components.utils.Utils;
+import me.borawski.hcf.util.Cooldown;
+import me.borawski.hcf.util.Utils;
 
 public class CombatHandler implements Listener {
 

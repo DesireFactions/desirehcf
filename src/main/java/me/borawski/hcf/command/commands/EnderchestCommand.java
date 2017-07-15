@@ -1,4 +1,4 @@
-package me.finestdev.components.commands;
+package me.borawski.hcf.command.commands;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -9,7 +9,7 @@ import me.borawski.hcf.Core;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
-import me.finestdev.components.utils.Utils;
+import me.borawski.hcf.util.Utils;
 
 public class EnderchestCommand implements CommandExecutor {
 

@@ -1,4 +1,4 @@
-package me.finestdev.components.handlers;
+package me.borawski.hcf.handler;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -8,10 +8,10 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import me.borawski.hcf.Core;
+import me.borawski.hcf.MscAchievements;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
-import me.finestdev.components.MscAchievements;
-import me.finestdev.components.utils.Utils;
+import me.borawski.hcf.util.Utils;
 
 public class EnderchestHandler implements Listener {
 
