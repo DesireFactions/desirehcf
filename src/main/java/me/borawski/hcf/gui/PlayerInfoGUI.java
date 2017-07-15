@@ -1,4 +1,4 @@
-package me.borawski.hcf.gui.custom;
+package me.borawski.hcf.gui;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,11 +8,6 @@ import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.gui.CustomIS;
-import me.borawski.hcf.gui.ItemGUI;
-import me.borawski.hcf.gui.MenuItem;
-import me.borawski.hcf.gui.custom.edit.PlayerPunishmentsGUI;
-import me.borawski.hcf.gui.custom.edit.RankChangeGUI;
 import me.borawski.hcf.session.Session;
 
 /**
