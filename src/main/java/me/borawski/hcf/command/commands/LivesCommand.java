@@ -1,4 +1,4 @@
-package me.finestdev.components.commands;
+package me.borawski.hcf.command.commands;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -7,11 +7,11 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.borawski.hcf.Core;
+import me.borawski.hcf.handler.DeathBanHandler;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
-import me.finestdev.components.handlers.DeathBanHandler;
-import me.finestdev.components.utils.Utils;
+import me.borawski.hcf.util.Utils;
 
 public class LivesCommand implements CommandExecutor {
 

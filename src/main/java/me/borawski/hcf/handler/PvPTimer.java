@@ -1,4 +1,4 @@
-package me.finestdev.components.handlers;
+package me.borawski.hcf.handler;
 
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -14,11 +14,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
+import me.borawski.hcf.Components;
 import me.borawski.hcf.Core;
-import me.finestdev.components.Components;
-import me.finestdev.components.utils.Cooldown;
-import me.finestdev.components.utils.Cooldown.CooldownBase;
-import me.finestdev.components.utils.Utils;
+import me.borawski.hcf.util.Cooldown;
+import me.borawski.hcf.util.Utils;
+import me.borawski.hcf.util.Cooldown.CooldownBase;
 
 public class PvPTimer implements CommandExecutor, Listener {
 

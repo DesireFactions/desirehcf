@@ -1,4 +1,4 @@
-package me.finestdev.components.handlers;
+package me.borawski.hcf.handler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -19,7 +19,7 @@ import com.massivecraft.factions.entity.BoardColl;
 import com.sk89q.worldguard.protection.regions.ProtectedRegion;
 
 import me.borawski.hcf.Core;
-import me.finestdev.components.utils.WorldGuardUtils;
+import me.borawski.hcf.util.WorldGuardUtils;
 
 public class RegionHandler implements Listener {
 
