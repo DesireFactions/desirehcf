@@ -18,11 +18,7 @@ import mkremins.fanciful.FancyMessage;
 /**
  * Created by Ethan on 4/30/2017.
  */
-public class MsgUtil {
-
-    public static void sendMessage(Player player, String... msg) {
-        new FancyMessage(msg[0]);
-    }
+public class ChatProcessor {
 
     public static void handleChat(String msg, Player player) {
         Bukkit.getOnlinePlayers().stream().forEach(new Consumer<Player>() {
