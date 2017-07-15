@@ -1,8 +1,9 @@
 package me.borawski.hcf.command.commands;
 
 import me.borawski.hcf.command.CustomBaseCommand;
-import me.borawski.hcf.command.commands.rank.RankCheckCommand;
-import me.borawski.hcf.command.commands.rank.RankSetCommand;
+import me.borawski.hcf.command.commands.sub.RankCheckCommand;
+import me.borawski.hcf.command.commands.sub.RankListCommand;
+import me.borawski.hcf.command.commands.sub.RankSetCommand;
 import me.borawski.hcf.session.Rank;
 
 /**
@@ -14,6 +15,7 @@ public class RankCommand extends CustomBaseCommand {
         super("rank", "View your rank or manage others.", Rank.GUEST);
         addSubCommand(new RankCheckCommand());
         addSubCommand(new RankSetCommand());
+        addSubCommand(new RankListCommand());
     }
 
 }
