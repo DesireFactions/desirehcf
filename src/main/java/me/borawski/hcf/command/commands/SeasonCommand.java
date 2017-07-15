@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import me.borawski.hcf.Core;
 import me.borawski.hcf.command.CustomCommand;
-import me.borawski.hcf.gui.custom.season.FactionsLeadGUI;
+import me.borawski.hcf.gui.FactionsLeadGUI;
 import me.borawski.hcf.session.Rank;
 
 /**
