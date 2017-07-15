@@ -1,9 +1,8 @@
-package me.borawski.hcf.gui.custom.season;
+package me.borawski.hcf.gui;
 
 import org.bukkit.entity.Player;
 
 import me.borawski.hcf.Core;
-import me.borawski.hcf.gui.ItemGUI;
 import me.borawski.koth.Plugin;
 
 /**
