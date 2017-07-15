@@ -1,4 +1,4 @@
-package me.borawski.hcf.command.commands.friends;
+package me.borawski.hcf.command.commands.sub;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;

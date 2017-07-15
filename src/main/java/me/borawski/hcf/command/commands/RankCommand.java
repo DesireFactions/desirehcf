@@ -1,9 +1,9 @@
 package me.borawski.hcf.command.commands;
 
 import me.borawski.hcf.command.CustomBaseCommand;
-import me.borawski.hcf.command.commands.rank.RankCheckCommand;
-import me.borawski.hcf.command.commands.rank.RankListCommand;
-import me.borawski.hcf.command.commands.rank.RankSetCommand;
+import me.borawski.hcf.command.commands.sub.RankCheckCommand;
+import me.borawski.hcf.command.commands.sub.RankListCommand;
+import me.borawski.hcf.command.commands.sub.RankSetCommand;
 import me.borawski.hcf.session.Rank;
 
 /**

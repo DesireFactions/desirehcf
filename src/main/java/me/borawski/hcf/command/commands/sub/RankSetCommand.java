@@ -1,4 +1,4 @@
-package me.borawski.hcf.command.commands.rank;
+package me.borawski.hcf.command.commands.sub;
 
 import org.bukkit.command.CommandSender;
 
