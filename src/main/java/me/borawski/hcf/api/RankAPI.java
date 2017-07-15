@@ -25,16 +25,16 @@ public class RankAPI {
      * @param name
      * @param rank
      */
-    public static void setRank(CommandSender sender, String label, String name, String rank) {
+    public static void setRank(CommandSender sender, String label, String name, String rank, boolean display) {
         Session s = SessionHandler.getSession(PlayerUtils.getUUIDFromName(name));
 
         if (s == null) {
-            System.out.println("[Core] [ERROR] : Could not retrieve " + name);
+            sender.sendMessage("[Core] [ERROR] : Could not retrieve " + name);
             return;
         }
 
         if (Rank.valueOf(rank) == null) {
-            System.out.println("Invalid rank");
+            sender.sendMessage("Invalid rank");
             return;
         }
 
@@ -42,7 +42,7 @@ public class RankAPI {
         SessionHandler.getInstance().save(s);
         sender.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "DesireHCF " + ChatColor.RESET + "" + ChatColor.GRAY + "You have set " + ChatColor.YELLOW + name + "" + ChatColor.GRAY + "'s rank to " + ChatColor.YELLOW + rank);
 
-        if (Bukkit.getPlayer(s.getUniqueId()) != null) {
+        if (Bukkit.getPlayer(s.getUniqueId()) != null && display) {
             PlayerUtils.setPrefix(s.getRank().getPrefix(), Bukkit.getPlayer(s.getUniqueId()));
             s.sendMessage(ChatColor.GREEN + "You are now a " + s.getRank().name().toUpperCase());
         }
