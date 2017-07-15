@@ -1,4 +1,4 @@
-package me.finestdev.components.handlers;
+package me.borawski.hcf.handler;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -20,12 +20,12 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import me.borawski.hcf.Components;
 import me.borawski.hcf.Core;
-import me.finestdev.components.Components;
-import me.finestdev.components.utils.Cooldown;
-import me.finestdev.components.utils.Cooldown.CooldownBase;
-import me.finestdev.components.utils.Cooldown.Time;
-import me.finestdev.components.utils.Utils;
+import me.borawski.hcf.util.Cooldown;
+import me.borawski.hcf.util.Utils;
+import me.borawski.hcf.util.Cooldown.CooldownBase;
+import me.borawski.hcf.util.Cooldown.Time;
 
 public class DeathBanHandler implements Listener {
 
