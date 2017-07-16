@@ -8,8 +8,8 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import me.borawski.hcf.Core;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
+import me.borawski.hcf.util.ChatProcessor;
 import me.borawski.hcf.util.ChatUtils;
-import me.borawski.hcf.util.MsgUtil;
 
 public class ChatListener implements Listener {
 
@@ -28,7 +28,7 @@ public class ChatListener implements Listener {
             s.sendMessage(ChatColor.DARK_GRAY + "-----------------------------------------------------");
             return;
         }
-        MsgUtil.handleChat(event.getMessage(), event.getPlayer());
+        ChatProcessor.handleChat(event.getMessage(), event.getPlayer());
     }
 
 }

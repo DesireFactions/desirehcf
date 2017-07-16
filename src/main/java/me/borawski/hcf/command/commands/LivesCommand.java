@@ -20,6 +20,7 @@ public class LivesCommand implements CommandExecutor {
         if (s.getRank().getId() >= Rank.MODERATOR.getId()) {
 
             if (args.length == 0) {
+                //TODO make extend CustomCommand
                 sender.sendMessage(Utils.chat("&4&lLIVES&r &7/lives <player> <add:remove> <int>"));
                 return true;
             } else if (args.length == 1) {

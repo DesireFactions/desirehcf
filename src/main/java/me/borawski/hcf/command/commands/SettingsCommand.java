@@ -1,6 +1,5 @@
 package me.borawski.hcf.command.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,13 +17,12 @@ public class SettingsCommand extends CustomCommand {
         super("settings", "Change your VIP settings.", Rank.VIP);
     }
 
-
     @Override
     public void run(CommandSender sender, String label, String[] args) {
-        if (args.length > 1) {
-            sender.sendMessage(Core.getInstance().getPrefix() + "To change your settings, simply do " + ChatColor.YELLOW + "/settings");
-            return;
+        if (args.length == 0) {
+            new PlayerSettingsGUI(Core.getInstance(), (Player) sender).show();
+        } else {
+            LANG.sendUsageMessage(sender, label);
         }
-        new PlayerSettingsGUI(Core.getInstance(), (Player) sender).show();
     }
 }

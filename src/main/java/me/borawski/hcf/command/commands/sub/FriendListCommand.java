@@ -24,14 +24,14 @@ public class FriendListCommand extends CustomBaseCommand {
     @Override
     public void run(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Core.getLangHandler().getString("only-players"));
+            LANG.sendString(sender, "only-players");
             return;
         }
         CustomCommand sub;
         if (args.length == 0) {
             Session session = SessionHandler.getSession((Player) sender);
             if (session.getFriends().size() == 0) {
-                sender.sendMessage(Core.getInstance().getPrefix() + "You have no friends");
+                LANG.sendString(sender, "friend.no_friends");
                 return;
             }
             sender.sendMessage(ChatColor.DARK_GRAY + "-------------------" + Core.getInstance().getPrefix().replace(" ", "") + ChatColor.DARK_GRAY + "-----------------------");
