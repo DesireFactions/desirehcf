@@ -1,10 +1,8 @@
 package me.borawski.hcf.command.commands.sub;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.Core;
 import me.borawski.hcf.command.CustomCommand;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
@@ -22,24 +20,27 @@ public class FriendAddCommand extends CustomCommand {
     @Override
     public void run(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Core.getLangHandler().getString("only-players"));
+            LANG.sendString(sender, "only-players");
             return;
         }
         if (args.length == 0) {
             if (!PlayerUtils.hasPlayed(args[0])) {
-                sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "Player not found!");
+                LANG.sendString(sender, "player_not_found");
                 return;
             }
+            
             Session session = SessionHandler.getSession((Player) sender);
             Session target = SessionHandler.getSession(PlayerUtils.getUUIDFromName(args[0]));
+            String targetName = ChatUtils.getNameWithRankColor(target.getUniqueId(), false);
+
             if (FriendUtils.isFriends(session, target.getUniqueId())) {
-                sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You are already friends with " + ChatUtils.getNameWithRankColor(target.getUniqueId(), false));
+                LANG.sendRenderMessage(sender, "friend.already_friends", "{player}", targetName);
                 return;
             }
 
             if (FriendUtils.hasRequest(target, session.getUniqueId())) {
                 // Sender has already sent a friend request to this player.
-                sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You have already sent this player a friend request");
+                LANG.sendRenderMessage(sender, "friend.already_sent.request", "{player}", targetName);
                 return;
             }
 
@@ -47,25 +48,25 @@ public class FriendAddCommand extends CustomCommand {
                 // Accept the request for the sender and receiver. //
                 FriendUtils.acceptFriendRequest(session, target.getUniqueId(), true);
                 FriendUtils.acceptFriendRequest(target, session.getUniqueId(), false);
-                sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You had a friend request from " + ChatUtils.getNameWithRankColor(target.getUniqueId(), false) + ChatColor.GRAY + " so we put both of you in each others friend lists");
+                LANG.sendRenderMessage(sender, "friend.both_friend_requested", "{player}", targetName);
                 return;
             }
 
             if (FriendUtils.hasRequest(target, session.getUniqueId())) {
-                sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You've already sent a request to " + ChatUtils.getNameWithRankColor(target.getUniqueId(), false) + ChatColor.GRAY + "!");
+                LANG.sendRenderMessage(sender, "friend.already_sent_request", "{player}", targetName);
                 return;
             }
 
             if (FriendUtils.hasRequest(session, target.getUniqueId())) {
                 FriendUtils.acceptFriendRequest(session, target.getUniqueId(), true);
                 FriendUtils.acceptFriendRequest(target, session.getUniqueId(), false);
-                sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You accepted request from " + ChatUtils.getNameWithRankColor(target.getUniqueId(), false) + ChatColor.GRAY + "!");
+                LANG.sendRenderMessage(sender, "friend.accepted_friend_request", "{player}", targetName);
                 return;
             }
 
             FriendUtils.addFriendRequest(target, session.getUniqueId(), true);
             FriendUtils.addFriendRequest(session, target.getUniqueId(), false);
-            sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You sent a friend request to " + ChatUtils.getNameWithRankColor(target.getUniqueId(), false) + ChatColor.GRAY + "!");
+            LANG.sendRenderMessage(sender, "friend.sent_freind_request", "{player}", targetName);
         }
     }
 

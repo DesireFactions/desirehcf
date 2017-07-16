@@ -33,7 +33,7 @@ public class AchievementCommand extends CustomCommand {
     public void run(CommandSender sender, String label, String[] args) {
 
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Core.getLangHandler().getString("only-players"));
+            LANG.sendString(sender, "only-players");
             return;
         }
 
