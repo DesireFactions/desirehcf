@@ -1,43 +1,40 @@
 package me.borawski.hcf.command.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.borawski.hcf.Core;
 import me.borawski.hcf.session.Rank;
-import me.borawski.hcf.session.Session;
-import me.borawski.hcf.session.SessionHandler;
+import me.borawski.hcf.command.CustomCommand;
 import me.borawski.hcf.util.Utils;
 
-//TODO make this extend CustomCommand
-public class EnderchestCommand implements CommandExecutor {
+public class EnderchestCommand extends CustomCommand {
 
-    public boolean onCommand(CommandSender commandSender, Command command, String label, String[] array) {
-        if (command.getName().equalsIgnoreCase("enderchest")) {
-            if (commandSender instanceof Player) {
-                Player player = (Player) commandSender;
-                Session s = SessionHandler.getSession(player);
-                if (s.getRank().getId() >= Rank.MODERATOR.getId()) {
-                    if (Utils.enderchestDisabled == true) {
-                        Utils.enderchestDisabled = false;
-                        Core.getInstance().getConfig().set("enderchest-disabled", false);
-                        Core.getInstance().saveConfig();
-                        player.sendMessage(Core.getLangHandler().getString("enderchest_enabled"));
-                    } else {
-                        player.sendMessage(Core.getLangHandler().getString("enderchest_disabled"));
-                        Core.getInstance().getConfig().set("enderchest-disabled", true);
-                        Core.getInstance().saveConfig();
-                        Utils.enderchestDisabled = true;
-                    }
-                } else {
-                    player.sendMessage(Utils.noPerms());
-                }
-            } else {
-                commandSender.sendMessage(Utils.noPerms());
-            }
+    public EnderchestCommand(String name, String description, Rank requiredRank, String[] aliases) {
+        super("enderchest", "toggle ender chest", Rank.MODERATOR, "chest", "ender");
+    }
+
+    @Override
+    public void run(CommandSender sender, String label, String[] args) {
+        if (!(sender instanceof Player)) {
+            LANG.sendString(sender, "only-players");
+            return;
         }
-        return true;
+        
+        if(args.length != 0) {
+            LANG.sendUsageMessage(sender, label);
+        }
+
+        if (Utils.enderchestDisabled == true) {
+            Utils.enderchestDisabled = false;
+            Core.getInstance().getConfig().set("enderchest-disabled", false);
+            Core.getInstance().saveConfig();
+            LANG.sendString(sender, "enderchest_enabled");
+        } else {
+            LANG.sendString(sender, "enderchest_disabled");
+            Core.getInstance().getConfig().set("enderchest-disabled", true);
+            Core.getInstance().saveConfig();
+            Utils.enderchestDisabled = true;
+        }
     }
 }
