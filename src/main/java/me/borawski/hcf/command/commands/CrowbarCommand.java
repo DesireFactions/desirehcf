@@ -5,7 +5,7 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.handler.CrowbarHandler;
+import me.borawski.hcf.util.CrowbarUtils;
 
 public class CrowbarCommand implements CommandExecutor {
 
@@ -14,7 +14,7 @@ public class CrowbarCommand implements CommandExecutor {
             if (commandSender instanceof Player) {
                 Player player = (Player) commandSender;
                 if (player.hasPermission("hcf.crowbar")) {
-                    player.getInventory().addItem(CrowbarHandler.getNewCrowbar());
+                    player.getInventory().addItem(CrowbarUtils.getNewCrowbar());
                 } else {
                     player.sendMessage("No permission!");
                 }
