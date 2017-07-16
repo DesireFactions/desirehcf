@@ -78,11 +78,11 @@ public class Components {
     }
 
     public void registerCommands() {
-        Core.getInstance().getCommand("crowbar").setExecutor(new CrowbarCommand());
-        Core.getInstance().getCommand("enderchest").setExecutor(new EnderchestCommand());
-        Core.getInstance().getCommand("lives").setExecutor(new LivesCommand());
-        Core.getInstance().getCommand("setendspawn").setExecutor(new SetEndCommand());
-        Core.getInstance().getCommand("setendexit").setExecutor(new SetEndCommand());
+        Core.getInstance().getCommandHandler().registerCommand(new CrowbarCommand());
+        Core.getInstance().getCommandHandler().registerCommand(new EnderchestCommand());
+        Core.getInstance().getCommandHandler().registerCommand(new LivesCommand());
+        Core.getInstance().getCommandHandler().registerCommand(new SetEndCommand());
+        Core.getInstance().getCommandHandler().registerCommand(new SetEndCommand());
     }
 
     public static Components getInstance() {

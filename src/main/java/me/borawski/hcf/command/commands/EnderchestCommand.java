@@ -10,7 +10,7 @@ import me.borawski.hcf.util.Utils;
 
 public class EnderchestCommand extends CustomCommand {
 
-    public EnderchestCommand(String name, String description, Rank requiredRank, String[] aliases) {
+    public EnderchestCommand() {
         super("enderchest", "toggle ender chest", Rank.MODERATOR, "chest", "ender");
     }
 
