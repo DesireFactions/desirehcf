@@ -15,6 +15,17 @@ koth_pause: 'You have resumed the current koth'
 koth_end_time: 'Ends &l&e{time}'
 koth_start_new: 'Ending current koth, startin the next'
 player_not_found: 'Player not found.'
+arg_not_number: 'One or more of your arguments should be a number!'
+
+lives:
+  add: 'You have added &c{amount}&7 lives to {player};
+  remove: 'You have removed &c{amount}&7 lives to {player}'
+  recieved: '{sender} has given you {amount} lives!'
+  lost: '{sender} has taken {amount} lives from you!' 
+
+set_end:
+  exit: '&8[&c&l*&8]&7 You have set end exit!'
+  spawn: '&8[&c&l*&8]&7 You have set end spawn!'
 
 rank:
   invalid: 'Rank invalid'

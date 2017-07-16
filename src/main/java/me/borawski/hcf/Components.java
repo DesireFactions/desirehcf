@@ -11,8 +11,8 @@ import org.bukkit.Bukkit;
 
 import me.borawski.hcf.command.commands.CrowbarCommand;
 import me.borawski.hcf.command.commands.EnderchestCommand;
-import me.borawski.hcf.command.commands.LivesCommand;
-import me.borawski.hcf.command.commands.SetEndCommand;
+import me.borawski.hcf.command.commands.base.LivesCommand;
+import me.borawski.hcf.command.commands.base.SetEndCommand;
 import me.borawski.hcf.handler.BrewingSpeedHandler;
 import me.borawski.hcf.handler.CombatHandler;
 import me.borawski.hcf.handler.CreatureSpawnListener;
