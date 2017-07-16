@@ -23,8 +23,4 @@ public class Utils {
         return new Location(Bukkit.getWorld(sp[0]), Double.parseDouble(sp[1]) + .5, Double.parseDouble(sp[2]), Double.parseDouble(sp[3]) + .5);
     }
 
-    public static String noPerms() {
-        return chat("&4&lPERMISSIONS&r&7 You don't have permission for that!");
-    }
-
 }
