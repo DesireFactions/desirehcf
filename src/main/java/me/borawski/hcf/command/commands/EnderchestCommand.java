@@ -11,6 +11,7 @@ import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.Utils;
 
+//TODO make this extend CustomCommand
 public class EnderchestCommand implements CommandExecutor {
 
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] array) {
@@ -23,9 +24,9 @@ public class EnderchestCommand implements CommandExecutor {
                         Utils.enderchestDisabled = false;
                         Core.getInstance().getConfig().set("enderchest-disabled", false);
                         Core.getInstance().saveConfig();
-                        player.sendMessage("Enderchest Enabled!");
+                        player.sendMessage(Core.getLangHandler().getString("enderchest_enabled"));
                     } else {
-                        player.sendMessage("Enderchest Disabled!");
+                        player.sendMessage(Core.getLangHandler().getString("enderchest_disabled"));
                         Core.getInstance().getConfig().set("enderchest-disabled", true);
                         Core.getInstance().saveConfig();
                         Utils.enderchestDisabled = true;

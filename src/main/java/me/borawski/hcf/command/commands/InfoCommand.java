@@ -1,10 +1,8 @@
 package me.borawski.hcf.command.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.Core;
 import me.borawski.hcf.command.CustomCommand;
 import me.borawski.hcf.gui.PlayerInfoGUI;
 import me.borawski.hcf.session.Rank;
@@ -26,7 +24,7 @@ public class InfoCommand extends CustomCommand {
         if (sender instanceof Player) {
 
             if (args.length != 1) {
-                sender.sendMessage(Core.getLangHandler().getString("usage-message").replace("{usage}", "/info [player]"));
+                LANG.sendUsageMessage(sender, label, "player");
                 return;
             }
 
@@ -35,14 +33,14 @@ public class InfoCommand extends CustomCommand {
             Session s = SessionHandler.getSession(PlayerUtils.getUUIDFromName(name));
             if (s == null) {
                 System.out.println("[Core] [ERROR] : Could not retrieve " + name);
-                sender.sendMessage(ChatColor.RED + "Could not retrieve " + ChatColor.YELLOW + name);
+                LANG.sendRenderMessage(sender, "could_not_retrieve", "{name}", name);
                 return;
             }
             PlayerInfoGUI.crossTarget.put(player.getUniqueId(), s);
             new PlayerInfoGUI(player).show();
 
         } else {
-            sender.sendMessage(Core.getLangHandler().getString("only-players"));
+            LANG.sendString(sender, "only-players");
         }
     }
 }

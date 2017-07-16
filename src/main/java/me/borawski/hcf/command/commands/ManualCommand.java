@@ -18,11 +18,14 @@ public class ManualCommand extends CustomCommand {
 
     @Override
     public void run(CommandSender sender, String label, String[] args) {
+        //TODO make this command even remotely useful
         if (args.length == 1) {
             if (args[0].equalsIgnoreCase("yt")) {
                 System.out.println("Attempting to open manual");
                 ManualUtil.openManual(Rank.YOUTUBER, (Player) sender);
             }
+        } else {
+            LANG.sendUsageMessage(sender, label, "manual");
         }
     }
 }

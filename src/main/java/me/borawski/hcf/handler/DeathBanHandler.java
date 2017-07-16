@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import me.borawski.hcf.Components;
 import me.borawski.hcf.Core;
+import me.borawski.hcf.api.LangHandler;
 import me.borawski.hcf.util.Cooldown;
 import me.borawski.hcf.util.Utils;
 import me.borawski.hcf.util.Cooldown.CooldownBase;
@@ -31,6 +32,7 @@ public class DeathBanHandler implements Listener {
 
     private final Set<UUID> counting = new HashSet<>();
     private final static Map<UUID, Integer> lives = new HashMap<>();
+    private final static LangHandler LANG = Core.getLangHandler();
 
     public DeathBanHandler() {
         File dataFile = new File(Core.getInstance().getDataFolder(), "lives.data");
@@ -79,25 +81,33 @@ public class DeathBanHandler implements Listener {
     public void onLogin(PlayerLoginEvent e) {
         Player p = e.getPlayer();
         CooldownBase banBase = Components.getInstance().getCooldown(Components.DEATHBAN).get(p.getUniqueId());
+        
         if (banBase == null) {
             return;
         }
+        
         long left = Cooldown.getAmountLeft(banBase);
         if (left <= 0) {
             return;
         }
+        
         if (acceptLife(p)) {
             Components.getInstance().getCooldown(Components.DEATHBAN).endCooldown(p.getUniqueId());
             return;
         }
+        
         Map<Time, Long> times = Cooldown.timeFromMillis(left);
         e.setResult(Result.KICK_OTHER);
-        String message = Core.getInstance().getConfig().getString("deathban_message");
-        message = message.replace("<days>", (times.containsKey(Time.DAY) ? times.get(Time.DAY) : 0) + "d");
-        message = message.replace("<hours>", (times.containsKey(Time.HOUR) ? times.get(Time.HOUR) : 0) + "m");
-        message = message.replace("<minutes>", (times.containsKey(Time.MINUTE) ? times.get(Time.MINUTE) : 0) + "m");
-        message = message.replace("<seconds>", (times.containsKey(Time.SECOND) ? times.get(Time.SECOND) : 0) + "s");
-        e.setKickMessage(Utils.chat(message + (getLives(p) > 0 ? "\n\n&cLogin in 10 seconds to use a life." : "")));
+        String message = LANG.renderMessage("deathban_message",
+                "{days}", (times.containsKey(Time.DAY) ? String.valueOf(times.get(Time.DAY)) : 0) + "d",
+                "{hours}", (times.containsKey(Time.HOUR) ? String.valueOf(times.get(Time.HOUR)) : 0) + "m",
+                "{minutes", (times.containsKey(Time.MINUTE) ? String.valueOf(times.get(Time.MINUTE)) : "0"),
+                "{seconds}", (times.containsKey(Time.SECOND) ? String.valueOf(times.get(Time.SECOND)) : "0"));
+        
+        //TODO implement lives logic
+        //e.setKickMessage(Utils.chat(message + (getLives(p) > 0 ? "\n\n&cLogin in 10 seconds to use a life." : "")));
+        
+        e.setKickMessage(message);
         startCounting(p);
     }
 

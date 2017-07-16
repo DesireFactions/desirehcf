@@ -10,6 +10,7 @@ import me.borawski.hcf.util.Utils;
 
 public class SetEndCommand implements CommandExecutor {
 
+    //TODO make this extend customCommand
     public boolean onCommand(CommandSender commandSender, Command command, String label, String[] array) {
         if (command.getName().equalsIgnoreCase("setendspawn")) {
             if (commandSender instanceof Player) {
