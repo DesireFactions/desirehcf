@@ -54,7 +54,7 @@ public class LangHandler extends FileHandler {
      * @return
      */
     public String renderMessage(String string, String... args) {
-        if (args.length % 2 == 0) {
+        if (args.length % 2 != 0) {
             throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
         }
 
@@ -85,11 +85,11 @@ public class LangHandler extends FileHandler {
      */
     public String usageMessage(String label, String... args) {
         String argsString = "/" + label;
-        
-        for(String arg : args) {
+
+        for (String arg : args) {
             argsString += " [" + arg + "]";
         }
-        
+
         return renderMessage("usage-message", "{usage}", argsString);
     }
 

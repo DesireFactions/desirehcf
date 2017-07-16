@@ -21,26 +21,26 @@ public class InfoCommand extends CustomCommand {
 
     @Override
     public void run(CommandSender sender, String label, String[] args) {
-        if (sender instanceof Player) {
-
-            if (args.length != 1) {
-                LANG.sendUsageMessage(sender, label, "player");
-                return;
-            }
-
-            Player player = (Player) sender;
-            String name = args[0];
-            Session s = SessionHandler.getSession(PlayerUtils.getUUIDFromName(name));
-            if (s == null) {
-                System.out.println("[Core] [ERROR] : Could not retrieve " + name);
-                LANG.sendRenderMessage(sender, "could_not_retrieve", "{name}", name);
-                return;
-            }
-            PlayerInfoGUI.crossTarget.put(player.getUniqueId(), s);
-            new PlayerInfoGUI(player).show();
-
-        } else {
+        if (!(sender instanceof Player)) {
             LANG.sendString(sender, "only-players");
+            return;
         }
+        
+        if (args.length != 1) {
+            LANG.sendUsageMessage(sender, label, "player");
+            return;
+        }
+
+        Player player = (Player) sender;
+        String name = args[0];
+        Session s = SessionHandler.getSession(PlayerUtils.getUUIDFromName(name));
+
+        if (s == null) {
+            LANG.sendRenderMessage(sender, "could_not_retrieve", "{name}", name);
+            return;
+        }
+
+        PlayerInfoGUI.crossTarget.put(player.getUniqueId(), s);
+        new PlayerInfoGUI(player).show();
     }
 }
