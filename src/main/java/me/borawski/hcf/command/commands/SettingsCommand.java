@@ -19,10 +19,11 @@ public class SettingsCommand extends CustomCommand {
 
     @Override
     public void run(CommandSender sender, String label, String[] args) {
-        if (args.length == 0) {
-            new PlayerSettingsGUI(Core.getInstance(), (Player) sender).show();
-        } else {
+        if (args.length != 0) {
             LANG.sendUsageMessage(sender, label);
+            return;
         }
+
+        new PlayerSettingsGUI(Core.getInstance(), (Player) sender).show();
     }
 }
