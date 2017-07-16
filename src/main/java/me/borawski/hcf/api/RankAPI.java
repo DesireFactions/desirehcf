@@ -1,7 +1,6 @@
 package me.borawski.hcf.api;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,6 +16,8 @@ import me.borawski.hcf.util.PlayerUtils;
  */
 public class RankAPI {
 
+    private static final LangHandler LANG = Core.getLangHandler();
+    
     /**
      * Change a player's {@link Rank}
      * 
@@ -34,17 +35,17 @@ public class RankAPI {
         }
 
         if (Rank.valueOf(rank) == null) {
-            sender.sendMessage("Invalid rank");
+            LANG.sendString(sender, "rank.invalid");
             return;
         }
 
         s.setRank(Rank.valueOf(rank));
         SessionHandler.getInstance().save(s);
-        sender.sendMessage(ChatColor.DARK_RED + "" + ChatColor.BOLD + "DesireHCF " + ChatColor.RESET + "" + ChatColor.GRAY + "You have set " + ChatColor.YELLOW + name + "" + ChatColor.GRAY + "'s rank to " + ChatColor.YELLOW + rank);
+        LANG.sendRenderMessage(sender, "rank.set", "{player}", "{rank}");
 
         if (Bukkit.getPlayer(s.getUniqueId()) != null && display) {
             PlayerUtils.setPrefix(s.getRank().getPrefix(), Bukkit.getPlayer(s.getUniqueId()));
-            s.sendMessage(ChatColor.GREEN + "You are now a " + s.getRank().name().toUpperCase());
+            LANG.sendRenderMessage(sender, "rank.inform", "{rank}", s.getRank().name().toUpperCase());
         }
     }
 
@@ -55,7 +56,9 @@ public class RankAPI {
      */
     public static void listRanks(CommandSender sender) {
         for (Rank r : Rank.values()) {
-            sender.sendMessage(r.getColor() + r.getDisplayName());
+            LANG.sendRenderMessage(sender, "rank.list", 
+                    "{color}", r.getColor().toString(), 
+                    "{rank}", r.getDisplayName());
         }
     }
 
@@ -67,7 +70,7 @@ public class RankAPI {
      */
     public static void checkRank(CommandSender sender, String label) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage(Core.getLangHandler().getString("only-players"));
+            LANG.sendString(sender, "only-players");
             return;
         }
 
@@ -78,11 +81,9 @@ public class RankAPI {
             e.printStackTrace();
         }
 
-        sender.sendMessage(ChatColor.DARK_RED + "" +
-                ChatColor.BOLD + "DesireHCF " +
-                ChatColor.RESET + "" +
-                ChatColor.GRAY + "Your rank is currently " +
-                ChatColor.YELLOW + s.getRank().getDisplayName());
+        LANG.sendRenderMessage(sender, "rank.set", 
+                "{color}", s.getRank().toString(),
+                "{rank}", s.getRank().getDisplayName());
     }
 
 }

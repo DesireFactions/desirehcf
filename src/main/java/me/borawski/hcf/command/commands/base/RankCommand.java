@@ -1,4 +1,4 @@
-package me.borawski.hcf.command.commands;
+package me.borawski.hcf.command.commands.base;
 
 import me.borawski.hcf.command.CustomBaseCommand;
 import me.borawski.hcf.command.commands.sub.RankCheckCommand;
