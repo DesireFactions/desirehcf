@@ -7,7 +7,7 @@ import me.borawski.hcf.session.Rank;
 
 public class LivesCommand extends CustomBaseCommand {
 
-    public LivesCommand(String name, String description, Rank requiredRank, String[] aliases) {
+    public LivesCommand() {
         super("lives", "Add or remove lives.", Rank.MODERATOR);
         addSubCommand(new LivesAddCommand());
         addSubCommand(new LivesRemoveCommand());
