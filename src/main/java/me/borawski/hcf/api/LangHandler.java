@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class LangHandler extends FileHandler {
 
     private String prefix;
+    private boolean usePrefix;
 
     /**
      * Create a new {@link LangHandler} based on the {@link FileHandler}. Also
