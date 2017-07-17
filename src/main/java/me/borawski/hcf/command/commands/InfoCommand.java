@@ -1,12 +1,10 @@
 package me.borawski.hcf.command.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.Core;
 import me.borawski.hcf.command.CustomCommand;
-import me.borawski.hcf.gui.custom.PlayerInfoGUI;
+import me.borawski.hcf.gui.PlayerInfoGUI;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
@@ -23,26 +21,26 @@ public class InfoCommand extends CustomCommand {
 
     @Override
     public void run(CommandSender sender, String label, String[] args) {
-        if (sender instanceof Player) {
-
-            if (args.length != 1) {
-                sender.sendMessage(Core.getLangHandler().getString("usage-message").replace("{usage}", "/info [player]"));
-                return;
-            }
-
-            Player player = (Player) sender;
-            String name = args[0];
-            Session s = SessionHandler.getSession(PlayerUtils.getUUIDFromName(name));
-            if (s == null) {
-                System.out.println("[Core] [ERROR] : Could not retrieve " + name);
-                sender.sendMessage(ChatColor.RED + "Could not retrieve " + ChatColor.YELLOW + name);
-                return;
-            }
-            PlayerInfoGUI.crossTarget.put(player.getUniqueId(), s);
-            new PlayerInfoGUI(player).show();
-
-        } else {
-            sender.sendMessage(Core.getLangHandler().getString("only-players"));
+        if (!(sender instanceof Player)) {
+            LANG.sendString(sender, "only-players");
+            return;
         }
+        
+        if (args.length != 1) {
+            LANG.sendUsageMessage(sender, label, "player");
+            return;
+        }
+
+        Player player = (Player) sender;
+        String name = args[0];
+        Session s = SessionHandler.getSession(PlayerUtils.getUUIDFromName(name));
+
+        if (s == null) {
+            LANG.sendRenderMessage(sender, "could_not_retrieve", "{name}", name);
+            return;
+        }
+
+        PlayerInfoGUI.crossTarget.put(player.getUniqueId(), s);
+        new PlayerInfoGUI(player).show();
     }
 }

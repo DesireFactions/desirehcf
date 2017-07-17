@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.bukkit.command.CommandSender;
 
+import me.borawski.hcf.Core;
+import me.borawski.hcf.api.LangHandler;
 import me.borawski.hcf.session.Rank;
 
 /**
@@ -22,6 +24,8 @@ public abstract class CustomCommand {
     protected Rank requiredRank;
 
     protected String[] aliases;
+    
+    protected static final LangHandler LANG = Core.getLangHandler();
 
     /**
      * @param name

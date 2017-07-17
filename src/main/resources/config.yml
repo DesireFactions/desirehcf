@@ -1,9 +1,9 @@
 database:
-    host: localhost
-    port: 27017
-    username: root
-    password: password
-    database: database
+  host: localhost
+  port: 27017
+  username: admin
+  password: odEylO2Xeh84JLfcu5
+  database: hcf
 
 koth_enabled: true
 koth_random_enabled: false

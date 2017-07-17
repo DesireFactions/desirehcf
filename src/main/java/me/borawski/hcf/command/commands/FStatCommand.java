@@ -1,13 +1,11 @@
 package me.borawski.hcf.command.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.entity.MPlayer;
 
-import me.borawski.hcf.Core;
 import me.borawski.hcf.command.CustomBaseCommand;
 import me.borawski.hcf.session.FactionSession;
 import me.borawski.hcf.session.FactionSessionHandler;
@@ -28,33 +26,30 @@ public class FStatCommand extends CustomBaseCommand {
     public void run(CommandSender sender, String label, String[] args) {
         if (args.length == 0) {
             if (!(sender instanceof Player)) {
-                sender.sendMessage(Core.getLangHandler().getString("only-players"));
+                LANG.sendString(sender, "only-playes");
                 return;
             }
             String faction = MPlayer.get(sender).getFactionName().replace(Factions.NAME_NONE_DEFAULT, "None");
             FactionSession session = FactionSessionHandler.getFactionSession(faction);
-            sender.sendMessage(getPrefix() + "Faction: " + ChatColor.YELLOW + faction);
-            sender.sendMessage(getPrefix() + "Trophy Points: " + ChatColor.YELLOW + session.getTrophies());
-            sender.sendMessage(getPrefix() + "KOTH Wins: " + ChatColor.YELLOW + session.getKoth());
+            LANG.sendRenderMessage(sender, "faction", "{faction}", faction);
+            LANG.sendRenderMessage(sender, "trophy_points", "{points}", Integer.toString(session.getTrophies()));
+            LANG.sendRenderMessage(sender, "koth_wins", "{koth_wins}", Integer.toString(session.getKoth()));
         } else {
             Session s = SessionHandler.getSession((Player) sender);
             if (s.getRank().getId() >= Rank.MODERATOR.getId()) {
                 String faction = args[0];
                 try {
                     FactionSession session = FactionSessionHandler.getFactionSession(faction);
-                    sender.sendMessage(getPrefix() + "Faction: " + ChatColor.YELLOW + session.getName());
-                    sender.sendMessage(getPrefix() + "Trophy Points: " + ChatColor.YELLOW + session.getTrophies());
-                    sender.sendMessage(getPrefix() + "KOTH Captures: " + ChatColor.YELLOW + session.getKoth());
+                    LANG.sendRenderMessage(sender, "trophy_points", "{points}", Integer.toString(session.getTrophies()));
+                    LANG.sendRenderMessage(sender, "koth_wins", "{koth_wins}", Integer.toString(session.getKoth()));
+                    LANG.sendRenderMessage(sender, "faction", "{faction}", session.getName());
                 } catch (Exception e) {
-                    sender.sendMessage(getPrefix() + "Could not find season data for " + ChatColor.YELLOW + faction);
+                    LANG.sendRenderMessage(sender, "no_season_data", "{faction}", faction);
                 }
             } else {
-                sender.sendMessage(Core.getLangHandler().getString("no-permissions"));
+                LANG.sendString(sender, "no-permissions");
             }
         }
     }
 
-    private String getPrefix() {
-        return ChatColor.DARK_RED + "" + ChatColor.BOLD + "FSTATS " + ChatColor.RESET + "" + ChatColor.GRAY;
-    }
 }
