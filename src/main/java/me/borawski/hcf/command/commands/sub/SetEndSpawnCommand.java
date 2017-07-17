@@ -25,7 +25,6 @@ public class SetEndSpawnCommand extends CustomCommand {
         Core.getInstance().getConfig().set("endspawn", Utils.toString(player.getLocation()));
         Core.getInstance().saveConfig();
         LANG.sendString(sender, "set_end.spawn");
-        player.sendMessage(Utils.chat("&8[&c&l*&8]&7 You have set end spawn!"));
     }
 
 }

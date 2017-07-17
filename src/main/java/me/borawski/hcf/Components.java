@@ -10,9 +10,6 @@ import java.util.Scanner;
 import org.bukkit.Bukkit;
 
 import me.borawski.hcf.command.commands.CrowbarCommand;
-import me.borawski.hcf.command.commands.EnderchestCommand;
-import me.borawski.hcf.command.commands.base.LivesCommand;
-import me.borawski.hcf.command.commands.base.SetEndCommand;
 import me.borawski.hcf.handler.BrewingSpeedHandler;
 import me.borawski.hcf.handler.CombatHandler;
 import me.borawski.hcf.handler.CreatureSpawnListener;
@@ -78,11 +75,7 @@ public class Components {
     }
 
     public void registerCommands() {
-        Core.getInstance().getCommandHandler().registerCommand(new CrowbarCommand());
-        Core.getInstance().getCommandHandler().registerCommand(new EnderchestCommand());
-        Core.getInstance().getCommandHandler().registerCommand(new LivesCommand());
-        Core.getInstance().getCommandHandler().registerCommand(new SetEndCommand());
-        Core.getInstance().getCommandHandler().registerCommand(new SetEndCommand());
+        Core.getInstance().getCommand("crowbar").setExecutor(new CrowbarCommand());
     }
 
     public static Components getInstance() {
