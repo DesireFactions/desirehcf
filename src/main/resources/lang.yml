@@ -34,7 +34,7 @@ set_end:
 rank:
   invalid: "Rank invalid"
   inform: "You are now a {rank}."
-  list: "{color}{name}"
+  list: "{color}{rank}"
   check: "Your rank is currently {color}{rank}."
   set: "You have set {player}'s rank to &e{rank}."
 

@@ -43,7 +43,8 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
      * @return
      */
     public static Session getSession(Object o) {
-        Session session;
+        System.out.println(instance.sessions.size());
+        Session session = null;
         if (o instanceof OfflinePlayer || o instanceof UUID) {
             for (Session s : instance.sessions) {
                 if (s.getUniqueId().equals(o instanceof OfflinePlayer ? ((OfflinePlayer) o).getUniqueId() : o)) {
@@ -52,10 +53,14 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
             }
             session = initializeSession(o, false);
             session.setActivePunishments(PunishmentHandler.getInstance().createQuery().field("punished").equal(session.getUniqueId()).field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis())).asList());
+        } else if (o instanceof String) {
+            for (Session s : instance.sessions) {
+                if (s.getName().equalsIgnoreCase((String)o)) {
+                    return s;
+                }
+            }
         } else if (o instanceof ConsoleCommandSender) {
             session = instance.console;
-        } else {
-            session = null;
         }
         return session;
     }
@@ -65,6 +70,7 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
         if (session == null) {
             session = createSession(o);
         }
+        System.out.println(cache);
         if (cache) {
             instance.sessions.add(session);
         }
