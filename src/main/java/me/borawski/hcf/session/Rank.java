@@ -9,13 +9,13 @@ public enum Rank {
 
     GUEST(1, "Guest", "§7⧫ ", "", ChatColor.GRAY, ChatColor.GRAY),
     BRIGADIER(2, "Brigadier", "§a⧫§7", "", ChatColor.WHITE, ChatColor.GREEN),
-    COMMODORE(2, "Commodore", "§b⧫§7", "", ChatColor.WHITE, ChatColor.AQUA),
-    GRANDMASTER(2, "Grandmaster", "§d⧫§7", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
-    VIP(3, "VIP", "§3[VIP]§7", "", ChatColor.WHITE, ChatColor.AQUA),
+    COMMODORE(3, "Commodore", "§b⧫§7", "", ChatColor.WHITE, ChatColor.AQUA),
+    GRANDMASTER(4, "Grandmaster", "§d⧫§7", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
+    VIP(5, "VIP", "§3[VIP]§7", "", ChatColor.WHITE, ChatColor.AQUA),
     YOUTUBER(6, "YouTuber", "§6[YT]§7", "", ChatColor.WHITE, ChatColor.GOLD),
-    HELPER(6, "Helper", "§d[HELPER]§7", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
-    MODERATOR(7, "Moderator", "§9[MOD]§7", "", ChatColor.WHITE, ChatColor.BLUE),
-    ADMIN(8, "Admin", "§c[ADMIN]§7", "", ChatColor.WHITE, ChatColor.RED),
+    HELPER(7, "Helper", "§d[HELPER]§7", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
+    MODERATOR(8, "Moderator", "§9[MOD]§7", "", ChatColor.WHITE, ChatColor.BLUE),
+    ADMIN(9, "Admin", "§c[ADMIN]§7", "", ChatColor.WHITE, ChatColor.RED),
     DEVELOPER(10, "Developer", "§c[DEV]§7", "", ChatColor.WHITE, ChatColor.RED),
     OWNER(11, "Owner", "§c[OWNER]§7", "", ChatColor.WHITE, ChatColor.RED);
 
@@ -57,6 +57,12 @@ public enum Rank {
 
     public String getPrefix() {
         return prefix + " ";
+    }
+
+    public static Rank getRank(String value) {
+        for (Rank v : values())
+            if (v.name().equalsIgnoreCase(value)) return v;
+        return null;
     }
 
 }

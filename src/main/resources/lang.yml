@@ -1,5 +1,59 @@
-# Lang file for FactionsUUID by drtshock
-# Use & for color codes.
-# Made with love <3
+prefix:
+  text: "&7[&bS&3P&7]"
+  use: true
+command-list-header: "&c----------------------------"
+usage-message: "§l§6[USAGE] §e%usage%§e."
+never_logged_in: "&7This player has never logged in before."
+only_players: "&7only players can run that command."
+no_permissions: "&7No permissions to run that command."
+faction: "Faction &e{faction}"
+trophy_points: "Trophy Points &e{points}"
+koth_wins: "Trophy Points &e{koth}"
+no_season_data: "Could not find Season data for &e{faction}"
+could_not_retrieve: "&6Could not retrieve &7{name}" 
+current_koth: "Current KOTH $l&e{koth}"
+location: "Location &l&eX {x} Y {y} Z {z}"
+num_players: "Players &l&e{players}"
+koth_pause: "You have paused the current koth"
+koth_pause: "You have resumed the current koth"
+koth_end_time: "Ends &l&e{time}"
+koth_start_new: "Ending current koth, startin the next"
+player_not_found: "Player not found."
+arg_not_number: "One or more of your arguments should be a number!"
 
+lives:
+  add: "You have added &c{amount}&7 lives to {player}"
+  remove: "You have removed &c{amount}&7 lives to {player}"
+  recieved: "{sender} has given you {amount} lives!"
+  lost: "{sender} has taken {amount} lives from you!" 
 
+set_end:
+  exit: "&8[&c&l*&8]&7 You have set end exit!"
+  spawn: "&8[&c&l*&8]&7 You have set end spawn!"
+
+rank:
+  invalid: "Rank invalid"
+  inform: "You are now a {rank}."
+  list: "{color}{rank}"
+  check: "Your rank is currently {color}{rank}."
+  set: "You have set {player}'s rank to &e{rank}."
+
+friend:
+  no_friend_request: "You do not have a friend request from {player}"
+  already_friends: "You are already friends with {player}"
+  accepted_friend_request: "You accepted a friend request from {player}"
+  are_now_friend: "You are now friends with {player}"
+  already_sent_request: "You have already sent {player} a friend request."
+  sent_request: "You have sent {player} a friend request."
+  both_friend_requested: "You had a friend request from {player} so we added you both as friends."
+  denied_friend_request: "You have denied {player}'s friend request."
+  no_friends: "You have no friends."
+
+enderchest:
+  disabled: "&7enderchest disabled!"
+  enabled: "&7enderchest enabled!"
+
+ban:
+  rank_to_low_error: "&7You may only ban people below your rank."
+  invalid_ban_time_error: "&7Invalid ban time."
+  ban_message: "&7You have been {duration} banned &e{player}&7 for &e{reason}&7."
