@@ -35,7 +35,7 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
     public static void initialize() {
         instance = new SessionHandler();
     }
-    
+
     /**
      * Gets the session of a user and initializes it if it does not yet exist.
      * 

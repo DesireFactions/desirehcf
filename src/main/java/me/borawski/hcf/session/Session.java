@@ -11,7 +11,6 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
-import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
 import me.borawski.hcf.Core;
@@ -48,7 +47,6 @@ public class Session {
 
     private List<String> achievements;
 
-    @Reference(idOnly = true)
     private List<UUID> friends;
 
     private List<UUID> incomingFriendRequests;
