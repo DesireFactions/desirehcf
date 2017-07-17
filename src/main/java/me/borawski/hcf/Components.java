@@ -9,7 +9,6 @@ import java.util.Scanner;
 
 import org.bukkit.Bukkit;
 
-import me.borawski.hcf.command.commands.CrowbarCommand;
 import me.borawski.hcf.handler.BrewingSpeedHandler;
 import me.borawski.hcf.handler.CombatHandler;
 import me.borawski.hcf.handler.CreatureSpawnListener;
@@ -75,7 +74,6 @@ public class Components {
     }
 
     public void registerCommands() {
-        Core.getInstance().getCommand("crowbar").setExecutor(new CrowbarCommand());
     }
 
     public static Components getInstance() {
