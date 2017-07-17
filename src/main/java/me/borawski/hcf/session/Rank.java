@@ -59,4 +59,10 @@ public enum Rank {
         return prefix + " ";
     }
 
+    public static Rank getRank(String value) {
+        for (Rank v : values())
+            if (v.name().equalsIgnoreCase(value)) return v;
+        return null;
+    }
+
 }

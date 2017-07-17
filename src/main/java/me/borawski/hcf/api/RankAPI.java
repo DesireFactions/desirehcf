@@ -17,7 +17,7 @@ import me.borawski.hcf.util.PlayerUtils;
 public class RankAPI {
 
     private static final LangHandler LANG = Core.getLangHandler();
-    
+
     /**
      * Change a player's {@link Rank}
      * 
@@ -27,25 +27,28 @@ public class RankAPI {
      * @param rank
      */
     public static void setRank(CommandSender sender, String label, String name, String rank, boolean display) {
-        Session s = SessionHandler.getSession(PlayerUtils.getUUIDFromName(name));
+        Session s = SessionHandler.getSession(name);
 
         if (s == null) {
             sender.sendMessage("[Core] [ERROR] : Could not retrieve " + name);
             return;
         }
 
-        if (Rank.valueOf(rank) == null) {
+        if (Rank.getRank(rank) == null) {
             LANG.sendString(sender, "rank.invalid");
             return;
         }
 
-        s.setRank(Rank.valueOf(rank));
+        s.setRank(Rank.getRank(rank));
         SessionHandler.getInstance().save(s);
-        LANG.sendRenderMessage(sender, "rank.set", "{player}", "{rank}");
+        LANG.sendRenderMessage(sender, "rank.set",
+                "{player}", s.getName(),
+                "{rank}", s.getRank().getDisplayName());
 
         if (Bukkit.getPlayer(s.getUniqueId()) != null && display) {
             PlayerUtils.setPrefix(s.getRank().getPrefix(), Bukkit.getPlayer(s.getUniqueId()));
-            LANG.sendRenderMessage(sender, "rank.inform", "{rank}", s.getRank().name().toUpperCase());
+            LANG.sendRenderMessage(Bukkit.getPlayer(s.getUniqueId()), "rank.inform",
+                    "{rank}", s.getRank().getDisplayName());
         }
     }
 
@@ -56,8 +59,8 @@ public class RankAPI {
      */
     public static void listRanks(CommandSender sender) {
         for (Rank r : Rank.values()) {
-            LANG.sendRenderMessage(sender, "rank.list", 
-                    "{color}", r.getColor().toString(), 
+            LANG.sendRenderMessage(sender, "rank.list",
+                    "{color}", r.getColor().toString(),
                     "{rank}", r.getDisplayName());
         }
     }
@@ -81,7 +84,7 @@ public class RankAPI {
             e.printStackTrace();
         }
 
-        LANG.sendRenderMessage(sender, "rank.set", 
+        LANG.sendRenderMessage(sender, "rank.set",
                 "{color}", s.getRank().toString(),
                 "{rank}", s.getRank().getDisplayName());
     }

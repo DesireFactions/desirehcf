@@ -12,6 +12,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class LangHandler extends FileHandler {
 
     private String prefix;
+    private boolean usePrefix;
 
     /**
      * Create a new {@link LangHandler} based on the {@link FileHandler}. Also
@@ -21,7 +22,11 @@ public class LangHandler extends FileHandler {
      */
     public LangHandler(FileConfiguration file) {
         super(file);
-        prefix = super.getString("prefix");
+        usePrefix = super.getBoolean("prefix.use");
+        if (usePrefix) {
+            prefix = super.getString("prefix.text");
+        }
+
     }
 
     /**
@@ -33,7 +38,13 @@ public class LangHandler extends FileHandler {
      * @return the formatted string.
      */
     public String getString(String string) {
-        return prefix + " §r" + super.getString(string);
+        String str = super.getString(string);
+        if (str == null)
+        {
+            str = "==ERROR==";
+        }
+        return (prefix != null && !str.startsWith("`") ? prefix + " " : "") + "§r" + (!str.startsWith("`") ? str : str.substring(1, str.length()));
+
     }
 
     /**
