@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -31,7 +30,6 @@ public class EnchantmentLimiterHandler implements Listener {
     public EnchantmentLimiterHandler() {
         this.enchantmentLimits = new ArrayList<EnchantmentLimit>();
         this.loadEnchantmentLimits();
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
     }
 
     public void loadEnchantmentLimits() {

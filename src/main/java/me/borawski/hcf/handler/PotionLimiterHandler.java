@@ -2,7 +2,6 @@ package me.borawski.hcf.handler;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -30,7 +29,6 @@ public class PotionLimiterHandler implements Listener {
     public PotionLimiterHandler() {
         this.potionLimits = new ArrayList<PotionLimit>();
         this.loadPotionLimits();
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
     }
 
     public void loadPotionLimits() {

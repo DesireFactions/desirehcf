@@ -22,7 +22,6 @@ public class MobStackHandler implements Listener {
     private List<EntityType> mobList;
 
     public MobStackHandler() {
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
         mobList = new ArrayList<EntityType>();
         loadEntityList();
         startStackTask();

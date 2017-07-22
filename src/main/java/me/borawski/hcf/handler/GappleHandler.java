@@ -26,8 +26,6 @@ public class GappleHandler implements Listener {
     private final Cooldown cooldown;
 
     public GappleHandler() {
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
-
         (cooldown = Components.getInstance().getCooldown(Components.GAPPLE)).setOnEndSequece(new Consumer<UUID>() {
 
             @Override

@@ -1,6 +1,5 @@
 package me.borawski.hcf.handler;
 
-import org.bukkit.Bukkit;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,10 +9,6 @@ import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 import me.borawski.hcf.Core;
 
 public class CreatureSpawnListener implements Listener {
-
-    public CreatureSpawnListener() {
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
-    }
 
     @EventHandler
     public void onSpawn(CreatureSpawnEvent e) {
