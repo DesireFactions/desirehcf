@@ -1,6 +1,5 @@
 package me.borawski.hcf.handler;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Effect;
 import org.bukkit.Location;
@@ -30,10 +29,6 @@ import me.borawski.hcf.util.CrowbarUtils;
 import me.borawski.hcf.util.Utils;
 
 public class CrowbarHandler implements Listener {
-
-    public CrowbarHandler() {
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
-    }
 
     @SuppressWarnings("deprecation")
     @EventHandler

@@ -1,6 +1,5 @@
 package me.borawski.hcf.handler;
 
-import org.bukkit.Bukkit;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,10 +9,6 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import me.borawski.hcf.Core;
 
 public class LootingBuffHandler implements Listener {
-
-    public LootingBuffHandler() {
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
-    }
 
     @SuppressWarnings("deprecation")
     @EventHandler

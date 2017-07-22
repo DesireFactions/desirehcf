@@ -24,7 +24,6 @@ public class EnderpearlHandler implements Listener {
     private final Cooldown cooldown;
 
     public EnderpearlHandler() {
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
 
         (cooldown = Components.getInstance().getCooldown(Components.ENDERP)).setOnEndSequece(new Consumer<UUID>() {
 

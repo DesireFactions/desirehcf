@@ -26,7 +26,7 @@ import me.borawski.hcf.util.ChatUtils;
 public class AchievementCommand extends CustomCommand {
 
     public AchievementCommand() {
-        super("achievements", "List off all aquired achievements.", Rank.GUEST, "achievement", "achieve");
+        super("achievements", "List all aquired achievements.", Rank.GUEST, "achievement", "achieve");
     }
 
     @Override
