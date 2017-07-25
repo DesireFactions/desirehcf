@@ -3,24 +3,25 @@ package me.borawski.hcf.command.commands.sub;
 import org.bukkit.command.CommandSender;
 
 import me.borawski.hcf.api.RankAPI;
-import me.borawski.hcf.command.CustomCommand;
+import me.borawski.hcf.command.ValidCommand;
+import me.borawski.hcf.parser.PlayerSessionParser;
+import me.borawski.hcf.parser.RankParser;
 import me.borawski.hcf.session.Rank;
+import me.borawski.hcf.session.Session;
 
-public class RankSetCommand extends CustomCommand {
+public class RankSetCommand extends ValidCommand {
 
     public RankSetCommand() {
-        super("set", "Sets a user's rank.", Rank.ADMIN);
+        super("set", "Sets a user's rank.", Rank.ADMIN, new String[] { "target", "rank" }, "update");
+        addParser(new RankParser(), "rank");
+        addParser(new PlayerSessionParser(), "target");
     }
 
     @Override
-    public void run(CommandSender sender, String label, String[] args) {
-        if (args.length == 2) {
-            String name = args[0];
-            String rank = args[1];
+    public void validRun(CommandSender sender, String label, Object... args) {
+        Session target = (Session) args[0];
+        Rank rank = (Rank) args[1];
 
-            RankAPI.setRank(sender, label, name, rank, true);
-        } else {
-            LANG.sendUsageMessage(sender, label, "target", "rank");
-        }
+        RankAPI.setRank(sender, label, target, rank);
     }
 }

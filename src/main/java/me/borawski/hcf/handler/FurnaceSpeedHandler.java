@@ -1,6 +1,5 @@
 package me.borawski.hcf.handler;
 
-import org.bukkit.Bukkit;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
 import org.bukkit.event.EventHandler;
@@ -14,10 +13,6 @@ import org.bukkit.scheduler.BukkitRunnable;
 import me.borawski.hcf.Core;
 
 public class FurnaceSpeedHandler implements Listener {
-
-    public FurnaceSpeedHandler() {
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
-    }
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onPlayerInteract(PlayerInteractEvent playerInteractEvent) {

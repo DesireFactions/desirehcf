@@ -1,39 +1,44 @@
 package me.borawski.hcf.api;
 
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.borawski.hcf.Core;
+import me.borawski.hcf.handler.DeathBanHandler;
 
 public class LivesAPI {
 
     private final static LangHandler LANG = Core.getLangHandler();
 
-    @SuppressWarnings("deprecation")
-    public static boolean validateArguments(CommandSender sender, String label, String[] args) {
-        if (args.length != 2) {
-            LANG.sendUsageMessage(sender, label, "target", "amount");
-            return false;
-        }
+    public static void takeLives(CommandSender sender, Player target, Integer amount) {
+        String strAmount = Integer.toString(amount);
+        String targetName = target.getDisplayName();
+        String senderName = ((Player) sender).getDisplayName();
 
-        if (!(sender instanceof Player)) {
-            LANG.sendString(sender, "only-players");
-            return false;
-        }
+        DeathBanHandler.takeLives(target, amount);
 
-        if (Bukkit.getPlayer(args[0]) == null) {
-            LANG.sendString(sender, "player_not_found");
-            LANG.sendUsageMessage(sender, label, "target", "amount");
-            return false;
-        }
+        LANG.sendRenderMessage(sender, "lives.remove",
+                "{amount}", strAmount,
+                "{player}", targetName);
 
-        if (!args[1].matches("\\d+")) {
-            LANG.sendString(sender, "arg_not_number");
-            LANG.sendUsageMessage(sender, label, "target", "amount");
-            return false;
-        }
+        LANG.sendRenderMessage(sender, "lives.lost",
+                "{amount}", Integer.toString(amount),
+                "{player}", senderName);
+    }
 
-        return true;
+    public static void addLives(CommandSender sender, Player target, Integer amount) {
+        String strAmount = Integer.toString(amount);
+        String targetName = target.getDisplayName();
+        String senderName = ((Player) sender).getDisplayName();
+
+        DeathBanHandler.addLives(target, amount);
+
+        LANG.sendRenderMessage(sender, "lives.add",
+                "{amount}", strAmount,
+                "{player}", targetName);
+
+        LANG.sendRenderMessage(sender, "lives.recieved",
+                "{amount}", strAmount,
+                "{player}", senderName);
     }
 }

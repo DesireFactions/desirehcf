@@ -3,7 +3,6 @@ package me.borawski.hcf.handler;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.block.Sign;
@@ -17,17 +16,12 @@ import org.bukkit.event.block.SignChangeEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import me.borawski.hcf.Core;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.Utils;
 
 public class SellSignHandler implements Listener {
-
-    public SellSignHandler() {
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
-    }
 
     @EventHandler
     public void signChange(SignChangeEvent event) {

@@ -19,37 +19,38 @@ public class RankAPI {
     private static final LangHandler LANG = Core.getLangHandler();
 
     /**
-     * Change a player's {@link Rank}
+     * Change a player {@link Session}'s {@link Rank}
      * 
      * @param sender
      * @param label
      * @param name
      * @param rank
      */
-    public static void setRank(CommandSender sender, String label, String name, String rank, boolean display) {
-        Session s = SessionHandler.getSession(name);
+    public static void setRank(CommandSender sender, String label, Session taget, Rank rank, boolean display) {
+        taget.setRank(rank);
 
-        if (s == null) {
-            sender.sendMessage("[Core] [ERROR] : Could not retrieve " + name);
-            return;
-        }
-
-        if (Rank.getRank(rank) == null) {
-            LANG.sendString(sender, "rank.invalid");
-            return;
-        }
-
-        s.setRank(Rank.getRank(rank));
-        SessionHandler.getInstance().save(s);
+        SessionHandler.getInstance().save(taget);
         LANG.sendRenderMessage(sender, "rank.set",
-                "{player}", s.getName(),
-                "{rank}", s.getRank().getDisplayName());
+                "{player}", taget.getName(),
+                "{rank}", taget.getRank().getDisplayName());
 
-        if (Bukkit.getPlayer(s.getUniqueId()) != null && display) {
-            PlayerUtils.setPrefix(s.getRank().getPrefix(), Bukkit.getPlayer(s.getUniqueId()));
-            LANG.sendRenderMessage(Bukkit.getPlayer(s.getUniqueId()), "rank.inform",
-                    "{rank}", s.getRank().getDisplayName());
+        if (Bukkit.getPlayer(taget.getUniqueId()) != null && display) {
+            PlayerUtils.setPrefix(taget.getRank().getPrefix(), Bukkit.getPlayer(taget.getUniqueId()));
+            LANG.sendRenderMessage(Bukkit.getPlayer(taget.getUniqueId()), "rank.inform",
+                    "{rank}", taget.getRank().getDisplayName());
         }
+    }
+
+    /**
+     * Change a player {@link Session}'s {@link Rank}
+     * 
+     * @param sender
+     * @param label
+     * @param name
+     * @param rank
+     */
+    public static void setRank(CommandSender sender, String label, Session target, Rank rank) {
+        setRank(sender, label, target, rank, false);
     }
 
     /**
@@ -72,17 +73,7 @@ public class RankAPI {
      * @param label
      */
     public static void checkRank(CommandSender sender, String label) {
-        if (!(sender instanceof Player)) {
-            LANG.sendString(sender, "only-players");
-            return;
-        }
-
-        Session s = null;
-        try {
-            s = SessionHandler.getSession(((Player) sender).getUniqueId());
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        Session s = SessionHandler.getSession(((Player) sender).getUniqueId());
 
         LANG.sendRenderMessage(sender, "rank.set",
                 "{color}", s.getRank().toString(),

@@ -1,8 +1,14 @@
 prefix:
   text: "&7[&bS&3P&7]"
   use: true
+  
+tag:
+  active: "&c&lYou are now combat tagged and can not enter spawn."
+  expire: "&c&lYou are no longer combat tagged."
+
+  
 command-list-header: "&c----------------------------"
-usage-message: "§l§6[USAGE] §e%usage%§e."
+usage-message: "&l&6[USAGE] &e{usage}&e."
 never_logged_in: "&7This player has never logged in before."
 only_players: "&7only players can run that command."
 no_permissions: "&7No permissions to run that command."
