@@ -39,8 +39,7 @@ public class LangHandler extends FileHandler {
      */
     public String getString(String string) {
         String str = super.getString(string);
-        if (str == null)
-        {
+        if (str == null) {
             str = "==ERROR==";
         }
         return (prefix != null && !str.startsWith("`") ? prefix + " " : "") + "§r" + (!str.startsWith("`") ? str : str.substring(1, str.length()));
@@ -98,7 +97,7 @@ public class LangHandler extends FileHandler {
         String argsString = "/" + label;
 
         for (String arg : args) {
-            argsString += " [" + arg + "]";
+            argsString += " " + arg;
         }
 
         return renderMessage("usage-message", "{usage}", argsString);

@@ -10,7 +10,6 @@ import java.util.Scanner;
 import org.bukkit.Bukkit;
 
 import me.borawski.hcf.handler.BrewingSpeedHandler;
-import me.borawski.hcf.handler.CombatHandler;
 import me.borawski.hcf.handler.CreatureSpawnListener;
 import me.borawski.hcf.handler.CrowbarHandler;
 import me.borawski.hcf.handler.DeathBanHandler;
@@ -46,7 +45,6 @@ public class Components {
         checkDependencies();
         registerCooldowns();
         registerListeners();
-        registerCommands();
 
     }
 
@@ -56,24 +54,22 @@ public class Components {
     }
 
     public void registerListeners() {
-        new CrowbarHandler();
-        new MobStackHandler();
-        new FurnaceSpeedHandler();
-        new GappleHandler();
-        new EnderpearlHandler();
-        new CreatureSpawnListener();
-        new CombatHandler();
-        new EnderchestHandler();
-        new BrewingSpeedHandler();
-        new LootingBuffHandler();
+        Core instance = Core.getInstance();
+        Bukkit.getPluginManager().registerEvents(new CrowbarHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new MobStackHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new FurnaceSpeedHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new GappleHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new EnderpearlHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new CreatureSpawnListener(), instance);
+        // got to here
+        Bukkit.getPluginManager().registerEvents(new EnderchestHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new BrewingSpeedHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new LootingBuffHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new SellSignHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new EnchantmentLimiterHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new PotionLimiterHandler(), instance);
+        //Bukkit.getPluginManager().registerEvents(new PvPTimer(), instance);
         playerDeath = new DeathBanHandler();
-        new SellSignHandler();
-        new EnchantmentLimiterHandler();
-        new PotionLimiterHandler();
-        new PvPTimer();
-    }
-
-    public void registerCommands() {
     }
 
     public static Components getInstance() {
