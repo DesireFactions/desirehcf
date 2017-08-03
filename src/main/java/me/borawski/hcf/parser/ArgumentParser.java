@@ -9,6 +9,6 @@ public interface ArgumentParser {
     
     public static final LangHandler LANG = Core.getLangHandler();
     
-    public abstract Object parseArgument(CommandSender sender, String label, String arg);
+    public Object parseArgument(CommandSender sender, String label, String arg);
     
 }
