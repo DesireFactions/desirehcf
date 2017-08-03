@@ -63,3 +63,6 @@ ban:
   rank_to_low_error: "&7You may only ban people below your rank."
   invalid_ban_time_error: "&7Invalid ban time."
   ban_message: "&7You have been {duration} banned &e{player}&7 for &e{reason}&7."
+  
+koth:
+  name_used: "&7That name has already been used."
