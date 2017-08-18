@@ -13,12 +13,13 @@ public class RankSetCommand extends ValidCommand {
 
     public RankSetCommand() {
         super("set", "Sets a user's rank.", Rank.ADMIN, new String[] { "target", "rank" }, "update");
-        addParser(new RankParser(), "rank");
         addParser(new PlayerSessionParser(), "target");
+        addParser(new RankParser(), "rank");
     }
 
     @Override
     public void validRun(CommandSender sender, String label, Object... args) {
+        
         Session target = (Session) args[0];
         Rank rank = (Rank) args[1];
 
