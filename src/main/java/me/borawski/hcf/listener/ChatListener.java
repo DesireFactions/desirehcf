@@ -56,12 +56,16 @@ public class ChatListener implements Listener {
 
                 FactionSession fSession = FactionSessionHandler.getFactionSession(f.getName());
 
-                new FancyMessage(s.getRank().getPrefix() + " " + player.getName() + ": " + s.getRank().getColor() + msg).tooltip(new String[] {
-                        ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
-                        ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + fSession.getName(),
-                        ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + f.getMPlayers().size(),
-                        ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + fSession.getTrophies()
-                }).send(players);
+                new FancyMessage(s.getRank().getPrefix())
+                        .then(player.getName())
+                            .tooltip(new String[] {
+                                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
+                                    ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getName() : "NONE"),
+                                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? f.getMPlayers().size() : "NONE"),
+                                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "NONE")
+                            })
+                        .then(": " + s.getRank().getColor() + msg)
+                        .send(players);
             }
         });
     }
