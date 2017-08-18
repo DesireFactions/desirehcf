@@ -75,8 +75,8 @@ public class RankAPI {
     public static void checkRank(CommandSender sender, String label) {
         Session s = SessionHandler.getSession(((Player) sender).getUniqueId());
 
-        LANG.sendRenderMessage(sender, "rank.set",
-                "{color}", s.getRank().toString(),
+        LANG.sendRenderMessage(sender, "rank.check",
+                "{color}", s.getRank().getColor().toString(),
                 "{rank}", s.getRank().getDisplayName());
     }
 
