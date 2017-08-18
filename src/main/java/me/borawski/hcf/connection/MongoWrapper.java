@@ -28,7 +28,6 @@ public class MongoWrapper {
     public MongoWrapper() {
         FileHandler config = Core.getConfigHandler();
         ServerAddress addr = new ServerAddress(config.getString("database.host"), config.getInteger("database.port"));
-        System.out.println(addr.toString());
 
         List<MongoCredential> credentials = new ArrayList<>();
         credentials.add(MongoCredential.createCredential(config.getString("database.username"), config.getString("database.database"), config.getString("database.password").toCharArray()));
