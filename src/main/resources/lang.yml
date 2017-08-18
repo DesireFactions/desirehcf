@@ -9,6 +9,7 @@ tag:
   
 command-list-header: "&c----------------------------"
 usage-message: "&l&6[USAGE] &e{usage}&e."
+need_selection: "&7You need to make a selection with WorldEdit."
 never_logged_in: "&7This player has never logged in before."
 only_players: "&7only players can run that command."
 no_permissions: "&7No permissions to run that command."
