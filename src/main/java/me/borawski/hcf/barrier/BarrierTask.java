@@ -12,8 +12,8 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.Core;
 import me.borawski.hcf.session.Region;
+import me.borawski.hcf.session.RegionHandler;
 
 public class BarrierTask implements Runnable {
 
@@ -35,7 +35,7 @@ public class BarrierTask implements Runnable {
                 localCache = new HashSet<>();
             }
 
-            for (Region r : Core.getRegionHandler().getRegions()) {
+            for (Region r : RegionHandler.getInstance().getRegions()) {
                 for (Block b : r.getRegion().getWallBlocks(Bukkit.getWorld(r.getWorld()))) {
                     if (b.getType() == Material.AIR) {
                         if (b.getLocation().distanceSquared(p.getLocation()) <= r.getViewDistance() * r.getViewDistance()) {

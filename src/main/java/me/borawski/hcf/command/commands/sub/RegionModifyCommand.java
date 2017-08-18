@@ -8,6 +8,7 @@ import me.borawski.hcf.api.LangHandler;
 import me.borawski.hcf.command.CustomCommand;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Region;
+import me.borawski.hcf.session.RegionHandler;
 import me.borawski.hcf.util.ItemNames;
 
 public class RegionModifyCommand extends CustomCommand {
@@ -28,7 +29,7 @@ public class RegionModifyCommand extends CustomCommand {
 
         String name = args[0];
 
-        Region r = Core.getRegionHandler().getRegion(name.toLowerCase());
+        Region r = RegionHandler.getInstance().getRegion(name.toLowerCase());
         if (r == null) {
             sender.sendMessage(l.getString("modify.not-found"));
             return;
@@ -44,7 +45,7 @@ public class RegionModifyCommand extends CustomCommand {
                 sender.sendMessage(l.getString("modify.too-long"));
                 return;
             }
-            Region check = Core.getRegionHandler().getRegion(newName);
+            Region check = RegionHandler.getInstance().getRegion(newName);
             if (check == r) {
                 sender.sendMessage(l.getString("modify.same-name"));
                 return;
@@ -55,8 +56,8 @@ public class RegionModifyCommand extends CustomCommand {
             }
 
             r.setName(newName);
-            Core.getRegionHandler().save(r);
-            Core.getRegionHandler().remove(args[0].toLowerCase());
+            RegionHandler.getInstance().save(r);
+            RegionHandler.getInstance().remove(args[0].toLowerCase());
             sender.sendMessage(l.getString("modify.changed-name").replace("{old}", args[0]).replace("{new}", newName));
         } else if (args[1].equalsIgnoreCase("material")) {
             if (args.length != 3) {
@@ -75,7 +76,7 @@ public class RegionModifyCommand extends CustomCommand {
             ItemStack old = new ItemStack(r.getBarrierMaterial(), 1, r.getBarrierMaterialData());
             r.setBarrierMaterial(is.getType());
             r.setBarrierMaterialData(is.getData().getData());
-            Core.getRegionHandler().save(r);
+            RegionHandler.getInstance().save(r);
             sender.sendMessage(l.getString("modify.changed-material").replace("{old}", ItemNames.lookup(old)).replace("{new}", ItemNames.lookup(is)));
         } else if (args[1].equalsIgnoreCase("distance")) {
             if (args.length != 3) {
@@ -90,7 +91,7 @@ public class RegionModifyCommand extends CustomCommand {
                 }
                 int oldDistance = r.getViewDistance();
                 r.setViewDistance(distance);
-                Core.getRegionHandler().save(r);
+                RegionHandler.getInstance().save(r);
                 sender.sendMessage(l.getString("modify.changed-distance").replace("{old}", oldDistance + "").replace("{new}", distance + ""));
             } catch (NumberFormatException ex) {
                 sender.sendMessage(l.getString("modify.not-a-number"));

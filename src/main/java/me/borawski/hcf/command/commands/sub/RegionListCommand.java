@@ -8,6 +8,7 @@ import me.borawski.hcf.Core;
 import me.borawski.hcf.command.CustomCommand;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Region;
+import me.borawski.hcf.session.RegionHandler;
 
 public class RegionListCommand extends CustomCommand {
 
@@ -17,7 +18,7 @@ public class RegionListCommand extends CustomCommand {
 
     @Override
     public void run(CommandSender sender, String label, String[] args) {
-        Collection<Region> regions = Core.getRegionHandler().getRegions();
+        Collection<Region> regions = RegionHandler.getInstance().getRegions();
 
         if (regions.size() >= 1) {
             String message = Core.getLangHandler().getString("list.format");

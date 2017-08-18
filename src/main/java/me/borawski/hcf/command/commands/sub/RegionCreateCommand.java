@@ -12,6 +12,7 @@ import me.borawski.hcf.command.CustomCommand;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Region;
 import me.borawski.hcf.session.RegionBlocks;
+import me.borawski.hcf.session.RegionHandler;
 import me.borawski.hcf.util.ItemNames;
 
 public class RegionCreateCommand extends CustomCommand {
@@ -49,7 +50,7 @@ public class RegionCreateCommand extends CustomCommand {
             return;
         }
 
-        Region r = Core.getRegionHandler().getRegion(name.toLowerCase());
+        Region r = RegionHandler.getInstance().getRegion(name.toLowerCase());
         if (r != null) {
             sender.sendMessage(l.getString("create.name-taken"));
             return;
@@ -66,7 +67,7 @@ public class RegionCreateCommand extends CustomCommand {
         }
 
         r = new Region(name, p.getWorld().getName(), new RegionBlocks(s.getMaximumPoint(), s.getMinimumPoint()), is.getData(), Core.getConfigHandler().getInteger("barrier.view-distance"));
-        Core.getRegionHandler().save(r, true);
+        RegionHandler.getInstance().save(r, true);
         sender.sendMessage(l.getString("create.success").replace("{name}", name).replace("{material}", ItemNames.lookup(is)));
     }
 
