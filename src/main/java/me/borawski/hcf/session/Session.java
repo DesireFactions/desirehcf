@@ -1,5 +1,6 @@
 package me.borawski.hcf.session;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -70,6 +71,11 @@ public class Session {
 
     public Session() {
         pvpTimer = new PVPTimer();
+        achievements = new LinkedList<>();
+        friends = new LinkedList<>();
+        incomingFriendRequests = new LinkedList<>();
+        outgoingFriendRequests = new LinkedList<>();
+        activePunishments = new LinkedList<>();
     }
 
     public UUID getUniqueId() {
