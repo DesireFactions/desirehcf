@@ -43,7 +43,6 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
      * @return
      */
     public static Session getSession(Object o) {
-        System.out.println(instance.sessions.size());
         Session session = null;
         if (o instanceof OfflinePlayer || o instanceof UUID) {
             for (Session s : instance.sessions) {
@@ -70,7 +69,6 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
         if (session == null) {
             session = createSession(o);
         }
-        System.out.println(cache);
         if (cache) {
             instance.sessions.add(session);
         }
