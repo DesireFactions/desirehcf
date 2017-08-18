@@ -11,6 +11,7 @@ import me.borawski.hcf.Core;
 import me.borawski.hcf.api.LangHandler;
 import me.borawski.hcf.barrier.TagHandler;
 import me.borawski.hcf.session.Region;
+import me.borawski.hcf.session.RegionHandler;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 
@@ -58,7 +59,7 @@ public class CombatListener implements Listener {
 
                 // 0 = valid, 1 = damager in region, 2 = victim in region
                 int state = 0;
-                for (Region r : Core.getRegionHandler().getRegions()) {
+                for (Region r : RegionHandler.getInstance().getRegions()) {
                     if (r.getRegion().isWithin(damager.getLocation())) {
                         state = 1;
                         break;
