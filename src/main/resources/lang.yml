@@ -71,3 +71,5 @@ ban:
   
 koth:
   name_used: "&7That name has already been used."
+  hill_not_found: "&7That hill can't be found."
+  create: "&7Created the KOTH region &a{name}."
