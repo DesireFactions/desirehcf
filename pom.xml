@@ -37,32 +37,26 @@
 		<!-- WorldEdit API -->
 		<dependency>
 			<groupId>com.sk89q.worldedit</groupId>
-			<artifactId>worldedit-core</artifactId>
-			<version>6.1.4-SNAPSHOT</version>
+			<artifactId>worldedit-bukkit</artifactId>
+			<version>6.1.5</version>
 		</dependency>
 		<!-- Craftbukkit API -->
 		<dependency>
 			<groupId>org.bukkit</groupId>
 			<artifactId>craftbukkit</artifactId>
-			<version>1.11.2-R0.1-SNAPSHOT</version>
+			<version>1.12-R0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- Spigot API -->
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.11-R0.1-SNAPSHOT</version>
+			<version>1.12-R0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- Vault API -->
 		<dependency>
 			<groupId>net.milkbowl.vault</groupId>
 			<artifactId>VaultAPI</artifactId>
 			<version>1.6</version>
-		</dependency>
-		<!-- WorldGuard API -->
-		<dependency>
-			<groupId>com.sk89q.worldguard</groupId>
-			<artifactId>worldguard-legacy</artifactId>
-			<version>6.2</version>
 		</dependency>
 		<!-- Fanciful API -->
 		<dependency>

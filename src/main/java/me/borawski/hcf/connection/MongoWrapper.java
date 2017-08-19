@@ -13,11 +13,8 @@ import com.mongodb.ServerAddress;
 import me.borawski.hcf.Core;
 import me.borawski.hcf.api.FileHandler;
 import me.borawski.hcf.punishment.Punishment;
-import me.borawski.hcf.punishment.PunishmentHandler;
 import me.borawski.hcf.session.FactionSession;
-import me.borawski.hcf.session.FactionSessionHandler;
 import me.borawski.hcf.session.Session;
-import me.borawski.hcf.session.SessionHandler;
 
 /**
  * Created by Ethan on 3/12/2017.
@@ -41,11 +38,7 @@ public class MongoWrapper {
         morphia.map(Session.class);
         morphia.map(Punishment.class);
         morphia.map(FactionSession.class);
-
-        SessionHandler.initialize();
-        PunishmentHandler.initialize();
-        FactionSessionHandler.initialize();
-
+        
         datastore = morphia.createDatastore(mc, config.getString("database.database"));
         datastore.ensureIndexes();
     }

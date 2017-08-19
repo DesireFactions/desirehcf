@@ -35,7 +35,7 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
     public static void initialize() {
         instance = new SessionHandler();
     }
-    
+
     /**
      * Gets the session of a user and initializes it if it does not yet exist.
      * 
@@ -43,7 +43,7 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
      * @return
      */
     public static Session getSession(Object o) {
-        Session session;
+        Session session = null;
         if (o instanceof OfflinePlayer || o instanceof UUID) {
             for (Session s : instance.sessions) {
                 if (s.getUniqueId().equals(o instanceof OfflinePlayer ? ((OfflinePlayer) o).getUniqueId() : o)) {
@@ -52,10 +52,14 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
             }
             session = initializeSession(o, false);
             session.setActivePunishments(PunishmentHandler.getInstance().createQuery().field("punished").equal(session.getUniqueId()).field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis())).asList());
+        } else if (o instanceof String) {
+            for (Session s : instance.sessions) {
+                if (s.getName().equalsIgnoreCase((String) o)) {
+                    return s;
+                }
+            }
         } else if (o instanceof ConsoleCommandSender) {
             session = instance.console;
-        } else {
-            session = null;
         }
         return session;
     }
@@ -91,9 +95,11 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
         session.setTokens(0);
         session.setLevel(1);
         session.setExp(0);
+        session.setLives(0);
         session.setFirstLogin(System.currentTimeMillis());
         session.setLastLogin(System.currentTimeMillis());
         session.setTotalPlayed(0);
+        session.setSafeTimeLeft(Core.getConfigHandler().getInteger("timers.pvp.time"));
         session.setIp("10.0.0.1");
         session.setAchievements(new ArrayList<>());
         session.setFriends(new ArrayList<>());
