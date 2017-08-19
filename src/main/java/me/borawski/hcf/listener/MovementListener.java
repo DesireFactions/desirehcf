@@ -7,9 +7,9 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import me.borawski.hcf.Core;
 import me.borawski.hcf.barrier.TagHandler;
 import me.borawski.hcf.session.Region;
+import me.borawski.hcf.session.RegionHandler;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 
@@ -18,7 +18,7 @@ public class MovementListener implements Listener {
     @EventHandler
     public void onMove(PlayerMoveEvent e) {
         if (TagHandler.isTagged(e.getPlayer()) && differentBlocks(e.getTo(), e.getPlayer().getLocation())) {
-            for (Region r : Core.getRegionHandler().getRegions()) {
+            for (Region r : RegionHandler.getInstance().getRegions()) {
                 if (r.getWorld().equalsIgnoreCase(e.getTo().getWorld().getName()) && r.getRegion().isWithin(e.getTo())) {
                     if (TagHandler.lastValidLocation.containsKey(e.getPlayer().getUniqueId())) {
                         e.setTo(TagHandler.lastValidLocation.get(e.getPlayer().getUniqueId()));
@@ -35,7 +35,7 @@ public class MovementListener implements Listener {
         Session s = SessionHandler.getSession(e.getPlayer());
         if (s.getSafeTimeLeft() > 0) {
             if (!e.isCancelled() && differentBlocks(e.getTo(), e.getPlayer().getLocation())) {
-                for (Region r : Core.getRegionHandler().getRegions()) {
+                for (Region r : RegionHandler.getInstance().getRegions()) {
                     if (r.getWorld().equalsIgnoreCase(e.getTo().getWorld().getName())) {
                         if (r.getRegion().isWithin(e.getTo())) {
                             s.getTimer().pause();

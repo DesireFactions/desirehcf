@@ -1,37 +1,25 @@
 package me.borawski.hcf.command.commands.sub;
 
-import java.util.UUID;
-
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.Core;
-import me.borawski.hcf.command.CustomCommand;
+import me.borawski.hcf.api.FriendsAPI;
+import me.borawski.hcf.command.ValidCommand;
 import me.borawski.hcf.session.Rank;
-import me.borawski.hcf.session.Session;
-import me.borawski.hcf.session.SessionHandler;
-import me.borawski.hcf.util.ChatUtils;
+import me.borawski.hcf.validator.PlayerSenderValidator;
+import me.borawski.hcf.validator.SenderOutgoingFriendRequestsValidator;
 
-public class FriendListOutgoingCommand extends CustomCommand {
+public class FriendListOutgoingCommand extends ValidCommand {
 
     public FriendListOutgoingCommand() {
-        super("outgoing", "Lists incoming friend requests.", Rank.GUEST);
+        super("outgoing", "Lists incoming friend requests.", Rank.GUEST, new String[] {});
+        addValidator(new PlayerSenderValidator());
+        addValidator(new SenderOutgoingFriendRequestsValidator());
     }
 
     @Override
-    public void run(CommandSender sender, String label, String[] args) {
-        Session session = SessionHandler.getSession((Player) sender);
-        if (session.getIncomingFriendRequests().size() == 0) {
-            sender.sendMessage(Core.getInstance().getPrefix() + "You have no outgoing requests.");
-            return;
-        }
-        sender.sendMessage(ChatColor.DARK_GRAY + "-------------------" + Core.getInstance().getPrefix().replace(" ", "") + ChatColor.DARK_GRAY + "-----------------------");
-        for (UUID uuid : session.getOutgoingFriendRequests()) {
-            sender.sendMessage(ChatColor.GRAY + "Request sent to: " + ChatUtils.getNameWithRankColor(uuid, true));
-        }
-        sender.sendMessage(ChatColor.DARK_GRAY + "----------------------------------------------------");
-        return;
+    public void validRun(CommandSender sender, String label, Object... args) {
+        FriendsAPI.listOutgoing((Player) sender);
     }
 
 }

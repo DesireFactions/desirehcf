@@ -7,6 +7,7 @@ import me.borawski.hcf.api.LangHandler;
 import me.borawski.hcf.command.CustomCommand;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Region;
+import me.borawski.hcf.session.RegionHandler;
 
 public class RegionDeleteCommand extends CustomCommand {
 
@@ -24,13 +25,13 @@ public class RegionDeleteCommand extends CustomCommand {
         }
 
         String name = args[0];
-        Region r = Core.getRegionHandler().getRegion(name.toLowerCase());
+        Region r = RegionHandler.getInstance().getRegion(name.toLowerCase());
         if (r == null) {
             sender.sendMessage(l.getString("delete.not-found"));
             return;
         }
 
-        Core.getRegionHandler().delete(r);
+        RegionHandler.getInstance().delete(r);
         sender.sendMessage(l.getString("delete.success").replace("{name}", name));
     }
 

@@ -19,8 +19,10 @@ import me.borawski.hcf.Core;
 public class TagHandler {
 
     public static HashMap<UUID, Location> lastValidLocation = new HashMap<>();
-    
+
     private static Cache<UUID, Long> tags;
+
+    private static Cache<UUID, UUID> history;
 
     public static void initialize() {
         tags = CacheBuilder.newBuilder().expireAfterWrite(Core.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>() {
@@ -33,6 +35,8 @@ public class TagHandler {
                 }
             }
         }).build();
+
+        history = CacheBuilder.newBuilder().expireAfterWrite(Core.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).build();
     }
 
     public static boolean isTagged(Player p) {
@@ -48,6 +52,11 @@ public class TagHandler {
         }
         tags.put(p.getUniqueId(), System.currentTimeMillis());
         tags.put(damager.getUniqueId(), System.currentTimeMillis());
+        history.put(p.getUniqueId(), damager.getUniqueId());
+    }
+
+    public static UUID getTagger(UUID uuid) {
+        return history.asMap().get(uuid);
     }
 
     public static void clearTag(UUID uuid) {

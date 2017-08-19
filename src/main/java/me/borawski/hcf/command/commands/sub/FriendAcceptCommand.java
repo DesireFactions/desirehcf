@@ -3,55 +3,30 @@ package me.borawski.hcf.command.commands.sub;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.command.CustomCommand;
+import me.borawski.hcf.api.FriendsAPI;
+import me.borawski.hcf.command.ValidCommand;
+import me.borawski.hcf.parser.PlayerSessionParser;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
-import me.borawski.hcf.session.SessionHandler;
-import me.borawski.hcf.util.ChatUtils;
-import me.borawski.hcf.util.FriendUtils;
-import me.borawski.hcf.util.PlayerUtils;
+import me.borawski.hcf.validator.PlayerNotFriendsValidator;
+import me.borawski.hcf.validator.PlayerSenderValidator;
+import me.borawski.hcf.validator.SenderFriendRequestValidator;
 
-public class FriendAcceptCommand extends CustomCommand {
+public class FriendAcceptCommand extends ValidCommand {
 
     public FriendAcceptCommand() {
-        super("accept", "Accept a friend request.", Rank.GUEST, "confirm");
+        super("accept", "Accept a friend request.", Rank.GUEST, new String[] { "target" }, "confirm");
+        addParser(new PlayerSessionParser(), "target");
+        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerNotFriendsValidator(), "target");
+        addValidator(new SenderFriendRequestValidator(), "target");
     }
 
     @Override
-    public void run(CommandSender sender, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            LANG.sendString(sender, "only-players");
-            return;
-        }
-        if (args.length == 0) {
-            if (!PlayerUtils.hasPlayed(args[0])) {
-                LANG.sendString(sender, "player_not_found");
-                return;
-            }
-            Session target = SessionHandler.getSession(PlayerUtils.getUUIDFromName(args[0]));
-            String targetName = ChatUtils.getNameWithRankColor(target.getUniqueId(), false);
-            Session session = SessionHandler.getSession((Player) sender);
+    public void validRun(CommandSender sender, String label, Object... args) {
+        Session target = (Session) args[0];
 
-            if (FriendUtils.isFriends(session, target.getUniqueId())) {
-                LANG.sendRenderMessage(sender, "friend.already_friends", "{player}", targetName);
-                return;
-            }
-
-            if (!FriendUtils.hasRequest(session, target.getUniqueId())) {
-                // Sender has not already sent a friend request to this
-                // player. //
-                LANG.sendRenderMessage(sender, "friend.no_friend_request", "{player}", targetName);
-                return;
-            }
-
-            LANG.sendRenderMessage(sender, "friend.no_friend_request", "{player}", targetName);
-            LANG.sendRenderMessage(sender, "friend.are_now_friends", "{player}", targetName);
-
-            FriendUtils.acceptFriendRequest(session, target.getUniqueId(), true);
-            FriendUtils.acceptFriendRequest(target, session.getUniqueId(), false);
-        } else {
-            LANG.sendUsageMessage(sender, label, "player");
-        }
+        FriendsAPI.acceptRequest((Player) sender, target);
     }
 
 }
