@@ -97,7 +97,7 @@ public class LangHandler extends FileHandler {
         String argsString = "/" + label;
 
         for (String arg : args) {
-            argsString += " " + arg;
+            argsString += " [" + arg + "]";
         }
 
         return renderMessage("usage-message", "{usage}", argsString);

@@ -8,7 +8,7 @@ tag:
 
   
 command-list-header: "&c----------------------------"
-usage-message: "&l&6[USAGE] &e{usage}&e."
+usage-message: "`&7[&Usage&7] &e{usage}&e"
 need_selection: "&7You need to make a selection with WorldEdit."
 not_time: "&7Time format used is invalid."
 never_logged_in: "&7This player has never logged in before."
