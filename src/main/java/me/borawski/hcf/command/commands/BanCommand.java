@@ -1,6 +1,5 @@
 package me.borawski.hcf.command.commands;
 
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -28,12 +27,12 @@ public class BanCommand extends CustomCommand {
     public void run(CommandSender sender, String label, String[] args) {
 
         if (args.length < 3) {
-            sender.sendMessage(ChatColor.RED + "/ban <user>");
+            LANG.sendUsageMessage(sender, label, "target");
             return;
         }
 
         if (!PlayerUtils.hasPlayed(args[0])) {
-            sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "This player has never logged in before and cannot be banned!");
+            LANG.sendString(sender, "never_logged_in");
             return;
         }
 
@@ -41,7 +40,7 @@ public class BanCommand extends CustomCommand {
         Session target = SessionHandler.getSession(PlayerUtils.getUUIDFromName(args[0]));
 
         if (user == null || target.getRank().getId() >= user.getRank().getId()) {
-            sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You may only ban people below your rank!");
+            LANG.sendString(sender, "ban.rank_to_low_error");
             return;
         }
 
@@ -49,7 +48,7 @@ public class BanCommand extends CustomCommand {
         try {
             time = DateUtils.parseDateDiff(args[1], true);
         } catch (Exception ex) {
-            sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "Invalid ban time!");
+            LANG.sendString(sender, "ban.invalid_ban_time_error");
             return;
         }
 
@@ -69,7 +68,10 @@ public class BanCommand extends CustomCommand {
         punishment.setType(Type.BAN);
         PunishmentHandler.getInstance().save(punishment);
 
-        sender.sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You " + (finalTime == -1 ? "permanently" : "temporarily") + " banned " + ChatColor.YELLOW + args[0] + ChatColor.GRAY + " for " + ChatColor.YELLOW + reason + ChatColor.GRAY + "!");
+        LANG.sendRenderMessage(sender, "ban.ban_message",
+                "{duration}", (finalTime == -1 ? "permanently" : "temporarily"),
+                "{player}", args[0],
+                "{reason}", reason.toString());
     }
 
 }

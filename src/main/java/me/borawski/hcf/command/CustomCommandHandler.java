@@ -17,17 +17,17 @@ import me.borawski.hcf.session.SessionHandler;
  */
 public class CustomCommandHandler implements CommandExecutor {
 
-    private LinkedList<CustomCommand> commands;
+    private LinkedList<ValidCommand> commands;
 
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        CustomCommand command = getCustomCommand(label);
+        ValidCommand command = getCustomCommand(label);
         if (command != null) {
             Session s = sender instanceof Player ? SessionHandler.getSession(sender) : null;
             if (s == null || s.getRank().getId() >= command.getRequiredRank().getId()) {
                 command.run(sender, label, args);
             } else {
-                sender.sendMessage(Core.getLangHandler().getString("no-permissions"));
+                Core.getLangHandler().sendString(sender, "no-permissions");
             }
         } else {
             return false;
@@ -39,7 +39,7 @@ public class CustomCommandHandler implements CommandExecutor {
     /**
      * @param command
      */
-    public void registerCommand(CustomCommand command) {
+    public void registerCommand(ValidCommand command) {
         if (commands == null) {
             commands = new LinkedList<>();
         }
@@ -47,8 +47,8 @@ public class CustomCommandHandler implements CommandExecutor {
         commands.add(command);
     }
 
-    private CustomCommand getCustomCommand(String cmd) {
-        for (CustomCommand command : commands) {
+    private ValidCommand getCustomCommand(String cmd) {
+        for (ValidCommand command : commands) {
             if (command.matches(cmd)) {
                 return command;
             }

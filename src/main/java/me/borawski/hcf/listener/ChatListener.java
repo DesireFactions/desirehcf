@@ -1,15 +1,24 @@
 package me.borawski.hcf.listener;
 
+import java.util.function.Consumer;
+
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
+import com.massivecraft.factions.entity.Faction;
+import com.massivecraft.factions.entity.MPlayer;
+
 import me.borawski.hcf.Core;
+import me.borawski.hcf.session.FactionSession;
+import me.borawski.hcf.session.FactionSessionHandler;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.ChatUtils;
-import me.borawski.hcf.util.MsgUtil;
+import mkremins.fanciful.FancyMessage;
 
 public class ChatListener implements Listener {
 
@@ -28,7 +37,43 @@ public class ChatListener implements Listener {
             s.sendMessage(ChatColor.DARK_GRAY + "-----------------------------------------------------");
             return;
         }
-        MsgUtil.handleChat(event.getMessage(), event.getPlayer());
+
+        String msg = event.getMessage();
+        Player player = event.getPlayer();
+
+        Bukkit.getOnlinePlayers().stream().forEach(new Consumer<Player>() {
+            @Override
+            public void accept(Player players) {
+                Session s = SessionHandler.getSession(player);
+                Faction f = MPlayer.get(player).getFaction();
+
+                String parsedMessage = ChatColor.translateAlternateColorCodes('&', msg);
+                
+                if (f.isNone()) {
+                    new FancyMessage(s.getRank().getPrefix())
+                            .then(player.getName())
+                            .tooltip(new String[] {
+                                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "NO FACTION"
+                            })
+                            .then(": " + s.getRank().getColor() + parsedMessage)
+                            .send(players);
+                    return;
+                }
+
+                FactionSession fSession = FactionSessionHandler.getFactionSession(f.getName());
+
+                new FancyMessage(s.getRank().getPrefix())
+                        .then(player.getName())
+                        .tooltip(new String[] {
+                                ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
+                                ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getName() : "NONE"),
+                                ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? f.getMPlayers().size() : "NONE"),
+                                ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "NONE")
+                        })
+                        .then(": " + s.getRank().getColor() + parsedMessage)
+                        .send(players);
+            }
+        });
     }
 
 }

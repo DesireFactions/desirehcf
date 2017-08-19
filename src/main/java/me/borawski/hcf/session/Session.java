@@ -1,5 +1,6 @@
 package me.borawski.hcf.session;
 
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -11,7 +12,6 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
-import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
 import me.borawski.hcf.Core;
@@ -31,7 +31,9 @@ public class Session {
     private Rank rank;
 
     private int tokens;
+    
     private int level;
+    
     private int exp;
 
     @Property("first_login")
@@ -43,12 +45,16 @@ public class Session {
     @Property("total_played")
     private long totalPlayed;
 
+    @Property("safe_timer")
+    private int safeTimer;
+    
+    private int lives;
+
     @Indexed
     private String ip;
 
     private List<String> achievements;
 
-    @Reference(idOnly = true)
     private List<UUID> friends;
 
     private List<UUID> incomingFriendRequests;
@@ -59,6 +65,18 @@ public class Session {
 
     @Transient
     private List<Punishment> activePunishments;
+
+    @Transient
+    private PVPTimer pvpTimer;
+
+    public Session() {
+        pvpTimer = new PVPTimer();
+        achievements = new LinkedList<>();
+        friends = new LinkedList<>();
+        incomingFriendRequests = new LinkedList<>();
+        outgoingFriendRequests = new LinkedList<>();
+        activePunishments = new LinkedList<>();
+    }
 
     public UUID getUniqueId() {
         return uuid;
@@ -140,6 +158,22 @@ public class Session {
         this.totalPlayed = totalPlayed;
     }
 
+    public int getSafeTimeLeft() {
+        return safeTimer;
+    }
+
+    public void setSafeTimeLeft(int safeTimer) {
+        this.safeTimer = safeTimer;
+    }
+
+    public int getLives() {
+        return lives;
+    }
+    
+    public void setLives(int lives) {
+        this.lives = lives;
+    }
+    
     public String getIp() {
         return ip;
     }
@@ -250,6 +284,33 @@ public class Session {
             tokens += achievement.getReward();
         }
         SessionHandler.getInstance().save(this);
+    }
+
+    public PVPTimer getTimer() {
+        return pvpTimer;
+    }
+
+    public class PVPTimer implements Runnable {
+
+        private boolean pause;
+
+        @Override
+        public void run() {
+            if (!pause && safeTimer > 0) {
+                Bukkit.getScheduler().runTaskLater(Core.getInstance(), this, 20);
+            }
+            safeTimer--;
+        }
+
+        public void pause() {
+            pause = true;
+        }
+
+        public void resume() {
+            pause = false;
+            run();
+        }
+
     }
 
 }
