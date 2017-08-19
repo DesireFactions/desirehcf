@@ -1,37 +1,25 @@
 package me.borawski.hcf.command.commands.sub;
 
-import java.util.UUID;
-
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.Core;
-import me.borawski.hcf.command.CustomCommand;
+import me.borawski.hcf.api.FriendsAPI;
+import me.borawski.hcf.command.ValidCommand;
 import me.borawski.hcf.session.Rank;
-import me.borawski.hcf.session.Session;
-import me.borawski.hcf.session.SessionHandler;
-import me.borawski.hcf.util.ChatUtils;
+import me.borawski.hcf.validator.PlayerSenderValidator;
+import me.borawski.hcf.validator.SenderIncommingFriendRequestsValidator;
 
-public class FriendListIncomingCommand extends CustomCommand {
+public class FriendListIncomingCommand extends ValidCommand {
 
     public FriendListIncomingCommand() {
-        super("incoming", "Lists incoming friend requests.", Rank.GUEST);
+        super("incoming", "Lists incoming friend requests.", Rank.GUEST, new String[] {});
+        addValidator(new PlayerSenderValidator());
+        addValidator(new SenderIncommingFriendRequestsValidator());
     }
 
     @Override
-    public void run(CommandSender sender, String label, String[] args) {
-        Session session = SessionHandler.getSession((Player) sender);
-        if (session.getIncomingFriendRequests().size() == 0) {
-            sender.sendMessage(Core.getInstance().getPrefix() + "You have no incoming requests.");
-            return;
-        }
-        sender.sendMessage(ChatColor.DARK_GRAY + "-------------------" + Core.getInstance().getPrefix().replace(" ", "") + ChatColor.DARK_GRAY + "-----------------------");
-        for (UUID uuid : session.getIncomingFriendRequests()) {
-            sender.sendMessage(ChatColor.GRAY + "Request from: " + ChatUtils.getNameWithRankColor(uuid, true));
-        }
-        sender.sendMessage(ChatColor.DARK_GRAY + "----------------------------------------------------");
-        return;
+    public void validRun(CommandSender sender, String label, Object... args) {
+        FriendsAPI.listIncomming((Player) sender);
     }
 
 }

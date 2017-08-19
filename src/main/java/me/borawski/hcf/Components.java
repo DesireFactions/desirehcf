@@ -21,7 +21,6 @@ import me.borawski.hcf.handler.GappleHandler;
 import me.borawski.hcf.handler.LootingBuffHandler;
 import me.borawski.hcf.handler.MobStackHandler;
 import me.borawski.hcf.handler.PotionLimiterHandler;
-import me.borawski.hcf.handler.PvPTimer;
 import me.borawski.hcf.handler.SellSignHandler;
 import me.borawski.hcf.util.Cooldown;
 
