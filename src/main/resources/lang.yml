@@ -28,6 +28,7 @@ koth_end_time: "Ends &l&e{time}"
 koth_start_new: "Ending current koth, startin the next"
 player_not_found: "Player not found."
 arg_not_number: "One or more of your arguments should be a number!"
+player: "{player}"
 
 lives:
   add: "You have added &c{amount}&7 lives to {player}"
@@ -51,6 +52,7 @@ friend:
   already_friends: "You are already friends with {player}"
   accepted_friend_request: "You accepted a friend request from {player}"
   are_now_friend: "You are now friends with {player}"
+  no_longer_friend: "You are no longer friends with {player}"
   already_sent_request: "You have already sent {player} a friend request."
   sent_request: "You have sent {player} a friend request."
   both_friend_requested: "You had a friend request from {player} so we added you both as friends."

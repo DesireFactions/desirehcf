@@ -10,6 +10,11 @@ import org.bukkit.command.CommandSender;
 
 import me.borawski.hcf.Core;
 import me.borawski.hcf.api.LangHandler;
+import me.borawski.hcf.command.arity.CommandArity;
+import me.borawski.hcf.command.arity.OptionalCommandArity;
+import me.borawski.hcf.command.arity.OptionalVariadicCommandArity;
+import me.borawski.hcf.command.arity.RequiredVariadicCommandArity;
+import me.borawski.hcf.command.arity.StrictCommandArity;
 import me.borawski.hcf.parser.ArgumentParser;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.validator.CommandValidator;
@@ -20,23 +25,28 @@ import me.borawski.hcf.validator.CommandValidator;
  */
 public abstract class ValidCommand {
 
+    public static final int ARITY_STRICT = 0;
+    public static final int ARITY_OPTIONAL = 1;
+    public static final int ARITY_OPTIONAL_VARIADIC = 2;
+    public static final int ARITY_REQUIRED_VARIADIC = 3;
+
     protected List<ValidCommand> subCommands;
 
     protected String name;
-
     protected String description;
 
     protected Rank requiredRank;
 
     protected String[] aliases;
-
     protected String[] args;
 
-    private List<CommandValidator> validators;
+    protected List<CommandValidator> validators;
 
-    private ArgumentParser[] parsers;
+    protected ArgumentParser[] parsers;
 
-    private Map<String, Integer> argsMap;
+    protected Map<String, Integer> argsMap;
+
+    protected CommandArity commandArity;
 
     protected static final LangHandler LANG = Core.getLangHandler();
 
@@ -46,7 +56,8 @@ public abstract class ValidCommand {
      * @param permission
      * @param aliases
      */
-    public ValidCommand(String name, String description, Rank requiredRank, String args[], String... aliases) {
+    public ValidCommand(String name, String description, Rank requiredRank,
+            int commandArity, String args[], String... aliases) {
         this.name = name;
         this.description = description;
         this.requiredRank = requiredRank;
@@ -54,6 +65,7 @@ public abstract class ValidCommand {
         this.subCommands = new ArrayList<>();
         this.validators = new LinkedList<CommandValidator>();
         this.argsMap = new HashMap<String, Integer>();
+        this.commandArity = newCommandArity(commandArity);
         this.args = args;
 
         for (int i = 0; i < args.length; i++) {
@@ -61,6 +73,11 @@ public abstract class ValidCommand {
         }
 
         parsers = new ArgumentParser[args.length];
+    }
+
+    public ValidCommand(String name, String description, Rank requiredRank,
+            String args[], String... aliases) {
+        this(name, description, requiredRank, ARITY_STRICT, args, aliases);
     }
 
     /**
@@ -71,39 +88,18 @@ public abstract class ValidCommand {
      * @param args
      */
     public void run(CommandSender sender, String label, String[] args) {
-        // all commands have a psuedo validator that returns the usage message
-        // if an improper amount
-        // of arguments have been sent
-        if (args.length != this.args.length) {
+        if (!commandArity.validateArity(args.length, this.args.length)) {
             LANG.sendUsageMessage(sender, label, this.args);
             return;
         }
 
-        Object[] validArgs = new Object[args.length];
+        Object[] parsedArgs = parseArguments(sender, label, args);
 
-        //only run the command if all parsers pass and all arguments have a parser
-        for (int i = 0; i < parsers.length; i++) {
-            if (parsers[i] == null) {
-                throw new IllegalStateException("No parser has been set for argument " + args[i] + ".");
-            } else {
-                Object parsed = parsers[i].parseArgument(sender, label, args[i]);
-
-                if (parsed == null) {
-                    return;
-                }
-
-                validArgs[i] = parsed;
-            }
-        }
-        
-        // if any validators fail, don't run the command
-        for (CommandValidator v : validators) {
-            if (!v.validate(sender, label, validArgs)) {
-                return;
-            }
+        if (parsedArgs == null || !isArgsValid(sender, label, parsedArgs)) {
+            return;
         }
 
-        this.validRun(sender, label, (Object[]) args);
+        this.validRun(sender, label, parsedArgs);
     }
 
     public void addValidator(CommandValidator validator, String... argsToValidate) {
@@ -212,6 +208,51 @@ public abstract class ValidCommand {
 
     public String[] getArgs() {
         return args;
+    }
+
+    private boolean isArgsValid(CommandSender sender, String label, Object[] parsedArgs) {
+        for (CommandValidator validator : validators) {
+            if (!validator.validate(sender, label, parsedArgs)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    private Object[] parseArguments(CommandSender sender, String label, String[] args) {
+        Object[] parsedArgs = new Object[args.length];
+
+        for (int i = 0; i < args.length; i++) {
+            Object parsed = getParser(i).parseArgument(sender, label, args[i]);
+
+            if (parsed == null) {
+                return null;
+            }
+
+            parsedArgs[i] = parsed;
+        }
+
+        return parsedArgs;
+    }
+
+    private ArgumentParser getParser(int argIndex) {
+        return argIndex >= args.length ? parsers[args.length - 1] : parsers[argIndex];
+    }
+
+    private CommandArity newCommandArity(int option) {
+        switch (option) {
+        case ARITY_STRICT:
+            return new StrictCommandArity();
+        case ARITY_OPTIONAL:
+            return new OptionalCommandArity();
+        case ARITY_REQUIRED_VARIADIC:
+            return new RequiredVariadicCommandArity();
+        case ARITY_OPTIONAL_VARIADIC:
+            return new OptionalVariadicCommandArity();
+        default:
+            throw new IllegalArgumentException("Arity not found.");
+        }
     }
 
 }
