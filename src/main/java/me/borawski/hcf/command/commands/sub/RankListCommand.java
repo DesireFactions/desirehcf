@@ -13,7 +13,7 @@ import me.borawski.hcf.session.Rank;
 public class RankListCommand extends ValidCommand {
 
     public RankListCommand() {
-        super("list", "list all the ranks", Rank.GUEST, new String[0]);
+        super("list", "list all the ranks", Rank.GUEST, new String[] {});
     }
 
     @Override

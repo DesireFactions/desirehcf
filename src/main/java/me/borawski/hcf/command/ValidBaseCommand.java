@@ -11,7 +11,8 @@ import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.SessionUtils;
 
-public class ValidBaseCommand extends ValidCommand {
+public abstract class ValidBaseCommand extends ValidCommand {
+
     /**
      * @param name
      * @param description
@@ -56,4 +57,5 @@ public class ValidBaseCommand extends ValidCommand {
     @Override
     public void validRun(CommandSender sender, String label, Object... args) {
     }
+
 }
