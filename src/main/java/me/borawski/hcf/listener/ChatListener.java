@@ -47,10 +47,16 @@ public class ChatListener implements Listener {
                 Session s = SessionHandler.getSession(player);
                 Faction f = MPlayer.get(player).getFaction();
 
-                if (f == null) {
-                    new FancyMessage(s.getRank().getPrefix() + " " + player.getName() + ": " + s.getRank().getColor() + msg).tooltip(new String[] {
-                            ChatColor.RED + "User is not in a faction"
-                    }).send(players);
+                String parsedMessage = ChatColor.translateAlternateColorCodes('&', msg);
+                
+                if (f.isNone()) {
+                    new FancyMessage(s.getRank().getPrefix())
+                            .then(player.getName())
+                            .tooltip(new String[] {
+                                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "NO FACTION"
+                            })
+                            .then(": " + s.getRank().getColor() + parsedMessage)
+                            .send(players);
                     return;
                 }
 
@@ -58,13 +64,13 @@ public class ChatListener implements Listener {
 
                 new FancyMessage(s.getRank().getPrefix())
                         .then(player.getName())
-                            .tooltip(new String[] {
-                                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
-                                    ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getName() : "NONE"),
-                                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? f.getMPlayers().size() : "NONE"),
-                                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "NONE")
-                            })
-                        .then(": " + s.getRank().getColor() + msg)
+                        .tooltip(new String[] {
+                                ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
+                                ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getName() : "NONE"),
+                                ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? f.getMPlayers().size() : "NONE"),
+                                ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "NONE")
+                        })
+                        .then(": " + s.getRank().getColor() + parsedMessage)
                         .send(players);
             }
         });
