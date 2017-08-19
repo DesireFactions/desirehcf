@@ -6,6 +6,7 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import me.borawski.hcf.Core;
 import me.borawski.hcf.session.Session;
@@ -40,10 +41,14 @@ public class CustomCommandHandler implements CommandExecutor {
      * @param command
      */
     public void registerCommand(ValidCommand command) {
+        registerCommand(command, Core.getInstance());
+    }
+
+    public void registerCommand(ValidCommand command, JavaPlugin plugin) {
         if (commands == null) {
             commands = new LinkedList<>();
         }
-        Core.getInstance().getCommand(command.name).setExecutor(this);
+        plugin.getCommand(command.name).setExecutor(this);
         commands.add(command);
     }
 
