@@ -13,11 +13,11 @@ public enum Rank {
     GRANDMASTER(4, "Grandmaster", "§d⧫§7", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
     VIP(5, "VIP", "§7§l[§fVIP§7§l]§7", "", ChatColor.WHITE, ChatColor.AQUA),
     YOUTUBER(6, "YouTuber", "§6§[§eYT§6]§7", "", ChatColor.WHITE, ChatColor.GOLD),
-    HELPER(7, "Helper", "§5§l[§dHelper§5§l]§7", "", ChatColor.WHITE, ChatColor.LIGHT_PURPLE),
-    MODERATOR(8, "Moderator", "§2§l[§aModerator§2§l]§7", "", ChatColor.WHITE, ChatColor.BLUE),
-    ADMIN(9, "Admin", "§4§l[§cAadmin§4§l]§7", "", ChatColor.WHITE, ChatColor.RED),
-    DEVELOPER(10, "Developer", "§5§l[§dDev§5§l]§7", "", ChatColor.WHITE, ChatColor.RED),
-    OWNER(11, "Owner", "§9§l[§bOwner§9§l]§7", "", ChatColor.WHITE, ChatColor.RED);
+    HELPER(7, "Helper", "§5§l[§dHelper§5§l]§7", "", ChatColor.LIGHT_PURPLE, ChatColor.LIGHT_PURPLE),
+    MODERATOR(8, "Moderator", "§2§l[§aModerator§2§l]§7", "", ChatColor.GREEN, ChatColor.BLUE),
+    ADMIN(9, "Admin", "§4§l[§cAdmin§4§l]§7", "", ChatColor.RED, ChatColor.RED),
+    DEVELOPER(10, "Developer", "§5§l[§dDev§5§l]§7", "", ChatColor.LIGHT_PURPLE, ChatColor.RED),
+    OWNER(11, "Owner", "§9§l[§bOwner§9§l]§7", "", ChatColor.AQUA, ChatColor.RED);
 
     private final int id;
     private final String displayName;
