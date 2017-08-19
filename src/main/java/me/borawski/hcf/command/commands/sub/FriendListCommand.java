@@ -1,56 +1,30 @@
 package me.borawski.hcf.command.commands.sub;
 
-import java.util.Arrays;
-import java.util.UUID;
-
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import me.borawski.hcf.Core;
-import me.borawski.hcf.command.CustomBaseCommand;
-import me.borawski.hcf.command.CustomCommand;
+import me.borawski.hcf.api.FriendsAPI;
+import me.borawski.hcf.command.ValidCommand;
+import me.borawski.hcf.parser.PlayerSessionParser;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
-import me.borawski.hcf.session.SessionHandler;
-import me.borawski.hcf.util.ChatUtils;
+import me.borawski.hcf.validator.PlayerSenderValidator;
+import me.borawski.hcf.validator.SenderHasFriendsValidator;
 
-public class FriendListCommand extends CustomBaseCommand {
+public class FriendListCommand extends ValidCommand {
 
     public FriendListCommand() {
-        super("list", "List all of your friends", Rank.GUEST, "show");
+        super("list", "List all of your friends", Rank.GUEST, new String[] { "target" }, "show");
+        addParser(new PlayerSessionParser(), "target");
+        addValidator(new PlayerSenderValidator());
+        addValidator(new SenderHasFriendsValidator());
     }
 
     @Override
-    public void run(CommandSender sender, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            LANG.sendString(sender, "only-players");
-            return;
-        }
-        CustomCommand sub;
-        if (args.length == 0) {
-            Session session = SessionHandler.getSession((Player) sender);
-            if (session.getFriends().size() == 0) {
-                LANG.sendString(sender, "friend.no_friends");
-                return;
-            }
-            sender.sendMessage(ChatColor.DARK_GRAY + "-------------------" + Core.getInstance().getPrefix().replace(" ", "") + ChatColor.DARK_GRAY + "-----------------------");
-            for (UUID uuid : session.getFriends()) {
-                String status = Core.getInstance().getServer().getPlayer(uuid) == null ? ChatColor.RED + "[OFFLINE]" : ChatColor.GREEN + "[ONLINE]";
-                sender.sendMessage(ChatUtils.getNameWithRankColor(uuid, true) + " " + ChatColor.DARK_GRAY + "- " + status);
-            }
-            sender.sendMessage(ChatColor.DARK_GRAY + "----------------------------------------------------");
-            return;
-        } else if ((sub = getSubCommand(args[0])) == null) {
-            help(sender, label);
-        } else {
-            Session s = sender instanceof Player ? SessionHandler.getSession(((Player) sender).getUniqueId()) : null;
-            if (s == null || s.getRank().getId() >= requiredRank.getId()) {
-                sub.run(sender, args[0], Arrays.copyOfRange(args, 1, args.length));
-            } else {
-                sender.sendMessage(Core.getLangHandler().getString("no-permissions"));
-            }
-        }
+    public void validRun(CommandSender sender, String label, Object... args) {
+        Session target = (Session) args[0];
+
+        FriendsAPI.list((Player) sender, target);
     }
 
 }
