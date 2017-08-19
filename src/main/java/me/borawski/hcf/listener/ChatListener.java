@@ -15,6 +15,7 @@ import com.massivecraft.factions.entity.MPlayer;
 import me.borawski.hcf.Core;
 import me.borawski.hcf.session.FactionSession;
 import me.borawski.hcf.session.FactionSessionHandler;
+import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.ChatUtils;
@@ -47,9 +48,9 @@ public class ChatListener implements Listener {
                 Session s = SessionHandler.getSession(player);
                 Faction f = MPlayer.get(player).getFaction();
 
-                String parsedMessage = ChatColor.translateAlternateColorCodes('&', msg);
-                
-                if (f.isNone()) {
+                String parsedMessage = s.getRank().getId() >= Rank.ADMIN.getId() ? ChatColor.translateAlternateColorCodes('&', msg) : msg;
+
+                if (f.getName().equals("§2Wilderness")) {
                     new FancyMessage(s.getRank().getPrefix())
                             .then(player.getName())
                             .tooltip(new String[] {
