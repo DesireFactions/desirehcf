@@ -30,7 +30,7 @@ public abstract class ValidBaseCommand extends ValidCommand {
         } else {
             Session s = sender instanceof Player ? SessionHandler.getSession(sender) : null;
             if (s == null || s.getRank().getId() >= requiredRank.getId()) {
-                sub.run(sender, args[0], Arrays.copyOfRange(args, 1, args.length));
+                sub.run(sender, label + " " + args[0], Arrays.copyOfRange(args, 1, args.length));
             } else {
                 sender.sendMessage(Core.getLangHandler().getString("no-permissions"));
             }

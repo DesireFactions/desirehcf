@@ -29,6 +29,7 @@ koth_start_new: "Ending current koth, startin the next"
 player_not_found: "Player not found."
 arg_not_number: "One or more of your arguments should be a number!"
 player: "{player}"
+crowbar: "You have recieved a crowbar."
 
 lives:
   add: "You have added &c{amount}&7 lives to {player}"
