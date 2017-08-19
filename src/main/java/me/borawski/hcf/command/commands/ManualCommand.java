@@ -2,17 +2,17 @@ package me.borawski.hcf.command.commands;
 
 import org.bukkit.command.CommandSender;
 
-import me.borawski.hcf.command.CustomCommand;
+import me.borawski.hcf.command.ValidBaseCommand;
 import me.borawski.hcf.session.Rank;
 
 /**
  * Created by Ethan on 5/17/2017.
  */
-public class ManualCommand extends CustomCommand {
+public class ManualCommand extends ValidBaseCommand {
     // TODO make this have sub commands such as yt
 
     public ManualCommand() {
-        super("Manual", "Opens a manual", Rank.YOUTUBER);
+        super("Manual", "Opens a manual", Rank.GUEST);
     }
 
     @Override

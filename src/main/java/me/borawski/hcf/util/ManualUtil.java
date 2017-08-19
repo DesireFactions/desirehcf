@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 
@@ -57,6 +58,9 @@ public class ManualUtil {
                 .addString("\n" + "&7Perm: &a" + rank.getId() + "")
                 .addString("\n" + "&7Tag: " + rank.getPrefix() + "")
                 .addString("\n");
+    }
+
+    public static void openManual(Rank youtuber, Player sender) {
     }
 
 }
