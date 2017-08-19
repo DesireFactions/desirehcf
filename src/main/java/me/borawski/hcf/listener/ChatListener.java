@@ -56,7 +56,9 @@ public class ChatListener implements Listener {
                             .tooltip(new String[] {
                                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "NO FACTION"
                             })
-                            .then(": " + s.getRank().getColor() + parsedMessage)
+                            .then(": ")
+                            .then(parsedMessage)
+                            .color(s.getRank().getColor())
                             .send(players);
                     return;
                 }
@@ -71,7 +73,9 @@ public class ChatListener implements Listener {
                                 ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? f.getMPlayers().size() : "NONE"),
                                 ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "NONE")
                         })
-                        .then(": " + s.getRank().getColor() + parsedMessage)
+                        .then(": ")
+                        .then(parsedMessage)
+                        .color(s.getRank().getColor())
                         .send(players);
             }
         });
