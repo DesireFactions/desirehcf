@@ -27,8 +27,8 @@ public class BanCommand extends ValidCommand {
         addParser(new PlayerSessionParser(), "target");
         addParser(new TimeParser(), "time");
         addParser(new StringParser(), "reason");
-         addValidator(new PlayerSenderValidator());
-         addValidator(new SenderOutranksValidator(), "target");
+        addValidator(new PlayerSenderValidator());
+        addValidator(new SenderOutranksValidator(), "target");
     }
 
     @Override
