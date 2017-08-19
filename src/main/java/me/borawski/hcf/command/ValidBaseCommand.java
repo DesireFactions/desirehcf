@@ -13,16 +13,15 @@ import me.borawski.hcf.util.SessionUtils;
 
 public abstract class ValidBaseCommand extends ValidCommand {
 
-    public ValidBaseCommand(String name, String description, Rank requiredRank, String... aliases) {
-        super(name, description, requiredRank, new String[] {}, aliases);
-    }
-
     /**
      * @param name
      * @param description
      * @param permission
      * @param aliases
      */
+    public ValidBaseCommand(String name, String description, Rank requiredRank, String... aliases) {
+        super(name, description, requiredRank, new String[] {}, aliases);
+    }
 
     public void run(CommandSender sender, String label, String[] args) {
         ValidCommand sub;
