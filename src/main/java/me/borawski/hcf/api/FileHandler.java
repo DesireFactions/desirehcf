@@ -1,11 +1,13 @@
 package me.borawski.hcf.api;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
 /**
  * @author Michael Ziluck
@@ -13,7 +15,9 @@ import org.bukkit.configuration.file.FileConfiguration;
  */
 public class FileHandler {
 
-    protected FileConfiguration file;
+    protected File file;
+
+    protected FileConfiguration fileConfig;
 
     protected HashMap<String, Object> history;
 
@@ -22,9 +26,10 @@ public class FileHandler {
      * 
      * @param file
      */
-    public FileHandler(FileConfiguration file) {
+    public FileHandler(File file) {
         history = new HashMap<>();
         this.file = file;
+        this.fileConfig = YamlConfiguration.loadConfiguration(file);
     }
 
     /**
@@ -33,8 +38,8 @@ public class FileHandler {
      * 
      * @param file
      */
-    public void reload(FileConfiguration file) {
-        this.file = file;
+    public void reload() {
+        this.fileConfig = YamlConfiguration.loadConfiguration(file);
         history.clear();
     }
 
@@ -53,9 +58,9 @@ public class FileHandler {
         if (o != null && o instanceof String) {
             return (String) o;
         }
-        message = file.getString(key);
+        message = fileConfig.getString(key);
         if (message != null) {
-            message = ChatColor.translateAlternateColorCodes('&', file.getString(key));
+            message = ChatColor.translateAlternateColorCodes('&', fileConfig.getString(key));
             history.put(key, message);
             return message;
         } else {
@@ -77,7 +82,7 @@ public class FileHandler {
         if (o != null && o instanceof Double) {
             return (Double) o;
         }
-        value = file.getDouble(key);
+        value = fileConfig.getDouble(key);
         history.put(key, value);
         return value;
     }
@@ -96,7 +101,7 @@ public class FileHandler {
         if (o != null && o instanceof Integer) {
             return (Integer) o;
         }
-        value = file.getInt(key);
+        value = fileConfig.getInt(key);
         history.put(key, value);
         return value;
     }
@@ -115,7 +120,7 @@ public class FileHandler {
         if (o != null && o instanceof Integer) {
             return (Boolean) o;
         }
-        value = file.getBoolean(key);
+        value = fileConfig.getBoolean(key);
         history.put(key, value);
         return value;
     }
@@ -136,7 +141,7 @@ public class FileHandler {
             return (List<String>) o;
         }
         List<String> list = new LinkedList<>();
-        for (String str : file.getStringList(key)) {
+        for (String str : fileConfig.getStringList(key)) {
             list.add(ChatColor.translateAlternateColorCodes('&', str));
         }
         if (list.size() == 0) {

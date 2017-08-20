@@ -1,6 +1,5 @@
 package me.borawski.hcf.command.commands.base;
 
-import me.borawski.hcf.command.CustomBaseCommand;
 import me.borawski.hcf.command.ValidBaseCommand;
 import me.borawski.hcf.command.commands.sub.RegionCreateCommand;
 import me.borawski.hcf.command.commands.sub.RegionDeleteCommand;

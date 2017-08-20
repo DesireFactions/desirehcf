@@ -29,6 +29,9 @@ commands:
   manual:
     usage: /<command>
     description: Opens a manual.
+  reload:
+    usage: /<command>
+    description: Reloads the lang file.
   settings:
     usage: /<command>
     description: Change your VIP settings.

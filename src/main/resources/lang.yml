@@ -1,5 +1,5 @@
 prefix:
-  text: "&7[&bS&3P&7]"
+  text: "&7[&bHCF&7]"
   use: true
   
 tag:
@@ -73,3 +73,4 @@ koth:
   name_used: "&7That name has already been used."
   hill_not_found: "&7That hill can't be found."
   create: "&7Created the KOTH region &a{name}."
+  delete: "&7Deleted the KOTH region &a{name}."
