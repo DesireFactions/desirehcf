@@ -44,7 +44,7 @@ public abstract class ValidBaseCommand extends ValidCommand {
      * @param label
      */
     public void help(CommandSender sender, String label) {
-        LANG.sendString(sender, "command-list-header");
+        LANG.sendString(sender, "list-header");
         Rank rank = SessionUtils.getRank(sender);
 
         for (ValidCommand command : subCommands) {
