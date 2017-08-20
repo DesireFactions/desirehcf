@@ -29,7 +29,7 @@ commands:
   manual:
     usage: /<command>
     description: Opens a manual.
-  reload:
+  hcfreload:
     usage: /<command>
     description: Reloads the lang file.
   settings:
