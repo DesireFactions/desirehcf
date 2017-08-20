@@ -8,7 +8,7 @@ import me.borawski.hcf.session.Rank;
 public class SetEndCommand extends ValidBaseCommand {
 
     public SetEndCommand() {
-        super("setendspawn", "Sets the end spawn.", Rank.ADMIN);
+        super("setend", "Sets end spawn and exit", Rank.ADMIN);
         addSubCommand(new SetEndSpawnCommand());
         addSubCommand(new SetEndExitCommand());
     }

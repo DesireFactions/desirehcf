@@ -5,19 +5,19 @@ import java.util.Collection;
 import org.bukkit.command.CommandSender;
 
 import me.borawski.hcf.Core;
-import me.borawski.hcf.command.CustomCommand;
+import me.borawski.hcf.command.ValidCommand;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Region;
 import me.borawski.hcf.session.RegionHandler;
 
-public class RegionListCommand extends CustomCommand {
+public class RegionListCommand extends ValidCommand {
 
     public RegionListCommand() {
-        super("list", "List all the regions created.", Rank.ADMIN);
+        super("list", "List all the regions created.", Rank.ADMIN, new String[] {});
     }
 
     @Override
-    public void run(CommandSender sender, String label, String[] args) {
+    public void validRun(CommandSender sender, String label, Object... args) {
         Collection<Region> regions = RegionHandler.getInstance().getRegions();
 
         if (regions.size() >= 1) {

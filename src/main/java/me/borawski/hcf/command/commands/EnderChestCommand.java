@@ -7,9 +7,9 @@ import me.borawski.hcf.command.ValidCommand;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.util.Utils;
 
-public class EnderchestCommand extends ValidCommand {
+public class EnderChestCommand extends ValidCommand {
 
-    public EnderchestCommand() {
+    public EnderChestCommand() {
         super("enderchest", "Toggle the ender chest.", Rank.ADMIN, new String[] {}, "chest", "ender");
     }
 
@@ -19,9 +19,9 @@ public class EnderchestCommand extends ValidCommand {
             Utils.enderchestDisabled = false;
             Core.getInstance().getConfig().set("enderchest-disabled", false);
             Core.getInstance().saveConfig();
-            LANG.sendString(sender, "enderchest_enabled");
+            LANG.sendString(sender, "enderchest.enabled");
         } else {
-            LANG.sendString(sender, "enderchest_disabled");
+            LANG.sendString(sender, "enderchest.disabled");
             Core.getInstance().getConfig().set("enderchest-disabled", true);
             Core.getInstance().saveConfig();
             Utils.enderchestDisabled = true;
