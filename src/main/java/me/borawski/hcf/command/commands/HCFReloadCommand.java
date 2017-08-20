@@ -9,7 +9,7 @@ import me.borawski.hcf.session.Rank;
 public class HCFReloadCommand extends ValidCommand {
 
     public HCFReloadCommand() {
-        super("reload", "Reload the lang file.", Rank.ADMIN, new String[] {});
+        super("hcfreload", "Reload the lang file.", Rank.ADMIN, new String[] {});
     }
 
     @Override
