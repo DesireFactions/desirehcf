@@ -10,7 +10,7 @@ import me.borawski.hcf.validator.PlayerSenderValidator;
 public class SetEndExitCommand extends ValidCommand {
 
     public SetEndExitCommand() {
-        super("spawn", "set end spawn", Rank.ADMIN, new String[] {});
+        super("exit", "set end exit", Rank.ADMIN, new String[] {});
         addValidator(new PlayerSenderValidator());
     }
 
