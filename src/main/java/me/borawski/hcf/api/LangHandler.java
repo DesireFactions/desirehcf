@@ -1,15 +1,19 @@
 package me.borawski.hcf.api;
 
+import java.io.File;
 import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 
 /**
  * @author Michael Ziluck
  *
  */
 public class LangHandler extends FileHandler {
+
+    private static List<LangHandler> instances = new LinkedList<>();
 
     private String prefix;
     private boolean usePrefix;
@@ -20,8 +24,9 @@ public class LangHandler extends FileHandler {
      * 
      * @param file
      */
-    public LangHandler(FileConfiguration file) {
+    public LangHandler(File file) {
         super(file);
+        instances.add(this);
         usePrefix = super.getBoolean("prefix.use");
         if (usePrefix) {
             prefix = super.getString("prefix.text");
@@ -111,6 +116,12 @@ public class LangHandler extends FileHandler {
      */
     public void sendUsageMessage(CommandSender sender, String label, String... args) {
         sender.sendMessage(usageMessage(label, args));
+    }
+
+    public static void reloadAll() {
+        for (LangHandler lang : instances) {
+            lang.reload();
+        }
     }
 
 }
