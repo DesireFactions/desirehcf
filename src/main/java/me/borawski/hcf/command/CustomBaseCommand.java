@@ -49,7 +49,7 @@ public abstract class CustomBaseCommand extends CustomCommand {
      * @param label
      */
     public void help(CommandSender sender, String label) {
-        sender.sendMessage(Core.getLangHandler().getString("command-list-header"));
+        sender.sendMessage(Core.getLangHandler().getString("list-header"));
         Rank rank = SessionUtils.getRank(sender);
         for (CustomCommand command : subCommands) {
             if (command.getRequiredRank().getId() <= rank.getId()) {

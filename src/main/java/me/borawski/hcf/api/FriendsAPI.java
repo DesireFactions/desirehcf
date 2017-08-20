@@ -55,7 +55,7 @@ public class FriendsAPI {
     }
 
     private static void listPlayers(CommandSender sender, List<UUID> players) {
-        LANG.sendString(sender, "command-list-header");
+        LANG.sendString(sender, "list-header");
 
         for (UUID x : SessionHandler.getSession(sender).getIncomingFriendRequests()) {
             LANG.sendRenderMessage(sender, "player", "{player}", PlayerUtils.getName(x));

@@ -7,7 +7,7 @@ tag:
   expire: "&c&lYou are no longer combat tagged."
 
   
-command-list-header: "&c----------------------------"
+list-header: "&c----------------------------"
 usage-message: "`&7[&Usage&7] &e{usage}&e"
 need_selection: "&7You need to make a selection with WorldEdit."
 not_time: "&7Time format used is invalid."
