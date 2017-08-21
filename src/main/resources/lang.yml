@@ -74,3 +74,5 @@ koth:
   hill_not_found: "&7That hill can't be found."
   create: "&7Created the KOTH region &a{name}."
   delete: "&7Deleted the KOTH region &a{name}."
+  recreate: "&7Changed the location for the KOTH region &a{name}."
+  list_format: "&fName: &b{name}&f. Status: &a{schedule}&f."
