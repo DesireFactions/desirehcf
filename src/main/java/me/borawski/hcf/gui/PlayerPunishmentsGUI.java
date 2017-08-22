@@ -9,9 +9,6 @@ import me.borawski.hcf.Core;
 import me.borawski.hcf.punishment.Punishment;
 import me.borawski.hcf.session.Session;
 
-/**
- * Created by Ethan on 3/8/2017.
- */
 public class PlayerPunishmentsGUI extends ItemGUI {
 
     private Session target;

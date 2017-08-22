@@ -8,9 +8,6 @@ import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 
-/**
- * Created by Ethan on 3/8/2017.
- */
 public class RankChangeGUI extends ItemGUI {
 
     private Session target;

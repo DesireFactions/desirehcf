@@ -2,9 +2,6 @@ package me.borawski.hcf.util;
 
 import me.borawski.hcf.session.Session;
 
-/**
- * Created by Ethan on 3/20/2017.
- */
 public class SettingsUtil {
 
     /**

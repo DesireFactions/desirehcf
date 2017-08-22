@@ -21,9 +21,6 @@ import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.ChatUtils;
 import me.borawski.hcf.validator.PlayerSenderValidator;
 
-/**
- * Created by Ethan on 3/15/2017.
- */
 public class AchievementCommand extends ValidCommand {
 
     public AchievementCommand() {

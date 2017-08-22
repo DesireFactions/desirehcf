@@ -8,9 +8,6 @@ import me.borawski.hcf.Core;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 
-/**
- * Created by Ethan on 3/20/2017.
- */
 public class EconomyAPI {
 
     public static int getTokens(UUID uuid) {

@@ -5,9 +5,6 @@ import java.util.UUID;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 
-/**
- * Created by Ethan on 3/8/2017.
- */
 public class Punishment {
 
     @Id

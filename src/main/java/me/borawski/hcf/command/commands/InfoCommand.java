@@ -10,9 +10,6 @@ import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.validator.PlayerSenderValidator;
 
-/**
- * Created by Ethan on 3/8/2017.
- */
 public class InfoCommand extends ValidCommand {
 
     public InfoCommand() {

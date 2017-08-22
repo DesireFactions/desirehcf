@@ -9,9 +9,6 @@ import me.borawski.hcf.gui.PlayerSettingsGUI;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.validator.PlayerSenderValidator;
 
-/**
- * Created by Ethan on 3/21/2017.
- */
 public class SettingsCommand extends ValidCommand {
 
     public SettingsCommand() {

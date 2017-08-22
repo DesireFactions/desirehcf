@@ -2,9 +2,6 @@ package me.borawski.hcf.session;
 
 import org.bukkit.ChatColor;
 
-/**
- * Created by Ethan on 3/8/2017.
- */
 public enum Rank {
 
     GUEST(1, "Guest", "§8§l[§7Guest§8§l]⧫", "", ChatColor.GRAY, ChatColor.GRAY),

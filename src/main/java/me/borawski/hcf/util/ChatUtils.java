@@ -6,9 +6,6 @@ import org.bukkit.entity.Player;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 
-/**
- * Created by Ethan on 3/12/2017.
- */
 public class ChatUtils {
 
     private final static int CENTER_PX = 154;

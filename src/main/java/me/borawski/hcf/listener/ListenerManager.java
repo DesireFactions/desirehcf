@@ -8,9 +8,6 @@ import org.bukkit.event.Listener;
 
 import me.borawski.hcf.Core;
 
-/**
- * Created by Ethan on 3/8/2017.
- */
 public class ListenerManager {
 
     private List<Listener> listeners;

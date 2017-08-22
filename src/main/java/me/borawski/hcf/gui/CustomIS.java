@@ -1,7 +1,3 @@
-/*
- * Copyright (c) 2017. This code was written by Ethan Borawski, any use without permission will result in a court action. Check out my GitHub @ https://github.com/Violantic
- */
-
 package me.borawski.hcf.gui;
 
 import java.util.ArrayList;
@@ -22,9 +18,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
-/**
- * Created by Ethan on 9/5/2016.
- */
 public class CustomIS {
 
     private String name;

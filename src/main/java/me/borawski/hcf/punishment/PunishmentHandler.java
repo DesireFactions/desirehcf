@@ -9,9 +9,6 @@ import org.mongodb.morphia.dao.BasicDAO;
 import me.borawski.hcf.Core;
 import me.borawski.hcf.punishment.Punishment.Type;
 
-/**
- * Created by Ethan on 3/12/2017.
- */
 public class PunishmentHandler extends BasicDAO<Punishment, Integer> {
 
     private static PunishmentHandler instance;

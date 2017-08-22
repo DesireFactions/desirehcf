@@ -1,6 +1,3 @@
-/*
- * Copyright (c) 2017. This code was written by Ethan Borawski, any use without permission will result in a court action. Check out my GitHub @ https://github.com/Violantic
- */
 
 package me.borawski.hcf.gui;
 
@@ -11,9 +8,6 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-/**
- * Created by Ethan on 9/5/2016.
- */
 public abstract class ItemGUI {
 
     private ItemMenu itemMenu;

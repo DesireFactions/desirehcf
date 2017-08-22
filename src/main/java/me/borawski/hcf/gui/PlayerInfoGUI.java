@@ -10,9 +10,6 @@ import org.bukkit.entity.Player;
 
 import me.borawski.hcf.session.Session;
 
-/**
- * Created by Ethan on 3/8/2017.
- */
 public class PlayerInfoGUI extends ItemGUI {
 
     public static Map<UUID, Session> crossTarget = new HashMap<>();

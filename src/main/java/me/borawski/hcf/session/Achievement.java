@@ -1,8 +1,5 @@
 package me.borawski.hcf.session;
 
-/**
- * Created by Ethan on 3/12/2017.
- */
 public class Achievement {
 
     private String id;

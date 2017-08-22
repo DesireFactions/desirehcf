@@ -5,9 +5,6 @@ import me.borawski.hcf.command.commands.sub.FStatFactionCommand;
 import me.borawski.hcf.command.commands.sub.FStatShowCommand;
 import me.borawski.hcf.session.Rank;
 
-/**
- * Created by Ethan on 5/7/2017.
- */
 public class FStatCommand extends ValidBaseCommand {
 
     public FStatCommand() {

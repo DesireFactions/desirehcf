@@ -11,10 +11,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.UUID;
 
-/**
- * Created by Ethan on 3/8/2017. Credit to my friend Julian for helping me write
- * this utility
- */
 public class MojangUtil {
 
     private static final String BASE_URL = "https://mcapi.ca/";

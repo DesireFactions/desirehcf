@@ -1,12 +1,5 @@
-/*
- * Copyright (c) 2017. This code was written by Ethan Borawski, any use without permission will result in a court action. Check out my GitHub @ https://github.com/Violantic
- */
-
 package me.borawski.hcf.gui;
 
-/**
- * Created by Ethan on 9/5/2016.
- */
 public class MenuItem {
 
     private CustomIS item;

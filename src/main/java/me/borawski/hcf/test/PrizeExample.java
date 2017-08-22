@@ -11,9 +11,6 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.Consumer;
 
-/**
- * Created by Ethan on 4/26/2017.
- */
 public class PrizeExample extends JavaPlugin implements Listener {
 
     /**
