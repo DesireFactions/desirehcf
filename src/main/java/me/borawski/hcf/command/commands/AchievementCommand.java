@@ -11,7 +11,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.borawski.hcf.Core;
-import me.borawski.hcf.command.CustomCommand;
+import me.borawski.hcf.command.ValidCommand;
 import me.borawski.hcf.gui.CustomIS;
 import me.borawski.hcf.gui.ItemGUI;
 import me.borawski.hcf.gui.MenuItem;
@@ -19,26 +19,16 @@ import me.borawski.hcf.session.Achievement;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.ChatUtils;
+import me.borawski.hcf.validator.PlayerSenderValidator;
 
 /**
  * Created by Ethan on 3/15/2017.
  */
-public class AchievementCommand extends CustomCommand {
+public class AchievementCommand extends ValidCommand {
 
     public AchievementCommand() {
-        super("achievements", "List all aquired achievements.", Rank.GUEST, "achievement", "achieve");
-    }
-
-    @Override
-    public void run(CommandSender sender, String label, String[] args) {
-
-        if (!(sender instanceof Player)) {
-            LANG.sendString(sender, "only-players");
-            return;
-        }
-
-        Player player = (Player) sender;
-        getAchievements(player.getUniqueId()).show();
+        super("achievement", "List all aquired achievements.", Rank.GUEST, new String[] {}, "achieve");
+        addValidator(new PlayerSenderValidator());
     }
 
     public ItemGUI getAchievements(UUID uuid) {
@@ -85,6 +75,12 @@ public class AchievementCommand extends CustomCommand {
                 }
             }
         };
+    }
+
+    @Override
+    public void validRun(CommandSender sender, String label, Object... args) {
+        Player player = (Player) sender;
+        getAchievements(player.getUniqueId()).show();
     }
 
 }
