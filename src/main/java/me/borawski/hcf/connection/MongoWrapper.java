@@ -16,9 +16,6 @@ import me.borawski.hcf.punishment.Punishment;
 import me.borawski.hcf.session.FactionSession;
 import me.borawski.hcf.session.Session;
 
-/**
- * Created by Ethan on 3/12/2017.
- */
 public class MongoWrapper {
 
     private MongoClient mc;

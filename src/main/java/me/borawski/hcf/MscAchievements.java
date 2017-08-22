@@ -2,9 +2,6 @@ package me.borawski.hcf;
 
 import me.borawski.hcf.session.Achievement;
 
-/**
- * Created by Ethan on 4/23/2017.
- */
 public class MscAchievements {
 
     public static final Achievement FIRST_ENDERCHEST_OPEN = new Achievement("first_enderchest_open", "First EnderChest Open", "Open your ender chest for the first time!", 100);

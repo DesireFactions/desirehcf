@@ -5,9 +5,6 @@ import java.util.Map;
 
 import me.borawski.hcf.session.Rank;
 
-/**
- * Created by Ethan on 5/16/2017.
- */
 public class ManualManager {
 
     private Map<Rank, Manual> manualMap;

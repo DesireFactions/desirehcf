@@ -6,9 +6,6 @@ import me.borawski.hcf.session.AchievementManager;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 
-/**
- * Created by Ethan on 3/12/2017.
- */
 public class FriendUtils {
 
     /*

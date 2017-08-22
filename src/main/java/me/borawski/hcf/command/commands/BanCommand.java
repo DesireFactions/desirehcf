@@ -16,9 +16,6 @@ import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.validator.PlayerSenderValidator;
 import me.borawski.hcf.validator.SenderOutranksValidator;
 
-/**
- * Created by Ethan on 3/8/2017.
- */
 public class BanCommand extends ValidCommand {
 
     public BanCommand() {

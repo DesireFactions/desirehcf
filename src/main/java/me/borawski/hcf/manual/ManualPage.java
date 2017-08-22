@@ -5,9 +5,6 @@ import org.bukkit.ChatColor;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Ethan on 5/16/2017.
- */
 public class ManualPage {
 
     private String title;

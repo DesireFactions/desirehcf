@@ -6,9 +6,6 @@ import me.borawski.hcf.command.commands.sub.RankListCommand;
 import me.borawski.hcf.command.commands.sub.RankSetCommand;
 import me.borawski.hcf.session.Rank;
 
-/**
- * Created by Ethan on 3/12/2017.
- */
 public class RankCommand extends ValidBaseCommand {
 
     public RankCommand() {

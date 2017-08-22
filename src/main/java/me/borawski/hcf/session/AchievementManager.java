@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-/**
- * Created by Ethan on 3/14/2017.
- */
 public class AchievementManager {
 
     public static final Achievement FIRST_LOGIN = new Achievement("first_login", "First Login", "Login to DesireHCF for the first time", 100);

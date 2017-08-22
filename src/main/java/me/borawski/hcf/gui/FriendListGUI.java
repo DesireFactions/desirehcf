@@ -11,9 +11,6 @@ import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.ChatUtils;
 
-/**
- * Created by Ethan on 3/14/2017.
- */
 public class FriendListGUI extends ItemGUI {
 
     public FriendListGUI(Core instance, Player p) {

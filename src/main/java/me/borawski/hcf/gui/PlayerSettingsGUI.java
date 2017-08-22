@@ -11,9 +11,6 @@ import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.SettingsUtil;
 
-/**
- * Created by Ethan on 3/20/2017.
- */
 public class PlayerSettingsGUI extends ItemGUI {
 
     private static volatile int[][] gui = {
