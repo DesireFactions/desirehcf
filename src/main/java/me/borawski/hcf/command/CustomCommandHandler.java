@@ -1,11 +1,20 @@
 package me.borawski.hcf.command;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.LinkedList;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import me.borawski.hcf.Core;
@@ -17,6 +26,8 @@ import me.borawski.hcf.session.SessionHandler;
  *
  */
 public class CustomCommandHandler implements CommandExecutor {
+
+    private static CommandMap commandMapInstance = getCommandMap();
 
     private LinkedList<ValidCommand> commands;
 
@@ -48,8 +59,43 @@ public class CustomCommandHandler implements CommandExecutor {
         if (commands == null) {
             commands = new LinkedList<>();
         }
-        plugin.getCommand(command.name).setExecutor(this);
+
+        PluginCommand bukkitCommand = createBukkitCommand(command.getName(), plugin);
+        bukkitCommand.setAliases(Arrays.asList(command.getAliases()));
+        commandMapInstance.register(plugin.getDescription().getName(), bukkitCommand);
+
         commands.add(command);
+    }
+
+    private PluginCommand createBukkitCommand(String name, JavaPlugin plugin) {
+        PluginCommand command = null;
+        try {
+            Constructor<PluginCommand> c = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
+            c.setAccessible(true);
+
+            command = c.newInstance(name, plugin);
+        } catch (SecurityException | IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
+            ex.printStackTrace();
+        }
+
+        return command;
+    }
+
+    private static CommandMap getCommandMap() {
+        CommandMap commandMap = null;
+
+        try {
+            if (Bukkit.getPluginManager() instanceof SimplePluginManager) {
+                Field f = SimplePluginManager.class.getDeclaredField("commandMap");
+                f.setAccessible(true);
+
+                commandMap = (CommandMap) f.get(Bukkit.getPluginManager());
+            }
+        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
+        return commandMap;
     }
 
     private ValidCommand getCustomCommand(String cmd) {
