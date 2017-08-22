@@ -9,7 +9,6 @@ import me.borawski.hcf.parser.PlayerSessionParser;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.validator.PlayerSenderValidator;
-import me.borawski.hcf.validator.SenderNoFriendRequestValidator;
 import me.borawski.hcf.validator.SenderNotFriendsValidator;
 
 public class FriendAddCommand extends ValidCommand {
@@ -19,7 +18,6 @@ public class FriendAddCommand extends ValidCommand {
         addParser(new PlayerSessionParser(), "target");
         addValidator(new PlayerSenderValidator());
         addValidator(new SenderNotFriendsValidator(), "target");
-        addValidator(new SenderNoFriendRequestValidator(), "target");
     }
 
     public void validRun(CommandSender sender, String label, Object... args) {

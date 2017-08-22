@@ -59,6 +59,7 @@ friend:
   both_friend_requested: "You had a friend request from {player} so we added you both as friends."
   denied_friend_request: "You have denied {player}'s friend request."
   no_friends: "You have no friends."
+  not_friends: "You are not friends with {player}."
 
 enderchest:
   disabled: "&7enderchest disabled!"

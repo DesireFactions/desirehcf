@@ -9,7 +9,7 @@ import me.borawski.hcf.parser.PlayerSessionParser;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.validator.PlayerSenderValidator;
-import me.borawski.hcf.validator.SenderNotFriendsValidator;
+import me.borawski.hcf.validator.SenderIsFriendsValidator;
 
 public class FriendRemoveCommand extends ValidCommand {
 
@@ -17,7 +17,7 @@ public class FriendRemoveCommand extends ValidCommand {
         super("remove", "Remove a friend.", Rank.GUEST, new String[] { "target" }, "unfriend", "delete");
         addParser(new PlayerSessionParser(), "target");
         addValidator(new PlayerSenderValidator());
-        addValidator(new SenderNotFriendsValidator(), "target");
+        addValidator(new SenderIsFriendsValidator(), "target");
     }
 
     @Override
