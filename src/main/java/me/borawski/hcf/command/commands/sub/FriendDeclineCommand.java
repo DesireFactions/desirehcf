@@ -10,7 +10,7 @@ import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.validator.PlayerSenderValidator;
 import me.borawski.hcf.validator.SenderFriendRequestValidator;
-import me.borawski.hcf.validator.SenderIsFriendsValidtor;
+import me.borawski.hcf.validator.SenderIsFriendsValidator;
 
 public class FriendDeclineCommand extends ValidCommand {
 
@@ -19,7 +19,7 @@ public class FriendDeclineCommand extends ValidCommand {
         addParser(new PlayerSessionParser(), "target");
         addValidator(new PlayerSenderValidator());
         addValidator(new SenderFriendRequestValidator(), "target");
-        addValidator(new SenderIsFriendsValidtor(), "target");
+        addValidator(new SenderIsFriendsValidator(), "target");
     }
 
     @Override

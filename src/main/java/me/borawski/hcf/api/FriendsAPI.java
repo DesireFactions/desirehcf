@@ -25,15 +25,15 @@ public class FriendsAPI {
     public static void removeFriend(Player sender, Session target) {
         FriendUtils.removeFriend(target, sender.getUniqueId());
 
-        LANG.sendRenderMessage(sender, "friend.no_longer_friends", "{player}", sender.getDisplayName());
-        LANG.sendRenderMessage(sender, "friend.no_longer_friends", "{player}", target.getName());
+        LANG.sendRenderMessage(sender, "friend.no_longer_friend", "{player}", sender.getDisplayName());
+        LANG.sendRenderMessage(sender, "friend.no_longer_friend", "{player}", target.getName());
     }
 
     public static void addFriend(Player sender, Session target) {
         FriendUtils.addFriend(target, sender.getUniqueId());
 
-        LANG.sendRenderMessage(sender, "friend.are_now_friends", "{player}", sender.getDisplayName());
-        LANG.sendRenderMessage(sender, "friend.are_now_friends", "{player}", target.getName());
+        LANG.sendRenderMessage(sender, "friend.are_now_friend", "{player}", sender.getDisplayName());
+        LANG.sendRenderMessage(sender, "friend.are_now_friend", "{player}", target.getName());
     }
 
     public static void denyFriend(Player sender, Session target) {

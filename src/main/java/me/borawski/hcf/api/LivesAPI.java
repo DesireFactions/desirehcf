@@ -23,7 +23,7 @@ public class LivesAPI {
 
         LANG.sendRenderMessage(sender, "lives.lost",
                 "{amount}", Integer.toString(amount),
-                "{player}", senderName);
+                "{sender}", senderName);
     }
 
     public static void addLives(CommandSender sender, Player target, Integer amount) {
@@ -39,6 +39,6 @@ public class LivesAPI {
 
         LANG.sendRenderMessage(sender, "lives.recieved",
                 "{amount}", strAmount,
-                "{player}", senderName);
+                "{sender}", senderName);
     }
 }
