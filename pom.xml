@@ -74,7 +74,7 @@
 		<dependency>
 			<groupId>com.massivecraft</groupId>
 			<artifactId>factions</artifactId>
-			<version>1.6.9</version>
+			<version>1.6.9.5-U0.1.21</version>
 		</dependency>
 		<!-- Morphia API -->
 		<dependency>

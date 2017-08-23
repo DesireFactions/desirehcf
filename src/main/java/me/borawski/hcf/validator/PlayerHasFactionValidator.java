@@ -13,7 +13,7 @@ public class PlayerHasFactionValidator extends PlayerSenderValidator {
         if (!first) {
             return false;
         }
-        return FactionsUtils.getFaction((Player) sender) != null;
+        return !FactionsUtils.getFaction((Player) sender).getId().equals("0");
     }
 
 }
