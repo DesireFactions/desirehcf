@@ -71,7 +71,7 @@ public class ChatListener implements Listener {
                                 ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
                                 ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getTag() : "NONE"),
                                 ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() : "NONE"),
-                                ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null ? fSession.getTrophies() : "---")
+                                ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "---")
                         })
                         .then(": ")
                         .then(parsedMessage)
