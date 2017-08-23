@@ -50,6 +50,8 @@ public class ChatListener implements Listener {
 
                 String parsedMessage = s.getRank().getId() >= Rank.ADMIN.getId() ? ChatColor.translateAlternateColorCodes('&', msg) : msg;
 
+                System.out.println(player.getName() + ": " + parsedMessage);
+
                 if (f.getId().equals("0")) {
                     new FancyMessage(s.getRank().getPrefix())
                             .then(player.getName())
