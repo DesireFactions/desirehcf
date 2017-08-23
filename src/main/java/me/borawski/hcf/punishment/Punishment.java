@@ -2,9 +2,11 @@ package me.borawski.hcf.punishment;
 
 import java.util.UUID;
 
+import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 
+@Entity(noClassnameStored = true, value = "punishments")
 public class Punishment {
 
     @Id
