@@ -63,6 +63,7 @@ public class CustomCommandHandler implements CommandExecutor {
         PluginCommand bukkitCommand = createBukkitCommand(command.getName(), plugin);
         bukkitCommand.setAliases(Arrays.asList(command.getAliases()));
         commandMapInstance.register(plugin.getDescription().getName(), bukkitCommand);
+        plugin.getCommand(command.getName()).setExecutor(this);
 
         commands.add(command);
     }
