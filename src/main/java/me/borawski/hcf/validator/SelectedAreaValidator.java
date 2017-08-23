@@ -11,7 +11,10 @@ public class SelectedAreaValidator extends PlayerSenderValidator {
 
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg) {
-        super.validateArgument(sender, label, arg);
+        boolean first = super.validateArgument(sender, label, arg);
+        if (!first) {
+            return false;
+        }
         Player p = (Player) sender;
         Selection s = Core.getWorldEdit().getSelection(p);
         if (s != null && s.getArea() >= 1) {

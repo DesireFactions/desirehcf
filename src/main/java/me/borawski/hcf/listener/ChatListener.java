@@ -9,8 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MPlayer;
+import com.massivecraft.factions.Faction;
 
 import me.borawski.hcf.Core;
 import me.borawski.hcf.session.FactionSession;
@@ -19,6 +18,7 @@ import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.ChatUtils;
+import me.borawski.hcf.util.FactionsUtils;
 import mkremins.fanciful.FancyMessage;
 
 public class ChatListener implements Listener {
@@ -46,11 +46,11 @@ public class ChatListener implements Listener {
             @Override
             public void accept(Player players) {
                 Session s = SessionHandler.getSession(player);
-                Faction f = MPlayer.get(player).getFaction();
+                Faction f = FactionsUtils.getFaction(player);
 
                 String parsedMessage = s.getRank().getId() >= Rank.ADMIN.getId() ? ChatColor.translateAlternateColorCodes('&', msg) : msg;
 
-                if (f.getName().equals("§2Wilderness")) {
+                if (f == null) {
                     new FancyMessage(s.getRank().getPrefix())
                             .then(player.getName())
                             .tooltip(new String[] {
@@ -63,14 +63,14 @@ public class ChatListener implements Listener {
                     return;
                 }
 
-                FactionSession fSession = FactionSessionHandler.getFactionSession(f.getName());
+                FactionSession fSession = FactionSessionHandler.getFactionSession(f.getTag());
 
                 new FancyMessage(s.getRank().getPrefix())
                         .then(player.getName())
                         .tooltip(new String[] {
                                 ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
                                 ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getName() : "NONE"),
-                                ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? f.getMPlayers().size() : "NONE"),
+                                ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? f.getFPlayers().size() : "NONE"),
                                 ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "NONE")
                         })
                         .then(": ")

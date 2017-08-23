@@ -16,16 +16,14 @@ import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.massivecraft.factions.entity.BoardColl;
-import com.massivecraft.factions.entity.Faction;
-import com.massivecraft.factions.entity.MPlayer;
-import com.massivecraft.massivecore.ps.PS;
+import com.massivecraft.factions.Faction;
 
 import me.borawski.hcf.Core;
 import me.borawski.hcf.MscAchievements;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
 import me.borawski.hcf.util.CrowbarUtils;
+import me.borawski.hcf.util.FactionsUtils;
 import me.borawski.hcf.util.Utils;
 
 public class CrowbarHandler implements Listener {
@@ -45,8 +43,8 @@ public class CrowbarHandler implements Listener {
             Location location = clickedBlock.getLocation();
             if (CrowbarUtils.isCrowbar(item)) {
                 event.setCancelled(true);
-                Faction faction = MPlayer.get(player).getFaction();
-                Faction faction2 = BoardColl.get().getFactionAt(PS.valueOf(clickedBlock.getLocation()));
+                Faction faction = FactionsUtils.getFaction(player);
+                Faction faction2 = FactionsUtils.getFaction(clickedBlock.getLocation());
                 if (faction != faction2) {
                     return;
                 }
