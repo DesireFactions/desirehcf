@@ -36,6 +36,10 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
         instance = new SessionHandler();
     }
 
+    public static List<Session> getSessions() {
+        return instance.sessions;
+    }
+
     /**
      * Gets the session of a user and initializes it if it does not yet exist.
      * 
@@ -73,6 +77,11 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
             instance.sessions.add(session);
         }
         return session;
+    }
+
+    public static boolean endSession(Session s) {
+        instance.save(s);
+        return instance.sessions.remove(s);
     }
 
     private static Session createSession(Object o) {

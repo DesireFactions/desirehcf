@@ -43,7 +43,7 @@ public class ConnectionListener implements Listener {
         Session session = SessionHandler.getSession(event.getPlayer());
         session.setTotalPlayed(session.getTotalPlayed() + (System.currentTimeMillis() - session.getLastLogin()));
         session.setLastLogin(System.currentTimeMillis());
-        SessionHandler.getInstance().save(session);
+        SessionHandler.endSession(session);
     }
 
 }
