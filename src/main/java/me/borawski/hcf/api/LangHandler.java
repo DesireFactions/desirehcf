@@ -5,7 +5,10 @@ import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+
+import me.borawski.hcf.session.Session;
 
 /**
  * @author Michael Ziluck
@@ -90,6 +93,11 @@ public class LangHandler extends FileHandler {
      */
     public void sendRenderMessage(CommandSender sender, String string, String... args) {
         sender.sendMessage(renderMessage(string, args));
+    }
+
+    public void sendRenderMessage(Session s, String string, String... args) {
+        CommandSender sender = Bukkit.getPlayer(s.getUniqueId());
+        sendRenderMessage(sender, string, args);
     }
 
     /**
