@@ -2,9 +2,11 @@ package me.borawski.hcf.tickets;
 
 import java.util.UUID;
 
+import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
 
+@Entity(noClassnameStored = true, value = "tickets")
 public class Ticket {
 
     @Id
@@ -109,7 +111,7 @@ public class Ticket {
         this.status = status;
     }
 
-    private static enum Status {
+    public static enum Status {
         OPEN,
         CLOSED,
         DELETED;
