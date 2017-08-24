@@ -9,11 +9,12 @@ public class PlayerHasFactionValidator extends PlayerSenderValidator {
 
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg) {
-        boolean first = super.validateArgument(sender, label, arg);
-        if (!first) {
+        if (FactionsUtils.getFaction((Player) sender).getId().equals("0")) {
+            LANG.sendString(sender, "no_faction");
             return false;
         }
-        return !FactionsUtils.getFaction((Player) sender).getId().equals("0");
+
+        return true;
     }
 
 }

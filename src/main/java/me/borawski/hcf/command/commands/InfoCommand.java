@@ -21,7 +21,7 @@ public class InfoCommand extends ValidCommand {
     @Override
     public void validRun(CommandSender sender, String label, Object... args) {
         Player player = (Player) sender;
-        Session target = (Session) args[1];
+        Session target = (Session) args[0];
 
         PlayerInfoGUI.crossTarget.put(player.getUniqueId(), target);
         new PlayerInfoGUI(player).show();
