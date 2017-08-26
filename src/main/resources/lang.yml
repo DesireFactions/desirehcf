@@ -12,7 +12,7 @@ never_logged_in: '&7This player has never logged in before.'
 only_players: '&7only players can run that command.'
 no_permissions: '&7No permissions to run that command.'
 faction: Faction &e{faction}
-no_faction: "You are not a part of a faction!"
+no_faction: You are not a part of a faction!
 trophy_points: Trophy Points &e{points}
 koth_wins: Trophy Points &e{koth}
 no_season_data: Could not find Season data for &e{faction}
@@ -67,5 +67,6 @@ koth:
   delete: '&7Deleted the KOTH region &a{name}.'
   recreate: '&7Changed the location for the KOTH region &a{name}.'
   list_format: '&fName: &b{name}&f. Status: &a{schedule}&f.'
+  already_running: '&7That hill is already running.'
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
