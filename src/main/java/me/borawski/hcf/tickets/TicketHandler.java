@@ -23,7 +23,7 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 
     public TicketHandler() {
         super(Ticket.class, Core.getInstance().getMongoWrapper().getDatastore());
-        tickets = find(createQuery().where("status=OPEN")).asList();
+        tickets = find(createQuery().where("status='OPEN'")).asList();
     }
 
     public static void openTicket(CommandSender sender, String text) {
