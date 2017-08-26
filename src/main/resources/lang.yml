@@ -68,5 +68,6 @@ koth:
   recreate: '&7Changed the location for the KOTH region &a{name}.'
   list_format: '&fName: &b{name}&f. Status: &a{schedule}&f.'
   already_running: '&7That hill is already running.'
+  started: '&fThe KOTH &a{name} &fhas started. Type /koth for more information.'
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
