@@ -25,10 +25,10 @@ public class StaticSidebarBoard extends Board {
     public void startDisplay(Player p) {
         switch (this.type) {
         case RANKED:
-            ScoreboardUtil.rankedSidebarDisplay(p, (String) ((Object[]) data)[0], (HashMap<String, Integer>) ((Object[]) data)[1]);
+            ScoreboardUtils.rankedSidebarDisplay(p, (String) ((Object[]) data)[0], (HashMap<String, Integer>) ((Object[]) data)[1]);
             return;
         case UNRANKED:
-            ScoreboardUtil.unrankedSidebarDisplay(p, (String[]) data);
+            ScoreboardUtils.unrankedSidebarDisplay(p, (String[]) data);
         }
 
     }

@@ -10,9 +10,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 
-public class ScoreboardUtil {
-    private ScoreboardUtil() {
-    }
+public class ScoreboardUtils {
 
     public static String[] cutUnranked(String[] content) {
         String[] elements = Arrays.copyOf(content, 16);

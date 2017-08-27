@@ -70,5 +70,7 @@ koth:
   already_running: '&7That hill is already running.'
   not_running: '&7That hill is not running.'
   started: '&fThe KOTH &a{name} &fhas started. Type /koth for more information.'
+  enter: '&fYou have entered &a{name}&f.'
+  leave: '&fYou have left &a{name}&f.'
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
