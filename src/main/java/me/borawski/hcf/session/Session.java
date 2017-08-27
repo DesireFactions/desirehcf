@@ -78,6 +78,10 @@ public class Session {
         activePunishments = new LinkedList<>();
     }
 
+    public Player getPlayer() {
+        return Bukkit.getPlayer(uuid);
+    }
+    
     public UUID getUniqueId() {
         return uuid;
     }
