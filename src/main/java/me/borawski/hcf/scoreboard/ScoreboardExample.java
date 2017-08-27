@@ -23,7 +23,7 @@ public class ScoreboardExample {
     }
 
     public void displayYourGameBoardWithScoreboardUtil(Player p) {
-        ScoreboardUtil.unrankedSidebarDisplay(p, new String[] { "§c§lMy stats",
+        ScoreboardUtils.unrankedSidebarDisplay(p, new String[] { "§c§lMy stats",
                 " ",
                 "Your kills: " + 30,
                 "Your deaths: " + 20,
