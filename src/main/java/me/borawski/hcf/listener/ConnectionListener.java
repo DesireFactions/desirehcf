@@ -46,4 +46,14 @@ public class ConnectionListener implements Listener {
         SessionHandler.endSession(session);
     }
 
+    @EventHandler
+    public void onDisconnect(PlayerQuitEvent e) {
+        Core.getStaffHandler().disableStaffMode(e.getPlayer());
+        Core.getStaffHandler().forceUnfreeze(e.getPlayer());
+        // TagHandler.lastValidLocation.remove(e.getPlayer().getUniqueId());
+        // Core.getTagHandler().clearTag(e.getPlayer().getUniqueId());
+        // Core.getHCFPlayerHandler().unloadPlayer(e.getPlayer());
+        e.setQuitMessage(Core.getLangHandler().getString("leave.message").replace("{player}", e.getPlayer().getName()));
+    }
+
 }

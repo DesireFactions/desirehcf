@@ -14,6 +14,9 @@ barrier:
   view-distance: 8
   max-distance: 32
 
+staff:
+  launch_velocity: 5.0
+
 regions:
   max-name: 16
   
