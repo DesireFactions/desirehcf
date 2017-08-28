@@ -28,6 +28,8 @@ public class StaffHandler {
     private List<UUID> hiddenPlayers;
     private int numCPSTests;
 
+    private static final LangHandler LANG = Core.getLangHandler();
+
     public StaffHandler() {
         inventories = new HashMap<UUID, ItemStack[]>();
         cpsTests = new HashMap<UUID, Integer>();
@@ -75,6 +77,8 @@ public class StaffHandler {
         p.getInventory().addItem(new ItemStack(Material.WATCH, 1));
         p.getInventory().addItem(new ItemStack(Material.CHEST, 1));
         p.getInventory().addItem(new ItemStack(Material.LEASH, 1));
+        LANG.sendString(p, "staff.in_staff_mode");
+
     }
 
     public void forceUnfreeze(Player p) {
@@ -83,16 +87,17 @@ public class StaffHandler {
     }
 
     public void disableStaffMode(Player p) {
-        if (!inStaffMode(p)) return;
         p.getInventory().setContents(inventories.get(p.getUniqueId()));
         inventories.remove(p.getUniqueId());
+        LANG.sendString(p, "staff.not_in_staff_mode");
     }
 
     public void toggleStaffMode(Player p) {
-        if (inStaffMode(p))
+        if (inStaffMode(p)) {
             disableStaffMode(p);
-        else
+        } else {
             enableStaffMode(p);
+        }
     }
 
     public void playerInteractEntity(PlayerInteractEntityEvent e) {
@@ -138,7 +143,8 @@ public class StaffHandler {
     public void useLaunch(PlayerInteractEvent e) {
         Player staffPlayer = e.getPlayer();
         FileHandler c = Core.getConfigHandler();
-        double launchVelocity = c.getDouble("staff.launch.velocity");
+        double launchVelocity = c.getDouble("staff.launch_velocity");
+        System.out.println(launchVelocity);
         Vector cameraVector = staffPlayer.getLocation().getDirection().normalize();
 
         staffPlayer.setVelocity(cameraVector.multiply(launchVelocity));

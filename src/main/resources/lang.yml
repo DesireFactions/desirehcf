@@ -41,6 +41,9 @@ rank:
   list: '{color}{rank}'
   check: Your rank is currently {color}{rank}.
   set: You have set {player}'s rank to &e{rank}.
+staff:
+  in_staff_mode: Staff mode enabled
+  not_in_staff_mode: Staff mode disabled
 friend:
   no_friend_request: You do not have a friend request from {player}
   already_friends: You are already friends with {player}
