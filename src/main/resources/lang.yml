@@ -27,6 +27,10 @@ player_not_found: Player not found.
 arg_not_number: One or more of your arguments should be a number!
 player: '{player}'
 crowbar: You have recieved a crowbar.
+pvp:
+  target-protected: '&7That player has pvp disabled'
+  damager-protected: '&7You have pvp disabled.'
+  disabled: '&7You have disabled your pvp protection timer.'
 lives:
   add: You have added &c{amount}&7 lives to {player}
   remove: You have removed &c{amount}&7 lives to {player}
@@ -75,5 +79,7 @@ koth:
   started: '&fThe KOTH &a{name} &fhas started. Type /koth for more information.'
   enter: '&fYou have entered &a{name}&f.'
   leave: '&fYou have left &a{name}&f.'
+  capturing: '&fYou are now capturing point &a{name}&f.'
+  capper_left: '&fThe new capper for &a{name}&f is now &b{player}&f.'
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'

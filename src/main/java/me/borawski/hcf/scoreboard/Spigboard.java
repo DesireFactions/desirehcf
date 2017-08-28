@@ -1,6 +1,8 @@
 package me.borawski.hcf.scoreboard;
 
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -16,6 +18,7 @@ import com.google.common.collect.HashBiMap;
 
 public class Spigboard {
 
+    private List<Player> activePlayers;
     private Scoreboard scoreboard;
     private Objective objective;
     private BiMap<String, SpigboardEntry> entries;
@@ -36,6 +39,7 @@ public class Spigboard {
 
         this.entries = HashBiMap.create();
         this.teamId = 1;
+        activePlayers = new LinkedList<>();
     }
 
     public Scoreboard getScoreboard() {
@@ -170,16 +174,19 @@ public class Spigboard {
 
     public void addPlayer(Player player) {
         player.setScoreboard(scoreboard);
+        activePlayers.add(player);
     }
 
     public void removePlayer(Player player) {
         player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
+        activePlayers.remove(player);
     }
 
     public void removeAllPlayers() {
         for (Player player : Bukkit.getOnlinePlayers()) {
             player.setScoreboard(Bukkit.getScoreboardManager().getMainScoreboard());
         }
+        activePlayers.clear();
     }
 
 }
