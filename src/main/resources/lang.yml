@@ -27,6 +27,10 @@ player_not_found: Player not found.
 arg_not_number: One or more of your arguments should be a number!
 player: '{player}'
 crowbar: You have recieved a crowbar.
+pvp:
+  target-protected: '&7That player has pvp disabled'
+  damager-protected: '&7You have pvp disabled.'
+  disabled: '&fYou have disabled your pvp protection timer.'
 lives:
   add: You have added &c{amount}&7 lives to {player}
   remove: You have removed &c{amount}&7 lives to {player}
