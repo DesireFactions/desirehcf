@@ -45,9 +45,6 @@ rank:
   list: '{color}{rank}'
   check: Your rank is currently {color}{rank}.
   set: You have set {player}'s rank to &e{rank}.
-staff:
-  in_staff_mode: Staff mode enabled
-  not_in_staff_mode: Staff mode disabled
 friend:
   no_friend_request: You do not have a friend request from {player}
   already_friends: You are already friends with {player}
@@ -80,6 +77,7 @@ koth:
   enter: '&fYou have entered &a{name}&f.'
   leave: '&fYou have left &a{name}&f.'
   capturing: '&fYou are now capturing point &a{name}&f.'
-  capper_left: '&fThe new capper for &a{name}&f is now &b{player}&f.'
+  new_capper: '&fSomeone is capturing &a{name}&f. Time left is &b{time}&f.'
+  no_capper: '&fNobody is capturing &a{name}&f. Time left is &b{time}&f.'
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
