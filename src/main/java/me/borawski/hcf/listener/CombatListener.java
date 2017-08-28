@@ -47,13 +47,13 @@ public class CombatListener implements Listener {
 
                 if (ds.getSafeTimeLeft() > 0) {
                     e.setCancelled(true);
-                    damager.sendMessage(l.getString("pvp.damager-protected"));
+                    damager.sendMessage(l.getString("pvp.damager_protected"));
                     return;
                 }
 
                 if (vs.getSafeTimeLeft() > 0) {
                     e.setCancelled(true);
-                    damager.sendMessage(l.getString("pvp.target-protected"));
+                    damager.sendMessage(l.getString("pvp.target_protected"));
                     return;
                 }
 
