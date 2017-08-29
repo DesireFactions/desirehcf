@@ -49,7 +49,7 @@ public class ConnectionListener implements Listener {
     @EventHandler
     public void onDisconnect(PlayerQuitEvent e) {
         Core.getStaffHandler().disableStaffMode(e.getPlayer());
-        Core.getStaffHandler().forceUnfreeze(e.getPlayer());
+        Core.getStaffHandler().unfreezePlayer(e.getPlayer());
         // TagHandler.lastValidLocation.remove(e.getPlayer().getUniqueId());
         // Core.getTagHandler().clearTag(e.getPlayer().getUniqueId());
         // Core.getHCFPlayerHandler().unloadPlayer(e.getPlayer());
