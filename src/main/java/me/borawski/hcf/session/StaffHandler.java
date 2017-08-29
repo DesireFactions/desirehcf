@@ -20,8 +20,11 @@ import org.bukkit.util.Vector;
 import me.borawski.hcf.Core;
 import me.borawski.hcf.api.FileHandler;
 import me.borawski.hcf.api.LangHandler;
+import me.borawski.hcf.thread.staff.ClicksPerSecondThread;
+import me.borawski.hcf.thread.staff.MovementFreezeThread;
 
 public class StaffHandler {
+
     private HashMap<UUID, ItemStack[]> inventories;
     private HashMap<UUID, Integer> cpsTests;
     private HashMap<UUID, Boolean> frozenPlayers;
@@ -55,11 +58,18 @@ public class StaffHandler {
     }
 
     public void handleCPSTest(PlayerInteractEvent e) {
-        Player p = e.getPlayer();
+        CPSTest(e.getPlayer());
+    }
+
+    public boolean CPSTest(Player p) {
         Integer cps = cpsTests.get(p.getUniqueId());
+
         if (cps != null) {
             cpsTests.put(p.getUniqueId(), Integer.valueOf(cps.intValue() + 1));
+            return true;
         }
+
+        return false;
     }
 
     public void decreaseNumCPSTests() {
@@ -81,23 +91,47 @@ public class StaffHandler {
 
     }
 
-    public void forceUnfreeze(Player p) {
-        if (!isFrozen(p)) return;
-        frozenPlayers.put(p.getUniqueId(), Boolean.valueOf(false));
-    }
-
     public void disableStaffMode(Player p) {
         p.getInventory().setContents(inventories.get(p.getUniqueId()));
         inventories.remove(p.getUniqueId());
         LANG.sendString(p, "staff.not_in_staff_mode");
     }
 
-    public void toggleStaffMode(Player p) {
+    public boolean toggleStaffMode(Player p) {
         if (inStaffMode(p)) {
             disableStaffMode(p);
-        } else {
-            enableStaffMode(p);
+            return false;
         }
+
+        enableStaffMode(p);
+        return true;
+    }
+
+    public boolean isFrozen(Player p) {
+        Boolean frozen = frozenPlayers.get(p.getUniqueId());
+
+        if (frozen == null) return false;
+
+        return frozen.booleanValue();
+    }
+
+    public void unfreezePlayer(Player player) {
+        if (isFrozen(player)) {
+            frozenPlayers.put(player.getUniqueId(), Boolean.valueOf(false));
+        }
+    }
+
+    public boolean toggleFreeze(Player p) {
+        if (isFrozen(p)) {
+            frozenPlayers.put(p.getUniqueId(), Boolean.valueOf(false));
+            return false;
+        }
+
+        frozenPlayers.put(p.getUniqueId(), Boolean.valueOf(true));
+        MovementFreezeThread mft = new MovementFreezeThread(this, p);
+        mft.start();
+
+        return true;
     }
 
     public void playerInteractEntity(PlayerInteractEntityEvent e) {
@@ -106,15 +140,15 @@ public class StaffHandler {
             if (e.getPlayer().getInventory().getItemInMainHand() != null) {
                 Material type = e.getPlayer().getInventory().getItemInMainHand().getType();
                 switch (type) {
-                // case Material.WATCH:
-                // useClicksPerSecond(e);
-                // break;
+                case WATCH:
+                    useClicksPerSecond(e);
+                    break;
                 case LEASH:
                     useMount(e);
                     break;
-                // case Material.BLAZE_ROD:
-                // useFreeze(e);
-                // break;
+                case BLAZE_ROD:
+                    useFreeze(e);
+                    break;
                 case CHEST:
                     useOpenInventory(e);
                     break;
@@ -206,51 +240,31 @@ public class StaffHandler {
         }
     }
 
-    // public void useClicksPerSecond(PlayerInteractEntityEvent e) {
-    // if (e.getRightClicked() instanceof Player) {
-    // Player p = (Player) e.getRightClicked();
-    // UUID playerID = p.getUniqueId();
-    //
-    // if (cpsTests.containsKey(playerID))
-    // return;
-    //
-    // cpsTests.put(playerID, Integer.valueOf(0));
-    // ClicksPerSecondThread newThread = new ClicksPerSecondThread(this, p);
-    // numCPSTests++;
-    // newThread.start();
-    // }
-    // }
+    public void useClicksPerSecond(PlayerInteractEntityEvent e) {
+        if (e.getRightClicked() instanceof Player) {
+            Player p = (Player) e.getRightClicked();
+            UUID playerID = p.getUniqueId();
 
-    // public void useFreeze(PlayerInteractEntityEvent e) {
-    //
-    // if (e.getRightClicked() instanceof Player) {
-    // Player p = (Player) e.getRightClicked();
-    //
-    // // condition to unfreeze the player putting a value of false will
-    // // let
-    // // the Thread automatically unfreeze without causing any errors
-    // if (isFrozen(p)) {
-    // frozenPlayers.put(p.getUniqueId(), Boolean.valueOf(false));
-    // return;
-    // }
-    //
-    // frozenPlayers.put(p.getUniqueId(), Boolean.valueOf(true));
-    // MovementFreezeThread mft = new MovementFreezeThread(this, p);
-    // mft.start();
-    // }
-    // }
+            if (cpsTests.containsKey(playerID))
+                return;
+
+            cpsTests.put(playerID, Integer.valueOf(0));
+            ClicksPerSecondThread newThread = new ClicksPerSecondThread(this, p);
+            numCPSTests++;
+            newThread.start();
+        }
+    }
+
+    public void useFreeze(PlayerInteractEntityEvent e) {
+        if (e.getRightClicked() instanceof Player) {
+            Player p = (Player) e.getRightClicked();
+            toggleFreeze(p);
+        }
+    }
 
     public void useMount(PlayerInteractEntityEvent e) {
         if (!e.getRightClicked().isDead())
             e.getRightClicked().addPassenger(e.getPlayer());
-    }
-
-    public boolean isFrozen(Player p) {
-        Boolean frozen = frozenPlayers.get(p.getUniqueId());
-
-        if (frozen == null) return false;
-
-        return frozen.booleanValue();
     }
 
     private void showPlayer(Player p) {
@@ -266,4 +280,5 @@ public class StaffHandler {
             player.hidePlayer(p);
         }
     }
+
 }
