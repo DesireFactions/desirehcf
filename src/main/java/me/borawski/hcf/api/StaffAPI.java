@@ -9,7 +9,7 @@ import me.borawski.hcf.session.StaffHandler;
 public class StaffAPI {
 
     private static final LangHandler LANG = Core.getLangHandler();
-    private static final StaffHandler STAFF = Core.getStaffHandler();
+    private static final StaffHandler STAFF = StaffHandler.getInstance();
 
     public static void freeze(CommandSender sender, Player player) {
         if (STAFF.toggleFreeze(player)) {
@@ -32,7 +32,16 @@ public class StaffAPI {
             return;
         }
 
+        STAFF.startCPSTestForPlayer(player);
         LANG.sendRenderMessage(sender, "staff.cps_test", "{taget}", player.getDisplayName());
+    }
+
+    public static void toggleInvisibility(Player player) {
+        STAFF.toggleInvisibility(player);
+    }
+
+    public static void mount(Player passenger, Player target) {
+        STAFF.mount(passenger, target);
     }
 
 }

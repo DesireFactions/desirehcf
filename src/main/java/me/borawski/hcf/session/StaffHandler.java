@@ -25,6 +25,7 @@ import me.borawski.hcf.thread.staff.MovementFreezeThread;
 
 public class StaffHandler {
 
+    private static StaffHandler instance;
     private HashMap<UUID, ItemStack[]> inventories;
     private HashMap<UUID, Integer> cpsTests;
     private HashMap<UUID, Boolean> frozenPlayers;
@@ -41,16 +42,20 @@ public class StaffHandler {
         numCPSTests = 0;
     }
 
+    public static void initialize() {
+        instance = new StaffHandler();
+    }
+
+    public static StaffHandler getInstance() {
+        return instance;
+    }
+
     public boolean inStaffMode(Player p) {
         return inventories.containsKey(p.getUniqueId());
     }
 
     public boolean runningCPSTests() {
         return numCPSTests > 0;
-    }
-
-    public void removeIsFrozenObject(Player p) {
-        frozenPlayers.remove(p.getUniqueId());
     }
 
     public HashMap<UUID, Integer> getCPS() {
@@ -92,9 +97,11 @@ public class StaffHandler {
     }
 
     public void disableStaffMode(Player p) {
-        p.getInventory().setContents(inventories.get(p.getUniqueId()));
-        inventories.remove(p.getUniqueId());
-        LANG.sendString(p, "staff.not_in_staff_mode");
+        if (inStaffMode(p)) {
+            p.getInventory().setContents(inventories.get(p.getUniqueId()));
+            inventories.remove(p.getUniqueId());
+            LANG.sendString(p, "staff.not_in_staff_mode");
+        }
     }
 
     public boolean toggleStaffMode(Player p) {
@@ -113,6 +120,10 @@ public class StaffHandler {
         if (frozen == null) return false;
 
         return frozen.booleanValue();
+    }
+
+    public void removeIsFrozenObject(Player p) {
+        frozenPlayers.remove(p.getUniqueId());
     }
 
     public void unfreezePlayer(Player player) {
@@ -163,14 +174,19 @@ public class StaffHandler {
         e.setCancelled(true);
         if (e.getItem() != null) {
             Material type = e.getItem().getType();
-            if (type == Material.COMPASS)
+            switch (type) {
+            case COMPASS:
                 useLaunch(e);
-            else if (type == Material.EYE_OF_ENDER)
+                break;
+            case EYE_OF_ENDER:
                 useTeleport(e);
-            else if (type == Material.CLAY)
+                break;
+            case CLAY:
                 useInvisibility(e);
-            // else if (type == Material.PAPER)
-            // useReportGUI(e);
+                break;
+            default:
+                return;
+            }
         }
     }
 
@@ -206,53 +222,39 @@ public class StaffHandler {
     }
 
     public void useInvisibility(PlayerInteractEvent e) {
-        LangHandler l = Core.getLangHandler();
-        Player p = e.getPlayer();
-        int index = hiddenPlayers.indexOf(p.getUniqueId());
-
-        if (index == -1) {
-            hidePlayer(p);
-            hiddenPlayers.add(p.getUniqueId());
-            p.sendMessage(l.getString("staff.set-invisible"));
-        } else {
-            showPlayer(p);
-            hiddenPlayers.remove(index);
-            p.sendMessage(l.getString("staff.set-visible"));
-        }
+        toggleInvisibility(e.getPlayer());
     }
 
-    // public void useReportGUI(PlayerInteractEvent e) {
-    // Inventory reportMenu = Bukkit.createInventory(null, 27, "Reports");
-    // Collection<Report> reports = Core.getReportHandler().getReports();
-    //
-    // int index = 0;
-    // for (Iterator i = reports.iterator(); i.hasNext();) {
-    // reportMenu.setItem(index, ((Report) i.next()).asItem());
-    // index++;
-    // }
-    //
-    // e.getPlayer().openInventory(reportMenu);
-    // }
+    public void toggleInvisibility(Player player) {
+        int index = hiddenPlayers.indexOf(player.getUniqueId());
 
-    private void useOpenInventory(PlayerInteractEntityEvent e) {
-        if (e.getRightClicked() instanceof Player) {
-            e.getPlayer().openInventory(((Player) e).getInventory());
+        if (index == -1) {
+            hidePlayer(player);
+            hiddenPlayers.add(player.getUniqueId());
+            LANG.sendString(player, "staff.set-invisible");
+        } else {
+            showPlayer(player);
+            hiddenPlayers.remove(index);
+            LANG.sendString(player, "staff.set-visible");
         }
     }
 
     public void useClicksPerSecond(PlayerInteractEntityEvent e) {
         if (e.getRightClicked() instanceof Player) {
-            Player p = (Player) e.getRightClicked();
-            UUID playerID = p.getUniqueId();
-
-            if (cpsTests.containsKey(playerID))
-                return;
-
-            cpsTests.put(playerID, Integer.valueOf(0));
-            ClicksPerSecondThread newThread = new ClicksPerSecondThread(this, p);
-            numCPSTests++;
-            newThread.start();
+            startCPSTestForPlayer((Player) e.getRightClicked());
         }
+    }
+
+    public void startCPSTestForPlayer(Player player) {
+        UUID playerID = player.getUniqueId();
+
+        if (cpsTests.containsKey(playerID))
+            return;
+
+        cpsTests.put(playerID, Integer.valueOf(0));
+        ClicksPerSecondThread newThread = new ClicksPerSecondThread(this, player);
+        numCPSTests++;
+        newThread.start();
     }
 
     public void useFreeze(PlayerInteractEntityEvent e) {
@@ -263,8 +265,19 @@ public class StaffHandler {
     }
 
     public void useMount(PlayerInteractEntityEvent e) {
-        if (!e.getRightClicked().isDead())
-            e.getRightClicked().addPassenger(e.getPlayer());
+        mount(e.getPlayer(), (Player) e.getRightClicked());
+    }
+
+    public void mount(Player passenger, Player target) {
+        if (!target.isDead()) {
+            target.addPassenger(passenger);
+        }
+    }
+
+    private void useOpenInventory(PlayerInteractEntityEvent e) {
+        if (e.getRightClicked() instanceof Player) {
+            e.getPlayer().openInventory(((Player) e).getInventory());
+        }
     }
 
     private void showPlayer(Player p) {
