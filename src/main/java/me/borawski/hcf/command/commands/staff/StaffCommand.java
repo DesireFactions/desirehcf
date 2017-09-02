@@ -10,6 +10,8 @@ public class StaffCommand extends ValidBaseCommand {
         addSubCommand(new StaffToggleCommand());
         addSubCommand(new StaffFreezeCommand());
         addSubCommand(new StaffClicksPerSecondCommand());
+        addSubCommand(new StaffInvisibilityCommand());
+        addSubCommand(new StaffMountCommand());
     }
 
 }

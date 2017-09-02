@@ -10,10 +10,10 @@ import me.borawski.hcf.session.StaffHandler;
 
 public class InteractListener implements Listener {
 
+    StaffHandler STAFF = StaffHandler.getInstance();
+
     @EventHandler
     public void onInteract(PlayerInteractEvent e) {
-        StaffHandler sh = Core.getStaffHandler();
-
         // if (e.getItem() != null && e.getItem().getType() ==
         // Material.GOLDEN_APPLE) {
         // if (Core.getTimerHandler().hasUsedGapple(e.getPlayer())) {
@@ -21,20 +21,21 @@ public class InteractListener implements Listener {
         // }
         // }
 
-        if (sh.inStaffMode(e.getPlayer())) {
-            sh.playerInteract(e);
+        e.getPlayer().sendMessage(STAFF.runningCPSTests() ? "t" : "f");
+
+        if (STAFF.inStaffMode(e.getPlayer())) {
+            STAFF.playerInteract(e);
         }
 
-        if (sh.runningCPSTests()) {
-            sh.handleCPSTest(e);
+        if (STAFF.runningCPSTests()) {
+            STAFF.handleCPSTest(e);
         }
     }
 
     @EventHandler
     public void onInteractEntity(PlayerInteractEntityEvent e) {
-        StaffHandler sh = Core.getStaffHandler();
-        if (sh.inStaffMode(e.getPlayer())) {
-            sh.playerInteractEntity(e);
+        if (STAFF.inStaffMode(e.getPlayer())) {
+            STAFF.playerInteractEntity(e);
         }
     }
 

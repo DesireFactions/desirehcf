@@ -11,6 +11,7 @@ import me.borawski.hcf.Core;
 import me.borawski.hcf.punishment.Punishment;
 import me.borawski.hcf.session.Session;
 import me.borawski.hcf.session.SessionHandler;
+import me.borawski.hcf.session.StaffHandler;
 import me.borawski.hcf.util.DateUtils;
 import me.borawski.hcf.util.PlayerUtils;
 
@@ -48,11 +49,8 @@ public class ConnectionListener implements Listener {
 
     @EventHandler
     public void onDisconnect(PlayerQuitEvent e) {
-        Core.getStaffHandler().disableStaffMode(e.getPlayer());
-        Core.getStaffHandler().unfreezePlayer(e.getPlayer());
-        // TagHandler.lastValidLocation.remove(e.getPlayer().getUniqueId());
-        // Core.getTagHandler().clearTag(e.getPlayer().getUniqueId());
-        // Core.getHCFPlayerHandler().unloadPlayer(e.getPlayer());
+        StaffHandler.getInstance().disableStaffMode(e.getPlayer());
+        StaffHandler.getInstance().unfreezePlayer(e.getPlayer());
         e.setQuitMessage(Core.getLangHandler().getString("leave.message").replace("{player}", e.getPlayer().getName()));
     }
 
