@@ -77,11 +77,21 @@ public class Serialization {
                 contents.add((ItemStack) deserialize(toMap((JSONObject) JSONValue.parse(piece))));
             }
         }
-        ItemStack[] items = new ItemStack[contents.size()];
-        for (int x = 0; x < contents.size(); x++) {
-            items[x] = contents.get(x);
-        }
         return contents;
+    }
+
+    public static String toString(ItemStack item) {
+        if (item == null) {
+            return null;
+        }
+        return new JSONObject(serialize(item)).toString();
+    }
+    
+    public static ItemStack toItem(String string) {
+        if (string == null || string.equals("")) {
+            return null;
+        }
+        return (ItemStack) deserialize(toMap((JSONObject) JSONValue.parse(string)));
     }
 
     private static Map<String, Object> serialize(ConfigurationSerializable cs) {
