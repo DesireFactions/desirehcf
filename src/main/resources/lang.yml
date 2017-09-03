@@ -27,6 +27,7 @@ player_not_found: Player not found.
 arg_not_number: One or more of your arguments should be a number!
 player: '{player}'
 crowbar: You have recieved a crowbar.
+item_in_hand: '&7You must have an item in your hand.'
 pvp:
   target-protected: '&7That player has pvp disabled'
   damager-protected: '&7You have pvp disabled.'
@@ -79,5 +80,7 @@ koth:
   capturing: '&fYou are now capturing point &a{name}&f.'
   new_capper: '&fSomeone is capturing &a{name}&f. Time left is &b{time}&f.'
   no_capper: '&fNobody is capturing &a{name}&f. Time left is &b{time}&f.'
+  add_faction_reward: '&7Faction reward added.'
+  add_winner_reward: '&7Winner reward added.'
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
