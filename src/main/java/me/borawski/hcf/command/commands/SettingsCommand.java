@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import me.borawski.hcf.Core;
 import me.borawski.hcf.command.ValidCommand;
-import me.borawski.hcf.gui.PlayerSettingsGUI;
+import me.borawski.hcf.old_gui.PlayerSettingsGUI;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.validator.PlayerSenderValidator;
 

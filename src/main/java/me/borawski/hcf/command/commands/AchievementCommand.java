@@ -12,9 +12,9 @@ import org.bukkit.entity.Player;
 
 import me.borawski.hcf.Core;
 import me.borawski.hcf.command.ValidCommand;
-import me.borawski.hcf.gui.CustomIS;
-import me.borawski.hcf.gui.ItemGUI;
-import me.borawski.hcf.gui.MenuItem;
+import me.borawski.hcf.old_gui.CustomIS;
+import me.borawski.hcf.old_gui.ItemGUI;
+import me.borawski.hcf.old_gui.MenuItem;
 import me.borawski.hcf.session.Achievement;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.SessionHandler;

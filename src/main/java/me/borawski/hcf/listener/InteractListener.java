@@ -21,7 +21,8 @@ public class InteractListener implements Listener {
         // }
         // }
 
-        e.getPlayer().sendMessage(STAFF.runningCPSTests() ? "t" : "f");
+        // TODO uncomment debug code
+        //e.getPlayer().sendMessage(STAFF.runningCPSTests() ? "t - turn off your debug when you push" : "f - turn off your debug when you push");
 
         if (STAFF.inStaffMode(e.getPlayer())) {
             STAFF.playerInteract(e);

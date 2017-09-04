@@ -1,4 +1,4 @@
-package me.borawski.hcf.gui;
+package me.borawski.hcf.old_gui;
 
 public class MenuItem {
 
