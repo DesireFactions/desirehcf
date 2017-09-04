@@ -1,4 +1,4 @@
-package me.borawski.hcf.gui;
+package me.borawski.hcf.old_gui;
 
 import org.bukkit.ChatColor;
 import org.bukkit.DyeColor;

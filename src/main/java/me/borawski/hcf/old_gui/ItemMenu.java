@@ -1,5 +1,5 @@
 
-package me.borawski.hcf.gui;
+package me.borawski.hcf.old_gui;
 
 import me.borawski.hcf.Core;
 import org.bukkit.Bukkit;

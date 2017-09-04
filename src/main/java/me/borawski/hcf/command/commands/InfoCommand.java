@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import me.borawski.hcf.command.ValidCommand;
-import me.borawski.hcf.gui.PlayerInfoGUI;
+import me.borawski.hcf.old_gui.PlayerInfoGUI;
 import me.borawski.hcf.parser.PlayerSessionParser;
 import me.borawski.hcf.session.Rank;
 import me.borawski.hcf.session.Session;

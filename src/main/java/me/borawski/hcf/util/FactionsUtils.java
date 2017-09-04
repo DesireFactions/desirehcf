@@ -10,6 +10,8 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 
+import me.borawski.hcf.session.Session;
+
 public class FactionsUtils {
 
     public static Faction getFaction(String name) {
@@ -28,4 +30,8 @@ public class FactionsUtils {
         return f;
     }
 
+    public static Faction getFaction(Session s) {
+        return getFaction(s.getPlayer());
+    }
+    
 }
