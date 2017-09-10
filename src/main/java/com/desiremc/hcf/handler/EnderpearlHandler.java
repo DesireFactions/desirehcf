@@ -33,7 +33,11 @@ public class EnderpearlHandler implements Listener
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
             {
-                Core.getLangHandler().sendString(Bukkit.getPlayer(entry.getKey()), "enderpearl.ended");
+                Player p = Bukkit.getPlayer(entry.getKey());
+                if (p != null)
+                {
+                    Core.getLangHandler().sendString(p, "enderpearl.ended");
+                }
             }
         }).build();
     }
@@ -50,7 +54,6 @@ public class EnderpearlHandler implements Listener
 
         if (p.getInventory().getItemInMainHand().getType() == Material.ENDER_PEARL)
         {
-
             UUID uuid = p.getUniqueId();
             Long time = history.getIfPresent(uuid);
 
