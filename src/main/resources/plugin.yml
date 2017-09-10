@@ -1,5 +1,5 @@
 name: HCFCore
 version: 0.1
-main: me.borawski.hcf.Core
+main: com.desiremc.hcf.Core
 description: Desire HCF Core
 dependencies: [WorldEdit, WorldGuard]

@@ -1,8 +1,7 @@
 package com.desiremc.hcf.handler;
 
-import java.util.Map;
 import java.util.UUID;
-import java.util.function.Consumer;
+import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -12,57 +11,56 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.desiremc.hcf.Components;
 import com.desiremc.hcf.Core;
-import com.desiremc.hcf.util.Cooldown;
-import com.desiremc.hcf.util.Utils;
-import com.desiremc.hcf.util.Cooldown.CooldownBase;
-import com.desiremc.hcf.util.Cooldown.Time;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalNotification;
 
-public class EnderpearlHandler implements Listener {
+public class EnderpearlHandler implements Listener
+{
 
-    private final Cooldown cooldown;
+    private static int TIMER;
 
-    public EnderpearlHandler() {
+    private Cache<UUID, Long> history;
 
-        (cooldown = Components.getInstance().getCooldown(Components.ENDERP)).setOnEndSequece(new Consumer<UUID>() {
+    public EnderpearlHandler()
+    {
+        TIMER = Core.getConfigHandler().getInteger("enderpearl.time");
+        history = CacheBuilder.newBuilder().expireAfterWrite(TIMER, TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
+        {
 
             @Override
-            public void accept(UUID id) {
-                Bukkit.getScheduler().runTask(Core.getInstance(), new Runnable() {
-                    @Override
-                    public void run() {
-                        Bukkit.getPlayer(id).sendMessage(Utils.chat(Core.getInstance().getConfig().getString("enderpearl_ended")));
-                    }
-                });
+            public void onRemoval(RemovalNotification<UUID, Long> entry)
+            {
+                Core.getLangHandler().sendString(Bukkit.getPlayer(entry.getKey()), "enderpearl.ended");
             }
-        });
+        }).build();
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
-    public void onInteract(PlayerInteractEvent e) {
+    public void onInteract(PlayerInteractEvent e)
+    {
         Player p = e.getPlayer();
 
-        if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK)) {
+        if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK))
+        {
             return;
         }
-        if (p.getItemInHand().getType() == Material.ENDER_PEARL) {
-            CooldownBase base = cooldown.get(p.getUniqueId());
-            if (base == null || Cooldown.getAmountLeft(base) <= 0) {
-                e.setCancelled(false);
-                cooldown.startCooldown(p.getUniqueId(),
-                        Cooldown.timeToMillis(Core.getInstance().getConfig().getString("enderpearl_time")));
-            } else {
+
+        if (p.getInventory().getItemInMainHand().getType() == Material.ENDER_PEARL)
+        {
+
+            UUID uuid = p.getUniqueId();
+            Long time = history.getIfPresent(uuid);
+
+            if (time == null)
+            {
+                history.put(uuid, System.currentTimeMillis());
+            } else
+            {
                 e.setCancelled(true);
-                String message = Core.getInstance().getConfig().getString("enderpearl_message");
-                long left = Cooldown.getAmountLeft(base);
-                Map<Time, Long> times = Cooldown.timeFromMillis(left);
-                message = message.replace("<days>", (times.containsKey(Time.DAY) ? times.get(Time.DAY) : 0) + "d");
-                message = message.replace("<hours>", (times.containsKey(Time.HOUR) ? times.get(Time.HOUR) : 0) + "h");
-                message = message.replace("<minutes>", (times.containsKey(Time.MINUTE) ? times.get(Time.MINUTE) : 0) + "m");
-                message = message.replace("<seconds>", (times.containsKey(Time.SECOND) ? times.get(Time.SECOND) : 0) + "s");
-                p.sendMessage(Utils.chat(message));
+                Core.getLangHandler().sendRenderMessage(p, "enderpearl.message", "{time}", String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
             }
         }
     }

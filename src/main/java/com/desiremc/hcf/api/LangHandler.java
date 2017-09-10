@@ -2,8 +2,6 @@ package com.desiremc.hcf.api;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
@@ -16,7 +14,6 @@ import com.desiremc.hcf.session.Session;
  */
 public class LangHandler extends FileHandler {
 
-    private static List<LangHandler> instances = new LinkedList<>();
 
     private String prefix;
     private boolean usePrefix;
@@ -29,7 +26,6 @@ public class LangHandler extends FileHandler {
      */
     public LangHandler(File file) {
         super(file);
-        instances.add(this);
         usePrefix = super.getBoolean("prefix.use");
         if (usePrefix) {
             prefix = super.getString("prefix.text");
@@ -126,10 +122,6 @@ public class LangHandler extends FileHandler {
         sender.sendMessage(usageMessage(label, args));
     }
 
-    public static void reloadAll() {
-        for (LangHandler lang : instances) {
-            lang.reload();
-        }
-    }
+
 
 }
