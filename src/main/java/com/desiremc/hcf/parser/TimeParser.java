@@ -3,17 +3,23 @@ package com.desiremc.hcf.parser;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.hcf.parser.ArgumentParser;
+import com.desiremc.hcf.util.DateUtils;
 
-public class TimeParser implements ArgumentParser {
-    
+public class TimeParser implements ArgumentParser
+{
+
     @Override
-    public Object parseArgument(CommandSender sender, String label, String arg) {
-        if (arg.matches("\\d+")) {
-            return Long.parseLong(arg);
+    public Object parseArgument(CommandSender sender, String label, String arg)
+    {
+        try
+        {
+            return DateUtils.parseDateDiff(arg, true);
         }
-
-        LANG.sendString(sender, "not_time");
-        return null;
+        catch (Exception e)
+        {
+            LANG.sendString(sender, "not_time");
+            return null;
+        }
     }
 
 }
