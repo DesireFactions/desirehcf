@@ -14,12 +14,22 @@ barrier:
   view-distance: 8
   max-distance: 32
 
+staff:
+  launch_velocity: 5.0
+
 regions:
   max-name: 16
   
 timers:
   pvp:
     time: 1800
+    
+crowbar:
+  uses: 6
+  spawner:
+    cost: 6
+  frame:
+    cost: 1
 
 stack-color: 'RED'
 stacking-radius: 5
@@ -41,18 +51,6 @@ pvptimer_time: '40s'
 pvptimer_attacker_message: '&4&lPVP&r&7 &e<player> &7is currently invincible due to pvp timer'
 pvptimer_message: '&4&lPVP&r &7/pvptimer disable'
 pvptimer_disabled: '&4&lPVP&r &7Your pvptimer has been disabled'
-
-crowbar-spawners-string: '&cSpawners: '
-crowbar-spawners-uses-string: ' &7'
-crowbar-portals-string: '&cPortals:'
-crowbar-portals-uses-string: ' &7'
-crowbar-name: '&4&lCrowbar'
-crowbar-lore:
-   - '<spawner-string>'
-   - '<portal-string>'
-crowbar-uses-spawners: 1
-crowbar-uses-portals: 6
-crowbar-spawner-name-color: '&4&l'
 
 combattag_time: '30s'
 combattag_victim_message: '&4&lPVP&r&7 <attacker> has attacked you!'
@@ -76,9 +74,8 @@ gapple_time: '30s'
 gapple_ended: '&4&lGAPPLES&r&7 You may now use your &6Gapple'
 gapple_message: '&4&lGAPPLES&r&7 You can not use a &6Gapple&7 for &e<seconds>'
 
-enderpearl_time: '1m:10s'
-enderpearl_ended: '&4&lEPEARLS&r&7 You may now use your &5EnderPearl'
-enderpearl_message: '&4&lEPEARLS&r&7 You can not use an &5EnderPearl&7 for &e<seconds>'
+enderpearl:
+  time: 60
 
 #  Use -1 for no change
 #  Use 0 to disable enchantment
