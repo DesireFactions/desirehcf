@@ -13,7 +13,10 @@ import org.bukkit.configuration.file.YamlConfiguration;
  * @author Michael Ziluck
  *
  */
-public class FileHandler {
+public class FileHandler
+{
+
+    private static List<FileHandler> instances = new LinkedList<>();
 
     protected File file;
 
@@ -26,7 +29,9 @@ public class FileHandler {
      * 
      * @param file
      */
-    public FileHandler(File file) {
+    public FileHandler(File file)
+    {
+        instances.add(this);
         history = new HashMap<>();
         this.file = file;
         this.fileConfig = YamlConfiguration.loadConfiguration(file);
@@ -38,7 +43,8 @@ public class FileHandler {
      * 
      * @param file
      */
-    public void reload() {
+    public void reload()
+    {
         this.fileConfig = YamlConfiguration.loadConfiguration(file);
         history.clear();
     }
@@ -52,18 +58,22 @@ public class FileHandler {
      * 
      * @return the formatted string.
      */
-    public String getString(String key) {
+    public String getString(String key)
+    {
         String message = null;
         Object o = history.get(key);
-        if (o != null && o instanceof String) {
+        if (o != null && o instanceof String)
+        {
             return (String) o;
         }
         message = fileConfig.getString(key);
-        if (message != null) {
+        if (message != null)
+        {
             message = ChatColor.translateAlternateColorCodes('&', fileConfig.getString(key));
             history.put(key, message);
             return message;
-        } else {
+        } else
+        {
             return key;
         }
     }
@@ -76,10 +86,12 @@ public class FileHandler {
      * 
      * @return the value.
      */
-    public double getDouble(String key) {
+    public double getDouble(String key)
+    {
         double value;
         Object o = history.get(key);
-        if (o != null && o instanceof Double) {
+        if (o != null && o instanceof Double)
+        {
             return (Double) o;
         }
         value = fileConfig.getDouble(key);
@@ -95,10 +107,12 @@ public class FileHandler {
      * 
      * @return the value.
      */
-    public int getInteger(String key) {
+    public int getInteger(String key)
+    {
         int value;
         Object o = history.get(key);
-        if (o != null && o instanceof Integer) {
+        if (o != null && o instanceof Integer)
+        {
             return (Integer) o;
         }
         value = fileConfig.getInt(key);
@@ -114,10 +128,12 @@ public class FileHandler {
      * 
      * @return the value.
      */
-    public boolean getBoolean(String key) {
+    public boolean getBoolean(String key)
+    {
         boolean value;
         Object o = history.get(key);
-        if (o != null && o instanceof Integer) {
+        if (o != null && o instanceof Integer)
+        {
             return (Boolean) o;
         }
         value = fileConfig.getBoolean(key);
@@ -135,19 +151,31 @@ public class FileHandler {
      * @return the formatted string list.
      */
     @SuppressWarnings("unchecked")
-    public List<String> getStringList(String key) {
+    public List<String> getStringList(String key)
+    {
         Object o = history.get(key);
-        if (o != null && o instanceof List<?>) {
+        if (o != null && o instanceof List<?>)
+        {
             return (List<String>) o;
         }
         List<String> list = new LinkedList<>();
-        for (String str : fileConfig.getStringList(key)) {
+        for (String str : fileConfig.getStringList(key))
+        {
             list.add(ChatColor.translateAlternateColorCodes('&', str));
         }
-        if (list.size() == 0) {
+        if (list.size() == 0)
+        {
             list.add(getString(key));
         }
         return list;
+    }
+
+    public static void reloadAll()
+    {
+        for (FileHandler lang : instances)
+        {
+            lang.reload();
+        }
     }
 
 }

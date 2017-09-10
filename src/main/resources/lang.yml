@@ -1,3 +1,4 @@
+hcfreload: '&cReloaded the config and lang files.'
 prefix:
   text: '&7[&bHCF&7]'
   use: true
@@ -84,3 +85,12 @@ koth:
   add_winner_reward: '&7Winner reward added.'
 ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
+enderpearl:
+  ended: '&7You may now use an &5EnderPearl&7.'
+  message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.' 
+crowbar:
+  new_crowbar: '&7You have recieved a crowbar.'
+  not_yours: '&7You can''t break blocks in someone else''s faction.'
+  wrong_block: '&7Only usable on ender portal frames and mob spawners.'
+  not_enough_charges: '&7Your crowbar does not have enough charges for that.'
+  out_of_uses: '&7Your crowbar ran out of uses.'

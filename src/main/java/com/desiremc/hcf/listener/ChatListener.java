@@ -50,7 +50,7 @@ public class ChatListener implements Listener {
             @Override
             public void accept(Player players) {
 
-                if (f.getId().equals("0")) {
+                if (f == null) {
                     new FancyMessage(s.getRank().getPrefix())
                             .then(player.getName())
                             .tooltip(new String[] {
