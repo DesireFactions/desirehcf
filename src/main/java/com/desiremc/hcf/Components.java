@@ -10,7 +10,6 @@ import java.util.Scanner;
 import org.bukkit.Bukkit;
 
 import com.desiremc.hcf.handler.BrewingSpeedHandler;
-import com.desiremc.hcf.handler.CreatureSpawnListener;
 import com.desiremc.hcf.handler.DeathBanHandler;
 import com.desiremc.hcf.handler.EnchantmentLimiterHandler;
 import com.desiremc.hcf.handler.EnderchestHandler;
@@ -57,7 +56,6 @@ public class Components {
         Bukkit.getPluginManager().registerEvents(new FurnaceSpeedHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new GappleHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new EnderpearlHandler(), instance);
-        Bukkit.getPluginManager().registerEvents(new CreatureSpawnListener(), instance);
         // got to here
         Bukkit.getPluginManager().registerEvents(new EnderchestHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new BrewingSpeedHandler(), instance);

@@ -20,11 +20,12 @@ public class CreatureSpawnListener implements Listener
             if (e.getEntity().getWorld().getEnvironment() == World.Environment.THE_END)
             {
                 e.getEntity().remove();
-            } else
+            }
+            else
             {
                 if (e.getEntity().getType() == EntityType.CREEPER || e.getEntity().getType() == EntityType.ENDERMAN)
                 {
-                    if (!Core.getInstance().getConfig().getBoolean("spawn-mobs"))
+                    if (!Core.getConfigHandler().getBoolean("spawn-mobs"))
                     {
                         e.getEntity().remove();
                     }
