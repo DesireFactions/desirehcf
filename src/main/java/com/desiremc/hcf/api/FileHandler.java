@@ -1,6 +1,7 @@
 package com.desiremc.hcf.api;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -60,19 +61,18 @@ public class FileHandler
      */
     public String getString(String key)
     {
+        key = key.toLowerCase();
         String message = null;
         Object o = history.get(key);
-        if (o != null && o instanceof String)
-        {
-            return (String) o;
-        }
+        if (o != null && o instanceof String) { return (String) o; }
         message = fileConfig.getString(key);
         if (message != null)
         {
             message = ChatColor.translateAlternateColorCodes('&', fileConfig.getString(key));
             history.put(key, message);
             return message;
-        } else
+        }
+        else
         {
             return key;
         }
@@ -88,12 +88,10 @@ public class FileHandler
      */
     public double getDouble(String key)
     {
+        key = key.toLowerCase();
         double value;
         Object o = history.get(key);
-        if (o != null && o instanceof Double)
-        {
-            return (Double) o;
-        }
+        if (o != null && o instanceof Double) { return (Double) o; }
         value = fileConfig.getDouble(key);
         history.put(key, value);
         return value;
@@ -109,12 +107,10 @@ public class FileHandler
      */
     public int getInteger(String key)
     {
+        key = key.toLowerCase();
         int value;
         Object o = history.get(key);
-        if (o != null && o instanceof Integer)
-        {
-            return (Integer) o;
-        }
+        if (o != null && o instanceof Integer) { return (Integer) o; }
         value = fileConfig.getInt(key);
         history.put(key, value);
         return value;
@@ -130,12 +126,10 @@ public class FileHandler
      */
     public boolean getBoolean(String key)
     {
+        key = key.toLowerCase();
         boolean value;
         Object o = history.get(key);
-        if (o != null && o instanceof Integer)
-        {
-            return (Boolean) o;
-        }
+        if (o != null && o instanceof Integer) { return (Boolean) o; }
         value = fileConfig.getBoolean(key);
         history.put(key, value);
         return value;
@@ -153,11 +147,9 @@ public class FileHandler
     @SuppressWarnings("unchecked")
     public List<String> getStringList(String key)
     {
+        key = key.toLowerCase();
         Object o = history.get(key);
-        if (o != null && o instanceof List<?>)
-        {
-            return (List<String>) o;
-        }
+        if (o != null && o instanceof List<?>) { return (List<String>) o; }
         List<String> list = new LinkedList<>();
         for (String str : fileConfig.getStringList(key))
         {
@@ -168,6 +160,21 @@ public class FileHandler
             list.add(getString(key));
         }
         return list;
+    }
+
+    public void setString(String key, String value)
+    {
+        key = key.toLowerCase();
+        fileConfig.set(key, value);
+        history.put(key, value);
+        try
+        {
+            fileConfig.save(file);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
     }
 
     public static void reloadAll()

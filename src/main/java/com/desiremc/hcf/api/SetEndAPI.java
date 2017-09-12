@@ -12,7 +12,7 @@ public class SetEndAPI {
     
     private static void handle(CommandSender sender, String configName, String messageName) {
         Player player = (Player) sender;
-        Core.getInstance().getConfig().set(configName, Utils.toString(player.getLocation()));
+        Core.getConfigHandler().setString(configName, Utils.toString(player.getLocation()));
         Core.getInstance().saveConfig();
         LANG.sendString(sender, messageName);
     }
