@@ -5,13 +5,13 @@ import org.bukkit.command.CommandSender;
 import com.desiremc.hcf.api.SetEndAPI;
 import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.session.Rank;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 
 public class SetEndExitCommand extends ValidCommand {
 
     public SetEndExitCommand() {
         super("exit", "set end exit", Rank.ADMIN, new String[] {});
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
     }
 
     @Override

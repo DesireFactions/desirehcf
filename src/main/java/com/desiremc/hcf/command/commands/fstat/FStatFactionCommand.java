@@ -6,14 +6,14 @@ import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.parser.FactionSessionParser;
 import com.desiremc.hcf.session.FactionSession;
 import com.desiremc.hcf.session.Rank;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 
 public class FStatFactionCommand extends ValidCommand {
 
     public FStatFactionCommand() {
         super("faction", "shows faction stats", Rank.MODERATOR, new String[] { "faction" });
         addParser(new FactionSessionParser(), "faction");
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.parser.PlayerSessionParser;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Session;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 import com.desiremc.hcf.validator.SenderFriendRequestValidator;
 import com.desiremc.hcf.validator.SenderIsFriendsValidator;
 
@@ -17,7 +17,7 @@ public class FriendDeclineCommand extends ValidCommand {
     public FriendDeclineCommand() {
         super("decline", "Decline a friend request.", Rank.GUEST, new String[] { "target" }, "deny");
         addParser(new PlayerSessionParser(), "target");
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
         addValidator(new SenderFriendRequestValidator(), "target");
         addValidator(new SenderIsFriendsValidator(), "target");
     }

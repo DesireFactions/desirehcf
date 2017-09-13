@@ -19,13 +19,13 @@ import com.desiremc.hcf.session.Achievement;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.SessionHandler;
 import com.desiremc.hcf.util.ChatUtils;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 
 public class AchievementCommand extends ValidCommand {
 
     public AchievementCommand() {
         super("achievement", "List all aquired achievements.", Rank.GUEST, new String[] {}, "achieve");
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
     }
 
     public ItemGUI getAchievements(UUID uuid) {

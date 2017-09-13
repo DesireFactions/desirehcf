@@ -8,7 +8,7 @@ import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.parser.PlayerSessionParser;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Session;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 import com.desiremc.hcf.validator.SenderNotFriendsValidator;
 
 public class FriendAddCommand extends ValidCommand {
@@ -16,7 +16,7 @@ public class FriendAddCommand extends ValidCommand {
     public FriendAddCommand() {
         super("add", "Add a friend.", Rank.GUEST, new String[] { "target" }, "invite", "befriend");
         addParser(new PlayerSessionParser(), "target");
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
         addValidator(new SenderNotFriendsValidator(), "target");
     }
 

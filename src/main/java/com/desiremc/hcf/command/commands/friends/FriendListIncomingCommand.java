@@ -6,14 +6,14 @@ import org.bukkit.entity.Player;
 import com.desiremc.hcf.api.FriendsAPI;
 import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.session.Rank;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 import com.desiremc.hcf.validator.SenderIncommingFriendRequestsValidator;
 
 public class FriendListIncomingCommand extends ValidCommand {
 
     public FriendListIncomingCommand() {
         super("incoming", "Lists incoming friend requests.", Rank.GUEST, new String[] {});
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
         addValidator(new SenderIncommingFriendRequestsValidator());
     }
 

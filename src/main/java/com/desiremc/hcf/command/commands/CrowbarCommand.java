@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.listener.CrowbarHandler;
 import com.desiremc.hcf.session.Rank;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 
 public class CrowbarCommand extends ValidCommand
 {
@@ -14,7 +14,7 @@ public class CrowbarCommand extends ValidCommand
     public CrowbarCommand()
     {
         super("crowbar", "Spawn in a new crowbar.", Rank.MODERATOR, new String[] {});
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
     }
 
     @Override

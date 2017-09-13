@@ -6,13 +6,13 @@ import org.bukkit.entity.Player;
 import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.util.ManualUtil;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 
 public class ManualYoutubeCommand extends ValidCommand {
 
     public ManualYoutubeCommand() {
         super("yt", "Opens youtuber manual", Rank.YOUTUBER, new String[] {}, "youtube", "youtuber");
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
     }
 
     @Override
