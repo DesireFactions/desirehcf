@@ -25,8 +25,6 @@ public class EnderchestHandler implements Listener {
                     if (!s.hasAchievement(MscAchievements.FIRST_ENDERCHEST_OPEN.getId())) {
                         s.awardAchievement(MscAchievements.FIRST_ENDERCHEST_OPEN, true);
                     }
-
-                    event.setCancelled(false);
                 }
             }
         }
