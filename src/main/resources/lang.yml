@@ -65,8 +65,13 @@ enderchest:
 ban:
   rank_to_low_error: '&7You may only ban people below your rank.'
   invalid_ban_time_error: '&7Invalid ban time.'
-  tempban_message: '&7You have been {duration} banned &e{player}&7 for &e{reason}&7.'
-  permban_message: '&7You have been permanently banned &e{player}&7 for &e{reason}&7.'
+  tempban_message: '&7You have {duration} banned &e{player}&7 for &e{reason}&7.'
+  permban_message: '&7You have permanently banned &e{player}&7 for &e{reason}&7.'
+  unban_message: '&7You have unbanned &e{player}&7.'
+  tempban_message_target: '&7You have been {duration} banned by &e{player}&7 for &e{reason}&7.'
+  permban_message_target: '&7You have been permanently banned by &e{player}&7 for &e{reason}&7.'
+  unban_message_target: '&7You have been unbanned by &e{player}&7.'
+  unban_invalid: '&7The player &e{player}&7 is not banned.'
 koth:
   name_used: '&7That name has already been used.'
   hill_not_found: '&7That hill can''t be found.'
