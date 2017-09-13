@@ -237,7 +237,9 @@ public class Session {
     public Punishment isBanned() {
         for (Punishment p : activePunishments) {
             if (p.getType() == Type.BAN) {
-                return p;
+                if(!p.isRepealed()) {
+                    return p;
+                }
             }
         }
         return null;

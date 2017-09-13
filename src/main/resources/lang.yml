@@ -14,6 +14,7 @@ only_players: '&7only players can run that command.'
 no_permissions: '&7No permissions to run that command.'
 faction: Faction &e{faction}
 no_faction: You are not a part of a faction!
+not_banned: {player} is not banned.
 trophy_points: Trophy Points &e{points}
 koth_wins: Trophy Points &e{koth}
 no_season_data: Could not find Season data for &e{faction}
@@ -71,7 +72,6 @@ ban:
   tempban_message_target: '&7You have been {duration} banned by &e{player}&7 for &e{reason}&7.'
   permban_message_target: '&7You have been permanently banned by &e{player}&7 for &e{reason}&7.'
   unban_message_target: '&7You have been unbanned by &e{player}&7.'
-  unban_invalid: '&7The player &e{player}&7 is not banned.'
 koth:
   name_used: '&7That name has already been used.'
   hill_not_found: '&7That hill can''t be found.'

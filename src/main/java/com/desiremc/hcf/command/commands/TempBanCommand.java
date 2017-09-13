@@ -14,7 +14,7 @@ import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.session.SessionHandler;
 import com.desiremc.hcf.util.DateUtils;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 import com.desiremc.hcf.validator.SenderOutranksValidator;
 
 public class TempBanCommand extends ValidCommand
@@ -26,7 +26,7 @@ public class TempBanCommand extends ValidCommand
         addParser(new PlayerSessionParser(), "target");
         addParser(new TimeParser(), "time");
         addParser(new StringParser(), "reason");
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
         addValidator(new SenderOutranksValidator(), "target");
     }
 

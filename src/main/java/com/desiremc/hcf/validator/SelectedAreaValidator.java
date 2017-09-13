@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import com.desiremc.hcf.Core;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 
-public class SelectedAreaValidator extends PlayerSenderValidator {
+public class SelectedAreaValidator extends PlayerValidator {
 
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg) {

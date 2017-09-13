@@ -9,7 +9,7 @@ import com.desiremc.hcf.parser.StringParser;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.tickets.TicketHandler;
 import com.desiremc.hcf.util.StringUtils;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 
 public class TicketOpenCommand extends ValidCommand {
 
@@ -17,7 +17,7 @@ public class TicketOpenCommand extends ValidCommand {
         super("open", "Opens a new ticket.", Rank.GUEST, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[] { "description" }, new String[] { "create", "new" });
         addParser(new StringParser(), "description");
 
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
     }
 
     @Override

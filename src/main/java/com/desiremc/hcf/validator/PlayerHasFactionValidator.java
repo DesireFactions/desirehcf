@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.desiremc.hcf.util.FactionsUtils;
 
-public class PlayerHasFactionValidator extends PlayerSenderValidator {
+public class PlayerHasFactionValidator extends PlayerValidator {
 
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg) {

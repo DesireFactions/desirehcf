@@ -7,14 +7,14 @@ import com.desiremc.hcf.api.StaffAPI;
 import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.parser.PlayerParser;
 import com.desiremc.hcf.session.Rank;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 
 public class StaffMountCommand extends ValidCommand {
 
     public StaffMountCommand() {
         super("follow", "follow a player", Rank.ADMIN, new String[] { "target" }, "mount", "ride", "leash", "lead");
         addParser(new PlayerParser(), "target");
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
     }
 
     @Override

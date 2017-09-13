@@ -8,14 +8,14 @@ import com.desiremc.hcf.old_gui.PlayerInfoGUI;
 import com.desiremc.hcf.parser.PlayerSessionParser;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Session;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 
 public class InfoCommand extends ValidCommand {
 
     public InfoCommand() {
         super("info", "Get a user's information.", Rank.ADMIN, new String[] { "target" });
         addParser(new PlayerSessionParser(), "target");
-        addValidator(new PlayerSenderValidator());
+        addValidator(new PlayerValidator());
     }
 
     @Override

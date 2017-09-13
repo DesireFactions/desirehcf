@@ -12,7 +12,7 @@ import com.desiremc.hcf.punishment.Punishment.Type;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.session.SessionHandler;
-import com.desiremc.hcf.validator.PlayerSenderValidator;
+import com.desiremc.hcf.validator.PlayerValidator;
 import com.desiremc.hcf.validator.SenderOutranksValidator;
 
 public class BanCommand extends ValidCommand
@@ -23,7 +23,7 @@ public class BanCommand extends ValidCommand
 		super("ban", "Permanently ban a user from the server.", Rank.MODERATOR, ValidCommand.ARITY_REQUIRED_VARIADIC, new String[]{"target", "reason"});
 		addParser(new PlayerSessionParser(), "target");
 		addParser(new StringParser(), "reason");
-		addValidator(new PlayerSenderValidator());
+		addValidator(new PlayerValidator());
 		addValidator(new SenderOutranksValidator(), "target");
 	}
 
