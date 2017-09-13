@@ -55,7 +55,7 @@ public class TempBanCommand extends ValidCommand
         punishment.setType(Type.BAN);
         PunishmentHandler.getInstance().save(punishment);
 
-        LANG.sendRenderMessage(sender, "tempban.ban_message",
+        LANG.sendRenderMessage(sender, "ban.tempban_message",
                 "{duration}", DateUtils.formatDateDiff(time),
                 "{player}", target.getName(),
                 "{reason}", punishment.getReason());
