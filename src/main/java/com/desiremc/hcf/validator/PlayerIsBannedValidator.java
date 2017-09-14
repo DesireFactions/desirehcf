@@ -1,6 +1,8 @@
 package com.desiremc.hcf.validator;
 
 import com.desiremc.hcf.session.Session;
+import com.desiremc.hcf.session.SessionHandler;
+
 import org.bukkit.command.CommandSender;
 
 public class PlayerIsBannedValidator extends PlayerValidator
@@ -9,13 +11,9 @@ public class PlayerIsBannedValidator extends PlayerValidator
     @Override
     public boolean validateArgument(CommandSender sender, String label, Object arg)
     {
-        boolean first = super.validateArgument(sender, label, arg);
-        if (!first)
-        {
-            return false;
-        }
+        Session session = SessionHandler.getSession(arg);
 
-        Session session = (Session) arg;
+        if (session == null) { return false; }
 
         if (session.isBanned() != null)
         {
