@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 
 public class BrewingSpeedHandler implements Listener {
 
@@ -20,7 +20,7 @@ public class BrewingSpeedHandler implements Listener {
             BlockState state = playerInteractEvent.getClickedBlock().getState();
             if (state instanceof BrewingStand) {
                 BrewingStand brewingStand = (BrewingStand) state;
-                brewingStand.setBrewingTime((short) (brewingStand.getBrewingTime() + Core.getInstance().getConfig().getInt("brewing.speed")));
+                brewingStand.setBrewingTime((short) (brewingStand.getBrewingTime() + DesireCore.getInstance().getConfig().getInt("brewing.speed")));
                 brewingStand.setBrewingTime((short) Math.max(1, brewingStand.getBrewingTime() - 1));
             }
         }
@@ -31,8 +31,8 @@ public class BrewingSpeedHandler implements Listener {
         BlockState state = brewEvent.getBlock().getState();
         if (state instanceof BrewingStand) {
             BrewingStand brewingStand = (BrewingStand) state;
-            if (Core.getInstance().getConfig().getInt("brewing.speed") > 1) {
-                new BrewingUpdateTask(brewingStand).runTaskTimer(Core.getInstance(), 1L, 1L);
+            if (DesireCore.getInstance().getConfig().getInt("brewing.speed") > 1) {
+                new BrewingUpdateTask(brewingStand).runTaskTimer(DesireCore.getInstance(), 1L, 1L);
             }
         }
     }
@@ -45,7 +45,7 @@ public class BrewingSpeedHandler implements Listener {
         }
 
         public void run() {
-            this.brewingStand.setBrewingTime((short) (this.brewingStand.getBrewingTime() + Core.getInstance().getConfig().getInt("brewing.speed")));
+            this.brewingStand.setBrewingTime((short) (this.brewingStand.getBrewingTime() + DesireCore.getInstance().getConfig().getInt("brewing.speed")));
             this.brewingStand.setBrewingTime((short) Math.max(1, this.brewingStand.getBrewingTime() - 1));
             this.brewingStand.update();
             if (this.brewingStand.getBrewingTime() <= 1) {

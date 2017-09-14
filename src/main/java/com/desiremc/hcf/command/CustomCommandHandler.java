@@ -17,7 +17,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.SimplePluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.session.SessionHandler;
 
@@ -25,23 +25,33 @@ import com.desiremc.hcf.session.SessionHandler;
  * @author Michael Ziluck
  *
  */
-public class CustomCommandHandler implements CommandExecutor {
+public class CustomCommandHandler implements CommandExecutor
+{
 
+    private static CustomCommandHandler instance;
+    
     private static CommandMap commandMapInstance = getCommandMap();
 
     private LinkedList<ValidCommand> commands;
 
     @Override
-    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
+    public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args)
+    {
         ValidCommand command = getCustomCommand(label);
-        if (command != null) {
+        if (command != null)
+        {
             Session s = sender instanceof Player ? SessionHandler.getSession(sender) : null;
-            if (s == null || s.getRank().getId() >= command.getRequiredRank().getId()) {
+            if (s == null || s.getRank().getId() >= command.getRequiredRank().getId())
+            {
                 command.run(sender, label, args);
-            } else {
-                Core.getLangHandler().sendString(sender, "no-permissions");
             }
-        } else {
+            else
+            {
+                DesireCore.getLangHandler().sendString(sender, "no-permissions");
+            }
+        }
+        else
+        {
             return false;
         }
 
@@ -51,12 +61,15 @@ public class CustomCommandHandler implements CommandExecutor {
     /**
      * @param command
      */
-    public void registerCommand(ValidCommand command) {
-        registerCommand(command, Core.getInstance());
+    public void registerCommand(ValidCommand command)
+    {
+        registerCommand(command, DesireCore.getInstance());
     }
 
-    public void registerCommand(ValidCommand command, JavaPlugin plugin) {
-        if (commands == null) {
+    public void registerCommand(ValidCommand command, JavaPlugin plugin)
+    {
+        if (commands == null)
+        {
             commands = new LinkedList<>();
         }
 
@@ -68,44 +81,63 @@ public class CustomCommandHandler implements CommandExecutor {
         commands.add(command);
     }
 
-    private PluginCommand createBukkitCommand(String name, JavaPlugin plugin) {
+    private PluginCommand createBukkitCommand(String name, JavaPlugin plugin)
+    {
         PluginCommand command = null;
-        try {
+        try
+        {
             Constructor<PluginCommand> c = PluginCommand.class.getDeclaredConstructor(String.class, Plugin.class);
             c.setAccessible(true);
 
             command = c.newInstance(name, plugin);
-        } catch (SecurityException | IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex) {
+        }
+        catch (SecurityException | IllegalArgumentException | IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException ex)
+        {
             ex.printStackTrace();
         }
 
         return command;
     }
 
-    private static CommandMap getCommandMap() {
+    private static CommandMap getCommandMap()
+    {
         CommandMap commandMap = null;
 
-        try {
-            if (Bukkit.getPluginManager() instanceof SimplePluginManager) {
+        try
+        {
+            if (Bukkit.getPluginManager() instanceof SimplePluginManager)
+            {
                 Field f = SimplePluginManager.class.getDeclaredField("commandMap");
                 f.setAccessible(true);
 
                 commandMap = (CommandMap) f.get(Bukkit.getPluginManager());
             }
-        } catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e) {
+        }
+        catch (NoSuchFieldException | SecurityException | IllegalArgumentException | IllegalAccessException e)
+        {
             e.printStackTrace();
         }
 
         return commandMap;
     }
 
-    private ValidCommand getCustomCommand(String cmd) {
-        for (ValidCommand command : commands) {
-            if (command.matches(cmd)) {
-                return command;
-            }
+    private ValidCommand getCustomCommand(String cmd)
+    {
+        for (ValidCommand command : commands)
+        {
+            if (command.matches(cmd)) { return command; }
         }
         return null;
+    }
+
+    public static void initialize() 
+    {
+        instance = new CustomCommandHandler();
+    }
+    
+    public static CustomCommandHandler getInstance()
+    {
+        return instance;
     }
 
 }

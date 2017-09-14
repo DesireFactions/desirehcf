@@ -7,7 +7,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.session.SessionHandler;
@@ -22,12 +22,12 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
     private int openTickets;
 
     public TicketHandler() {
-        super(Ticket.class, Core.getInstance().getMongoWrapper().getDatastore());
+        super(Ticket.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
         tickets = find(createQuery().where("status='OPEN'")).asList();
     }
 
     public static void openTicket(CommandSender sender, String text) {
-        Ticket ticket = new Ticket(sender instanceof Player ? ((Player) sender).getUniqueId() : Core.getConsoleUUID(), text);
+        Ticket ticket = new Ticket(sender instanceof Player ? ((Player) sender).getUniqueId() : DesireCore.getConsoleUUID(), text);
         ticket.setId(instance.getNextId());
         instance.save(ticket);
         instance.tickets.add(ticket);
@@ -35,17 +35,17 @@ public class TicketHandler extends BasicDAO<Ticket, Integer> implements Runnable
 
     public static void closeTicket(CommandSender closer, Ticket ticket, String response) {
         ticket.setClosed(System.currentTimeMillis());
-        ticket.setCloser(closer instanceof Player ? ((Player) closer).getUniqueId() : Core.getConsoleUUID());
+        ticket.setCloser(closer instanceof Player ? ((Player) closer).getUniqueId() : DesireCore.getConsoleUUID());
         ticket.setResponse(response);
         ticket.setStatus(Status.CLOSED);
     }
 
     @Override
     public void run() {
-        Bukkit.getScheduler().runTaskLater(Core.getInstance(), this, 3600);
+        Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 3600);
         for (Session s : SessionHandler.getSessions()) {
             if (s.getRank().getId() >= Rank.MODERATOR.getId()) {
-                Core.getLangHandler().sendRenderMessage(s, "tickets.open", "{number}", String.valueOf(openTickets));
+                DesireCore.getLangHandler().sendRenderMessage(s, "tickets.open", "{number}", String.valueOf(openTickets));
             }
         }
     }

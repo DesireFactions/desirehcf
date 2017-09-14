@@ -10,12 +10,12 @@ import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.desiremc.hcf.Core;
 import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.old_gui.CustomIS;
 import com.desiremc.hcf.old_gui.ItemGUI;
 import com.desiremc.hcf.old_gui.MenuItem;
 import com.desiremc.hcf.session.Achievement;
+import com.desiremc.hcf.session.AchievementManager;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.SessionHandler;
 import com.desiremc.hcf.util.ChatUtils;
@@ -60,7 +60,7 @@ public class AchievementCommand extends ValidCommand {
                 String title = ChatUtils.getNameWithRankColor(uuid, true);
                 int i = 0;
                 for (String s : achievements) {
-                    Achievement achievement = Core.getInstance().getAchievementManager().getAchievement(s);
+                    Achievement achievement = AchievementManager.getInstance().getAchievement(s);
                     set(i, new MenuItem(new CustomIS().setMaterial(Material.PAPER).setName(ChatColor.YELLOW + "Achievement #" + (++i)).addLore(ChatColor.DARK_GRAY + "---------------------------").addLore(ChatColor.GRAY + "Name: " + ChatColor.YELLOW + achievement.getName()).addLore(ChatColor.GRAY + "Desc: " + ChatColor.YELLOW + achievement.getDesc())
                             .addLore(ChatColor.GRAY + "Reward: " + ChatColor.YELLOW + achievement.getReward() + " Tokens").addLore(ChatColor.DARK_GRAY + "---------------------------").addLore(ChatColor.GRAY + "This achievement was earned by: " + title), new Runnable() {
                                 @Override

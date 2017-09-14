@@ -14,7 +14,7 @@ import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.punishment.Punishment;
 import com.desiremc.hcf.punishment.Punishment.Type;
 import com.desiremc.hcf.util.ChatUtils;
@@ -113,7 +113,7 @@ public class Session {
     public void addTokens(int tokens, boolean notify) {
         this.tokens += tokens;
         if (notify) {
-            sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You have been awarded " + ChatColor.YELLOW + tokens + ChatColor.GRAY + " tokens!");
+            sendMessage(DesireCore.getLangHandler().getPrefix() + ChatColor.GRAY + "You have been awarded " + ChatColor.YELLOW + tokens + ChatColor.GRAY + " tokens!");
         }
         SessionHandler.getInstance().save(this);
     }
@@ -276,9 +276,9 @@ public class Session {
         getAchievements().add(achievement.getId());
 
         if (inform) {
-            Player player = Core.getInstance().getServer().getPlayer(uuid);
+            Player player = DesireCore.getInstance().getServer().getPlayer(uuid);
             sendMessage(ChatColor.DARK_GRAY + "----------------------------------------------------");
-            ChatUtils.sendCenteredMessage(player, Core.getInstance().getPrefix() + ChatColor.GRAY + "Achievement unlocked!");
+            ChatUtils.sendCenteredMessage(player, DesireCore.getLangHandler().getPrefix() + ChatColor.GRAY + "Achievement unlocked!");
             ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "Name: " + ChatColor.YELLOW + achievement.getName());
             ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "Desc: " + ChatColor.YELLOW + achievement.getDesc());
             if (achievement.getReward() > 0) {
@@ -303,7 +303,7 @@ public class Session {
         @Override
         public void run() {
             if (!pause && safeTimer > 0) {
-                Bukkit.getScheduler().runTaskLater(Core.getInstance(), this, 20);
+                Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 20);
             }
             safeTimer--;
         }

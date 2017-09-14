@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Region;
@@ -21,7 +21,7 @@ public class RegionListCommand extends ValidCommand {
         Collection<Region> regions = RegionHandler.getInstance().getRegions();
 
         if (regions.size() >= 1) {
-            String message = Core.getLangHandler().getString("list.format");
+            String message = DesireCore.getLangHandler().getString("list.format");
             StringBuilder sb = new StringBuilder();
             int i = 0;
             for (Region r : regions) {
@@ -34,7 +34,7 @@ public class RegionListCommand extends ValidCommand {
             message = message.replace("{regions}", sb.toString());
             sender.sendMessage(message);
         } else {
-            sender.sendMessage(Core.getLangHandler().getString("list.no-regions"));
+            sender.sendMessage(DesireCore.getLangHandler().getString("list.no-regions"));
         }
     }
 

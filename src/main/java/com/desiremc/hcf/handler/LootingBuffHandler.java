@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 
 public class LootingBuffHandler implements Listener {
 
@@ -18,7 +18,7 @@ public class LootingBuffHandler implements Listener {
             Player p = e.getEntity().getKiller();
             if (p.getItemInHand().getItemMeta().hasEnchant(Enchantment.LOOT_BONUS_MOBS)) {
                 int dropped = e.getDroppedExp();
-                int bonus = Core.getInstance().getConfig().getInt("looting-buffer");
+                int bonus = DesireCore.getInstance().getConfig().getInt("looting-buffer");
                 e.setDroppedExp(dropped * bonus);
             }
         }

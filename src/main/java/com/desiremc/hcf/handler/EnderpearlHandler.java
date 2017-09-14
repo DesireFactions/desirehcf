@@ -11,7 +11,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
@@ -26,7 +26,7 @@ public class EnderpearlHandler implements Listener
 
     public EnderpearlHandler()
     {
-        TIMER = Core.getConfigHandler().getInteger("enderpearl.time");
+        TIMER = DesireCore.getConfigHandler().getInteger("enderpearl.time");
         history = CacheBuilder.newBuilder().expireAfterWrite(TIMER, TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
         {
 
@@ -36,7 +36,7 @@ public class EnderpearlHandler implements Listener
                 Player p = Bukkit.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    Core.getLangHandler().sendString(p, "enderpearl.ended");
+                    DesireCore.getLangHandler().sendString(p, "enderpearl.ended");
                 }
             }
         }).build();
@@ -63,7 +63,7 @@ public class EnderpearlHandler implements Listener
             } else
             {
                 e.setCancelled(true);
-                Core.getLangHandler().sendRenderMessage(p, "enderpearl.message", "{time}", String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
+                DesireCore.getLangHandler().sendRenderMessage(p, "enderpearl.message", "{time}", String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
             }
         }
     }

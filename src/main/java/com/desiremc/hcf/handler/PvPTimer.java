@@ -15,7 +15,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.desiremc.hcf.Components;
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.util.Cooldown;
 import com.desiremc.hcf.util.Utils;
 import com.desiremc.hcf.util.Cooldown.CooldownBase;
@@ -25,14 +25,14 @@ public class PvPTimer implements CommandExecutor, Listener {
     private final Cooldown cooldown;
 
     public PvPTimer() {
-        Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
-        Core.getInstance().getCommand("pvptimer").setExecutor(this);
+        Bukkit.getPluginManager().registerEvents(this, DesireCore.getInstance());
+        DesireCore.getInstance().getCommand("pvptimer").setExecutor(this);
 
         (cooldown = Components.getInstance().getCooldown(Components.PVPT)).setOnEndSequece(new Consumer<UUID>() {
 
             @Override
             public void accept(UUID id) {
-                Bukkit.getScheduler().runTask(Core.getInstance(), new Runnable() {
+                Bukkit.getScheduler().runTask(DesireCore.getInstance(), new Runnable() {
                     @Override
                     public void run() {
                         Bukkit.getPlayer(id).sendMessage(Utils.chat(""));
@@ -52,17 +52,17 @@ public class PvPTimer implements CommandExecutor, Listener {
 
         if (p.hasPermission("hcf.pvptimer")) {
             if (args.length == 0) {
-                p.sendMessage(Utils.chat(Core.getInstance().getConfig().getString("pvptimer_message")));
+                p.sendMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("pvptimer_message")));
                 return true;
             } else if (args.length == 1) {
                 CooldownBase base = cooldown.get(p.getUniqueId());
                 if (args[0].equalsIgnoreCase("disable")) {
                     if (base == null) {
-                        p.sendMessage(Utils.chat(Core.getInstance().getConfig().getString("pvptimer_active_message")));
+                        p.sendMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("pvptimer_active_message")));
                         return true;
                     }
                     if (Cooldown.getAmountLeft(base) <= 0) {
-                        p.sendMessage(Utils.chat(Core.getInstance().getConfig().getString("pvptimer_disabled")));
+                        p.sendMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("pvptimer_disabled")));
                         cooldown.endCooldown(p.getUniqueId());
                         return true;
                     }
@@ -82,7 +82,7 @@ public class PvPTimer implements CommandExecutor, Listener {
 
         CooldownBase base = cooldown.get(p.getUniqueId());
         if (base == null || Cooldown.getAmountLeft(base) <= 0) {
-            cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(Core.getInstance().getConfig().getString("pvptimer_time")));
+            cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(DesireCore.getInstance().getConfig().getString("pvptimer_time")));
         }
     }
 
@@ -96,7 +96,7 @@ public class PvPTimer implements CommandExecutor, Listener {
             if (Cooldown.getAmountLeft(base) > 0) {
                 e.setCancelled(true);
                 if (e.getDamager() instanceof Player) {
-                    a.sendMessage(Utils.chat(Core.getInstance().getConfig().getString("pvptimer_attacker_message").replace("<player>", p.getName())));
+                    a.sendMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("pvptimer_attacker_message").replace("<player>", p.getName())));
                 }
             }
         }

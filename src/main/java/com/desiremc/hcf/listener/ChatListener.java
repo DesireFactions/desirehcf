@@ -9,7 +9,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.session.FactionSession;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.Rank;
@@ -31,7 +31,7 @@ public class ChatListener implements Listener {
         if (s.isMuted() != null) {
             s.sendMessage(ChatColor.DARK_GRAY + "-----------------------------------------------------");
             s.sendMessage("");
-            ChatUtils.sendCenteredMessage(player, Core.getInstance().getPrefix().replace(" ", ""));
+            ChatUtils.sendCenteredMessage(player, DesireCore.getLangHandler().getPrefix().replace(" ", ""));
             s.sendMessage("");
             ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "You are muted and " + ChatColor.RED + "CANNOT " + ChatColor.GRAY + "speak!");
             ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "Visit our rules @ " + ChatColor.YELLOW + "https://desirehcf.net/rules");

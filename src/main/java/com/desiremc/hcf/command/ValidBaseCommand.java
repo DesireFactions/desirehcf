@@ -5,7 +5,7 @@ import java.util.Arrays;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.session.SessionHandler;
@@ -32,7 +32,7 @@ public abstract class ValidBaseCommand extends ValidCommand {
             if (s == null || s.getRank().getId() >= requiredRank.getId()) {
                 sub.run(sender, label + " " + args[0], Arrays.copyOfRange(args, 1, args.length));
             } else {
-                sender.sendMessage(Core.getLangHandler().getString("no-permissions"));
+                sender.sendMessage(DesireCore.getLangHandler().getString("no-permissions"));
             }
         }
     }

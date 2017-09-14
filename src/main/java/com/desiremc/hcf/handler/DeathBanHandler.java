@@ -21,7 +21,7 @@ import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.desiremc.hcf.Components;
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.util.Cooldown;
 import com.desiremc.hcf.util.Utils;
@@ -32,10 +32,10 @@ public class DeathBanHandler implements Listener {
 
     private final Set<UUID> counting = new HashSet<>();
     private final static Map<UUID, Integer> lives = new HashMap<>();
-    private final static LangHandler LANG = Core.getLangHandler();
+    private final static LangHandler LANG = DesireCore.getLangHandler();
 
     public DeathBanHandler() {
-        File dataFile = new File(Core.getInstance().getDataFolder(), "lives.data");
+        File dataFile = new File(DesireCore.getInstance().getDataFolder(), "lives.data");
         try {
             if (!dataFile.exists())
                 dataFile.createNewFile();
@@ -54,7 +54,7 @@ public class DeathBanHandler implements Listener {
             public void run() {
                 saveLives();
             }
-        }.runTaskTimerAsynchronously(Core.getInstance(), 1200, 1200);
+        }.runTaskTimerAsynchronously(DesireCore.getInstance(), 1200, 1200);
     }
 
     @EventHandler
@@ -64,15 +64,15 @@ public class DeathBanHandler implements Listener {
         Player killer = e.getEntity().getKiller();
         Cooldown cooldown = Components.getInstance().getCooldown(Components.DEATHBAN);
         p.getWorld().strikeLightningEffect(p.getLocation());
-        cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(Core.getInstance().getConfig().getString("deathban_time")));
+        cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(DesireCore.getInstance().getConfig().getString("deathban_time")));
         if (killer != p) {
-            p.kickPlayer(Utils.chat(Core.getInstance().getConfig().getString("deathban_player_message").replace("<killer>", killer.getName())
+            p.kickPlayer(Utils.chat(DesireCore.getInstance().getConfig().getString("deathban_player_message").replace("<killer>", killer.getName())
                     + (getLives(p) > 0 ? "\n\n&cLogin in 10 seconds to use a life." : "")));
         } else {
-            p.kickPlayer(Utils.chat(Core.getInstance().getConfig().getString("deathban_player_message")
+            p.kickPlayer(Utils.chat(DesireCore.getInstance().getConfig().getString("deathban_player_message")
                     + (getLives(p) > 0 ? "\n\n&cLogin in 10 seconds to use a life." : "")));
         }
-        Bukkit.broadcastMessage(Utils.chat(Core.getInstance().getConfig().getString("deathban_broadcast")
+        Bukkit.broadcastMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("deathban_broadcast")
                 .replace("<victim>", p.getDisplayName()).replace("<killer>", killer.getDisplayName())));
         startCounting(p);
     }
@@ -129,11 +129,11 @@ public class DeathBanHandler implements Listener {
             public void run() {
                 counting.remove(player.getUniqueId());
             }
-        }.runTaskLater(Core.getInstance(), 10 * 20);
+        }.runTaskLater(DesireCore.getInstance(), 10 * 20);
     }
 
     public void saveLives() {
-        File dataFile = new File(Core.getInstance().getDataFolder(), "lives.data");
+        File dataFile = new File(DesireCore.getInstance().getDataFolder(), "lives.data");
         try {
             if (!dataFile.exists())
                 dataFile.createNewFile();

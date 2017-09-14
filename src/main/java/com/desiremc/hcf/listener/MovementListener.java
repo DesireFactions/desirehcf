@@ -8,7 +8,7 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
@@ -76,11 +76,11 @@ public class MovementListener implements Listener
         }
         if (e.getCause() == TeleportCause.END_PORTAL)
         {
-            e.setTo(Utils.toLocation(Core.getConfigHandler().getString("set_end.spawn")));
+            e.setTo(Utils.toLocation(DesireCore.getConfigHandler().getString("set_end.spawn")));
         }
         else if (e.getCause() == TeleportCause.END_GATEWAY)
         {
-            e.setTo(Utils.toLocation(Core.getConfigHandler().getString("set_end.exit")));
+            e.setTo(Utils.toLocation(DesireCore.getConfigHandler().getString("set_end.exit")));
         }
     }
 

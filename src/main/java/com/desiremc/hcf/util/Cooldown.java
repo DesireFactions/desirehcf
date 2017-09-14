@@ -16,7 +16,7 @@ import java.util.function.Consumer;
 
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 
 public class Cooldown {
 
@@ -62,7 +62,7 @@ public class Cooldown {
             public void run() {
                 fixCounts();
             }
-        }.runTaskTimer(Core.getInstance(), 20, 20);
+        }.runTaskTimer(DesireCore.getInstance(), 20, 20);
         new BukkitRunnable() {
             @Override
             public void run() {
@@ -72,7 +72,7 @@ public class Cooldown {
                     e.printStackTrace();
                 }
             }
-        }.runTaskTimerAsynchronously(Core.getInstance(), 60, 60);
+        }.runTaskTimerAsynchronously(DesireCore.getInstance(), 60, 60);
     }
 
     public void save() throws IOException {

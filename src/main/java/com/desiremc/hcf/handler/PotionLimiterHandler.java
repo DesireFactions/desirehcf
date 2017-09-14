@@ -18,7 +18,7 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.util.Utils;
 
 @SuppressWarnings("deprecation")
@@ -32,7 +32,7 @@ public class PotionLimiterHandler implements Listener {
     }
 
     public void loadPotionLimits() {
-        ConfigurationSection configurationSection = Core.getInstance().getConfig().getConfigurationSection("potion-limiter");
+        ConfigurationSection configurationSection = DesireCore.getInstance().getConfig().getConfigurationSection("potion-limiter");
         for (String s : configurationSection.getKeys(false)) {
             if (configurationSection.getInt(String.valueOf(s) + ".level") == -1) {
                 continue;
@@ -90,7 +90,7 @@ public class PotionLimiterHandler implements Listener {
                     }
                 }
             }
-        }.runTaskLater(Core.getInstance(), 1L);
+        }.runTaskLater(DesireCore.getInstance(), 1L);
     }
 
     @EventHandler

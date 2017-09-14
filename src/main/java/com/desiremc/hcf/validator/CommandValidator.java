@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.bukkit.command.CommandSender;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.api.LangHandler;
 
 /**
@@ -15,7 +15,7 @@ public abstract class CommandValidator {
 
     private int[] argsToValdate;
 
-    protected static final LangHandler LANG = Core.getLangHandler();
+    protected static final LangHandler LANG = DesireCore.getLangHandler();
 
     /**
      * @param sender

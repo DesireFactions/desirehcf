@@ -14,7 +14,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 
 public class MenuAPI implements Listener {
 
@@ -31,8 +31,8 @@ public class MenuAPI implements Listener {
 
         if (!listener) {
             MenuAPI.listener = true;
-            Bukkit.getServer().getPluginManager().registerEvents(instance, Core.getInstance());
-            Bukkit.getLogger().info("Registering MenuAPI listener to " + Core.getInstance().getName());
+            Bukkit.getServer().getPluginManager().registerEvents(instance, DesireCore.getInstance());
+            Bukkit.getLogger().info("Registering MenuAPI listener to " + DesireCore.getInstance().getName());
         }
     }
 
@@ -43,7 +43,7 @@ public class MenuAPI implements Listener {
             public void run() {
                 toMenu.openMenu(player);
             }
-        }.runTask(Core.getInstance());
+        }.runTask(DesireCore.getInstance());
     }
 
     @EventHandler(priority = EventPriority.LOWEST)

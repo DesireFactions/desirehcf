@@ -2,7 +2,7 @@ package com.desiremc.hcf.command.commands;
 
 import org.bukkit.command.CommandSender;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.parser.PlayerSessionParser;
 import com.desiremc.hcf.parser.StringParser;
@@ -51,7 +51,7 @@ public class TempBanCommand extends ValidCommand
         punishment.setIssued(System.currentTimeMillis());
         punishment.setExpirationTime(time);
         punishment.setReason(sb.toString().trim());
-        punishment.setIssuer(session != null ? session.getUniqueId() : Core.getConsoleUUID());
+        punishment.setIssuer(session != null ? session.getUniqueId() : DesireCore.getConsoleUUID());
         punishment.setType(Type.BAN);
         PunishmentHandler.getInstance().save(punishment);
 
