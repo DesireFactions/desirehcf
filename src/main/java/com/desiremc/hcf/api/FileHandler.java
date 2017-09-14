@@ -177,6 +177,21 @@ public class FileHandler
         }
     }
 
+    public void setBoolean(String key, boolean value)
+    {
+        key = key.toLowerCase();
+        fileConfig.set(key, value);
+        history.put(key, value);
+        try
+        {
+            fileConfig.save(file);
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public static void reloadAll()
     {
         for (FileHandler lang : instances)
