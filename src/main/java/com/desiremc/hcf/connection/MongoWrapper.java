@@ -6,7 +6,7 @@ import java.util.List;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.api.FileHandler;
 import com.desiremc.hcf.punishment.Punishment;
 import com.desiremc.hcf.session.FactionSession;
@@ -22,7 +22,7 @@ public class MongoWrapper {
     private Datastore datastore;
 
     public MongoWrapper() {
-        FileHandler config = Core.getConfigHandler();
+        FileHandler config = DesireCore.getConfigHandler();
         ServerAddress addr = new ServerAddress(config.getString("database.host"), config.getInteger("database.port"));
 
         List<MongoCredential> credentials = new ArrayList<>();

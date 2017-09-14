@@ -51,7 +51,7 @@ public class Components {
     }
 
     public void registerListeners() {
-        Core instance = Core.getInstance();
+        DesireCore instance = DesireCore.getInstance();
         Bukkit.getPluginManager().registerEvents(new MobStackHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new FurnaceSpeedHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new GappleHandler(), instance);
@@ -72,7 +72,7 @@ public class Components {
     }
 
     public void registerCooldowns() {
-        File cooldownFolder = new File(Core.getInstance().getDataFolder() + File.separator + "cooldowns");
+        File cooldownFolder = new File(DesireCore.getInstance().getDataFolder() + File.separator + "cooldowns");
         if (!cooldownFolder.exists())
             cooldownFolder.mkdirs();
         File gapFile = new File(cooldownFolder, "gapple.cooldown");
@@ -90,7 +90,7 @@ public class Components {
 
     public void checkDependencies() {
         try {
-            Scanner scan = new Scanner(new File(Core.getInstance().getDataFolder(), "items.csv"));
+            Scanner scan = new Scanner(new File(DesireCore.getInstance().getDataFolder(), "items.csv"));
             while (scan.hasNextLine()) {
                 String line = scan.nextLine();
                 String[] values = line.split(",");

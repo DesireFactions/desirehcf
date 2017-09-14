@@ -15,7 +15,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 
 public class MobStackHandler implements Listener {
 
@@ -31,7 +31,7 @@ public class MobStackHandler implements Listener {
         if (!this.mobList.isEmpty()) {
             this.mobList.clear();
         }
-        Iterator<String> iterator = Core.getInstance().getConfig().getStringList("stacking-entity").iterator();
+        Iterator<String> iterator = DesireCore.getInstance().getConfig().getStringList("stacking-entity").iterator();
         while (iterator.hasNext()) {
             this.mobList.add(EntityType.valueOf(iterator.next().toUpperCase()));
         }
@@ -40,7 +40,7 @@ public class MobStackHandler implements Listener {
     public void startStackTask() {
         new BukkitRunnable() {
             public void run() {
-                int mobStackingRadius = Core.getInstance().getConfig().getInt("stacking-radius");
+                int mobStackingRadius = DesireCore.getInstance().getConfig().getInt("stacking-radius");
                 List<EntityType> mobList = MobStackHandler.this.mobList;
                 Iterator<World> iterator = Bukkit.getServer().getWorlds().iterator();
                 while (iterator.hasNext()) {
@@ -48,14 +48,14 @@ public class MobStackHandler implements Listener {
                         if (mobList.contains(livingEntity.getType()) && livingEntity.isValid()) {
                             for (Entity entity : livingEntity.getNearbyEntities((double) mobStackingRadius, (double) mobStackingRadius, (double) mobStackingRadius)) {
                                 if (entity instanceof LivingEntity && entity.isValid() && mobList.contains(entity.getType())) {
-                                    MobStackHandler.this.stackOne(livingEntity, (LivingEntity) entity, ChatColor.valueOf(Core.getInstance().getConfig().getString("stack-color")));
+                                    MobStackHandler.this.stackOne(livingEntity, (LivingEntity) entity, ChatColor.valueOf(DesireCore.getInstance().getConfig().getString("stack-color")));
                                 }
                             }
                         }
                     }
                 }
             }
-        }.runTaskTimer(Core.getInstance(), 40L, 40L);
+        }.runTaskTimer(DesireCore.getInstance(), 40L, 40L);
     }
 
     public void unstackOne(LivingEntity livingEntity, ChatColor chatColor) {
@@ -116,7 +116,7 @@ public class MobStackHandler implements Listener {
         if (entityDeathEvent.getEntity() instanceof LivingEntity) {
             LivingEntity entity = entityDeathEvent.getEntity();
             if (entity.getType() != EntityType.PLAYER && entity.getType() != EntityType.VILLAGER) {
-                this.unstackOne(entity, ChatColor.valueOf(Core.getInstance().getConfig().getString("stack-color")));
+                this.unstackOne(entity, ChatColor.valueOf(DesireCore.getInstance().getConfig().getString("stack-color")));
             }
         }
     }

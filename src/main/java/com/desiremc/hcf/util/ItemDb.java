@@ -17,7 +17,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 
 @SuppressWarnings("deprecation")
 public class ItemDb {
@@ -30,7 +30,7 @@ public class ItemDb {
     private final transient Pattern splitPattern = Pattern.compile("((.*)[:+',;.](\\d+))");
 
     public ItemDb() {
-        file = new File(Core.getInstance().getDataFolder(), "items.csv");
+        file = new File(DesireCore.getInstance().getDataFolder(), "items.csv");
         reloadConfig();
     }
 

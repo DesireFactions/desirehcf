@@ -4,11 +4,11 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 
 public class Utils {
 
-    public static boolean enderchestDisabled = Core.getInstance().getConfig().getBoolean("enderchest-disabled");
+    public static boolean enderchestDisabled = DesireCore.getInstance().getConfig().getBoolean("enderchest-disabled");
 
     public static String chat(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);

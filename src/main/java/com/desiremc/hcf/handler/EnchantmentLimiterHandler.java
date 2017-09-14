@@ -21,7 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 
 public class EnchantmentLimiterHandler implements Listener {
 
@@ -33,7 +33,7 @@ public class EnchantmentLimiterHandler implements Listener {
     }
 
     public void loadEnchantmentLimits() {
-        ConfigurationSection configurationSection = Core.getInstance().getConfig().getConfigurationSection("enchantment-limiter");
+        ConfigurationSection configurationSection = DesireCore.getInstance().getConfig().getConfigurationSection("enchantment-limiter");
         for (String s : configurationSection.getKeys(false)) {
             if (configurationSection.getInt(s) == -1) {
                 continue;
@@ -74,7 +74,7 @@ public class EnchantmentLimiterHandler implements Listener {
                 if (currentItem.getItemMeta().hasLore()) {
                     Iterator<String> iterator2 = currentItem.getItemMeta().getLore().iterator();
                     while (iterator2.hasNext()) {
-                        if (iterator2.next().equals(Core.getInstance().getConfig().getString("unrepairable-lore-line"))) {
+                        if (iterator2.next().equals(DesireCore.getInstance().getConfig().getString("unrepairable-lore-line"))) {
                             inventoryClickEvent.setCancelled(true);
                             player.sendMessage("This item is not Repairable!");
                         }

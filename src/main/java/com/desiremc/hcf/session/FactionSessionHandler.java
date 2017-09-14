@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.mongodb.morphia.dao.BasicDAO;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 
 public class FactionSessionHandler extends BasicDAO<FactionSession, String> {
 
@@ -13,7 +13,7 @@ public class FactionSessionHandler extends BasicDAO<FactionSession, String> {
     private static List<FactionSession> cache;
 
     public FactionSessionHandler() {
-        super(FactionSession.class, Core.getInstance().getMongoWrapper().getDatastore());
+        super(FactionSession.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
 
         cache = find().asList();
     }

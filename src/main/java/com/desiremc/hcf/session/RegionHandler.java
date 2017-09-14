@@ -7,7 +7,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.mongodb.WriteResult;
 
 public class RegionHandler extends BasicDAO<Region, Integer> {
@@ -24,7 +24,7 @@ public class RegionHandler extends BasicDAO<Region, Integer> {
     }
     
     public static void initialize() {
-        instance = new RegionHandler(Core.getInstance().getMongoWrapper().getDatastore());
+        instance = new RegionHandler(DesireCore.getInstance().getMongoWrapper().getDatastore());
     }
 
     private void load() {

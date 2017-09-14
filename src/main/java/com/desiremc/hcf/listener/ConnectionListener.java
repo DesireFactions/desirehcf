@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.punishment.Punishment;
 import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.session.SessionHandler;
@@ -23,7 +23,7 @@ public class ConnectionListener implements Listener {
         Punishment p;
         if ((p = session.isBanned()) != null) {
 
-            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, (Core.getInstance().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the network!\n" + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n" + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules").replace("{reason}", p.getReason())
+            event.disallow(PlayerLoginEvent.Result.KICK_BANNED, (DesireCore.getLangHandler().getPrefix() + "\n" + "\n" + "&c&lYou are banned from the network!\n" + "\n" + "&cReason: &7{reason}\n" + "&cUntil: &7{until}\n" + "&cBanned By: &7{issuer}\n" + "\n" + "&7Visit &ehttps://desirehcf.net/rules&7 for our terms and rules").replace("{reason}", p.getReason())
                     .replace("{until}", DateUtils.formatDateDiff(p.getExpirationTime())).replace("{issuer}", PlayerUtils.getName(p.getIssuer()).replace("&", "§")));
             return;
         }
@@ -51,7 +51,7 @@ public class ConnectionListener implements Listener {
     public void onDisconnect(PlayerQuitEvent e) {
         StaffHandler.getInstance().disableStaffMode(e.getPlayer());
         StaffHandler.getInstance().unfreezePlayer(e.getPlayer());
-        e.setQuitMessage(Core.getLangHandler().getString("leave.message").replace("{player}", e.getPlayer().getName()));
+        e.setQuitMessage(DesireCore.getLangHandler().getString("leave.message").replace("{player}", e.getPlayer().getName()));
     }
 
 }

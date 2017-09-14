@@ -5,8 +5,9 @@ import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.punishment.Punishment;
+import com.desiremc.hcf.punishment.PunishmentHandler;
 import com.desiremc.hcf.session.Session;
 
 public class PlayerPunishmentsGUI extends ItemGUI
@@ -54,7 +55,7 @@ public class PlayerPunishmentsGUI extends ItemGUI
 					@Override
 					public void run()
 					{
-						Core.getInstance().getPunishmentHandler().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 1800000l, "Staff issued punishment");
+						PunishmentHandler.getInstance().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 1800000l, "Staff issued punishment");
 					}
 				}));
 				set(1, new MenuItem(new CustomIS().setMaterial(Material.STAINED_GLASS_PANE).setData(DyeColor.RED.getDyeData()).setName("1 Hour"), new Runnable()
@@ -62,7 +63,7 @@ public class PlayerPunishmentsGUI extends ItemGUI
 					@Override
 					public void run()
 					{
-						Core.getInstance().getPunishmentHandler().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 3600000l, "Staff issued punishment");
+						PunishmentHandler.getInstance().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 3600000l, "Staff issued punishment");
 					}
 				}));
 				set(2, new MenuItem(new CustomIS().setMaterial(Material.STAINED_GLASS_PANE).setData(DyeColor.RED.getDyeData()).setName("2 Hours"), new Runnable()
@@ -70,7 +71,7 @@ public class PlayerPunishmentsGUI extends ItemGUI
 					@Override
 					public void run()
 					{
-						Core.getInstance().getPunishmentHandler().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 7200000l, "Staff issued punishment");
+						PunishmentHandler.getInstance().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 7200000l, "Staff issued punishment");
 					}
 				}));
 				set(3, new MenuItem(new CustomIS().setMaterial(Material.STAINED_GLASS_PANE).setData(DyeColor.RED.getDyeData()).setName("1 Day"), new Runnable()
@@ -78,7 +79,7 @@ public class PlayerPunishmentsGUI extends ItemGUI
 					@Override
 					public void run()
 					{
-						Core.getInstance().getPunishmentHandler().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 86400000l, "Staff issued punishment");
+						PunishmentHandler.getInstance().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 86400000l, "Staff issued punishment");
 					}
 				}));
 				set(4, new MenuItem(new CustomIS().setMaterial(Material.STAINED_GLASS_PANE).setData(DyeColor.RED.getDyeData()).setName("2 Days"), new Runnable()
@@ -86,7 +87,7 @@ public class PlayerPunishmentsGUI extends ItemGUI
 					@Override
 					public void run()
 					{
-						Core.getInstance().getPunishmentHandler().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 172800000l, "Staff issued punishment");
+						PunishmentHandler.getInstance().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 172800000l, "Staff issued punishment");
 					}
 				}));
 				set(5, new MenuItem(new CustomIS().setMaterial(Material.STAINED_GLASS_PANE).setData(DyeColor.RED.getDyeData()).setName("7 Days"), new Runnable()
@@ -94,7 +95,7 @@ public class PlayerPunishmentsGUI extends ItemGUI
 					@Override
 					public void run()
 					{
-						Core.getInstance().getPunishmentHandler().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 604800000l, "Staff issued punishment");
+						PunishmentHandler.getInstance().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), 604800000l, "Staff issued punishment");
 					}
 				}));
 				set(6, new MenuItem(new CustomIS().setMaterial(Material.LAVA_BUCKET).setName("Permanent"), new Runnable()
@@ -102,7 +103,7 @@ public class PlayerPunishmentsGUI extends ItemGUI
 					@Override
 					public void run()
 					{
-						Core.getInstance().getPunishmentHandler().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), -1, "Staff issued punishment");
+						PunishmentHandler.getInstance().issuePunishment(type, session.getUniqueId(), getPlayer().getUniqueId(), -1, "Staff issued punishment");
 					}
 				}));
 			}
@@ -193,7 +194,7 @@ public class PlayerPunishmentsGUI extends ItemGUI
 					return;
 				}
 				// TODO Use API to mark bans as repealed.
-				getPlayer().sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You unbanned " + ChatColor.YELLOW + target.getName() + ChatColor.GRAY + "!");
+				getPlayer().sendMessage(DesireCore.getLangHandler().getPrefix() + ChatColor.GRAY + "You unbanned " + ChatColor.YELLOW + target.getName() + ChatColor.GRAY + "!");
 			}
 		}));
 		set(8, new MenuItem(new CustomIS().setMaterial(Material.BARRIER).setName("REVOKE MUTE").addLore(ChatColor.GRAY + "(Click to remove current mute)"), new Runnable()
@@ -207,7 +208,7 @@ public class PlayerPunishmentsGUI extends ItemGUI
 					return;
 				}
 				// TODO Use API to mark mutes as repealed.
-				getPlayer().sendMessage(Core.getInstance().getPrefix() + ChatColor.GRAY + "You un-muted " + ChatColor.YELLOW + target.getName() + ChatColor.GRAY + "!");
+				getPlayer().sendMessage(DesireCore.getLangHandler().getPrefix() + ChatColor.GRAY + "You un-muted " + ChatColor.YELLOW + target.getName() + ChatColor.GRAY + "!");
 			}
 		}));
 	}

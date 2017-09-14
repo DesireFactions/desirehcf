@@ -11,7 +11,7 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.command.ConsoleCommandSender;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.punishment.PunishmentHandler;
 
 public class SessionHandler extends BasicDAO<Session, Integer> {
@@ -23,7 +23,7 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
     private List<Session> sessions;
 
     public SessionHandler() {
-        super(Session.class, Core.getInstance().getMongoWrapper().getDatastore());
+        super(Session.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
 
         // create a dummy console session
         console = new Session();
@@ -108,7 +108,7 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
         session.setFirstLogin(System.currentTimeMillis());
         session.setLastLogin(System.currentTimeMillis());
         session.setTotalPlayed(0);
-        session.setSafeTimeLeft(Core.getConfigHandler().getInteger("timers.pvp.time"));
+        session.setSafeTimeLeft(DesireCore.getConfigHandler().getInteger("timers.pvp.time"));
         session.setIp("10.0.0.1");
         session.setAchievements(new ArrayList<>());
         session.setFriends(new ArrayList<>());

@@ -18,7 +18,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.api.FileHandler;
 import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.util.FactionsUtils;
@@ -34,8 +34,8 @@ public class CrowbarHandler implements Listener
     @EventHandler
     public void onInteract(PlayerInteractEvent e)
     {
-        LangHandler lang = Core.getLangHandler();
-        FileHandler config = Core.getConfigHandler();
+        LangHandler lang = DesireCore.getLangHandler();
+        FileHandler config = DesireCore.getConfigHandler();
         Player player = e.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -138,7 +138,7 @@ public class CrowbarHandler implements Listener
 
     private static List<String> getStartingUses()
     {
-        return Arrays.asList(PREFIX + Core.getConfigHandler().getInteger("crowbar.uses"));
+        return Arrays.asList(PREFIX + DesireCore.getConfigHandler().getInteger("crowbar.uses"));
     }
 
     private static String getCrowbarName()

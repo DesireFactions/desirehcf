@@ -3,7 +3,7 @@ package com.desiremc.hcf.command.commands.region;
 import org.bukkit.command.CommandSender;
 import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Region;
@@ -33,7 +33,7 @@ public class RegionModifyCommand extends ValidCommand {
                 return;
             }
             String newName = (String) args[2];
-            if (newName.length() > Core.getConfigHandler().getInteger("regions.max-name")) {
+            if (newName.length() > DesireCore.getConfigHandler().getInteger("regions.max-name")) {
                 sender.sendMessage(LANG.getString("modify.too-long"));
                 return;
             }
@@ -56,7 +56,7 @@ public class RegionModifyCommand extends ValidCommand {
                 sender.sendMessage(LANG.getString("usage-message").replace("{usage}", "/region " + label + " " + args[0] + " [new material]"));
                 return;
             }
-            ItemStack is = Core.getItemHandler().get((String) args[2]);
+            ItemStack is = DesireCore.getItemHandler().get((String) args[2]);
             if (is == null) {
                 sender.sendMessage(LANG.getString("modify.invalid-item"));
                 return;
@@ -77,7 +77,7 @@ public class RegionModifyCommand extends ValidCommand {
             }
             try {
                 int distance = Integer.parseInt((String) args[2]);
-                if (distance > Core.getConfigHandler().getInteger("barrier.max-distance")) {
+                if (distance > DesireCore.getConfigHandler().getInteger("barrier.max-distance")) {
                     sender.sendMessage(LANG.getString("modify.max-distance"));
                     return;
                 }

@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.Region;
@@ -33,7 +33,7 @@ public class CombatListener implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onHitHigh(EntityDamageByEntityEvent e) {
-        LangHandler l = Core.getLangHandler();
+        LangHandler l = DesireCore.getLangHandler();
         if (e.isCancelled() == true) {
             return;
         }

@@ -17,7 +17,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.util.Vector;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.api.FileHandler;
 import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.thread.staff.ClicksPerSecondThread;
@@ -32,7 +32,7 @@ public class StaffHandler {
     private List<UUID> hiddenPlayers;
     private int numCPSTests;
 
-    private static final LangHandler LANG = Core.getLangHandler();
+    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     public StaffHandler() {
         inventories = new HashMap<UUID, ItemStack[]>();
@@ -192,7 +192,7 @@ public class StaffHandler {
 
     public void useLaunch(PlayerInteractEvent e) {
         Player staffPlayer = e.getPlayer();
-        FileHandler c = Core.getConfigHandler();
+        FileHandler c = DesireCore.getConfigHandler();
         double launchVelocity = c.getDouble("staff.launch_velocity");
         System.out.println(launchVelocity);
         Vector cameraVector = staffPlayer.getLocation().getDirection().normalize();
@@ -202,7 +202,7 @@ public class StaffHandler {
 
     public void useTeleport(PlayerInteractEvent e) {
         Player staffPlayer = e.getPlayer();
-        Collection<? extends Player> playerCollection = Core.getInstance().getServer().getOnlinePlayers();
+        Collection<? extends Player> playerCollection = DesireCore.getInstance().getServer().getOnlinePlayers();
         List<Player> players = new ArrayList<Player>(playerCollection);
 
         // remove staff player to avoid teleporting to yourself
@@ -281,14 +281,14 @@ public class StaffHandler {
     }
 
     private void showPlayer(Player p) {
-        Server server = Core.getInstance().getServer();
+        Server server = DesireCore.getInstance().getServer();
         for (Player player : server.getOnlinePlayers()) {
             player.showPlayer(p);
         }
     }
 
     private void hidePlayer(Player p) {
-        Server server = Core.getInstance().getServer();
+        Server server = DesireCore.getInstance().getServer();
         for (Player player : server.getOnlinePlayers()) {
             player.hidePlayer(p);
         }

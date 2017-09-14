@@ -3,14 +3,16 @@ package com.desiremc.hcf.api;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.handler.DeathBanHandler;
 
-public class LivesAPI {
+public class LivesAPI
+{
 
-    private final static LangHandler LANG = Core.getLangHandler();
+    private final static LangHandler LANG = DesireCore.getLangHandler();
 
-    public static void takeLives(CommandSender sender, Player target, Integer amount) {
+    public static void takeLives(CommandSender sender, Player target, Integer amount)
+    {
         String strAmount = Integer.toString(amount);
         String targetName = target.getDisplayName();
         String senderName = ((Player) sender).getDisplayName();
@@ -26,7 +28,8 @@ public class LivesAPI {
                 "{sender}", senderName);
     }
 
-    public static void addLives(CommandSender sender, Player target, Integer amount) {
+    public static void addLives(CommandSender sender, Player target, Integer amount)
+    {
         String strAmount = Integer.toString(amount);
         String targetName = target.getDisplayName();
         String senderName = ((Player) sender).getDisplayName();

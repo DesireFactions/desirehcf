@@ -12,7 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 import com.desiremc.hcf.Components;
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.MscAchievements;
 import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.session.SessionHandler;
@@ -30,10 +30,10 @@ public class GappleHandler implements Listener {
 
             @Override
             public void accept(UUID id) {
-                Bukkit.getScheduler().runTask(Core.getInstance(), new Runnable() {
+                Bukkit.getScheduler().runTask(DesireCore.getInstance(), new Runnable() {
                     @Override
                     public void run() {
-                        Bukkit.getPlayer(id).sendMessage(Utils.chat(Core.getInstance().getConfig().getString("gapple_ended")));
+                        Bukkit.getPlayer(id).sendMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("gapple_ended")));
                     }
                 });
             }
@@ -50,10 +50,10 @@ public class GappleHandler implements Listener {
                 if (!s.hasAchievement("first_gapple")) {
                     s.awardAchievement(MscAchievements.FIRST_GAPPLE, true);
                 }
-                cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(Core.getInstance().getConfig().getString("gapple_time")));
+                cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(DesireCore.getInstance().getConfig().getString("gapple_time")));
             } else {
                 e.setCancelled(true);
-                String message = Core.getInstance().getConfig().getString("gapple_message");
+                String message = DesireCore.getInstance().getConfig().getString("gapple_message");
                 long left = Cooldown.getAmountLeft(base);
                 Map<Time, Long> times = Cooldown.timeFromMillis(left);
                 message = message.replace("<days>", (times.containsKey(Time.DAY) ? times.get(Time.DAY) : 0) + "d");

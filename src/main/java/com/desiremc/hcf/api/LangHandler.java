@@ -12,8 +12,8 @@ import com.desiremc.hcf.session.Session;
  * @author Michael Ziluck
  *
  */
-public class LangHandler extends FileHandler {
-
+public class LangHandler extends FileHandler
+{
 
     private String prefix;
     private boolean usePrefix;
@@ -24,10 +24,12 @@ public class LangHandler extends FileHandler {
      * 
      * @param file
      */
-    public LangHandler(File file) {
+    public LangHandler(File file)
+    {
         super(file);
         usePrefix = super.getBoolean("prefix.use");
-        if (usePrefix) {
+        if (usePrefix)
+        {
             prefix = super.getString("prefix.text");
         }
 
@@ -41,9 +43,11 @@ public class LangHandler extends FileHandler {
      * @param string
      * @return the formatted string.
      */
-    public String getString(String string) {
+    public String getString(String string)
+    {
         String str = super.getString(string);
-        if (str == null) {
+        if (str == null)
+        {
             str = "==ERROR==";
         }
         return (prefix != null && !str.startsWith("`") ? prefix + " " : "") + "§r" + (!str.startsWith("`") ? str : str.substring(1, str.length()));
@@ -56,7 +60,8 @@ public class LangHandler extends FileHandler {
      * @param sender
      * @param string
      */
-    public void sendString(CommandSender sender, String string) {
+    public void sendString(CommandSender sender, String string)
+    {
         sender.sendMessage(getString(string));
     }
 
@@ -67,13 +72,13 @@ public class LangHandler extends FileHandler {
      * @param args
      * @return
      */
-    public String renderMessage(String string, String... args) {
-        if (args.length % 2 != 0) {
-            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
-        }
+    public String renderMessage(String string, String... args)
+    {
+        if (args.length % 2 != 0) { throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given."); }
 
         String message = getString(string);
-        for (int i = 0; i < args.length; i += 2) {
+        for (int i = 0; i < args.length; i += 2)
+        {
             message = message.replace(args[i], args[i + 1]);
         }
 
@@ -87,11 +92,13 @@ public class LangHandler extends FileHandler {
      * @param string
      * @param args
      */
-    public void sendRenderMessage(CommandSender sender, String string, String... args) {
+    public void sendRenderMessage(CommandSender sender, String string, String... args)
+    {
         sender.sendMessage(renderMessage(string, args));
     }
 
-    public void sendRenderMessage(Session s, String string, String... args) {
+    public void sendRenderMessage(Session s, String string, String... args)
+    {
         CommandSender sender = Bukkit.getPlayer(s.getUniqueId());
         sendRenderMessage(sender, string, args);
     }
@@ -102,10 +109,12 @@ public class LangHandler extends FileHandler {
      * @param args
      * @return
      */
-    public String usageMessage(String label, String... args) {
+    public String usageMessage(String label, String... args)
+    {
         String argsString = "/" + label;
 
-        for (String arg : args) {
+        for (String arg : args)
+        {
             argsString += " [" + arg + "]";
         }
 
@@ -118,10 +127,14 @@ public class LangHandler extends FileHandler {
      * @param sender
      * @param usage
      */
-    public void sendUsageMessage(CommandSender sender, String label, String... args) {
+    public void sendUsageMessage(CommandSender sender, String label, String... args)
+    {
         sender.sendMessage(usageMessage(label, args));
     }
-
-
+    
+    public String getPrefix()
+    {
+        return prefix;
+    }
 
 }

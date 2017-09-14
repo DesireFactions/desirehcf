@@ -6,7 +6,7 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.hcf.Core;
+import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.session.SessionHandler;
 import com.desiremc.hcf.util.SettingsUtil;
@@ -23,7 +23,7 @@ public class PlayerSettingsGUI extends ItemGUI
 			{3, 3, 3, 3, 3, 3, 3, 3, 3}
 	};
 
-	public PlayerSettingsGUI(Core instance, Player p)
+	public PlayerSettingsGUI(DesireCore instance, Player p)
 	{
 		super(null, p, 54);
 	}
@@ -101,7 +101,7 @@ public class PlayerSettingsGUI extends ItemGUI
 						public void run()
 						{
 							SettingsUtil.toggleSetting(s, "friend_requests");
-							new PlayerSettingsGUI(Core.getInstance(), getPlayer()).show();
+							new PlayerSettingsGUI(DesireCore.getInstance(), getPlayer()).show();
 						}
 					}));
 				} else if (gui[x][y] == 12)
@@ -114,7 +114,7 @@ public class PlayerSettingsGUI extends ItemGUI
 						public void run()
 						{
 							SettingsUtil.toggleSetting(s, "private_messaging");
-							new PlayerSettingsGUI(Core.getInstance(), getPlayer()).show();
+							new PlayerSettingsGUI(DesireCore.getInstance(), getPlayer()).show();
 						}
 					}));
 				}
