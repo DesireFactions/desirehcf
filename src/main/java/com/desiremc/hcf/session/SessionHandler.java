@@ -55,12 +55,16 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
                 }
             }
             session = initializeSession(o, false);
-            session.setActivePunishments(PunishmentHandler.getInstance().createQuery().field("punished").equal(session.getUniqueId()).field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis())).asList());
         } else if (o instanceof String) {
+            String name = (String)o;
             for (Session s : instance.sessions) {
-                if (s.getName().equalsIgnoreCase((String) o)) {
+                if (s.getName().equalsIgnoreCase(name)) {
                     return s;
                 }
+            }
+            List<Session> results = instance.createQuery().field("name").equal(name).asList();
+            if (results.size() == 1) {
+                return results.get(0);
             }
         } else if (o instanceof ConsoleCommandSender) {
             session = instance.console;
@@ -76,6 +80,7 @@ public class SessionHandler extends BasicDAO<Session, Integer> {
         if (cache) {
             instance.sessions.add(session);
         }
+        session.setActivePunishments(PunishmentHandler.getInstance().createQuery().field("punished").equal(session.getUniqueId()).field("expirationTime").greaterThan(Long.valueOf(System.currentTimeMillis())).asList());
         return session;
     }
 
