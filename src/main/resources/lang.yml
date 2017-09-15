@@ -102,6 +102,9 @@ crowbar:
   out_of_uses: '&7Your crowbar ran out of uses.'
 tokens:
   add: "&7You have been awarded &e{tokens}&7 tokens!"
+  remove: "Your token amount is now {tokens}."
+  give: "You have gained {tokens} tokens."
+  set: "Your token amount is now {tokens}"
 achievement:
   award:
     header: "&8----------------------------------------------------"
