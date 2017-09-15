@@ -11,17 +11,20 @@ import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.validator.PlayerValidator;
 import com.desiremc.hcf.validator.SenderIsFriendsValidator;
 
-public class FriendRemoveCommand extends ValidCommand {
+public class FriendRemoveCommand extends ValidCommand
+{
 
-    public FriendRemoveCommand() {
-        super("remove", "Remove a friend.", Rank.GUEST, new String[] { "target" }, "unfriend", "delete");
+    public FriendRemoveCommand()
+    {
+        super("remove", "Remove a friend.", Rank.GUEST, new String[]{"target"}, "unfriend", "delete");
         addParser(new PlayerSessionParser(), "target");
         addValidator(new PlayerValidator());
         addValidator(new SenderIsFriendsValidator(), "target");
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
+    public void validRun(CommandSender sender, String label, Object... args)
+    {
         Session target = (Session) args[0];
 
         FriendsAPI.removeFriend((Player) sender, target);

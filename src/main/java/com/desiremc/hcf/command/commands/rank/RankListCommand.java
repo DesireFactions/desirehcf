@@ -8,16 +8,18 @@ import com.desiremc.hcf.session.Rank;
 
 /**
  * @author Ryan Radomski
- * 
  */
-public class RankListCommand extends ValidCommand {
+public class RankListCommand extends ValidCommand
+{
 
-    public RankListCommand() {
-        super("list", "list all the ranks", Rank.GUEST, new String[] {});
+    public RankListCommand()
+    {
+        super("list", "list all the ranks", Rank.GUEST, new String[]{});
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
+    public void validRun(CommandSender sender, String label, Object... args)
+    {
         RankAPI.listRanks(sender);
     }
 

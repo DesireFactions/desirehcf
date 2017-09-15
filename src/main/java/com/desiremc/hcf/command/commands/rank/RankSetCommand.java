@@ -9,17 +9,20 @@ import com.desiremc.hcf.parser.RankParser;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Session;
 
-public class RankSetCommand extends ValidCommand {
+public class RankSetCommand extends ValidCommand
+{
 
-    public RankSetCommand() {
-        super("set", "Sets a user's rank.", Rank.ADMIN, new String[] { "target", "rank" }, "update");
+    public RankSetCommand()
+    {
+        super("set", "Sets a user's rank.", Rank.ADMIN, new String[]{"target", "rank"}, "update");
         addParser(new PlayerSessionParser(), "target");
         addParser(new RankParser(), "rank");
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
-        
+    public void validRun(CommandSender sender, String label, Object... args)
+    {
+
         Session target = (Session) args[0];
         Rank rank = (Rank) args[1];
 
