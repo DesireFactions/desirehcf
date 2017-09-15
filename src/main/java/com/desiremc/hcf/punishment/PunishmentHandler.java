@@ -2,9 +2,7 @@ package com.desiremc.hcf.punishment;
 
 import java.util.UUID;
 
-import com.desiremc.hcf.api.LangHandler;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.hcf.DesireCore;
