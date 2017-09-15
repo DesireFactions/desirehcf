@@ -11,17 +11,20 @@ import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.validator.PlayerValidator;
 import com.desiremc.hcf.validator.SenderHasFriendsValidator;
 
-public class FriendListCommand extends ValidCommand {
+public class FriendListCommand extends ValidCommand
+{
 
-    public FriendListCommand() {
-        super("list", "List all of your friends", Rank.GUEST, new String[] { "target" }, "show");
+    public FriendListCommand()
+    {
+        super("list", "List all of your friends", Rank.GUEST, new String[]{"target"}, "show");
         addParser(new PlayerSessionParser(), "target");
         addValidator(new PlayerValidator());
         addValidator(new SenderHasFriendsValidator());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
+    public void validRun(CommandSender sender, String label, Object... args)
+    {
         Session target = (Session) args[0];
 
         FriendsAPI.list((Player) sender, target);

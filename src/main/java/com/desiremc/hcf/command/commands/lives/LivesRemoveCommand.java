@@ -9,16 +9,19 @@ import com.desiremc.hcf.parser.IntegerParser;
 import com.desiremc.hcf.parser.PlayerParser;
 import com.desiremc.hcf.session.Rank;
 
-public class LivesRemoveCommand extends ValidCommand {
+public class LivesRemoveCommand extends ValidCommand
+{
 
-    public LivesRemoveCommand() {
-        super("remove", "remove lives", Rank.MODERATOR, new String[] { "target", "amount" }, "take");
+    public LivesRemoveCommand()
+    {
+        super("remove", "remove lives", Rank.MODERATOR, new String[]{"target", "amount"}, "take");
         addParser(new PlayerParser(), "target");
         addParser(new IntegerParser(), "amount");
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
+    public void validRun(CommandSender sender, String label, Object... args)
+    {
         Player target = (Player) args[0];
         Integer amount = (Integer) args[1];
 

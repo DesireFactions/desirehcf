@@ -8,16 +8,19 @@ import com.desiremc.hcf.session.FactionSession;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.validator.PlayerValidator;
 
-public class FStatFactionCommand extends ValidCommand {
+public class FStatFactionCommand extends ValidCommand
+{
 
-    public FStatFactionCommand() {
-        super("faction", "shows faction stats", Rank.MODERATOR, new String[] { "faction" });
+    public FStatFactionCommand()
+    {
+        super("faction", "shows faction stats", Rank.MODERATOR, new String[]{"faction"});
         addParser(new FactionSessionParser(), "faction");
         addValidator(new PlayerValidator());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
+    public void validRun(CommandSender sender, String label, Object... args)
+    {
         FactionSession session = (FactionSession) args[0];
         LANG.sendRenderMessage(sender, "trophy_points", "{points}", Integer.toString(session.getTrophies()));
         LANG.sendRenderMessage(sender, "koth_wins", "{koth_wins}", Integer.toString(session.getKoth()));
