@@ -1,16 +1,13 @@
 package com.desiremc.hcf.api;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Arrays;
 
-import com.desiremc.hcf.session.SessionHandler;
-import com.desiremc.hcf.util.ChatUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.hcf.session.Session;
+import com.desiremc.hcf.util.ChatUtils;
 
 /**
  * @author Michael Ziluck
