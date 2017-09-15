@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
@@ -17,7 +16,6 @@ import org.mongodb.morphia.annotations.Transient;
 import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.punishment.Punishment;
 import com.desiremc.hcf.punishment.Punishment.Type;
-import com.desiremc.hcf.util.ChatUtils;
 
 @Entity(value = "players", noClassnameStored = true)
 public class Session

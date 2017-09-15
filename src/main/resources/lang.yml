@@ -14,7 +14,7 @@ only_players: '&7only players can run that command.'
 no_permissions: '&7No permissions to run that command.'
 faction: Faction &e{faction}
 no_faction: You are not a part of a faction!
-not_banned: {player} is not banned.
+not_banned: '{player} is not banned.'
 trophy_points: Trophy Points &e{points}
 koth_wins: Trophy Points &e{koth}
 no_season_data: Could not find Season data for &e{faction}
@@ -30,6 +30,14 @@ arg_not_number: One or more of your arguments should be a number!
 player: '{player}'
 crowbar: You have recieved a crowbar.
 item_in_hand: '&7You must have an item in your hand.'
+invalid_item: '&7Enter an item name or ID and data'
+not_block: '&7That is not a block.'
+string:
+  too_long: '&7That string is too long.'
+  too_short: '&7That string is too short.'
+region:
+  used_name: '&7That name is already used.'
+  create: '&7Created region &b{name} with the material &a{material}.'
 pvp:
   target-protected: '&7That player has pvp disabled'
   damager-protected: '&7You have pvp disabled.'
