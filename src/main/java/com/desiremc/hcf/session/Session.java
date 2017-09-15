@@ -20,7 +20,8 @@ import com.desiremc.hcf.punishment.Punishment.Type;
 import com.desiremc.hcf.util.ChatUtils;
 
 @Entity(value = "players", noClassnameStored = true)
-public class Session {
+public class Session
+{
 
     @Id
     private UUID uuid;
@@ -31,9 +32,9 @@ public class Session {
     private Rank rank;
 
     private int tokens;
-    
+
     private int level;
-    
+
     private int exp;
 
     @Property("first_login")
@@ -47,7 +48,7 @@ public class Session {
 
     @Property("safe_timer")
     private int safeTimer;
-    
+
     private int lives;
 
     @Indexed
@@ -69,7 +70,8 @@ public class Session {
     @Transient
     private PVPTimer pvpTimer;
 
-    public Session() {
+    public Session()
+    {
         pvpTimer = new PVPTimer();
         achievements = new LinkedList<>();
         friends = new LinkedList<>();
@@ -78,167 +80,210 @@ public class Session {
         activePunishments = new LinkedList<>();
     }
 
-    public Player getPlayer() {
+    public Player getPlayer()
+    {
         return Bukkit.getPlayer(uuid);
     }
-    
-    public UUID getUniqueId() {
+
+    public UUID getUniqueId()
+    {
         return uuid;
     }
 
-    public void setUniqueId(UUID uuid) {
+    public void setUniqueId(UUID uuid)
+    {
         this.uuid = uuid;
     }
 
-    public String getName() {
+    public String getName()
+    {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name)
+    {
         this.name = name;
     }
 
-    public Rank getRank() {
+    public Rank getRank()
+    {
         return rank;
     }
 
-    public void setRank(Rank rank) {
+    public void setRank(Rank rank)
+    {
         this.rank = rank;
     }
 
-    public int getTokens() {
+    public int getTokens()
+    {
         return tokens;
     }
 
-    public void addTokens(int tokens, boolean notify) {
+    public void addTokens(int tokens, boolean notify)
+    {
         this.tokens += tokens;
-        if (notify) {
+        if (notify)
+        {
             DesireCore.getLangHandler().sendRenderMessage(getPlayer(), "tokens.add",
-                    "{tokens}", tokens+"");
+                    "{tokens}", tokens + "");
         }
         SessionHandler.getInstance().save(this);
     }
 
-    public void setTokens(int tokens) {
+    public void setTokens(int tokens)
+    {
         this.tokens = tokens;
     }
 
-    public int getLevel() {
+    public int getLevel()
+    {
         return level;
     }
 
-    public void setLevel(int level) {
+    public void setLevel(int level)
+    {
         this.level = level;
     }
 
-    public int getExp() {
+    public int getExp()
+    {
         return exp;
     }
 
-    public void setExp(int exp) {
+    public void setExp(int exp)
+    {
         this.exp = exp;
     }
 
-    public long getFirstLogin() {
+    public long getFirstLogin()
+    {
         return firstLogin;
     }
 
-    public void setFirstLogin(long firstLogin) {
+    public void setFirstLogin(long firstLogin)
+    {
         this.firstLogin = firstLogin;
     }
 
-    public long getLastLogin() {
+    public long getLastLogin()
+    {
         return lastLogin;
     }
 
-    public void setLastLogin(long lastLogin) {
+    public void setLastLogin(long lastLogin)
+    {
         this.lastLogin = lastLogin;
     }
 
-    public long getTotalPlayed() {
+    public long getTotalPlayed()
+    {
         return totalPlayed;
     }
 
-    public void setTotalPlayed(long totalPlayed) {
+    public void setTotalPlayed(long totalPlayed)
+    {
         this.totalPlayed = totalPlayed;
     }
 
-    public int getSafeTimeLeft() {
+    public int getSafeTimeLeft()
+    {
         return safeTimer;
     }
 
-    public void setSafeTimeLeft(int safeTimer) {
+    public void setSafeTimeLeft(int safeTimer)
+    {
         this.safeTimer = safeTimer;
     }
 
-    public int getLives() {
+    public int getLives()
+    {
         return lives;
     }
-    
-    public void setLives(int lives) {
+
+    public void setLives(int lives)
+    {
         this.lives = lives;
     }
-    
-    public String getIp() {
+
+    public String getIp()
+    {
         return ip;
     }
 
-    public void setIp(String ip) {
+    public void setIp(String ip)
+    {
         this.ip = ip;
     }
 
-    public List<String> getAchievements() {
+    public List<String> getAchievements()
+    {
         return achievements;
     }
 
-    public void setAchievements(List<String> achievements) {
+    public void setAchievements(List<String> achievements)
+    {
         this.achievements = achievements;
     }
 
-    public List<UUID> getFriends() {
+    public List<UUID> getFriends()
+    {
         return friends;
     }
 
-    public void setFriends(List<UUID> friends) {
+    public void setFriends(List<UUID> friends)
+    {
         this.friends = friends;
     }
 
-    public List<UUID> getIncomingFriendRequests() {
+    public List<UUID> getIncomingFriendRequests()
+    {
         return incomingFriendRequests;
     }
 
-    public void setIncomingFriendRequests(List<UUID> incomingFriendRequests) {
+    public void setIncomingFriendRequests(List<UUID> incomingFriendRequests)
+    {
         this.incomingFriendRequests = incomingFriendRequests;
     }
 
-    public List<UUID> getOutgoingFriendRequests() {
+    public List<UUID> getOutgoingFriendRequests()
+    {
         return outgoingFriendRequests;
     }
 
-    public void setOutgoingFriendRequests(List<UUID> outgoingFriendRequests) {
+    public void setOutgoingFriendRequests(List<UUID> outgoingFriendRequests)
+    {
         this.outgoingFriendRequests = outgoingFriendRequests;
     }
 
-    public Map<String, String> getSettings() {
+    public Map<String, String> getSettings()
+    {
         return settings;
     }
 
-    public void setSettings(Map<String, String> settings) {
+    public void setSettings(Map<String, String> settings)
+    {
         this.settings = settings;
     }
 
-    public List<Punishment> getActivePunishments() {
+    public List<Punishment> getActivePunishments()
+    {
         return activePunishments;
     }
 
-    public void setActivePunishments(List<Punishment> activePunishments) {
+    public void setActivePunishments(List<Punishment> activePunishments)
+    {
         this.activePunishments = activePunishments;
     }
 
-    public Punishment isBanned() {
-        for (Punishment p : activePunishments) {
-            if (p.getType() == Type.BAN) {
-                if(!p.isRepealed()) {
+    public Punishment isBanned()
+    {
+        for (Punishment p : activePunishments)
+        {
+            if (p.getType() == Type.BAN)
+            {
+                if (!p.isRepealed())
+                {
                     return p;
                 }
             }
@@ -246,75 +291,93 @@ public class Session {
         return null;
     }
 
-    public Punishment isMuted() {
-        for (Punishment p : activePunishments) {
-            if (p.getType() == Type.MUTE) {
+    public Punishment isMuted()
+    {
+        for (Punishment p : activePunishments)
+        {
+            if (p.getType() == Type.MUTE)
+            {
                 return p;
             }
         }
         return null;
     }
 
-    public void sendMessage(String message) {
+    public void sendMessage(String message)
+    {
         Player p = Bukkit.getPlayer(uuid);
-        if (p != null) {
+        if (p != null)
+        {
             p.sendMessage(message);
         }
     }
 
-    public boolean hasAchievement(String string) {
-        for (String achievement : achievements) {
-            if (achievement.equalsIgnoreCase(string)) {
+    public boolean hasAchievement(String string)
+    {
+        for (String achievement : achievements)
+        {
+            if (achievement.equalsIgnoreCase(string))
+            {
                 return true;
             }
         }
         return false;
     }
 
-    public void awardAchievement(Achievement achievement, boolean inform) {
+    public void awardAchievement(Achievement achievement, boolean inform)
+    {
         if (hasAchievement(achievement.getId())) return;
 
         getAchievements().add(achievement.getId());
 
-        if (inform) {
+        if (inform)
+        {
             Player player = DesireCore.getInstance().getServer().getPlayer(uuid);
             Session session = SessionHandler.getSession(player);
             DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.header");
             DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.title", true);
             DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.name", true);
             DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.desc", true);
-            if (achievement.getReward() > 0) {
+            if (achievement.getReward() > 0)
+            {
                 DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.reward", true);
             }
             DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.header");
         }
-        if (achievement.getReward() > 0) {
+        if (achievement.getReward() > 0)
+        {
             tokens += achievement.getReward();
         }
         SessionHandler.getInstance().save(this);
     }
 
-    public PVPTimer getTimer() {
+    public PVPTimer getTimer()
+    {
         return pvpTimer;
     }
 
-    public class PVPTimer implements Runnable {
+    public class PVPTimer implements Runnable
+    {
 
         private boolean pause;
 
         @Override
-        public void run() {
-            if (!pause && safeTimer > 0) {
+        public void run()
+        {
+            if (!pause && safeTimer > 0)
+            {
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 20);
             }
             safeTimer--;
         }
 
-        public void pause() {
+        public void pause()
+        {
             pause = true;
         }
 
-        public void resume() {
+        public void resume()
+        {
             pause = false;
             run();
         }

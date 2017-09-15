@@ -13,7 +13,10 @@ public class PlayerIsBannedValidator extends PlayerValidator
     {
         Session session = SessionHandler.getSession(arg);
 
-        if (session == null) { return false; }
+        if (session == null)
+        {
+            return false;
+        }
 
         if (session.isBanned() != null)
         {
