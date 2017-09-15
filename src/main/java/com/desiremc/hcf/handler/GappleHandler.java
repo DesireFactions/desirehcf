@@ -21,19 +21,25 @@ import com.desiremc.hcf.util.Utils;
 import com.desiremc.hcf.util.Cooldown.CooldownBase;
 import com.desiremc.hcf.util.Cooldown.Time;
 
-public class GappleHandler implements Listener {
+public class GappleHandler implements Listener
+{
 
     private final Cooldown cooldown;
 
-    public GappleHandler() {
-        (cooldown = Components.getInstance().getCooldown(Components.GAPPLE)).setOnEndSequece(new Consumer<UUID>() {
+    public GappleHandler()
+    {
+        (cooldown = Components.getInstance().getCooldown(Components.GAPPLE)).setOnEndSequece(new Consumer<UUID>()
+        {
 
             @Override
-            public void accept(UUID id) {
-                Bukkit.getScheduler().runTask(DesireCore.getInstance(), new Runnable() {
+            public void accept(UUID id)
+            {
+                Bukkit.getScheduler().runTask(DesireCore.getInstance(), new Runnable()
+                {
                     @Override
-                    public void run() {
-                        Bukkit.getPlayer(id).sendMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("gapple_ended")));
+                    public void run()
+                    {
+                        Bukkit.getPlayer(id).sendMessage(Utils.chat(DesireCore.getConfigHandler().getString("gapple_ended")));
                     }
                 });
             }
@@ -41,19 +47,24 @@ public class GappleHandler implements Listener {
     }
 
     @EventHandler
-    public void onItemConsume(PlayerItemConsumeEvent e) {
+    public void onItemConsume(PlayerItemConsumeEvent e)
+    {
         Player p = e.getPlayer();
-        if (e.getItem().getType() == Material.GOLDEN_APPLE && e.getItem().getDurability() == 1) {
+        if (e.getItem().getType() == Material.GOLDEN_APPLE && e.getItem().getDurability() == 1)
+        {
             CooldownBase base = cooldown.get(p.getUniqueId());
-            if (base == null || Cooldown.getAmountLeft(base) <= 0) {
+            if (base == null || Cooldown.getAmountLeft(base) <= 0)
+            {
                 Session s = SessionHandler.getSession(e.getPlayer());
-                if (!s.hasAchievement("first_gapple")) {
+                if (!s.hasAchievement("first_gapple"))
+                {
                     s.awardAchievement(MscAchievements.FIRST_GAPPLE, true);
                 }
-                cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(DesireCore.getInstance().getConfig().getString("gapple_time")));
-            } else {
+                cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(DesireCore.getConfigHandler().getString("gapple_time")));
+            } else
+            {
                 e.setCancelled(true);
-                String message = DesireCore.getInstance().getConfig().getString("gapple_message");
+                String message = DesireCore.getConfigHandler().getString("gapple_message");
                 long left = Cooldown.getAmountLeft(base);
                 Map<Time, Long> times = Cooldown.timeFromMillis(left);
                 message = message.replace("<days>", (times.containsKey(Time.DAY) ? times.get(Time.DAY) : 0) + "d");
