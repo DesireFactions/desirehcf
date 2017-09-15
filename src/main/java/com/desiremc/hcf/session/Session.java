@@ -113,7 +113,8 @@ public class Session {
     public void addTokens(int tokens, boolean notify) {
         this.tokens += tokens;
         if (notify) {
-            sendMessage(DesireCore.getLangHandler().getPrefix() + ChatColor.GRAY + "You have been awarded " + ChatColor.YELLOW + tokens + ChatColor.GRAY + " tokens!");
+            DesireCore.getLangHandler().sendRenderMessage(getPlayer(), "tokens.add",
+                    "{tokens}", tokens+"");
         }
         SessionHandler.getInstance().save(this);
     }
@@ -277,14 +278,15 @@ public class Session {
 
         if (inform) {
             Player player = DesireCore.getInstance().getServer().getPlayer(uuid);
-            sendMessage(ChatColor.DARK_GRAY + "----------------------------------------------------");
-            ChatUtils.sendCenteredMessage(player, DesireCore.getLangHandler().getPrefix() + ChatColor.GRAY + "Achievement unlocked!");
-            ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "Name: " + ChatColor.YELLOW + achievement.getName());
-            ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "Desc: " + ChatColor.YELLOW + achievement.getDesc());
+            Session session = SessionHandler.getSession(player);
+            DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.header");
+            DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.title", true);
+            DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.name", true);
+            DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.desc", true);
             if (achievement.getReward() > 0) {
-                ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "Reward: " + ChatColor.YELLOW + achievement.getReward() + " Tokens!");
+                DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.reward", true);
             }
-            sendMessage(ChatColor.DARK_GRAY + "----------------------------------------------------");
+            DesireCore.getLangHandler().sendRenderMessage(session, "achievement.award.header");
         }
         if (achievement.getReward() > 0) {
             tokens += achievement.getReward();

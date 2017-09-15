@@ -100,3 +100,13 @@ crowbar:
   wrong_block: '&7Only usable on ender portal frames and mob spawners.'
   not_enough_charges: '&7Your crowbar does not have enough charges for that.'
   out_of_uses: '&7Your crowbar ran out of uses.'
+tokens:
+  add: "&7You have been awarded &e{tokens}&7 tokens!"
+achievement:
+  award:
+    header: "&8----------------------------------------------------"
+    title: "&7               Achievement unlocked!                "
+    name: "&7Name: &e{name}"
+    desc: "&7Desc: &e{desc}"
+    reward: "&7Reward: &e{reward}"
+    footer: "&8----------------------------------------------------"
