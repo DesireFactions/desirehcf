@@ -12,10 +12,12 @@ import com.desiremc.hcf.validator.PlayerValidator;
 import com.desiremc.hcf.validator.SenderFriendRequestValidator;
 import com.desiremc.hcf.validator.SenderIsFriendsValidator;
 
-public class FriendDeclineCommand extends ValidCommand {
+public class FriendDeclineCommand extends ValidCommand
+{
 
-    public FriendDeclineCommand() {
-        super("decline", "Decline a friend request.", Rank.GUEST, new String[] { "target" }, "deny");
+    public FriendDeclineCommand()
+    {
+        super("decline", "Decline a friend request.", Rank.GUEST, new String[]{"target"}, "deny");
         addParser(new PlayerSessionParser(), "target");
         addValidator(new PlayerValidator());
         addValidator(new SenderFriendRequestValidator(), "target");
@@ -23,7 +25,8 @@ public class FriendDeclineCommand extends ValidCommand {
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
+    public void validRun(CommandSender sender, String label, Object... args)
+    {
         Session target = (Session) args[0];
 
         FriendsAPI.denyFriend((Player) sender, target);
