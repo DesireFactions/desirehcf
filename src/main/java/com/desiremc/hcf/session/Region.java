@@ -11,7 +11,7 @@ import org.mongodb.morphia.annotations.IndexOptions;
 import org.mongodb.morphia.annotations.Indexes;
 
 @Entity(value = "regions", noClassnameStored = true)
-@Indexes(@Index(fields = @Field(value = "name") , options = @IndexOptions(unique = true) ))
+@Indexes(@Index(fields = @Field(value = "name"), options = @IndexOptions(unique = true)))
 public class Region
 {
 
@@ -44,7 +44,7 @@ public class Region
     public Region()
     {
     }
-    
+
     public int getId()
     {
         return id;
@@ -54,7 +54,7 @@ public class Region
     {
         this.id = id;
     }
-    
+
     public String getName()
     {
         return name;

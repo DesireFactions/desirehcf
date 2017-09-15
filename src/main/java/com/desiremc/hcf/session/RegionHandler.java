@@ -10,48 +10,58 @@ import org.mongodb.morphia.dao.BasicDAO;
 import com.desiremc.hcf.DesireCore;
 import com.mongodb.WriteResult;
 
-public class RegionHandler extends BasicDAO<Region, Integer> {
+public class RegionHandler extends BasicDAO<Region, Integer>
+{
 
     private static RegionHandler instance;
-    
+
     private HashMap<String, Region> regions = new HashMap<>();
 
     private int nextId = 0;
 
-    public RegionHandler(Datastore ds) {
+    public RegionHandler(Datastore ds)
+    {
         super(Region.class, ds);
         load();
     }
-    
-    public static void initialize() {
+
+    public static void initialize()
+    {
         instance = new RegionHandler(DesireCore.getInstance().getMongoWrapper().getDatastore());
     }
 
-    private void load() {
-        for (Region r : find().asList()) {
+    private void load()
+    {
+        for (Region r : find().asList())
+        {
             regions.put(r.getName().toLowerCase(), r);
-            if (r.getId() >= nextId) {
+            if (r.getId() >= nextId)
+            {
                 nextId = r.getId() + 1;
             }
             r.getRegion().calculate();
         }
     }
 
-    public Region getRegion(String name) {
+    public Region getRegion(String name)
+    {
         return regions.get(name.toLowerCase());
     }
 
-    public Collection<Region> getRegions() {
+    public Collection<Region> getRegions()
+    {
         return regions.values();
     }
 
     @Override
-    public WriteResult delete(Region r) {
+    public WriteResult delete(Region r)
+    {
         regions.remove(r.getName().toLowerCase());
         return super.delete(r);
     }
 
-    public Key<Region> save(Region r, boolean applyId) {
+    public Key<Region> save(Region r, boolean applyId)
+    {
         r.setId(nextId);
         nextId++;
         r.getRegion().calculate();
@@ -59,17 +69,20 @@ public class RegionHandler extends BasicDAO<Region, Integer> {
     }
 
     @Override
-    public Key<Region> save(Region r) {
+    public Key<Region> save(Region r)
+    {
         regions.put(r.getName().toLowerCase(), r);
         r.getRegion().calculate();
         return super.save(r);
     }
 
-    public void remove(String name) {
+    public void remove(String name)
+    {
         regions.remove(name);
     }
-    
-    public static RegionHandler getInstance() {
+
+    public static RegionHandler getInstance()
+    {
         return instance;
     }
 

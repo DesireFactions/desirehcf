@@ -6,6 +6,7 @@ import org.bukkit.block.Block;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.BookMeta;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
 
 import com.google.common.collect.ImmutableMap;
 
@@ -13,7 +14,8 @@ import com.google.common.collect.ImmutableMap;
  * Class to get the displayed name (as the client shows) for an item.
  */
 @SuppressWarnings("deprecation")
-public class ItemNames {
+public class ItemNames
+{
     private static final Map<String, String> map = ImmutableMap.<String, String>builder().put("1", "Stone").put("1:1", "Granite").put("1:2", "Polished Granite").put("1:3", "Diorite").put("1:4", "Polished Diorite").put("1:5", "Andesite").put("1:6", "Polished Andesite").put("2", "Grass Block").put("3", "Dirt").put("3:1", "Coarse Dirt").put("3:2", "Podzol")
             .put("4", "Cobblestone").put("5", "Oak Wood Planks").put("5:1", "Spruce Wood Planks").put("5:2", "Birch Wood Planks").put("5:3", "Jungle Wood Planks").put("5:4", "Acacia Wood Planks").put("5:5", "Dark Oak Wood Planks").put("6", "Oak Sapling").put("6:1", "Spruce Sapling").put("6:2", "Birch Sapling").put("6:3", "Jungle Sapling")
             .put("6:4", "Acacia Sapling").put("6:5", "Dark Oak Sapling").put("7", "Bedrock").put("8", "Water (No Spread)").put("9", "Water").put("10", "Lava (No Spread)").put("11", "Lava").put("12", "Sand").put("12:1", "Red Sand").put("13", "Gravel").put("14", "Gold Ore").put("15", "Iron Ore").put("16", "Coal Ore").put("17", "Oak Wood")
@@ -79,26 +81,37 @@ public class ItemNames {
      *            the item stack
      * @return a friendly printable name for the item
      */
-    public static String lookup(ItemStack stack) {
-        if (stack.hasItemMeta()) {
+    public static String lookup(ItemStack stack)
+    {
+        if (stack.hasItemMeta())
+        {
             ItemMeta meta = stack.getItemMeta();
-            if (meta.getDisplayName() != null) {
+            if (meta.getDisplayName() != null)
+            {
                 return meta.getDisplayName();
-            } else if (meta instanceof BookMeta) {
-                return ((BookMeta) meta).getTitle();
             }
+            else if (meta instanceof BookMeta) { return ((BookMeta) meta).getTitle(); }
         }
         String result;
         String key = Integer.toString(stack.getTypeId());
-        if (stack.getDurability() != 0) {
+        if (stack.getDurability() != 0)
+        {
             result = map.get(key + ":" + stack.getDurability());
-            if (result == null) {
+            if (result == null)
+            {
                 result = map.get(key);
             }
-        } else {
+        }
+        else
+        {
             result = map.containsKey(key) ? map.get(key) : stack.getType().toString();
         }
         return result;
+    }
+
+    public static String lookup(MaterialData data)
+    {
+        return lookup(data.toItemStack(1));
     }
 
     /**
@@ -109,7 +122,8 @@ public class ItemNames {
      *            the block
      * @return a friendly printable name for the block
      */
-    public static String lookup(Block block) {
+    public static String lookup(Block block)
+    {
         return lookup(new ItemStack(block.getType(), 1, block.getData()));
     }
 
@@ -123,7 +137,8 @@ public class ItemNames {
      *            the item stack
      * @return a friendly printable name for the item, with amount information
      */
-    public static String lookupWithAmount(ItemStack stack) {
+    public static String lookupWithAmount(ItemStack stack)
+    {
         return stack.getAmount() + " x " + lookup(stack);
     }
 
