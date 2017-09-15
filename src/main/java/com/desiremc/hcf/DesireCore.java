@@ -19,7 +19,6 @@ import com.desiremc.hcf.command.commands.BanCommand;
 import com.desiremc.hcf.command.commands.CrowbarCommand;
 import com.desiremc.hcf.command.commands.EnderChestCommand;
 import com.desiremc.hcf.command.commands.HCFReloadCommand;
-import com.desiremc.hcf.command.commands.InfoCommand;
 import com.desiremc.hcf.command.commands.PVPCommand;
 import com.desiremc.hcf.command.commands.SettingsCommand;
 import com.desiremc.hcf.command.commands.TempBanCommand;
@@ -135,7 +134,6 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new CrowbarCommand());
         customCommandHandler.registerCommand(new EnderChestCommand());
         customCommandHandler.registerCommand(new HCFReloadCommand());
-        customCommandHandler.registerCommand(new InfoCommand());
         customCommandHandler.registerCommand(new SettingsCommand());
         customCommandHandler.registerCommand(new TicketCommand());
         customCommandHandler.registerCommand(new PVPCommand());
