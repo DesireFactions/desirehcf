@@ -52,17 +52,17 @@ public class PvPTimer implements CommandExecutor, Listener {
 
         if (p.hasPermission("hcf.pvptimer")) {
             if (args.length == 0) {
-                p.sendMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("pvptimer_message")));
+                p.sendMessage(Utils.chat(DesireCore.getConfigHandler().getString("pvptimer_message")));
                 return true;
             } else if (args.length == 1) {
                 CooldownBase base = cooldown.get(p.getUniqueId());
                 if (args[0].equalsIgnoreCase("disable")) {
                     if (base == null) {
-                        p.sendMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("pvptimer_active_message")));
+                        p.sendMessage(Utils.chat(DesireCore.getConfigHandler().getString("pvptimer_active_message")));
                         return true;
                     }
                     if (Cooldown.getAmountLeft(base) <= 0) {
-                        p.sendMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("pvptimer_disabled")));
+                        p.sendMessage(Utils.chat(DesireCore.getConfigHandler().getString("pvptimer_disabled")));
                         cooldown.endCooldown(p.getUniqueId());
                         return true;
                     }
@@ -82,7 +82,7 @@ public class PvPTimer implements CommandExecutor, Listener {
 
         CooldownBase base = cooldown.get(p.getUniqueId());
         if (base == null || Cooldown.getAmountLeft(base) <= 0) {
-            cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(DesireCore.getInstance().getConfig().getString("pvptimer_time")));
+            cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(DesireCore.getConfigHandler().getString("pvptimer_time")));
         }
     }
 
@@ -96,7 +96,7 @@ public class PvPTimer implements CommandExecutor, Listener {
             if (Cooldown.getAmountLeft(base) > 0) {
                 e.setCancelled(true);
                 if (e.getDamager() instanceof Player) {
-                    a.sendMessage(Utils.chat(DesireCore.getInstance().getConfig().getString("pvptimer_attacker_message").replace("<player>", p.getName())));
+                    a.sendMessage(Utils.chat(DesireCore.getConfigHandler().getString("pvptimer_attacker_message").replace("<player>", p.getName())));
                 }
             }
         }

@@ -20,7 +20,7 @@ public class FurnaceSpeedHandler implements Listener {
             BlockState state = playerInteractEvent.getClickedBlock().getState();
             if (state instanceof Furnace) {
                 Furnace furnace = (Furnace) state;
-                furnace.setCookTime((short) (furnace.getCookTime() + DesireCore.getInstance().getConfig().getInt("furnace.speed")));
+                furnace.setCookTime((short) (furnace.getCookTime() + DesireCore.getConfigHandler().getInteger("furnace.speed")));
                 furnace.setBurnTime((short) Math.max(1, furnace.getBurnTime() - 1));
             }
         }
@@ -31,7 +31,7 @@ public class FurnaceSpeedHandler implements Listener {
         BlockState state = furnaceBurnEvent.getBlock().getState();
         if (state instanceof Furnace) {
             Furnace furnace = (Furnace) state;
-            if (DesireCore.getInstance().getConfig().getInt("furnace.speed") > 1) {
+            if (DesireCore.getConfigHandler().getInteger("furnace.speed") > 1) {
                 new FurnaceUpdateTask(furnace).runTaskTimer(DesireCore.getInstance(), 1L, 1L);
             }
         }
@@ -45,7 +45,7 @@ public class FurnaceSpeedHandler implements Listener {
         }
 
         public void run() {
-            this.furnace.setCookTime((short) (this.furnace.getCookTime() + DesireCore.getInstance().getConfig().getInt("furnace.speed")));
+            this.furnace.setCookTime((short) (this.furnace.getCookTime() + DesireCore.getConfigHandler().getInteger("furnace.speed")));
             this.furnace.setBurnTime((short) Math.max(1, this.furnace.getBurnTime() - 1));
             this.furnace.update();
             if (this.furnace.getBurnTime() <= 1) {

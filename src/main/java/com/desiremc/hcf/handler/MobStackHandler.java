@@ -17,38 +17,51 @@ import org.bukkit.scheduler.BukkitRunnable;
 
 import com.desiremc.hcf.DesireCore;
 
-public class MobStackHandler implements Listener {
+public class MobStackHandler implements Listener
+{
 
     private List<EntityType> mobList;
 
-    public MobStackHandler() {
-        mobList = new ArrayList<EntityType>();
+    public MobStackHandler()
+    {
+        mobList = new ArrayList<>();
         loadEntityList();
         startStackTask();
     }
 
-    public void loadEntityList() {
-        if (!this.mobList.isEmpty()) {
+    public void loadEntityList()
+    {
+        if (!this.mobList.isEmpty())
+        {
             this.mobList.clear();
         }
-        Iterator<String> iterator = DesireCore.getInstance().getConfig().getStringList("stacking-entity").iterator();
-        while (iterator.hasNext()) {
+        Iterator<String> iterator = DesireCore.getConfigHandler().getStringList("stacking-entity").iterator();
+        while (iterator.hasNext())
+        {
             this.mobList.add(EntityType.valueOf(iterator.next().toUpperCase()));
         }
     }
 
-    public void startStackTask() {
-        new BukkitRunnable() {
-            public void run() {
-                int mobStackingRadius = DesireCore.getInstance().getConfig().getInt("stacking-radius");
+    public void startStackTask()
+    {
+        new BukkitRunnable()
+        {
+            public void run()
+            {
+                int mobStackingRadius = DesireCore.getConfigHandler().getInteger("stacking-radius");
                 List<EntityType> mobList = MobStackHandler.this.mobList;
                 Iterator<World> iterator = Bukkit.getServer().getWorlds().iterator();
-                while (iterator.hasNext()) {
-                    for (LivingEntity livingEntity : iterator.next().getLivingEntities()) {
-                        if (mobList.contains(livingEntity.getType()) && livingEntity.isValid()) {
-                            for (Entity entity : livingEntity.getNearbyEntities((double) mobStackingRadius, (double) mobStackingRadius, (double) mobStackingRadius)) {
-                                if (entity instanceof LivingEntity && entity.isValid() && mobList.contains(entity.getType())) {
-                                    MobStackHandler.this.stackOne(livingEntity, (LivingEntity) entity, ChatColor.valueOf(DesireCore.getInstance().getConfig().getString("stack-color")));
+                while (iterator.hasNext())
+                {
+                    for (LivingEntity livingEntity : iterator.next().getLivingEntities())
+                    {
+                        if (mobList.contains(livingEntity.getType()) && livingEntity.isValid())
+                        {
+                            for (Entity entity : livingEntity.getNearbyEntities((double) mobStackingRadius, (double) mobStackingRadius, (double) mobStackingRadius))
+                            {
+                                if (entity instanceof LivingEntity && entity.isValid() && mobList.contains(entity.getType()))
+                                {
+                                    MobStackHandler.this.stackOne(livingEntity, (LivingEntity) entity, ChatColor.valueOf(DesireCore.getConfigHandler().getString("stack-color")));
                                 }
                             }
                         }
@@ -58,9 +71,11 @@ public class MobStackHandler implements Listener {
         }.runTaskTimer(DesireCore.getInstance(), 40L, 40L);
     }
 
-    public void unstackOne(LivingEntity livingEntity, ChatColor chatColor) {
+    public void unstackOne(LivingEntity livingEntity, ChatColor chatColor)
+    {
         int amount = this.getAmount(livingEntity.getCustomName(), chatColor);
-        if (amount <= 1) {
+        if (amount <= 1)
+        {
             return;
         }
         --amount;
@@ -71,52 +86,66 @@ public class MobStackHandler implements Listener {
         livingEntity.setHealth(0.0);
     }
 
-    public void stackOne(LivingEntity livingEntity, LivingEntity livingEntity2, ChatColor chatColor) {
+    public void stackOne(LivingEntity livingEntity, LivingEntity livingEntity2, ChatColor chatColor)
+    {
 
-        if (livingEntity.getType() != livingEntity2.getType()) {
+        if (livingEntity.getType() != livingEntity2.getType())
+        {
             return;
         }
         int amount = this.getAmount(livingEntity.getCustomName(), chatColor);
         int amount2 = 1;
-        if (this.isStacked(livingEntity2, chatColor)) {
+        if (this.isStacked(livingEntity2, chatColor))
+        {
             amount2 = this.getAmount(livingEntity2.getCustomName(), chatColor);
         }
         livingEntity2.remove();
-        if (amount == 0) {
+        if (amount == 0)
+        {
             livingEntity.setCustomName(chatColor + "x" + (amount2 + 1));
             livingEntity.setCustomNameVisible(true);
-        } else {
+        } else
+        {
             livingEntity.setCustomName(chatColor + "x" + (amount + amount2));
         }
     }
 
-    public int getAmount(String s, ChatColor chatColor) {
-        if (s == null) {
+    public int getAmount(String s, ChatColor chatColor)
+    {
+        if (s == null)
+        {
             return 0;
         }
-        if (ChatColor.getLastColors(s).equals('§' + chatColor.getChar())) {
+        if (ChatColor.getLastColors(s).equals('§' + chatColor.getChar()))
+        {
             return 0;
         }
         String stripColor = ChatColor.stripColor(ChatColor.stripColor(s.replace("x", "").replace("§f", "")));
-        if (!stripColor.matches("[0-9]+")) {
+        if (!stripColor.matches("[0-9]+"))
+        {
             return 0;
         }
-        if (stripColor.length() > 4) {
+        if (stripColor.length() > 4)
+        {
             return 0;
         }
         return Integer.parseInt(stripColor);
     }
 
-    public boolean isStacked(LivingEntity livingEntity, ChatColor chatColor) {
+    public boolean isStacked(LivingEntity livingEntity, ChatColor chatColor)
+    {
         return this.getAmount(livingEntity.getCustomName(), chatColor) != 0;
     }
 
     @EventHandler
-    public void onEntityDeath(EntityDeathEvent entityDeathEvent) {
-        if (entityDeathEvent.getEntity() instanceof LivingEntity) {
+    public void onEntityDeath(EntityDeathEvent entityDeathEvent)
+    {
+        if (entityDeathEvent.getEntity() instanceof LivingEntity)
+        {
             LivingEntity entity = entityDeathEvent.getEntity();
-            if (entity.getType() != EntityType.PLAYER && entity.getType() != EntityType.VILLAGER) {
-                this.unstackOne(entity, ChatColor.valueOf(DesireCore.getInstance().getConfig().getString("stack-color")));
+            if (entity.getType() != EntityType.PLAYER && entity.getType() != EntityType.VILLAGER)
+            {
+                this.unstackOne(entity, ChatColor.valueOf(DesireCore.getConfigHandler().getString("stack-color")));
             }
         }
     }

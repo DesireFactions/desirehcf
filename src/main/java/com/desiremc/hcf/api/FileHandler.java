@@ -6,13 +6,15 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import com.desiremc.hcf.DesireCore;
 import org.bukkit.ChatColor;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import sun.security.krb5.internal.crypto.Des;
 
 /**
  * @author Michael Ziluck
- *
  */
 public class FileHandler
 {
@@ -27,7 +29,7 @@ public class FileHandler
 
     /**
      * Construct a new optimized file handler.
-     * 
+     *
      * @param file
      */
     public FileHandler(File file)
@@ -39,10 +41,10 @@ public class FileHandler
     }
 
     /**
-     * Reloads the {@link ConfigHandler}. This resets the file and clears the
+     * Reloads the {@link}. This resets the file and clears the
      * history object.
-     * 
-     * @param file
+     *
+     * @param
      */
     public void reload()
     {
@@ -54,9 +56,8 @@ public class FileHandler
      * Gets a formatted string from the config file. Replaces any color
      * placeholders as well. If the string does not exist in the config, returns
      * null.
-     * 
+     *
      * @param key
-     * 
      * @return the formatted string.
      */
     public String getString(String key)
@@ -64,15 +65,17 @@ public class FileHandler
         key = key.toLowerCase();
         String message = null;
         Object o = history.get(key);
-        if (o != null && o instanceof String) { return (String) o; }
+        if (o != null && o instanceof String)
+        {
+            return (String) o;
+        }
         message = fileConfig.getString(key);
         if (message != null)
         {
             message = ChatColor.translateAlternateColorCodes('&', fileConfig.getString(key));
             history.put(key, message);
             return message;
-        }
-        else
+        } else
         {
             return key;
         }
@@ -81,9 +84,8 @@ public class FileHandler
     /**
      * Gets a double value from history or the config. If it does not exist,
      * returns 0.
-     * 
+     *
      * @param key
-     * 
      * @return the value.
      */
     public double getDouble(String key)
@@ -91,7 +93,10 @@ public class FileHandler
         key = key.toLowerCase();
         double value;
         Object o = history.get(key);
-        if (o != null && o instanceof Double) { return (Double) o; }
+        if (o != null && o instanceof Double)
+        {
+            return (Double) o;
+        }
         value = fileConfig.getDouble(key);
         history.put(key, value);
         return value;
@@ -100,9 +105,8 @@ public class FileHandler
     /**
      * Gets a integer value from history or the config. If it does not exist,
      * returns 0.
-     * 
+     *
      * @param key
-     * 
      * @return the value.
      */
     public int getInteger(String key)
@@ -110,18 +114,25 @@ public class FileHandler
         key = key.toLowerCase();
         int value;
         Object o = history.get(key);
-        if (o != null && o instanceof Integer) { return (Integer) o; }
+        if (o != null && o instanceof Integer)
+        {
+            return (Integer) o;
+        }
         value = fileConfig.getInt(key);
         history.put(key, value);
         return value;
     }
 
+    public ConfigurationSection getConfigurationSection(String key)
+    {
+        return fileConfig.getConfigurationSection(key);
+    }
+
     /**
      * Gets a boolean value from history or the config. If it does not exist,
      * returns 0.
-     * 
+     *
      * @param key
-     * 
      * @return the value.
      */
     public boolean getBoolean(String key)
@@ -129,7 +140,10 @@ public class FileHandler
         key = key.toLowerCase();
         boolean value;
         Object o = history.get(key);
-        if (o != null && o instanceof Integer) { return (Boolean) o; }
+        if (o != null && o instanceof Integer)
+        {
+            return (Boolean) o;
+        }
         value = fileConfig.getBoolean(key);
         history.put(key, value);
         return value;
@@ -139,9 +153,8 @@ public class FileHandler
      * Gets a formatted string list from the config file. Replaces any color
      * placeholders as well. If the string list does not exist in the config,
      * returns null.
-     * 
+     *
      * @param key
-     * 
      * @return the formatted string list.
      */
     @SuppressWarnings("unchecked")
@@ -149,7 +162,10 @@ public class FileHandler
     {
         key = key.toLowerCase();
         Object o = history.get(key);
-        if (o != null && o instanceof List<?>) { return (List<String>) o; }
+        if (o != null && o instanceof List<?>)
+        {
+            return (List<String>) o;
+        }
         List<String> list = new LinkedList<>();
         for (String str : fileConfig.getStringList(key))
         {
@@ -170,8 +186,7 @@ public class FileHandler
         try
         {
             fileConfig.save(file);
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             e.printStackTrace();
         }
@@ -185,8 +200,7 @@ public class FileHandler
         try
         {
             fileConfig.save(file);
-        }
-        catch (IOException e)
+        } catch (IOException e)
         {
             e.printStackTrace();
         }
