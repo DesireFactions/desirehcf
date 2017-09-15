@@ -2,6 +2,7 @@ package com.desiremc.hcf.punishment;
 
 import java.util.UUID;
 
+import com.desiremc.hcf.api.LangHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.mongodb.morphia.dao.BasicDAO;
@@ -39,11 +40,10 @@ public class PunishmentHandler extends BasicDAO<Punishment, Integer>
         {
             if (type == Punishment.Type.BAN)
             {
-                Bukkit.getPlayer(punished).kickPlayer(DesireCore.getLangHandler().getPrefix() + "\n&7You have been &eBANNED&7!".replace("&", ChatColor.COLOR_CHAR + ""));
-            }
-            else if (type == Punishment.Type.MUTE)
+                Bukkit.getPlayer(punished).kickPlayer(DesireCore.getLangHandler().renderMessage("punishment.ban"));
+            } else if (type == Punishment.Type.MUTE)
             {
-                Bukkit.getPlayer(punished).sendMessage(DesireCore.getLangHandler().getPrefix() + "You have been &eMUTED&7!".replace("&", ChatColor.COLOR_CHAR + ""));
+                Bukkit.getPlayer(punished).sendMessage(DesireCore.getLangHandler().renderMessage("punishment.mute"));
             }
         }
     }
@@ -53,12 +53,12 @@ public class PunishmentHandler extends BasicDAO<Punishment, Integer>
         Punishment punishment = findOne("uuid", uuid);
         if (punishment != null)
         {
-            System.out.println("[DesireHCF] Found punishment document for: " + uuid);
-            System.out.println("[DesireHCF] Punishment Type: " + punishment.getReason());
+            System.out.println(DesireCore.getLangHandler().renderMessage("punishment.found", "{player}", uuid + ""));
+            System.out.println(DesireCore.getLangHandler().renderMessage("punishment.type", "{reason}", punishment.getReason()));
             return punishment;
         }
 
-        System.out.println("[DesireHCF] Punishment document was not found for: " + uuid);
+        System.out.println(DesireCore.getLangHandler().renderMessage("punishment.notfound", "{player}", uuid + ""));
         return null;
     }
 

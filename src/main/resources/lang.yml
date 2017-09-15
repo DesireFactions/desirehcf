@@ -110,3 +110,9 @@ achievement:
     desc: "&7Desc: &e{desc}"
     reward: "&7Reward: &e{reward}"
     footer: "&8----------------------------------------------------"
+punishment:
+  ban: "You have been BANNED!"
+  mute: "YOu have been MUTED!"
+  found: "[DesireHCF] Found punishment document for: {player}"
+  type: "[DesireHCF] Punishment Type: {reason}"
+  notfound: "[DesireHCF] Punishment document was not found for: {player}"
