@@ -8,8 +8,6 @@ import com.desiremc.hcf.DesireCore;
 
 public class Utils {
 
-    public static boolean enderchestDisabled = DesireCore.getInstance().getConfig().getBoolean("enderchest-disabled");
-
     public static String chat(String s) {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
