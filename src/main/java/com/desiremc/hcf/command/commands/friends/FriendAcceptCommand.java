@@ -12,10 +12,12 @@ import com.desiremc.hcf.validator.PlayerNotFriendsValidator;
 import com.desiremc.hcf.validator.PlayerValidator;
 import com.desiremc.hcf.validator.SenderFriendRequestValidator;
 
-public class FriendAcceptCommand extends ValidCommand {
+public class FriendAcceptCommand extends ValidCommand
+{
 
-    public FriendAcceptCommand() {
-        super("accept", "Accept a friend request.", Rank.GUEST, new String[] { "target" }, "confirm");
+    public FriendAcceptCommand()
+    {
+        super("accept", "Accept a friend request.", Rank.GUEST, new String[]{"target"}, "confirm");
         addParser(new PlayerSessionParser(), "target");
         addValidator(new PlayerValidator());
         addValidator(new PlayerNotFriendsValidator(), "target");
@@ -23,7 +25,8 @@ public class FriendAcceptCommand extends ValidCommand {
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
+    public void validRun(CommandSender sender, String label, Object... args)
+    {
         Session target = (Session) args[0];
 
         FriendsAPI.acceptRequest((Player) sender, target);

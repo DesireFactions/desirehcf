@@ -12,7 +12,7 @@ public class LivesUseCommand extends ValidCommand
 
     public LivesUseCommand()
     {
-        super("use", "Use a life to revive another player.", Rank.GUEST, new String[] { "player" });
+        super("use", "Use a life to revive another player.", Rank.GUEST, new String[]{"player"});
         addParser(new PlayerSessionParser(), "player");
         addValidator(new PlayerIsBannedValidator(), "player");
     }
@@ -21,7 +21,7 @@ public class LivesUseCommand extends ValidCommand
     public void validRun(CommandSender sender, String label, Object... args)
     {
         // TODO Auto-generated method stub
-        
+
     }
 
 }

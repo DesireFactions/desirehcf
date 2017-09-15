@@ -9,16 +9,19 @@ import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.validator.PlayerValidator;
 import com.desiremc.hcf.validator.SenderOutgoingFriendRequestsValidator;
 
-public class FriendListOutgoingCommand extends ValidCommand {
+public class FriendListOutgoingCommand extends ValidCommand
+{
 
-    public FriendListOutgoingCommand() {
-        super("outgoing", "Lists incoming friend requests.", Rank.GUEST, new String[] {});
+    public FriendListOutgoingCommand()
+    {
+        super("outgoing", "Lists incoming friend requests.", Rank.GUEST, new String[]{});
         addValidator(new PlayerValidator());
         addValidator(new SenderOutgoingFriendRequestsValidator());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
+    public void validRun(CommandSender sender, String label, Object... args)
+    {
         FriendsAPI.listOutgoing((Player) sender);
     }
 
