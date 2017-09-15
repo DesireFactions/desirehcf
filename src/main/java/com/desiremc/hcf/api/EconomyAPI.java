@@ -23,7 +23,7 @@ public class EconomyAPI
         setTokens(uuid, session.getTokens() - amount);
         if (inform)
         {
-            session.sendMessage(DesireCore.getLangHandler().getPrefix() + "Your token amount is now " + ChatColor.YELLOW + session.getTokens());
+            DesireCore.getLangHandler().sendRenderMessage(session, "tokens.remove", "{tokens}", amount + "");
         }
     }
 
@@ -33,7 +33,7 @@ public class EconomyAPI
         setTokens(uuid, session.getTokens() + amount);
         if (inform)
         {
-            session.sendMessage(DesireCore.getLangHandler().getPrefix() + "You have gained " + ChatColor.YELLOW + session.getTokens() + ChatColor.GRAY + " tokens");
+            DesireCore.getLangHandler().sendRenderMessage(session, "tokens.give", "{tokens}", amount + "");
         }
     }
 
@@ -42,6 +42,17 @@ public class EconomyAPI
         Session session = SessionHandler.getSession(uuid);
         session.setTokens(amount);
         SessionHandler.getInstance().save(session);
+    }
+
+    public static void setTokens(UUID uuid, int amount, boolean inform)
+    {
+        Session session = SessionHandler.getSession(uuid);
+        session.setTokens(amount);
+        SessionHandler.getInstance().save(session);
+        if (inform)
+        {
+            DesireCore.getLangHandler().sendRenderMessage(session, "tokens.set", "{tokens}", amount + "");
+        }
     }
 
 }
