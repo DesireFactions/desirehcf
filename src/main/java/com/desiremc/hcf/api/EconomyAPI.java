@@ -2,8 +2,6 @@ package com.desiremc.hcf.api;
 
 import java.util.UUID;
 
-import org.bukkit.ChatColor;
-
 import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.session.Session;
 import com.desiremc.hcf.session.SessionHandler;

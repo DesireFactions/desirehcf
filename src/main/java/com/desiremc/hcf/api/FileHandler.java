@@ -6,12 +6,10 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-import com.desiremc.hcf.DesireCore;
 import org.bukkit.ChatColor;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-import sun.security.krb5.internal.crypto.Des;
 
 /**
  * @author Michael Ziluck
