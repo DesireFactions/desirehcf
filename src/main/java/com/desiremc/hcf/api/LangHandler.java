@@ -1,16 +1,19 @@
 package com.desiremc.hcf.api;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 
+import com.desiremc.hcf.session.SessionHandler;
+import com.desiremc.hcf.util.ChatUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.hcf.session.Session;
 
 /**
  * @author Michael Ziluck
- *
  */
 public class LangHandler extends FileHandler
 {
@@ -21,7 +24,7 @@ public class LangHandler extends FileHandler
     /**
      * Create a new {@link LangHandler} based on the {@link FileHandler}. Also
      * loads the prefix.
-     * 
+     *
      * @param file
      */
     public LangHandler(File file)
@@ -39,7 +42,7 @@ public class LangHandler extends FileHandler
      * Gets a formatted string from the config file. Replaces any color place
      * holders as well. If the string does not exist in the config, returns
      * null.
-     * 
+     *
      * @param string
      * @return the formatted string.
      */
@@ -51,12 +54,11 @@ public class LangHandler extends FileHandler
             str = "==ERROR==";
         }
         return (prefix != null && !str.startsWith("`") ? prefix + " " : "") + "§r" + (!str.startsWith("`") ? str : str.substring(1, str.length()));
-
     }
 
     /**
      * Shorthand to send getString to {@link CommandSender}
-     * 
+     *
      * @param sender
      * @param string
      */
@@ -67,14 +69,17 @@ public class LangHandler extends FileHandler
 
     /**
      * Render a message using the format rendered in lang.yml
-     * 
+     *
      * @param string
      * @param args
      * @return
      */
     public String renderMessage(String string, String... args)
     {
-        if (args.length % 2 != 0) { throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given."); }
+        if (args.length % 2 != 0)
+        {
+            throw new IllegalArgumentException("Message rendering requires arguments of an even number. " + Arrays.toString(args) + " given.");
+        }
 
         String message = getString(string);
         for (int i = 0; i < args.length; i += 2)
@@ -87,7 +92,7 @@ public class LangHandler extends FileHandler
 
     /**
      * Shorthand to render a command and send it to a {@link CommandSender}
-     * 
+     *
      * @param sender
      * @param string
      * @param args
@@ -103,9 +108,28 @@ public class LangHandler extends FileHandler
         sendRenderMessage(sender, string, args);
     }
 
+    public void sendRenderMessage(CommandSender sender, String string, boolean center, String... args)
+    {
+        if(center) {
+            ChatUtils.sendCenteredMessage(sender, renderMessage(string, args));
+        }else {
+            sender.sendMessage(renderMessage(string, args));
+        }
+    }
+
+    public void sendRenderMessage(Session s, String string, boolean center, String... args)
+    {
+        CommandSender sender = Bukkit.getPlayer(s.getUniqueId());
+        if(center) {
+            ChatUtils.sendCenteredMessage(sender, renderMessage(string, args));
+        }else {
+            sender.sendMessage(renderMessage(string, args));
+        }
+    }
+
     /**
      * Render a usage message using the format specified in lang.yml
-     * 
+     *
      * @param args
      * @return
      */
@@ -123,15 +147,14 @@ public class LangHandler extends FileHandler
 
     /**
      * Shorthand to send a usage message to a {@link CommandSender}
-     * 
+     *
      * @param sender
-     * @param usage
      */
     public void sendUsageMessage(CommandSender sender, String label, String... args)
     {
         sender.sendMessage(usageMessage(label, args));
     }
-    
+
     public String getPrefix()
     {
         return prefix;

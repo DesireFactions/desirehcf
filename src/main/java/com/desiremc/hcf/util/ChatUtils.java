@@ -1,6 +1,7 @@
 package com.desiremc.hcf.util;
 
 import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.desiremc.hcf.session.Session;
@@ -19,7 +20,16 @@ public class ChatUtils {
     }
 
     public static void sendCenteredMessage(Player player, String message) {
-        if (message == null || message.equals("")) player.sendMessage("");
+        sendCenteredMessageFinal(SessionHandler.getSession(player), message);
+    }
+
+    public static void sendCenteredMessage(CommandSender sender, String message) {
+        sendCenteredMessageFinal(SessionHandler.getSession(sender), message);
+    }
+
+    private static void sendCenteredMessageFinal(Session session, String message) {
+        Player sender = session.getPlayer();
+        if (message == null || message.equals("")) sender.sendMessage("");
         message = ChatColor.translateAlternateColorCodes('&', message);
 
         int messagePxSize = 0;
@@ -29,12 +39,10 @@ public class ChatUtils {
         for (char c : message.toCharArray()) {
             if (c == ChatColor.COLOR_CHAR) {
                 previousCode = true;
-                continue;
-            } else if (previousCode == true) {
+            } else if (previousCode) {
                 previousCode = false;
                 if (c == 'l' || c == 'L') {
                     isBold = true;
-                    continue;
                 } else
                     isBold = false;
             } else {
@@ -53,7 +61,7 @@ public class ChatUtils {
             sb.append(" ");
             compensated += spaceLength;
         }
-        player.sendMessage(sb.toString() + message);
+        sender.sendMessage(sb.toString() + message);
     }
 
     /*
