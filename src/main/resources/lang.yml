@@ -136,3 +136,13 @@ punishment:
   found: "[DesireHCF] Found punishment document for: {player}"
   type: "[DesireHCF] Punishment Type: {reason}"
   notfound: "[DesireHCF] Punishment document was not found for: {player}"
+info:
+  header-footer: "&8----------------------------------------------------"
+  name: "{player}"
+  uuid: "UUID: {uuid}"
+  ip: "IP: {ip}"
+  tokens: "Tokens: {tokens}"
+  status: "Status: {status}"
+  banned: "Banned: {time}"
+  muted: "Muted: {time}"
+  normal: "Normal"

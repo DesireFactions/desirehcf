@@ -63,8 +63,8 @@ public abstract class ValidCommand {
         this.requiredRank = requiredRank;
         this.aliases = aliases;
         this.subCommands = new ArrayList<>();
-        this.validators = new LinkedList<CommandValidator>();
-        this.argsMap = new HashMap<String, Integer>();
+        this.validators = new LinkedList<>();
+        this.argsMap = new HashMap<>();
         this.commandArity = newCommandArity(commandArity);
         this.args = args;
 
