@@ -36,7 +36,7 @@ public class Region
         this.name = name;
         this.world = world;
         this.region = region;
-        this.setBarrierMaterial(barrierMaterial.getItemType());
+        this.barrierMaterial = barrierMaterial.getItemType();
         this.barrierMaterialData = barrierMaterial.getData();
         this.viewDistance = viewDistance;
     }
@@ -96,19 +96,15 @@ public class Region
         return barrierMaterialData;
     }
 
-    public void setBarrierMaterialData(short barrierMaterialData)
-    {
-        this.barrierMaterialData = barrierMaterialData;
-    }
-
     public Material getBarrierMaterial()
     {
         return barrierMaterial;
     }
 
-    public void setBarrierMaterial(Material barrierMaterial)
+    @SuppressWarnings("deprecation")
+    public void setBarrierMaterial(MaterialData data)
     {
-        this.barrierMaterial = barrierMaterial;
+        this.barrierMaterial = data.getItemType();
+        this.barrierMaterialData = data.getData();
     }
-
 }

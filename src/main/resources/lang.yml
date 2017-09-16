@@ -35,9 +35,18 @@ not_block: '&7That is not a block.'
 string:
   too_long: '&7That string is too long.'
   too_short: '&7That string is too short.'
+integer:
+  too_large: '&7That number is too large.'
+  too_small: '&7That number is too small.'
 region:
   used_name: '&7That name is already used.'
-  create: '&7Created region &b{name} with the material &a{material}.'
+  not_found: '&7That region does not exist.'
+  none: '&7No regions exist.'
+  same_name: '&7That is the same name.'
+  create: '&fCreated region &b{name}&f with the material &a{material}&f.'
+  delete: '&fDeleted region &b{name}&f.'
+  list: '&fList of regions: &e{regions}&f.'
+  changed: '&fChanged the {change} from &b{old}&f to &b{new}&f.'
 pvp:
   target-protected: '&7That player has pvp disabled'
   damager-protected: '&7You have pvp disabled.'
