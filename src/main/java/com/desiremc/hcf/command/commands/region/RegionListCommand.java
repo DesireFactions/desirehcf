@@ -4,38 +4,42 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
-import com.desiremc.hcf.DesireCore;
 import com.desiremc.hcf.command.ValidCommand;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
+import com.desiremc.hcf.validator.RegionsExistValidator;
 
-public class RegionListCommand extends ValidCommand {
+public class RegionListCommand extends ValidCommand
+{
 
-    public RegionListCommand() {
+    public RegionListCommand()
+    {
         super("list", "List all the regions created.", Rank.ADMIN, new String[] {});
+
+        addValidator(new RegionsExistValidator());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
+    public void validRun(CommandSender sender, String label, Object... args)
+    {
         Collection<Region> regions = RegionHandler.getInstance().getRegions();
+        StringBuilder sb = new StringBuilder();
 
-        if (regions.size() >= 1) {
-            String message = DesireCore.getLangHandler().getString("list.format");
-            StringBuilder sb = new StringBuilder();
-            int i = 0;
-            for (Region r : regions) {
-                sb.append(r.getName());
-                if (i != regions.size() - 1) {
-                    sb.append(", ");
-                }
-                i++;
+        // I did this instead of a for int i because every .get with a
+        // linked list goes through the entire list to get to that point in
+        // the list. Don't change it over.
+        int i = 0;
+        for (Region r : regions)
+        {
+            sb.append(r.getName());
+            if (i != regions.size() - 1)
+            {
+                sb.append(", ");
             }
-            message = message.replace("{regions}", sb.toString());
-            sender.sendMessage(message);
-        } else {
-            sender.sendMessage(DesireCore.getLangHandler().getString("list.no-regions"));
+            i++;
         }
+        LANG.sendRenderMessage(sender, "region.list", "{regions}", sb.toString());
     }
 
 }

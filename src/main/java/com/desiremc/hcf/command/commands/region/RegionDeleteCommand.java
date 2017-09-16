@@ -3,6 +3,7 @@ package com.desiremc.hcf.command.commands.region;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.hcf.command.ValidCommand;
+import com.desiremc.hcf.parser.RegionParser;
 import com.desiremc.hcf.session.Rank;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
@@ -11,21 +12,16 @@ public class RegionDeleteCommand extends ValidCommand {
 
     public RegionDeleteCommand() {
         super("delete", "Delete a protected region.", Rank.ADMIN, new String[] { "name" }, "remove");
+        
+        addParser(new RegionParser(), "name");
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
-        String name = (String) args[0];
-        
-        Region r = RegionHandler.getInstance().getRegion(name.toLowerCase());
-        
-        if (r == null) {
-            sender.sendMessage(LANG.getString("delete.not-found"));
-            return;
-        }
-
+    public void validRun(CommandSender sender, String label, Object... args) {        
+        Region r = (Region)args[0];
         RegionHandler.getInstance().delete(r);
-        sender.sendMessage(LANG.getString("delete.success").replace("{name}", name));
+        
+        sender.sendMessage(LANG.getString("region.delete").replace("{name}", r.getName()));
     }
 
 }

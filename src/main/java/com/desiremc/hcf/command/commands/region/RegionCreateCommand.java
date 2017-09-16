@@ -28,7 +28,7 @@ public class RegionCreateCommand extends ValidCommand
         addParser(new StringParser(), "name");
         addParser(new MaterialDataParser(), "material");
 
-        addValidator(new StringLengthValidator(0, DesireCore.getConfigHandler().getInteger("regions.max-name")), "name");
+        addValidator(new StringLengthValidator(1, DesireCore.getConfigHandler().getInteger("regions.max-name")), "name");
         addValidator(new SelectedAreaValidator());
         addValidator(new ItemBlockValidator(), "material");
         addValidator(new UnusedRegionNameValidator(), "name");
