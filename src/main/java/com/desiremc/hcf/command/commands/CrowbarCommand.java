@@ -13,7 +13,7 @@ public class CrowbarCommand extends ValidCommand
 
     public CrowbarCommand()
     {
-        super("crowbar", "Spawn in a new crowbar.", Rank.MODERATOR, new String[] {});
+        super("crowbar", "Spawn in a new crowbar.", Rank.MODERATOR, new String[]{});
         addValidator(new PlayerValidator());
     }
 

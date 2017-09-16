@@ -3,6 +3,7 @@ package com.desiremc.hcf;
 import java.io.File;
 import java.util.UUID;
 
+import com.desiremc.hcf.command.commands.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -14,15 +15,6 @@ import com.desiremc.hcf.api.FileHandler;
 import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.command.CustomCommandHandler;
-import com.desiremc.hcf.command.commands.AchievementCommand;
-import com.desiremc.hcf.command.commands.BanCommand;
-import com.desiremc.hcf.command.commands.CrowbarCommand;
-import com.desiremc.hcf.command.commands.EnderChestCommand;
-import com.desiremc.hcf.command.commands.HCFReloadCommand;
-import com.desiremc.hcf.command.commands.PVPCommand;
-import com.desiremc.hcf.command.commands.SettingsCommand;
-import com.desiremc.hcf.command.commands.TempBanCommand;
-import com.desiremc.hcf.command.commands.UnbanCommand;
 import com.desiremc.hcf.command.commands.friends.FriendsCommand;
 import com.desiremc.hcf.command.commands.fstat.FStatCommand;
 import com.desiremc.hcf.command.commands.lives.LivesCommand;
@@ -138,6 +130,7 @@ public class DesireCore extends JavaPlugin
         customCommandHandler.registerCommand(new TicketCommand());
         customCommandHandler.registerCommand(new PVPCommand());
         customCommandHandler.registerCommand(new StaffCommand());
+        customCommandHandler.registerCommand(new InfoCommand());
     }
 
     public MongoWrapper getMongoWrapper()
