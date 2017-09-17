@@ -82,8 +82,6 @@ public class ChatListener implements Listener
                         .then(": ")
                         .then(parsedMessage)
                         .color(s.getRank().getColor())
-                        .then("Item")
-                        .itemTooltip(players.getInventory().getItemInMainHand())
                         .send(players);
             }
         });
