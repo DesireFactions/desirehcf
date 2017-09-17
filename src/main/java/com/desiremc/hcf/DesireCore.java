@@ -43,6 +43,8 @@ import com.desiremc.hcf.listener.InteractListener;
 import com.desiremc.hcf.listener.ListenerManager;
 import com.desiremc.hcf.listener.MovementListener;
 import com.desiremc.hcf.punishment.PunishmentHandler;
+import com.desiremc.hcf.scoreboard.EntryRegistry;
+import com.desiremc.hcf.scoreboard.ScoreboardRegistry;
 import com.desiremc.hcf.session.AchievementManager;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
@@ -57,135 +59,137 @@ import net.milkbowl.vault.economy.Economy;
 public class DesireCore extends JavaPlugin
 {
 
-	private static final UUID CONSOLE = UUID.fromString("00000000-0000-0000-0000-000000000000");
+    private static final UUID CONSOLE = UUID.fromString("00000000-0000-0000-0000-000000000000");
 
-	private static DesireCore instance;
+    private static DesireCore instance;
 
-	private static MongoWrapper mongoWrapper;
-	private static RegisteredServiceProvider<Economy> economyProvider;
+    private static MongoWrapper mongoWrapper;
+    private static RegisteredServiceProvider<Economy> economyProvider;
 
-	private static LangHandler lang;
-	private static FileHandler config;
-	private static ItemDb itemHandler;
+    private static LangHandler lang;
+    private static FileHandler config;
+    private static ItemDb itemHandler;
 
-	@Override
-	public void onEnable()
-	{
-		instance = this;
+    @Override
+    public void onEnable()
+    {
+        instance = this;
 
-		saveDefaultConfig();
-		saveResource("lang.yml", false);
+        saveDefaultConfig();
+        saveResource("lang.yml", false);
 
-		config = new FileHandler(new File(getDataFolder(), "config.yml"));
-		lang = new LangHandler(new File(getDataFolder(), "lang.yml"));
+        config = new FileHandler(new File(getDataFolder(), "config.yml"));
+        lang = new LangHandler(new File(getDataFolder(), "lang.yml"));
 
-		saveResource("items.csv", false);
-		itemHandler = new ItemDb();
+        saveResource("items.csv", false);
+        itemHandler = new ItemDb();
 
-		mongoWrapper = new MongoWrapper();
+        mongoWrapper = new MongoWrapper();
 
-		SessionHandler.initialize();
-		PunishmentHandler.initialize();
-		FactionSessionHandler.initialize();
-		RegionHandler.initialize();
-		TagHandler.initialize();
-		TicketHandler.initialize();
-		StaffHandler.initialize();
-		MenuAPI.initialize();
-		AchievementManager.initialize();
-		CustomCommandHandler.initialize();
-		ListenerManager.initialize();
+        SessionHandler.initialize();
+        PunishmentHandler.initialize();
+        FactionSessionHandler.initialize();
+        RegionHandler.initialize();
+        TagHandler.initialize();
+        TicketHandler.initialize();
+        StaffHandler.initialize();
+        MenuAPI.initialize();
+        AchievementManager.initialize();
+        CustomCommandHandler.initialize();
+        ListenerManager.initialize();
+        ScoreboardRegistry.initialize();
+        EntryRegistry.initialize();
 
-		registerListeners();
-		registerCommands();
+        registerListeners();
+        registerCommands();
 
-		economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
+        economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
 
-		for (Player p : Bukkit.getOnlinePlayers())
-		{
-			Bukkit.getPluginManager().callEvent(new PlayerJoinEvent(p, ""));
-		}
-	}
+        for (Player p : Bukkit.getOnlinePlayers())
+        {
+            Bukkit.getPluginManager().callEvent(new PlayerJoinEvent(p, ""));
+        }
+    }
 
-	private void registerListeners()
-	{
-		ListenerManager listenerManager = ListenerManager.getInstace();
-		listenerManager.addListener(new ConnectionListener());
-		listenerManager.addListener(new ChatListener());
-		listenerManager.addListener(new MovementListener());
-		listenerManager.addListener(new CombatListener());
-		listenerManager.addListener(new InteractListener());
-		listenerManager.addListener(new CrowbarHandler());
-		listenerManager.addListener(new CreatureSpawnListener());
-	}
+    private void registerListeners()
+    {
+        ListenerManager listenerManager = ListenerManager.getInstace();
+        listenerManager.addListener(new ConnectionListener());
+        listenerManager.addListener(new ChatListener());
+        listenerManager.addListener(new MovementListener());
+        listenerManager.addListener(new CombatListener());
+        listenerManager.addListener(new InteractListener());
+        listenerManager.addListener(new CrowbarHandler());
+        listenerManager.addListener(new CreatureSpawnListener());
+    }
 
-	private void registerCommands()
-	{
-		CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
-		customCommandHandler.registerCommand(new FriendsCommand());
-		customCommandHandler.registerCommand(new FStatCommand());
-		customCommandHandler.registerCommand(new LivesCommand());
-		customCommandHandler.registerCommand(new RankCommand());
-		customCommandHandler.registerCommand(new RegionCommand());
-		customCommandHandler.registerCommand(new SetEndCommand());
-		customCommandHandler.registerCommand(new AchievementCommand());
-		customCommandHandler.registerCommand(new TempBanCommand());
-		customCommandHandler.registerCommand(new BanCommand());
-		customCommandHandler.registerCommand(new UnbanCommand());
-		customCommandHandler.registerCommand(new CrowbarCommand());
-		customCommandHandler.registerCommand(new EnderChestCommand());
-		customCommandHandler.registerCommand(new HCFReloadCommand());
-		customCommandHandler.registerCommand(new SettingsCommand());
-		customCommandHandler.registerCommand(new TicketCommand());
-		customCommandHandler.registerCommand(new PVPCommand());
-		customCommandHandler.registerCommand(new StaffCommand());
-		customCommandHandler.registerCommand(new InfoCommand());
-	}
+    private void registerCommands()
+    {
+        CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
+        customCommandHandler.registerCommand(new FriendsCommand());
+        customCommandHandler.registerCommand(new FStatCommand());
+        customCommandHandler.registerCommand(new LivesCommand());
+        customCommandHandler.registerCommand(new RankCommand());
+        customCommandHandler.registerCommand(new RegionCommand());
+        customCommandHandler.registerCommand(new SetEndCommand());
+        customCommandHandler.registerCommand(new AchievementCommand());
+        customCommandHandler.registerCommand(new TempBanCommand());
+        customCommandHandler.registerCommand(new BanCommand());
+        customCommandHandler.registerCommand(new UnbanCommand());
+        customCommandHandler.registerCommand(new CrowbarCommand());
+        customCommandHandler.registerCommand(new EnderChestCommand());
+        customCommandHandler.registerCommand(new HCFReloadCommand());
+        customCommandHandler.registerCommand(new SettingsCommand());
+        customCommandHandler.registerCommand(new TicketCommand());
+        customCommandHandler.registerCommand(new PVPCommand());
+        customCommandHandler.registerCommand(new StaffCommand());
+        customCommandHandler.registerCommand(new InfoCommand());
+    }
 
-	public MongoWrapper getMongoWrapper()
-	{
-		return mongoWrapper;
-	}
+    public MongoWrapper getMongoWrapper()
+    {
+        return mongoWrapper;
+    }
 
-	public static LangHandler getLangHandler()
-	{
-		return lang;
-	}
+    public static LangHandler getLangHandler()
+    {
+        return lang;
+    }
 
-	public static FileHandler getConfigHandler()
-	{
-		return config;
-	}
+    public static FileHandler getConfigHandler()
+    {
+        return config;
+    }
 
-	public static RegisteredServiceProvider<Economy> getEconomy()
-	{
-		return economyProvider;
-	}
+    public static RegisteredServiceProvider<Economy> getEconomy()
+    {
+        return economyProvider;
+    }
 
-	public static UUID getConsoleUUID()
-	{
-		return CONSOLE;
-	}
+    public static UUID getConsoleUUID()
+    {
+        return CONSOLE;
+    }
 
-	public static WorldEditPlugin getWorldEdit()
-	{
-		Plugin p = Bukkit.getPluginManager().getPlugin("WorldEdit");
-		if (p == null)
-		{
-			System.out.println("This could would crash if that were to happen.");
-			return null;
-		}
-		return (WorldEditPlugin) p;
-	}
+    public static WorldEditPlugin getWorldEdit()
+    {
+        Plugin p = Bukkit.getPluginManager().getPlugin("WorldEdit");
+        if (p == null)
+        {
+            System.out.println("This could would crash if that were to happen.");
+            return null;
+        }
+        return (WorldEditPlugin) p;
+    }
 
-	public static ItemDb getItemHandler()
-	{
-		return itemHandler;
-	}
+    public static ItemDb getItemHandler()
+    {
+        return itemHandler;
+    }
 
-	public static DesireCore getInstance()
-	{
-		return instance;
-	}
+    public static DesireCore getInstance()
+    {
+        return instance;
+    }
 
 }

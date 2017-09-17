@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import com.desiremc.hcf.scoreboard.common.EntryBuilder;
@@ -58,9 +59,9 @@ public class EntryRegistry implements ScoreboardHandler
      * Set the value on a player's scoreboard.
      * 
      * @param player
-     *            the player to target
+     *            the player to target.
      * @param key
-     *            the key to store as reference
+     *            the key to store as reference.
      * @param value
      *            the string displayed on the scoreboard.
      */
@@ -78,12 +79,28 @@ public class EntryRegistry implements ScoreboardHandler
     }
 
     /**
+     * Set the value on all player's scoreboard.
+     * 
+     * @param key
+     *            the key to store as reference.
+     * @param value
+     *            the string displayed on the scoreboard.
+     */
+    public void setAll(String key, String value)
+    {
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            setValue(player, key, value);
+        }
+    }
+
+    /**
      * Clear a value on a player's scoreboard.
      * 
      * @param player
-     *            the player to target
+     *            the player to target.
      * @param key
-     *            the key used as a reference
+     *            the key used as a reference.
      */
     public void removeValue(Player player, String key)
     {
@@ -96,6 +113,20 @@ public class EntryRegistry implements ScoreboardHandler
             {
                 ScoreboardRegistry.getInstance().clearScoreboard(player);
             }
+        }
+    }
+
+    /**
+     * Clear a value on all player's scoreboard.
+     * 
+     * @param key
+     *            the key used as a reference.
+     */
+    public void removeAll(String key)
+    {
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            removeValue(player, key);
         }
     }
 

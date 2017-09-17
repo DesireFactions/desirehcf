@@ -64,15 +64,10 @@ public final class EntryBuilder
     public static List<Entry> build(Collection<String> strings)
     {
         EntryBuilder builder = new EntryBuilder();
-        int i = 0;
         for (String str : strings)
         {
+            builder.blank();
             builder.next(str);
-            i++;
-            if (i != strings.size())
-            {
-                builder.blank();
-            }
         }
         return builder.build();
     }

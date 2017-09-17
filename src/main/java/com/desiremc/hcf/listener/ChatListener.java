@@ -21,14 +21,17 @@ import com.massivecraft.factions.Faction;
 
 import mkremins.fanciful.FancyMessage;
 
-public class ChatListener implements Listener {
+public class ChatListener implements Listener
+{
 
     @EventHandler
-    public void chat(AsyncPlayerChatEvent event) {
+    public void chat(AsyncPlayerChatEvent event)
+    {
         Player player = event.getPlayer();
         event.setCancelled(true);
         Session s = SessionHandler.getSession(player);
-        if (s.isMuted() != null) {
+        if (s.isMuted() != null)
+        {
             s.sendMessage(ChatColor.DARK_GRAY + "-----------------------------------------------------");
             s.sendMessage("");
             ChatUtils.sendCenteredMessage(player, DesireCore.getLangHandler().getPrefix().replace(" ", ""));
@@ -46,11 +49,14 @@ public class ChatListener implements Listener {
 
         String parsedMessage = s.getRank().getId() >= Rank.ADMIN.getId() ? ChatColor.translateAlternateColorCodes('&', msg) : msg;
         System.out.println(player.getName() + ": " + parsedMessage);
-        Bukkit.getOnlinePlayers().stream().forEach(new Consumer<Player>() {
+        Bukkit.getOnlinePlayers().stream().forEach(new Consumer<Player>()
+        {
             @Override
-            public void accept(Player players) {
+            public void accept(Player players)
+            {
 
-                if (f == null) {
+                if (f == null)
+                {
                     new FancyMessage(s.getRank().getPrefix())
                             .then(player.getName())
                             .tooltip(new String[] {
@@ -76,6 +82,8 @@ public class ChatListener implements Listener {
                         .then(": ")
                         .then(parsedMessage)
                         .color(s.getRank().getColor())
+                        .then("Item")
+                        .itemTooltip(players.getInventory().getItemInMainHand())
                         .send(players);
             }
         });
