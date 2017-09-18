@@ -5,7 +5,6 @@ import org.bukkit.entity.Player;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
-import com.desiremc.hcf.handler.DeathBanHandler;
 
 public class LivesAPI
 {
@@ -18,7 +17,7 @@ public class LivesAPI
         String targetName = target.getDisplayName();
         String senderName = ((Player) sender).getDisplayName();
 
-        DeathBanHandler.takeLives(target, amount);
+        // DeathBanHandler.takeLives(target, amount);
 
         LANG.sendRenderMessage(sender, "lives.remove", "{amount}", strAmount, "{player}", targetName);
 
@@ -31,10 +30,9 @@ public class LivesAPI
         String targetName = target.getDisplayName();
         String senderName = ((Player) sender).getDisplayName();
 
-        DeathBanHandler.addLives(target, amount);
+        // DeathBanHandler.addLives(target, amount);
 
         LANG.sendRenderMessage(sender, "lives.add", "{amount}", strAmount, "{player}", targetName);
-
         LANG.sendRenderMessage(sender, "lives.recieved", "{amount}", strAmount, "{sender}", senderName);
     }
 }
