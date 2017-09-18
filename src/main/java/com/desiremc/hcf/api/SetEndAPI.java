@@ -3,8 +3,9 @@ package com.desiremc.hcf.api;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.desiremc.hcf.DesireCore;
-import com.desiremc.hcf.util.Utils;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.utils.Utils;
 
 public class SetEndAPI
 {

@@ -2,7 +2,8 @@ package com.desiremc.hcf.validator;
 
 import org.bukkit.command.CommandSender;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.command.CommandValidator;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 
@@ -18,7 +19,7 @@ public class UnusedRegionNameValidator extends CommandValidator
             DesireCore.getLangHandler().sendString(sender, "region.used_name");
             return false;
         }
-        
+
         return true;
     }
 

@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.Time;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -20,24 +21,24 @@ import org.bukkit.event.player.PlayerLoginEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.scheduler.BukkitRunnable;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.utils.Utils;
 import com.desiremc.hcf.Components;
-import com.desiremc.hcf.DesireCore;
-import com.desiremc.hcf.api.LangHandler;
+import com.desiremc.hcf.HCFCore;
 import com.desiremc.hcf.util.Cooldown;
-import com.desiremc.hcf.util.Utils;
 import com.desiremc.hcf.util.Cooldown.CooldownBase;
-import com.desiremc.hcf.util.Cooldown.Time;
 
 public class DeathBanHandler implements Listener
 {
 
     private final Set<UUID> counting = new HashSet<>();
     private final static Map<UUID, Integer> lives = new HashMap<>();
-    private final static LangHandler LANG = DesireCore.getLangHandler();
+    private final static LangHandler LANG = HCFCore.getLangHandler();
 
     public DeathBanHandler()
     {
-        File dataFile = new File(DesireCore.getInstance().getDataFolder(), "lives.data");
+        File dataFile = new File(HCFCore.getInstance().getDataFolder(), "lives.data");
         try
         {
             if (!dataFile.exists())
@@ -61,7 +62,7 @@ public class DeathBanHandler implements Listener
             {
                 saveLives();
             }
-        }.runTaskTimerAsynchronously(DesireCore.getInstance(), 1200, 1200);
+        }.runTaskTimerAsynchronously(HCFCore.getInstance(), 1200, 1200);
     }
 
     @EventHandler
@@ -148,12 +149,12 @@ public class DeathBanHandler implements Listener
             {
                 counting.remove(player.getUniqueId());
             }
-        }.runTaskLater(DesireCore.getInstance(), 10 * 20);
+        }.runTaskLater(HCFCore.getInstance(), 10 * 20);
     }
 
     public void saveLives()
     {
-        File dataFile = new File(DesireCore.getInstance().getDataFolder(), "lives.data");
+        File dataFile = new File(HCFCore.getInstance().getDataFolder(), "lives.data");
         try
         {
             if (!dataFile.exists())

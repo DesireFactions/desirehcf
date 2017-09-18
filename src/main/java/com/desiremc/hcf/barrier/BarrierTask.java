@@ -13,7 +13,8 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.DesireCore;
+import com.desiremc.hcf.HCFCore;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 
@@ -99,7 +100,7 @@ public class BarrierTask implements Runnable
         {
             task.cancel();
         }
-        task = Bukkit.getScheduler().runTaskTimer(DesireCore.getInstance(), new BarrierTask(),
+        task = Bukkit.getScheduler().runTaskTimer(HCFCore.getInstance(), new BarrierTask(),
                 DesireCore.getConfigHandler().getInteger("barrier.refresh.ticks"),
                 DesireCore.getConfigHandler().getInteger("barrier.refresh.ticks"));
     }

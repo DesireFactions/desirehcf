@@ -1,6 +1,6 @@
 package com.desiremc.hcf.util;
 
-import com.desiremc.hcf.session.Session;
+import com.desiremc.hcf.session.HCFSession;
 
 public class SettingsUtil {
 
@@ -10,7 +10,7 @@ public class SettingsUtil {
      * @param s
      * @param setting
      */
-    public static void toggleSetting(Session s, String setting) {
+    public static void toggleSetting(HCFSession s, String setting) {
         if (s.getSettings().get(setting).equals("true")) {
             s.getSettings().put(setting, "false");
         } else if (s.getSettings().get(setting).equals("false")) {

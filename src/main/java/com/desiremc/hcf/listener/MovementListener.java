@@ -8,13 +8,13 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.utils.Utils;
 import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
-import com.desiremc.hcf.session.Session;
-import com.desiremc.hcf.session.SessionHandler;
-import com.desiremc.hcf.util.Utils;
 
 public class MovementListener implements Listener
 {
@@ -44,7 +44,7 @@ public class MovementListener implements Listener
                 TagHandler.lastValidLocation.put(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
             }
         }
-        Session s = SessionHandler.getSession(e.getPlayer());
+        HCFSession s = HCFSessionHandler.getHCFSession(e.getPlayer());
         if (s.getSafeTimeLeft() > 0)
         {
             if (!e.isCancelled() && differentBlocks(e.getTo(), e.getPlayer().getLocation()))

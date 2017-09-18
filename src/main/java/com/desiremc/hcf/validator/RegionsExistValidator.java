@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.bukkit.command.CommandSender;
 
+import com.desiremc.core.api.command.CommandValidator;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 

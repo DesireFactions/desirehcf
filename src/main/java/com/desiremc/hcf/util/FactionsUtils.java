@@ -3,7 +3,7 @@ package com.desiremc.hcf.util;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.desiremc.hcf.session.Session;
+import com.desiremc.hcf.session.HCFSession;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;
@@ -32,7 +32,7 @@ public class FactionsUtils {
         return f == WILD ? null : f;
     }
 
-    public static Faction getFaction(Session s) {
+    public static Faction getFaction(HCFSession s) {
         return getFaction(s.getPlayer());
     }
 

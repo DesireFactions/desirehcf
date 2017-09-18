@@ -3,7 +3,8 @@ package com.desiremc.hcf.validator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.hcf.HCFCore;
 import com.sk89q.worldedit.bukkit.selections.Selection;
 
 public class SelectedAreaValidator extends PlayerValidator {
@@ -15,7 +16,7 @@ public class SelectedAreaValidator extends PlayerValidator {
             return false;
         }
         Player p = (Player) sender;
-        Selection s = DesireCore.getWorldEdit().getSelection(p);
+        Selection s = HCFCore.getWorldEdit().getSelection(p);
         if (s != null && s.getArea() >= 1) {
             return true;
         }

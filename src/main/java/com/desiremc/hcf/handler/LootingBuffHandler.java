@@ -6,19 +6,18 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.DesireCore;
 
 public class LootingBuffHandler implements Listener
 {
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onEntityDeath(EntityDeathEvent e)
     {
         if (e.getEntity().getKiller() != null)
         {
             Player p = e.getEntity().getKiller();
-            if (p.getItemInHand().getItemMeta().hasEnchant(Enchantment.LOOT_BONUS_MOBS))
+            if (p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(Enchantment.LOOT_BONUS_MOBS))
             {
                 int dropped = e.getDroppedExp();
                 int bonus = DesireCore.getConfigHandler().getInteger("looting-buffer");

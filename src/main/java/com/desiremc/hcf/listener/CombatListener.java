@@ -7,13 +7,13 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-import com.desiremc.hcf.DesireCore;
-import com.desiremc.hcf.api.LangHandler;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
-import com.desiremc.hcf.session.Session;
-import com.desiremc.hcf.session.SessionHandler;
 
 public class CombatListener implements Listener {
     
@@ -42,8 +42,8 @@ public class CombatListener implements Listener {
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
 
-                Session vs = SessionHandler.getSession(victim);
-                Session ds = SessionHandler.getSession(damager);
+                HCFSession vs = HCFSessionHandler.getHCFSession(victim);
+                HCFSession ds = HCFSessionHandler.getHCFSession(damager);
 
                 if (ds.getSafeTimeLeft() > 0) {
                     e.setCancelled(true);
