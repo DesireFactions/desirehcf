@@ -18,8 +18,9 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.desiremc.hcf.DesireCore;
-import com.desiremc.hcf.util.Utils;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.utils.Utils;
+import com.desiremc.hcf.HCFCore;
 
 @SuppressWarnings("deprecation")
 public class PotionLimiterHandler implements Listener
@@ -110,7 +111,7 @@ public class PotionLimiterHandler implements Listener
                     }
                 }
             }
-        }.runTaskLater(DesireCore.getInstance(), 1L);
+        }.runTaskLater(HCFCore.getInstance(), 1L);
     }
 
     @EventHandler
@@ -118,14 +119,8 @@ public class PotionLimiterHandler implements Listener
     {
         Player player = playerItemConsumeEvent.getPlayer();
         ItemStack item = playerItemConsumeEvent.getItem();
-        if (!item.getType().equals(Material.POTION))
-        {
-            return;
-        }
-        if (item.getType().equals(Material.POTION) && item.getDurability() == 0)
-        {
-            return;
-        }
+        if (!item.getType().equals(Material.POTION)) { return; }
+        if (item.getType().equals(Material.POTION) && item.getDurability() == 0) { return; }
         for (PotionEffect potionEffect : Potion.fromItemStack(item).getEffects())
         {
             for (PotionLimit potionLimit : this.potionLimits)
@@ -182,7 +177,8 @@ public class PotionLimiterHandler implements Listener
                             player.sendMessage("&4&lPOTIONS&r&7 This potion effect is disabled!");
                             return;
                         }
-                    } else
+                    }
+                    else
                     {
                         int level2 = potionLimit.getLevel();
                         int amplifier = potionEffect.getAmplifier();

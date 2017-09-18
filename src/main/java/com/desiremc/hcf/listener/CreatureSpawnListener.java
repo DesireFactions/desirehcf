@@ -7,7 +7,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.DesireCore;
 
 public class CreatureSpawnListener implements Listener
 {

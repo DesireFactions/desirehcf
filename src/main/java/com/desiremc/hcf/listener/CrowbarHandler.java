@@ -18,9 +18,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.desiremc.hcf.DesireCore;
-import com.desiremc.hcf.api.FileHandler;
-import com.desiremc.hcf.api.LangHandler;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.FileHandler;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.massivecraft.factions.Faction;
 
@@ -39,10 +39,7 @@ public class CrowbarHandler implements Listener
         Player player = e.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
 
-        if (item == null || !isCrowbar(item))
-        {
-            return;
-        }
+        if (item == null || !isCrowbar(item)) { return; }
 
         int uses = getUses(item);
 
@@ -77,7 +74,8 @@ public class CrowbarHandler implements Listener
                     return;
                 }
                 world.dropItemNaturally(block.getLocation(), getSpawner(((CreatureSpawner) block.getState()).getSpawnedType()));
-            } else
+            }
+            else
             {
                 cost = config.getInteger("crowbar.frame.cost");
                 if (uses < cost)
@@ -148,10 +146,7 @@ public class CrowbarHandler implements Listener
 
     public static int getUses(ItemStack is)
     {
-        if (!isCrowbar(is))
-        {
-            return -1;
-        }
+        if (!isCrowbar(is)) { return -1; }
         return Integer.parseInt(is.getItemMeta().getLore().get(0).replace(PREFIX, ""));
     }
 
@@ -160,10 +155,7 @@ public class CrowbarHandler implements Listener
         if (isCrowbar(is))
         {
             int uses = getUses(is) + change;
-            if (uses < 0)
-            {
-                throw new IllegalStateException("Can't have negative uses.");
-            }
+            if (uses < 0) { throw new IllegalStateException("Can't have negative uses."); }
             List<String> lore = is.getItemMeta().getLore();
             lore.set(0, PREFIX + (uses));
 

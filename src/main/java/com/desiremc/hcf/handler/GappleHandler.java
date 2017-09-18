@@ -1,5 +1,6 @@
 package com.desiremc.hcf.handler;
 
+import java.sql.Time;
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
@@ -11,15 +12,15 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.utils.Utils;
 import com.desiremc.hcf.Components;
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.hcf.HCFCore;
 import com.desiremc.hcf.MscAchievements;
-import com.desiremc.hcf.session.Session;
-import com.desiremc.hcf.session.SessionHandler;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.Cooldown;
-import com.desiremc.hcf.util.Utils;
 import com.desiremc.hcf.util.Cooldown.CooldownBase;
-import com.desiremc.hcf.util.Cooldown.Time;
 
 public class GappleHandler implements Listener
 {
@@ -34,7 +35,7 @@ public class GappleHandler implements Listener
             @Override
             public void accept(UUID id)
             {
-                Bukkit.getScheduler().runTask(DesireCore.getInstance(), new Runnable()
+                Bukkit.getScheduler().runTask(HCFCore.getInstance(), new Runnable()
                 {
                     @Override
                     public void run()
@@ -55,13 +56,14 @@ public class GappleHandler implements Listener
             CooldownBase base = cooldown.get(p.getUniqueId());
             if (base == null || Cooldown.getAmountLeft(base) <= 0)
             {
-                Session s = SessionHandler.getSession(e.getPlayer());
+                HCFSession s = HCFSessionHandler.getSession(e.getPlayer());
                 if (!s.hasAchievement("first_gapple"))
                 {
                     s.awardAchievement(MscAchievements.FIRST_GAPPLE, true);
                 }
                 cooldown.startCooldown(p.getUniqueId(), Cooldown.timeToMillis(DesireCore.getConfigHandler().getString("gapple_time")));
-            } else
+            }
+            else
             {
                 e.setCancelled(true);
                 String message = DesireCore.getConfigHandler().getString("gapple_message");

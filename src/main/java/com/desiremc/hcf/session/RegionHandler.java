@@ -7,7 +7,7 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.DesireCore;
 import com.mongodb.WriteResult;
 
 public class RegionHandler extends BasicDAO<Region, Integer>

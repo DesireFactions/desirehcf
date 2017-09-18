@@ -10,7 +10,8 @@ import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.DesireCore;
+import com.desiremc.hcf.HCFCore;
 
 public class BrewingSpeedHandler implements Listener
 {
@@ -39,7 +40,7 @@ public class BrewingSpeedHandler implements Listener
             BrewingStand brewingStand = (BrewingStand) state;
             if (DesireCore.getConfigHandler().getInteger("brewing.speed") > 1)
             {
-                new BrewingUpdateTask(brewingStand).runTaskTimer(DesireCore.getInstance(), 1L, 1L);
+                new BrewingUpdateTask(brewingStand).runTaskTimer(HCFCore.getInstance(), 1L, 1L);
             }
         }
     }

@@ -10,15 +10,20 @@ import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.DesireCore;
+import com.desiremc.hcf.HCFCore;
 
-public class FurnaceSpeedHandler implements Listener {
+public class FurnaceSpeedHandler implements Listener
+{
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onPlayerInteract(PlayerInteractEvent playerInteractEvent) {
-        if (playerInteractEvent.getAction() == Action.RIGHT_CLICK_BLOCK) {
+    public void onPlayerInteract(PlayerInteractEvent playerInteractEvent)
+    {
+        if (playerInteractEvent.getAction() == Action.RIGHT_CLICK_BLOCK)
+        {
             BlockState state = playerInteractEvent.getClickedBlock().getState();
-            if (state instanceof Furnace) {
+            if (state instanceof Furnace)
+            {
                 Furnace furnace = (Furnace) state;
                 furnace.setCookTime((short) (furnace.getCookTime() + DesireCore.getConfigHandler().getInteger("furnace.speed")));
                 furnace.setBurnTime((short) Math.max(1, furnace.getBurnTime() - 1));
@@ -27,28 +32,35 @@ public class FurnaceSpeedHandler implements Listener {
     }
 
     @EventHandler
-    public void onFurnaceBurn(FurnaceBurnEvent furnaceBurnEvent) {
+    public void onFurnaceBurn(FurnaceBurnEvent furnaceBurnEvent)
+    {
         BlockState state = furnaceBurnEvent.getBlock().getState();
-        if (state instanceof Furnace) {
+        if (state instanceof Furnace)
+        {
             Furnace furnace = (Furnace) state;
-            if (DesireCore.getConfigHandler().getInteger("furnace.speed") > 1) {
-                new FurnaceUpdateTask(furnace).runTaskTimer(DesireCore.getInstance(), 1L, 1L);
+            if (DesireCore.getConfigHandler().getInteger("furnace.speed") > 1)
+            {
+                new FurnaceUpdateTask(furnace).runTaskTimer(HCFCore.getInstance(), 1L, 1L);
             }
         }
     }
 
-    public class FurnaceUpdateTask extends BukkitRunnable {
+    public class FurnaceUpdateTask extends BukkitRunnable
+    {
         private Furnace furnace;
 
-        public FurnaceUpdateTask(Furnace furnace) {
+        public FurnaceUpdateTask(Furnace furnace)
+        {
             this.furnace = furnace;
         }
 
-        public void run() {
+        public void run()
+        {
             this.furnace.setCookTime((short) (this.furnace.getCookTime() + DesireCore.getConfigHandler().getInteger("furnace.speed")));
             this.furnace.setBurnTime((short) Math.max(1, this.furnace.getBurnTime() - 1));
             this.furnace.update();
-            if (this.furnace.getBurnTime() <= 1) {
+            if (this.furnace.getBurnTime() <= 1)
+            {
                 this.cancel();
             }
         }

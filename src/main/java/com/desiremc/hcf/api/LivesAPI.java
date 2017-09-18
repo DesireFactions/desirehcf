@@ -3,7 +3,8 @@ package com.desiremc.hcf.api;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.hcf.handler.DeathBanHandler;
 
 public class LivesAPI
@@ -19,13 +20,9 @@ public class LivesAPI
 
         DeathBanHandler.takeLives(target, amount);
 
-        LANG.sendRenderMessage(sender, "lives.remove",
-                "{amount}", strAmount,
-                "{player}", targetName);
+        LANG.sendRenderMessage(sender, "lives.remove", "{amount}", strAmount, "{player}", targetName);
 
-        LANG.sendRenderMessage(sender, "lives.lost",
-                "{amount}", Integer.toString(amount),
-                "{sender}", senderName);
+        LANG.sendRenderMessage(sender, "lives.lost", "{amount}", Integer.toString(amount), "{sender}", senderName);
     }
 
     public static void addLives(CommandSender sender, Player target, Integer amount)
@@ -36,12 +33,8 @@ public class LivesAPI
 
         DeathBanHandler.addLives(target, amount);
 
-        LANG.sendRenderMessage(sender, "lives.add",
-                "{amount}", strAmount,
-                "{player}", targetName);
+        LANG.sendRenderMessage(sender, "lives.add", "{amount}", strAmount, "{player}", targetName);
 
-        LANG.sendRenderMessage(sender, "lives.recieved",
-                "{amount}", strAmount,
-                "{sender}", senderName);
+        LANG.sendRenderMessage(sender, "lives.recieved", "{amount}", strAmount, "{sender}", senderName);
     }
 }

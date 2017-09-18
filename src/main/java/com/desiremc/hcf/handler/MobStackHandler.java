@@ -15,7 +15,8 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import com.desiremc.hcf.DesireCore;
+import com.desiremc.core.DesireCore;
+import com.desiremc.hcf.HCFCore;
 
 public class MobStackHandler implements Listener
 {
@@ -68,7 +69,7 @@ public class MobStackHandler implements Listener
                     }
                 }
             }
-        }.runTaskTimer(DesireCore.getInstance(), 40L, 40L);
+        }.runTaskTimer(HCFCore.getInstance(), 40L, 40L);
     }
 
     public void unstackOne(LivingEntity livingEntity, ChatColor chatColor)

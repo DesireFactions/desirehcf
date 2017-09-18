@@ -1,15 +1,15 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.hcf.DesireCore;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.MscAchievements;
-import com.desiremc.hcf.session.Session;
-import com.desiremc.hcf.session.SessionHandler;
 
 public class EnderchestHandler implements Listener
 {

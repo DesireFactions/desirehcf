@@ -3,6 +3,7 @@ package com.desiremc.hcf.validator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.util.FactionsUtils;
 
 public class PlayerHasFactionValidator extends PlayerValidator {

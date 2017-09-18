@@ -6,9 +6,9 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.hcf.DesireCore;
-import com.desiremc.hcf.session.Session;
-import com.desiremc.hcf.session.SessionHandler;
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.SettingsUtil;
 
 public class PlayerSettingsGUI extends ItemGUI
@@ -23,7 +23,7 @@ public class PlayerSettingsGUI extends ItemGUI
 			{3, 3, 3, 3, 3, 3, 3, 3, 3}
 	};
 
-	public PlayerSettingsGUI(DesireCore instance, Player p)
+	public PlayerSettingsGUI(HCFCore instance, Player p)
 	{
 		super(null, p, 54);
 	}
@@ -44,7 +44,7 @@ public class PlayerSettingsGUI extends ItemGUI
 	@Override
 	public void registerItems()
 	{
-		Session s = SessionHandler.getSession(getPlayer());
+		HCFSession s = HCFSessionHandler.getHCFSession(getPlayer());
 		int i = 0;
 		for (int x = 0; x < 6; x++)
 		{
@@ -101,7 +101,7 @@ public class PlayerSettingsGUI extends ItemGUI
 						public void run()
 						{
 							SettingsUtil.toggleSetting(s, "friend_requests");
-							new PlayerSettingsGUI(DesireCore.getInstance(), getPlayer()).show();
+							new PlayerSettingsGUI(HCFCore.getInstance(), getPlayer()).show();
 						}
 					}));
 				} else if (gui[x][y] == 12)
@@ -114,7 +114,7 @@ public class PlayerSettingsGUI extends ItemGUI
 						public void run()
 						{
 							SettingsUtil.toggleSetting(s, "private_messaging");
-							new PlayerSettingsGUI(DesireCore.getInstance(), getPlayer()).show();
+							new PlayerSettingsGUI(HCFCore.getInstance(), getPlayer()).show();
 						}
 					}));
 				}

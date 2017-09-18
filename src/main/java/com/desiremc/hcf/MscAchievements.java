@@ -1,6 +1,6 @@
 package com.desiremc.hcf;
 
-import com.desiremc.hcf.session.Achievement;
+import com.desiremc.core.session.Achievement;
 
 public class MscAchievements {
 

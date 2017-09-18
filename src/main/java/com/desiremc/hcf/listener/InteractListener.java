@@ -5,7 +5,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.desiremc.hcf.session.StaffHandler;
+import com.desiremc.core.session.StaffHandler;
 
 public class InteractListener implements Listener {
 
