@@ -9,8 +9,6 @@ import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
-
-import com.desiremc.core.session.Session;
 import com.desiremc.hcf.HCFCore;
 
 @Entity(value = "players", noClassnameStored = true)
@@ -25,10 +23,12 @@ public class HCFSession
 
     private int lives;
 
+    private Map<String, Integer> kills;
+
     private Map<String, String> settings;
 
     @Transient
-    private Session session;
+    private HCFSession session;
 
     @Transient
     private PVPTimer pvpTimer;
@@ -76,6 +76,19 @@ public class HCFSession
     public void setLives(int lives)
     {
         this.lives = lives;
+    }
+
+    public int getKills(String server) {
+        return kills.get(server);
+    }
+
+    public void setKills(Map<String, Integer> kills)
+    {
+        this.kills = kills;
+    }
+
+    public void addKills(String server, int kills) {
+        this.kills.replace(server, kills + this.kills.get(server));
     }
 
     public Map<String, String> getSettings()

@@ -113,6 +113,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, UUID>
         HCFSession session = new HCFSession();
         session.setUniqueId(op.getUniqueId());
         session.setLives(0);
+        session.setKills(new HashMap<>());
         session.setSafeTimeLeft(DesireCore.getConfigHandler().getInteger("timers.pvp.time"));
         session.setSettings(new HashMap<>());
 

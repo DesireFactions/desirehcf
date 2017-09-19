@@ -1,5 +1,9 @@
 package com.desiremc.hcf.listener;
 
+import mkremins.fanciful.FancyMessage;
+import org.apache.commons.lang.WordUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -14,16 +18,19 @@ import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.inventory.ItemStack;
 
-public class CombatListener implements Listener {
-    
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onHitMonitor(EntityDamageByEntityEvent e) {
-        if (e.isCancelled() == true) {
-            return;
-        }
-        if (e.getEntity() instanceof Player) {
-            if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)) {
+public class CombatListener implements Listener
+{
+
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    public void onHitMonitor(EntityDamageByEntityEvent e)
+    {
+        if (e.getEntity() instanceof Player)
+        {
+            if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player))
+            {
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
                 TagHandler.tagPlayer(victim, damager);
@@ -31,27 +38,29 @@ public class CombatListener implements Listener {
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH)
-    public void onHitHigh(EntityDamageByEntityEvent e) {
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    public void onHitHigh(EntityDamageByEntityEvent e)
+    {
         LangHandler l = DesireCore.getLangHandler();
-        if (e.isCancelled() == true) {
-            return;
-        }
-        if (e.getEntity() instanceof Player) {
-            if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)) {
+        if (e.getEntity() instanceof Player)
+        {
+            if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player))
+            {
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
 
                 HCFSession vs = HCFSessionHandler.getHCFSession(victim);
                 HCFSession ds = HCFSessionHandler.getHCFSession(damager);
 
-                if (ds.getSafeTimeLeft() > 0) {
+                if (ds.getSafeTimeLeft() > 0)
+                {
                     e.setCancelled(true);
                     damager.sendMessage(l.getString("pvp.damager_protected"));
                     return;
                 }
 
-                if (vs.getSafeTimeLeft() > 0) {
+                if (vs.getSafeTimeLeft() > 0)
+                {
                     e.setCancelled(true);
                     damager.sendMessage(l.getString("pvp.target_protected"));
                     return;
@@ -59,24 +68,64 @@ public class CombatListener implements Listener {
 
                 // 0 = valid, 1 = damager in region, 2 = victim in region
                 int state = 0;
-                for (Region r : RegionHandler.getInstance().getRegions()) {
-                    if (r.getRegion().isWithin(damager.getLocation())) {
+                for (Region r : RegionHandler.getInstance().getRegions())
+                {
+                    if (r.getRegion().isWithin(damager.getLocation()))
+                    {
                         state = 1;
                         break;
-                    } else if (r.getRegion().isWithin(victim.getLocation())) {
+                    } else if (r.getRegion().isWithin(victim.getLocation()))
+                    {
                         state = 2;
                         break;
                     }
                 }
-                if (state != 0) {
+                if (state != 0)
+                {
                     e.setCancelled(true);
                 }
-                if (state == 1) {
+                if (state == 1)
+                {
                     damager.sendMessage(l.getString("damaged.in-spawn"));
-                } else if (state == 2) {
+                } else if (state == 2)
+                {
                     damager.sendMessage(l.getString("damaged.out-spawn"));
                 }
             }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onPlayerDeath(PlayerDeathEvent event)
+    {
+        Player player = event.getEntity();
+        if (player.getKiller() == null || !(player.getKiller() instanceof Player)) return;
+
+        HCFSession killer = HCFSessionHandler.getHCFSession(player.getKiller());
+        HCFSession playerSession = HCFSessionHandler.getHCFSession(player);
+
+        killer.addKills("server1", 1);
+
+        ItemStack item = killer.getPlayer().getInventory().getItemInMainHand();
+        String itemType;
+
+        if (item != null && item.getType() != Material.AIR)
+        {
+            itemType = WordUtils.capitalize(item.getType().name().replace("_", " "));
+        }
+        else
+        {
+            itemType = "Fist";
+        }
+
+        String parsed = DesireCore.getLangHandler().renderMessage("pvp.kill", "{killer}", killer.getName(), "{player}",
+                player.getName(), "{killerKills}", killer.getKills("server1") + "", "{playerKills}", playerSession.getKills("server1") + "", "{item}", itemType);
+
+        for (Player online : Bukkit.getOnlinePlayers())
+        {
+            new FancyMessage(parsed)
+                    .itemTooltip(item)
+                    .send(online);
         }
     }
 }
