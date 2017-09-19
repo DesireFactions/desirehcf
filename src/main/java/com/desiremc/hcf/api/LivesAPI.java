@@ -1,5 +1,7 @@
 package com.desiremc.hcf.api;
 
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,7 +19,8 @@ public class LivesAPI
         String targetName = target.getDisplayName();
         String senderName = ((Player) sender).getDisplayName();
 
-        // DeathBanHandler.takeLives(target, amount);
+        HCFSession session = HCFSessionHandler.getHCFSession(target);
+        session.takeLives(amount);
 
         LANG.sendRenderMessage(sender, "lives.remove", "{amount}", strAmount, "{player}", targetName);
 
@@ -30,7 +33,8 @@ public class LivesAPI
         String targetName = target.getDisplayName();
         String senderName = ((Player) sender).getDisplayName();
 
-        // DeathBanHandler.addLives(target, amount);
+        HCFSession session = HCFSessionHandler.getHCFSession(target);
+        session.addLives(amount);
 
         LANG.sendRenderMessage(sender, "lives.add", "{amount}", strAmount, "{player}", targetName);
         LANG.sendRenderMessage(sender, "lives.recieved", "{amount}", strAmount, "{sender}", senderName);

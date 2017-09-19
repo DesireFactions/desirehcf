@@ -78,6 +78,16 @@ public class HCFSession
         this.lives = lives;
     }
 
+    public void takeLives(int lives)
+    {
+        this.lives -= lives;
+    }
+
+    public void addLives(int lives)
+    {
+        this.lives += lives;
+    }
+
     public int getKills(String server) {
         return kills.get(server);
     }
