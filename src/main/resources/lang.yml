@@ -111,7 +111,10 @@ ticket:
   open: '&7You have opened a new ticket. Staff will get to it soon.'
 enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
-  message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.' 
+  message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
+gapple:
+  ended: '&7You may now use a &5Gapple&7.'
+  message: '&7You can not use an &5Gapple&7 for &e{time} &7seconds.'
 crowbar:
   new_crowbar: '&7You have recieved a crowbar.'
   not_yours: '&7You can''t break blocks in someone else''s faction.'

@@ -70,7 +70,7 @@ furnace:
 brewing:
    speed: 5
 
-gapple_time: '30s'
+gapple_time: 30 #seconds
 gapple_ended: '&4&lGAPPLES&r&7 You may now use your &6Gapple'
 gapple_message: '&4&lGAPPLES&r&7 You can not use a &6Gapple&7 for &e<seconds>'
 
