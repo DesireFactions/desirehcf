@@ -51,6 +51,7 @@ pvp:
   target-protected: '&7That player has pvp disabled'
   damager-protected: '&7You have pvp disabled.'
   disabled: '&7You have disabled your pvp protection timer.'
+  kill: '&7{killer}[{killerKills}] has killed {player}[{playerKills}] with a {item}!'
 lives:
   add: You have added &c{amount}&7 lives to {player}
   remove: You have removed &c{amount}&7 lives to {player}
