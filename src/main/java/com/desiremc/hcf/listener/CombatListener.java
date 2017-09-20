@@ -74,7 +74,8 @@ public class CombatListener implements Listener
                     {
                         state = 1;
                         break;
-                    } else if (r.getRegion().isWithin(victim.getLocation()))
+                    }
+                    else if (r.getRegion().isWithin(victim.getLocation()))
                     {
                         state = 2;
                         break;
@@ -84,10 +85,11 @@ public class CombatListener implements Listener
                 {
                     e.setCancelled(true);
                 }
-                if (state == 1)
+                else if (state == 1)
                 {
                     damager.sendMessage(l.getString("damaged.in-spawn"));
-                } else if (state == 2)
+                }
+                else if (state == 2)
                 {
                     damager.sendMessage(l.getString("damaged.out-spawn"));
                 }

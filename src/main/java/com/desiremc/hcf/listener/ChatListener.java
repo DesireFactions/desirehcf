@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -18,8 +19,6 @@ import com.desiremc.hcf.session.FactionSession;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.massivecraft.factions.Faction;
-
-import mkremins.fanciful.FancyMessage;
 
 public class ChatListener implements Listener
 {
