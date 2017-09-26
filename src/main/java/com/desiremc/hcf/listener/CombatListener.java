@@ -13,9 +13,9 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.session.HCFSession;
+import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 import org.bukkit.event.entity.PlayerDeathEvent;
@@ -106,7 +106,7 @@ public class CombatListener implements Listener
         HCFSession killer = HCFSessionHandler.getHCFSession(player.getKiller());
         HCFSession playerSession = HCFSessionHandler.getHCFSession(player);
 
-        killer.addKills("server1", 1);
+        killer.addKill(DesireCore.getCurrentServer());
 
         ItemStack item = killer.getPlayer().getInventory().getItemInMainHand();
         String itemType;
@@ -121,7 +121,7 @@ public class CombatListener implements Listener
         }
 
         String parsed = DesireCore.getLangHandler().renderMessage("pvp.kill", "{killer}", killer.getName(), "{player}",
-                player.getName(), "{killerKills}", killer.getKills("server1") + "", "{playerKills}", playerSession.getKills("server1") + "", "{item}", itemType);
+                player.getName(), "{killerKills}", killer.getKills(DesireCore.getCurrentServer()) + "", "{playerKills}", playerSession.getKills(DesireCore.getCurrentServer()) + "", "{item}", itemType);
 
         for (Player online : Bukkit.getOnlinePlayers())
         {

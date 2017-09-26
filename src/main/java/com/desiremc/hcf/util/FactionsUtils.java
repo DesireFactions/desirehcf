@@ -3,7 +3,7 @@ package com.desiremc.hcf.util;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.core.session.HCFSession;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;

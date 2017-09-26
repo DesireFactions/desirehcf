@@ -1,6 +1,6 @@
 package com.desiremc.hcf.util;
 
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.core.session.HCFSession;
 
 public class SettingsUtil {
 
