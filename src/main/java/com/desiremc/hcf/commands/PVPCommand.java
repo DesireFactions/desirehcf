@@ -3,9 +3,9 @@ package com.desiremc.hcf.commands;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.session.HCFSession;
+import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.Rank;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
 
 public class PVPCommand extends ValidCommand
 {

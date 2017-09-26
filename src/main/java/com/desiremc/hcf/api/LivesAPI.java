@@ -1,12 +1,12 @@
 package com.desiremc.hcf.api;
 
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.session.HCFSession;
+import com.desiremc.core.session.HCFSessionHandler;
 
 public class LivesAPI
 {
