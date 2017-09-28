@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import com.desiremc.core.session.*;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -57,7 +58,10 @@ public class CombatLoggerHandler implements Listener
         NPCPlayerHelper.removePlayerList(player);
         HCFCore.getInstance().getPlayerCache().removePlayer(player);
 
-        if (player.hasPermission("combat.bypass") || player.isOp()) return;
+        Session session = SessionHandler.getSession(player);
+
+        if (session.getRank() == Rank.ADMIN) return;
+
         UUID uuid = player.getUniqueId();
         Long time = TagHandler.getTagTime(uuid);
 
@@ -70,7 +74,7 @@ public class CombatLoggerHandler implements Listener
             int tagDistance = DesireCore.getConfigHandler().getInteger("tag.distance");
             for (Player p : Bukkit.getOnlinePlayers())
             {
-                if (p.getLocation().distanceSquared(player.getLocation()) <= tagDistance * tagDistance)
+                if (p.getLocation().distanceSquared(player.getLocation()) <= (tagDistance * tagDistance))
                 {
                     NPCManager.spawn(player);
                     break;
@@ -162,8 +166,7 @@ public class CombatLoggerHandler implements Listener
         try
         {
             future.get();
-        }
-        catch (InterruptedException | ExecutionException e)
+        } catch (InterruptedException | ExecutionException e)
         {
             throw new RuntimeException(e);
         }

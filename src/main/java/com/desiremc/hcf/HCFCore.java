@@ -67,15 +67,6 @@ public class HCFCore extends JavaPlugin
         registerCommands();
 
         economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
-
-        Bukkit.getScheduler().runTaskTimer(this, new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                SafeLogoutTask.purgeFinished();
-            }
-        },3600,3600);
     }
 
     private void registerListeners()

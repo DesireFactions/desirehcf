@@ -5,6 +5,7 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.desiremc.hcf.HCFCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -45,6 +46,15 @@ public class TagHandler
         }).build();
 
         history = CacheBuilder.newBuilder().expireAfterWrite(DesireCore.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).build();
+
+        Bukkit.getScheduler().runTaskTimer(HCFCore.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                SafeLogoutTask.purgeFinished();
+            }
+        },3600,3600);
     }
 
     public static boolean isTagged(Player p)
