@@ -3,6 +3,8 @@ package com.desiremc.hcf.handler;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.hcf.HCFCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -16,6 +18,7 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class EnderpearlHandler implements Listener
 {
@@ -37,9 +40,24 @@ public class EnderpearlHandler implements Listener
                 if (p != null)
                 {
                     DesireCore.getLangHandler().sendString(p, "enderpearl.ended");
+                    EntryRegistry.getInstance().removeValue(p, DesireCore.getLangHandler().getString("enderpearl.scoreboard"));
                 }
             }
         }).build();
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(HCFCore.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (UUID uuid : history.asMap().keySet())
+                {
+                    Player p = Bukkit.getPlayer(uuid);
+                    EntryRegistry.getInstance().setValue(p, DesireCore.getLangHandler().getString("enderpearl.scoreboard"),
+                            String.valueOf(TIMER - ((System.currentTimeMillis() - history.getIfPresent(uuid)) / 1000)));
+                }
+            }
+        }, 0, 10);
     }
 
     @EventHandler

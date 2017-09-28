@@ -5,6 +5,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.hcf.npc.SafeLogoutTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -20,7 +22,7 @@ public class TagHandler
 
     public static HashMap<UUID, Location> lastValidLocation = new HashMap<>();
 
-    private static Cache<UUID, Long> tags;
+    public static Cache<UUID, Long> tags;
 
     private static Cache<UUID, UUID> history;
 
@@ -36,6 +38,8 @@ public class TagHandler
                 {
                     BarrierTask.addToClear(entry.getKey());
                     Bukkit.getPlayer(entry.getKey()).sendMessage(DesireCore.getLangHandler().getString("tag.expire"));
+                    EntryRegistry.getInstance().removeValue(Bukkit.getPlayer(entry.getKey()),
+                            DesireCore.getLangHandler().getString("tag.scoreboard"));
                 }
             }
         }).build();
@@ -61,6 +65,9 @@ public class TagHandler
         tags.put(p.getUniqueId(), System.currentTimeMillis());
         tags.put(damager.getUniqueId(), System.currentTimeMillis());
         history.put(p.getUniqueId(), damager.getUniqueId());
+
+        SafeLogoutTask.cancel(p);
+        SafeLogoutTask.cancel(damager);
     }
 
     public static UUID getTagger(UUID uuid)
