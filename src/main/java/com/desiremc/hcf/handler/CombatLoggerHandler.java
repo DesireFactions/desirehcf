@@ -1,5 +1,22 @@
 package com.desiremc.hcf.handler;
 
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.hcf.HCFCore;
@@ -10,23 +27,6 @@ import com.desiremc.hcf.npc.NPC;
 import com.desiremc.hcf.npc.NPCManager;
 import com.desiremc.hcf.npc.NPCPlayerHelper;
 import com.desiremc.hcf.npc.SafeLogoutTask;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class CombatLoggerHandler implements Listener
 {
@@ -43,21 +43,10 @@ public class CombatLoggerHandler implements Listener
                 for (UUID uuid : TagHandler.getTaggedPlayers())
                 {
                     EntryRegistry.getInstance().setValue(Bukkit.getPlayer(uuid), DesireCore.getLangHandler().getString("tag.scoreboard"),
-                            String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.tags.getIfPresent(uuid)) / 1000)));
+                            String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
                 }
             }
         }, 0, 10);
-    }
-
-    @EventHandler
-    public void onPlayerAttackPlayer(EntityDamageByEntityEvent event)
-    {
-        if (!(event.getDamager() instanceof Player) && !(event.getEntity() instanceof Player)) return;
-
-        Player p = (Player) event.getEntity();
-        Player damager = (Player) event.getDamager();
-
-        TagHandler.tagPlayer(p, damager);
     }
 
     @EventHandler
@@ -70,20 +59,18 @@ public class CombatLoggerHandler implements Listener
 
         if (player.hasPermission("combat.bypass") || player.isOp()) return;
         UUID uuid = player.getUniqueId();
-        Long time = TagHandler.tags.getIfPresent(uuid);
-
+        Long time = TagHandler.getTagTime(uuid);
 
         if (time != null)
         {
             NPCManager.spawn(player);
         }
-        else
+        else if (!SafeLogoutTask.isFinished(player))
         {
-            if(SafeLogoutTask.isFinished(player)) return;
-            int tagDistance = DesireCore.getConfigHandler().getInteger("tag.distance")^2;
+            int tagDistance = DesireCore.getConfigHandler().getInteger("tag.distance");
             for (Player p : Bukkit.getOnlinePlayers())
             {
-                if (p.getLocation().distanceSquared(player.getLocation()) <= tagDistance)
+                if (p.getLocation().distanceSquared(player.getLocation()) <= tagDistance * tagDistance)
                 {
                     NPCManager.spawn(player);
                     break;
@@ -175,12 +162,14 @@ public class CombatLoggerHandler implements Listener
         try
         {
             future.get();
-        } catch (InterruptedException | ExecutionException e)
+        }
+        catch (InterruptedException | ExecutionException e)
         {
             throw new RuntimeException(e);
         }
     }
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void syncOffline(NPCDespawnEvent event)
     {
@@ -213,6 +202,7 @@ public class CombatLoggerHandler implements Listener
 
     private static double getRealMaxHealth(Player npcPlayer)
     {
+        @SuppressWarnings("deprecation")
         double health = npcPlayer.getMaxHealth();
         for (PotionEffect p : npcPlayer.getActivePotionEffects())
         {

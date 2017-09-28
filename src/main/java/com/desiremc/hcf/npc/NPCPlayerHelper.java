@@ -1,5 +1,17 @@
 package com.desiremc.hcf.npc;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.lang.reflect.Field;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
+import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
+import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
+import org.bukkit.entity.Player;
+
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import net.minecraft.server.v1_12_R1.EnumItemSlot;
 import net.minecraft.server.v1_12_R1.FoodMetaData;
@@ -8,21 +20,10 @@ import net.minecraft.server.v1_12_R1.MinecraftServer;
 import net.minecraft.server.v1_12_R1.NBTCompressedStreamTools;
 import net.minecraft.server.v1_12_R1.NBTTagCompound;
 import net.minecraft.server.v1_12_R1.NBTTagList;
-import net.minecraft.server.v1_12_R1.Packet;
 import net.minecraft.server.v1_12_R1.PacketPlayOutEntityEquipment;
 import net.minecraft.server.v1_12_R1.PacketPlayOutPlayerInfo;
 import net.minecraft.server.v1_12_R1.WorldNBTStorage;
 import net.minecraft.server.v1_12_R1.WorldServer;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
-import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
-import org.bukkit.entity.Player;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.lang.reflect.Field;
 
 public class NPCPlayerHelper
 {
@@ -32,13 +33,14 @@ public class NPCPlayerHelper
         NPCPlayer npcPlayer = NPCPlayer.valueOf(player);
         WorldServer worldServer = ((CraftWorld) player.getWorld()).getHandle();
         Location l = player.getLocation();
+        MinecraftServer server = getServer();
 
         npcPlayer.spawnIn(worldServer);
         npcPlayer.setPositionRotation(l.getX(), l.getY(), l.getZ(), l.getYaw(), l.getPitch());
         npcPlayer.playerInteractManager.a(worldServer);
         npcPlayer.invulnerableTicks = 0;
 
-        for (Object o : MinecraftServer.getServer().getPlayerList().players)
+        for (Object o : server.getPlayerList().players)
         {
             if (!(o instanceof EntityPlayer) || o instanceof NPCPlayer) continue;
 
@@ -56,12 +58,9 @@ public class NPCPlayerHelper
     {
         EntityPlayer entity = ((CraftPlayer) player).getHandle();
 
-        if (!(entity instanceof NPCPlayer))
-        {
-            throw new IllegalArgumentException();
-        }
+        if (!(entity instanceof NPCPlayer)) { throw new IllegalArgumentException(); }
 
-        for (Object o : MinecraftServer.getServer().getPlayerList().players)
+        for (Object o : getServer().getPlayerList().players)
         {
             if (!(o instanceof EntityPlayer) || o instanceof NPCPlayer) continue;
 
@@ -69,7 +68,7 @@ public class NPCPlayerHelper
             ((EntityPlayer) o).playerConnection.sendPacket(packet);
         }
 
-        WorldServer worldServer = MinecraftServer.getServer().getWorldServer(entity.dimension);
+        WorldServer worldServer = getServer().getWorldServer(entity.dimension);
         worldServer.removeEntity(entity);
         worldServer.getPlayerChunkMap().removePlayer(entity);
     }
@@ -81,10 +80,7 @@ public class NPCPlayerHelper
 
     public static NPCIdentity getIdentity(Player player)
     {
-        if (!isNpc(player))
-        {
-            throw new IllegalArgumentException();
-        }
+        if (!isNpc(player)) { throw new IllegalArgumentException(); }
 
         return ((NPCPlayer) ((CraftPlayer) player).getHandle()).getNpcIdentity();
     }
@@ -93,10 +89,7 @@ public class NPCPlayerHelper
     {
         EntityPlayer entity = ((CraftPlayer) player).getHandle();
 
-        if (!(entity instanceof NPCPlayer))
-        {
-            throw new IllegalArgumentException();
-        }
+        if (!(entity instanceof NPCPlayer)) { throw new IllegalArgumentException(); }
 
         Location l = player.getLocation();
         int rangeSquared = 512 * 512;
@@ -106,7 +99,7 @@ public class NPCPlayerHelper
             ItemStack item = entity.getEquipment(slot);
             if (item == null) continue;
 
-            Packet packet = new PacketPlayOutEntityEquipment(entity.getId(), slot, item);
+            PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(entity.getId(), slot, item);
 
             for (Object o : entity.world.players)
             {
@@ -126,10 +119,7 @@ public class NPCPlayerHelper
     {
         EntityPlayer entity = ((CraftPlayer) player).getHandle();
 
-        if (!(entity instanceof NPCPlayer))
-        {
-            throw new IllegalArgumentException();
-        }
+        if (!(entity instanceof NPCPlayer)) { throw new IllegalArgumentException(); }
 
         NPCPlayer npcPlayer = (NPCPlayer) entity;
         NPCIdentity identity = npcPlayer.getNpcIdentity();
@@ -149,13 +139,15 @@ public class NPCPlayerHelper
             foodTickTimerField = FoodMetaData.class.getDeclaredField("foodTickTimer");
             foodTickTimerField.setAccessible(true);
             foodTickTimer = foodTickTimerField.getInt(entity.getFoodData());
-        } catch (NoSuchFieldException | IllegalAccessException e)
+        }
+        catch (NoSuchFieldException | IllegalAccessException e)
         {
             throw new RuntimeException(e);
         }
 
         playerNbt.setShort("Air", (short) entity.getAirTicks());
-        // Health is now just a float; fractional is not stored separately. (1.12)
+        // Health is now just a float; fractional is not stored separately.
+        // (1.12)
         playerNbt.setShort("HurtTime", (short) entity.hurtTicks);
         playerNbt.setInt("HurtByTimestamp", entity.hurtTimestamp);
         playerNbt.setFloat("Health", entity.getHealth());
@@ -174,22 +166,20 @@ public class NPCPlayerHelper
         try
         {
             NBTCompressedStreamTools.a(playerNbt, new FileOutputStream(file1));
-        } catch (IOException e)
+        }
+        catch (IOException e)
         {
             throw new RuntimeException("Failed to save player data for " + identity.getName(), e);
         }
 
-        if ((!file2.exists() || file2.delete()) && !file1.renameTo(file2))
-        {
-            throw new RuntimeException("Failed to save player data for " + identity.getName());
-        }
+        if ((!file2.exists() || file2.delete()) && !file1.renameTo(file2)) { throw new RuntimeException("Failed to save player data for " + identity.getName()); }
     }
 
     public static void createPlayerList(Player player)
     {
         EntityPlayer p = ((CraftPlayer) player).getHandle();
 
-        for (WorldServer worldServer : MinecraftServer.getServer().worlds)
+        for (WorldServer worldServer : getServer().worlds)
         {
             for (Object o : worldServer.players)
             {
@@ -206,7 +196,7 @@ public class NPCPlayerHelper
     {
         EntityPlayer p = ((CraftPlayer) player).getHandle();
 
-        for (WorldServer worldServer : MinecraftServer.getServer().worlds)
+        for (WorldServer worldServer : getServer().worlds)
         {
             for (Object o : worldServer.players)
             {
@@ -217,6 +207,11 @@ public class NPCPlayerHelper
                 p.playerConnection.sendPacket(packet);
             }
         }
+    }
+
+    public static MinecraftServer getServer()
+    {
+        return ((CraftServer) Bukkit.getServer()).getServer();
     }
 
 }

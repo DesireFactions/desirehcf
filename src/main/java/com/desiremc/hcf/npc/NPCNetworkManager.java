@@ -11,6 +11,7 @@ import net.minecraft.server.v1_12_R1.PacketListener;
 import javax.crypto.SecretKey;
 import java.net.SocketAddress;
 
+@SuppressWarnings("rawtypes")
 public class NPCNetworkManager extends NetworkManager
 {
 
@@ -72,6 +73,7 @@ public class NPCNetworkManager extends NetworkManager
     {
         return new SocketAddress()
         {
+            private static final long serialVersionUID = 7094105914152195115L;
         };
     }
 

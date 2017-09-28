@@ -1,17 +1,21 @@
 package com.desiremc.hcf.npc;
 
-import com.mojang.authlib.GameProfile;
-import com.mojang.authlib.properties.Property;
-import net.minecraft.server.v1_12_R1.EntityPlayer;
-import net.minecraft.server.v1_12_R1.MinecraftServer;
-import net.minecraft.server.v1_12_R1.PlayerInteractManager;
-import net.minecraft.server.v1_12_R1.WorldServer;
+import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.craftbukkit.v1_12_R1.CraftServer;
 import org.bukkit.craftbukkit.v1_12_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_12_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
-import java.util.Map;
-import java.util.UUID;
+import com.mojang.authlib.GameProfile;
+import com.mojang.authlib.properties.Property;
+
+import net.minecraft.server.v1_12_R1.EntityPlayer;
+import net.minecraft.server.v1_12_R1.MinecraftServer;
+import net.minecraft.server.v1_12_R1.PlayerInteractManager;
+import net.minecraft.server.v1_12_R1.WorldServer;
 
 public class NPCPlayer extends EntityPlayer
 {
@@ -29,7 +33,7 @@ public class NPCPlayer extends EntityPlayer
 
     public static NPCPlayer valueOf(Player player)
     {
-        MinecraftServer minecraftServer = MinecraftServer.getServer();
+        MinecraftServer minecraftServer = ((CraftServer) Bukkit.getServer()).getServer();
         WorldServer worldServer = ((CraftWorld) player.getWorld()).getHandle();
         PlayerInteractManager playerInteractManager = new PlayerInteractManager(worldServer);
         GameProfile gameProfile = new GameProfile(UUID.randomUUID(), player.getName());

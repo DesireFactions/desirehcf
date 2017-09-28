@@ -5,13 +5,13 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.hcf.npc.SafeLogoutTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.hcf.npc.SafeLogoutTask;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
@@ -20,9 +20,9 @@ import com.google.common.cache.RemovalNotification;
 public class TagHandler
 {
 
-    public static HashMap<UUID, Location> lastValidLocation = new HashMap<>();
+    private static HashMap<UUID, Location> lastValidLocation = new HashMap<>();
 
-    public static Cache<UUID, Long> tags;
+    private static Cache<UUID, Long> tags;
 
     private static Cache<UUID, UUID> history;
 
@@ -70,6 +70,26 @@ public class TagHandler
         SafeLogoutTask.cancel(damager);
     }
 
+    public static Location getLastValidLocation(UUID uuid)
+    {
+        return (Location) lastValidLocation.get(uuid);
+    }
+  
+    public static boolean hasLastValidLocation(UUID uuid)
+    {
+        return lastValidLocation.containsKey(uuid);
+    }
+
+    public static void setLastValidLocation(UUID uuid, Location loc)
+    {
+        lastValidLocation.put(uuid, loc);
+    }
+    
+    public static Long getTagTime(UUID uuid)
+    {
+        return tags.getIfPresent(uuid);
+    }
+    
     public static UUID getTagger(UUID uuid)
     {
         return history.asMap().get(uuid);

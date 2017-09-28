@@ -3,8 +3,6 @@ package com.desiremc.hcf.handler;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.hcf.HCFCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,11 +12,12 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.hcf.HCFCore;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class EnderpearlHandler implements Listener
 {
