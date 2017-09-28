@@ -54,7 +54,7 @@ public class TagHandler
             {
                 SafeLogoutTask.purgeFinished();
             }
-        },3600,3600);
+        }, 3600, 3600);
     }
 
     public static boolean isTagged(Player p)
@@ -84,7 +84,7 @@ public class TagHandler
     {
         return (Location) lastValidLocation.get(uuid);
     }
-  
+
     public static boolean hasLastValidLocation(UUID uuid)
     {
         return lastValidLocation.containsKey(uuid);
@@ -94,12 +94,12 @@ public class TagHandler
     {
         lastValidLocation.put(uuid, loc);
     }
-    
+
     public static Long getTagTime(UUID uuid)
     {
         return tags.getIfPresent(uuid);
     }
-    
+
     public static UUID getTagger(UUID uuid)
     {
         return history.asMap().get(uuid);

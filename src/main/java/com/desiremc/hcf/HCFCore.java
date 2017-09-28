@@ -1,8 +1,5 @@
 package com.desiremc.hcf;
 
-import com.desiremc.hcf.commands.LogoutCommand;
-import com.desiremc.hcf.npc.SafeLogoutTask;
-import com.desiremc.hcf.util.PlayerCache;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -20,6 +17,7 @@ import com.desiremc.hcf.commands.AchievementCommand;
 import com.desiremc.hcf.commands.CrowbarCommand;
 import com.desiremc.hcf.commands.EnderChestCommand;
 import com.desiremc.hcf.commands.HCFReloadCommand;
+import com.desiremc.hcf.commands.LogoutCommand;
 import com.desiremc.hcf.commands.PVPCommand;
 import com.desiremc.hcf.commands.SettingsCommand;
 import com.desiremc.hcf.commands.fstat.FStatCommand;
@@ -36,6 +34,7 @@ import com.desiremc.hcf.listener.MovementListener;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.tickets.TicketHandler;
+import com.desiremc.hcf.util.PlayerCache;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 import net.milkbowl.vault.economy.Economy;

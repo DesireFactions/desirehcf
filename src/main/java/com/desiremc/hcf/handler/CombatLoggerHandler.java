@@ -166,7 +166,8 @@ public class CombatLoggerHandler implements Listener
         try
         {
             future.get();
-        } catch (InterruptedException | ExecutionException e)
+        }
+        catch (InterruptedException | ExecutionException e)
         {
             throw new RuntimeException(e);
         }
