@@ -1,5 +1,6 @@
 package com.desiremc.hcf;
 
+import com.desiremc.hcf.handler.CombatLoggerHandler;
 import com.desiremc.hcf.handler.GappleHandler;
 import org.bukkit.Bukkit;
 
@@ -30,6 +31,7 @@ public class Components
         Bukkit.getPluginManager().registerEvents(new FurnaceSpeedHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new EnderpearlHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new GappleHandler(), instance);
+        Bukkit.getPluginManager().registerEvents(new CombatLoggerHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new EnderchestHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new BrewingSpeedHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new LootingBuffHandler(), instance);

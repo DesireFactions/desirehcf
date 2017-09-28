@@ -1,6 +1,8 @@
 package com.desiremc.hcf.handler;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.hcf.HCFCore;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
@@ -35,9 +37,24 @@ public class GappleHandler implements Listener
                 if (p != null)
                 {
                     DesireCore.getLangHandler().sendString(p, "gapple.ended");
+                    EntryRegistry.getInstance().removeValue(p, DesireCore.getLangHandler().getString("gapple.scoreboard"));
                 }
             }
         }).build();
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(HCFCore.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (UUID uuid : history.asMap().keySet())
+                {
+                    Player p = Bukkit.getPlayer(uuid);
+                    EntryRegistry.getInstance().setValue(p, DesireCore.getLangHandler().getString("gapple.scoreboard"),
+                            String.valueOf(TIMER - ((System.currentTimeMillis() - history.getIfPresent(uuid)) / 1000)));
+                }
+            }
+        }, 0, 10);
     }
 
     @EventHandler(ignoreCancelled = true)

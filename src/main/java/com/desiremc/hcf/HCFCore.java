@@ -1,5 +1,8 @@
 package com.desiremc.hcf;
 
+import com.desiremc.hcf.commands.LogoutCommand;
+import com.desiremc.hcf.npc.SafeLogoutTask;
+import com.desiremc.hcf.util.PlayerCache;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -42,6 +45,8 @@ public class HCFCore extends JavaPlugin
 
     private static HCFCore instance;
 
+    private final PlayerCache playerCache = new PlayerCache();
+
     private static RegisteredServiceProvider<Economy> economyProvider;
 
     @Override
@@ -62,6 +67,15 @@ public class HCFCore extends JavaPlugin
         registerCommands();
 
         economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
+
+        Bukkit.getScheduler().runTaskTimer(this, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                SafeLogoutTask.purgeFinished();
+            }
+        },3600,3600);
     }
 
     private void registerListeners()
@@ -91,11 +105,17 @@ public class HCFCore extends JavaPlugin
         customCommandHandler.registerCommand(new SettingsCommand());
         customCommandHandler.registerCommand(new TicketCommand());
         customCommandHandler.registerCommand(new UnbanCommand());
+        customCommandHandler.registerCommand(new LogoutCommand());
     }
 
     public static RegisteredServiceProvider<Economy> getEconomy()
     {
         return economyProvider;
+    }
+
+    public PlayerCache getPlayerCache()
+    {
+        return playerCache;
     }
 
     public static WorldEditPlugin getWorldEdit()
