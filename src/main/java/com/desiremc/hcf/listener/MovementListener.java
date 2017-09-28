@@ -28,9 +28,9 @@ public class MovementListener implements Listener
             {
                 if (r.getWorld().equalsIgnoreCase(e.getTo().getWorld().getName()) && r.getRegion().isWithin(e.getTo()))
                 {
-                    if (TagHandler.lastValidLocation.containsKey(e.getPlayer().getUniqueId()))
+                    if (TagHandler.hasLastValidLocation(e.getPlayer().getUniqueId()))
                     {
-                        e.setTo(TagHandler.lastValidLocation.get(e.getPlayer().getUniqueId()));
+                        e.setTo(TagHandler.getLastValidLocation(e.getPlayer().getUniqueId()));
                     }
                     else
                     {
@@ -41,7 +41,7 @@ public class MovementListener implements Listener
             }
             if (!e.isCancelled() && e.getPlayer().isOnGround())
             {
-                TagHandler.lastValidLocation.put(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
+                TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
             }
         }
         HCFSession s = HCFSessionHandler.getHCFSession(e.getPlayer());
@@ -72,7 +72,7 @@ public class MovementListener implements Listener
     {
         if (!e.isCancelled() && TagHandler.isTagged(e.getPlayer()))
         {
-            TagHandler.lastValidLocation.put(e.getPlayer().getUniqueId(), e.getTo());
+            TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getTo());
         }
         if (e.getCause() == TeleportCause.END_PORTAL)
         {

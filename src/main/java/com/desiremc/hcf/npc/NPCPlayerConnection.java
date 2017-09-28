@@ -2,7 +2,6 @@ package com.desiremc.hcf.npc;
 
 import net.minecraft.server.v1_12_R1.EntityPlayer;
 import net.minecraft.server.v1_12_R1.IChatBaseComponent;
-import net.minecraft.server.v1_12_R1.MinecraftServer;
 import net.minecraft.server.v1_12_R1.Packet;
 import net.minecraft.server.v1_12_R1.PacketPlayInAbilities;
 import net.minecraft.server.v1_12_R1.PacketPlayInArmAnimation;
@@ -33,7 +32,7 @@ public class NPCPlayerConnection extends PlayerConnection
 {
     public NPCPlayerConnection(EntityPlayer entityplayer)
     {
-        super(MinecraftServer.getServer(), new NPCNetworkManager(), entityplayer);
+        super(NPCPlayerHelper.getServer(), new NPCNetworkManager(), entityplayer);
     }
 
     @Override
@@ -85,7 +84,7 @@ public class NPCPlayerConnection extends PlayerConnection
     }
 
     @Override
-    public void sendPacket(Packet packet)
+    public void sendPacket(@SuppressWarnings("rawtypes") Packet packet)
     {
 
     }
