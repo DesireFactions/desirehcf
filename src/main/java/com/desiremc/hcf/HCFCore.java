@@ -83,19 +83,19 @@ public class HCFCore extends JavaPlugin
     private void registerCommands()
     {
         CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
-        customCommandHandler.registerCommand(new AchievementCommand());
-        customCommandHandler.registerCommand(new CrowbarCommand());
-        customCommandHandler.registerCommand(new EnderChestCommand());
-        customCommandHandler.registerCommand(new FStatCommand());
-        customCommandHandler.registerCommand(new HCFReloadCommand());
-        customCommandHandler.registerCommand(new LivesCommand());
-        customCommandHandler.registerCommand(new PVPCommand());
-        customCommandHandler.registerCommand(new RegionCommand());
-        customCommandHandler.registerCommand(new SetEndCommand());
-        customCommandHandler.registerCommand(new SettingsCommand());
-        customCommandHandler.registerCommand(new TicketCommand());
-        customCommandHandler.registerCommand(new UnbanCommand());
-        customCommandHandler.registerCommand(new LogoutCommand());
+        customCommandHandler.registerCommand(new AchievementCommand(), instance);
+        customCommandHandler.registerCommand(new CrowbarCommand(), instance);
+        customCommandHandler.registerCommand(new EnderChestCommand(), instance);
+        customCommandHandler.registerCommand(new FStatCommand(), instance);
+        customCommandHandler.registerCommand(new HCFReloadCommand(), instance);
+        customCommandHandler.registerCommand(new LivesCommand(), instance);
+        customCommandHandler.registerCommand(new PVPCommand(), instance);
+        customCommandHandler.registerCommand(new RegionCommand(), instance);
+        customCommandHandler.registerCommand(new SetEndCommand(), instance);
+        customCommandHandler.registerCommand(new SettingsCommand(), instance);
+        customCommandHandler.registerCommand(new TicketCommand(), instance);
+        customCommandHandler.registerCommand(new UnbanCommand(), instance);
+        customCommandHandler.registerCommand(new LogoutCommand(), instance);
     }
 
     public static RegisteredServiceProvider<Economy> getEconomy()
