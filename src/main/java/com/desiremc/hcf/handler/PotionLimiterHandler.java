@@ -16,7 +16,7 @@ import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.Potion;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.projectiles.ProjectileSource;
@@ -57,7 +57,7 @@ public class PotionLimiterHandler implements Listener
         {
             if (containsPotion(effect))
             {
-                if (!isPotionAllowed(Potion.fromItemStack(potion.getItem()),
+                if (!isPotionAllowed((PotionMeta)potion.getItem().getItemMeta(),
                         potion.getShooter(), DesireCore.getConfigHandler().getBoolean("disabled-potion-msg")))
                 {
                     event.setCancelled(true);
@@ -72,9 +72,9 @@ public class PotionLimiterHandler implements Listener
         if (!event.getItem().getType().equals(Material.POTION)) return;
 
         Player p = event.getPlayer();
-        Potion potion = Potion.fromItemStack(event.getItem());
+        PotionMeta potion = (PotionMeta) event.getItem().getItemMeta();
 
-        for (PotionEffect effect : potion.getEffects())
+        for (PotionEffect effect : potion.getCustomEffects())
         {
             if (containsPotion(effect))
             {
@@ -103,7 +103,8 @@ public class PotionLimiterHandler implements Listener
             {
                 for (ItemStack item : contents.getContents())
                 {
-                    for (PotionEffect potionEffect : Potion.fromItemStack(item).getEffects())
+                    PotionMeta meta = (PotionMeta)item.getItemMeta();
+                    for (PotionEffect potionEffect : meta.getCustomEffects())
                     {
                         for (PotionLimit potionLimit : potionLimits)
                         {
@@ -111,7 +112,6 @@ public class PotionLimiterHandler implements Listener
                             {
                                 int level = potionLimit.getLevel();
                                 int n = potionEffect.getAmplifier() + 1;
-                                Potion fromItemStack = Potion.fromItemStack(item);
                                 if (level == 0 || n > level)
                                 {
                                     contents.setIngredient(clone);
@@ -121,7 +121,7 @@ public class PotionLimiterHandler implements Listener
                                     }
                                     return;
                                 }
-                                if (fromItemStack.hasExtendedDuration() && !potionLimit.isExtended())
+                                if (meta.getBasePotionData().isExtended() && !potionLimit.isExtended())
                                 {
                                     contents.setIngredient(clone);
                                     for (int k = 0; k < 3; ++k)
@@ -156,26 +156,29 @@ public class PotionLimiterHandler implements Listener
         return null;
     }
 
-    private boolean isPotionAllowed(Potion potion, ProjectileSource source, boolean msg)
+    private boolean isPotionAllowed(PotionMeta potion, ProjectileSource source, boolean msg)
     {
-        PotionLimit limit = getPotionLimit(potion.getType().getEffectType());
-
-        int potionLevel = potion.getLevel();
-        int maxLevel = limit.getLevel() + 1;
-
-        if (maxLevel == 0 || potionLevel > maxLevel || (potion.hasExtendedDuration() && !limit.isExtended()))
+        for(PotionEffect effect : potion.getCustomEffects())
         {
-            if (msg)
+            PotionLimit limit = getPotionLimit(effect.getType());
+
+            int potionLevel = effect.getAmplifier() + 1;
+            int maxLevel = limit.getLevel();
+
+            if (maxLevel == 0 || potionLevel > maxLevel || (potion.getBasePotionData().isExtended() && !limit.isExtended()))
             {
-                if (source instanceof Player)
+                if (msg)
                 {
-                    Player p = (Player) source;
-                    Session session = SessionHandler.getSession(p);
-                    DesireCore.getLangHandler().sendRenderMessage(session, "potion-disabled");
-                    p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                    if (source instanceof Player)
+                    {
+                        Player p = (Player) source;
+                        Session session = SessionHandler.getSession(p);
+                        DesireCore.getLangHandler().sendRenderMessage(session, "potion-disabled");
+                        p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                    }
                 }
+                return false;
             }
-            return false;
         }
         return true;
     }
