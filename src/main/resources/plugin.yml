@@ -1,5 +1,5 @@
 name: HCFCore
 version: 0.1
-main: com.desiremc.hcf.DesireCore
-description: Desire HCF DesireCore
-depend: [WorldEdit, DesireCore]
+main: com.desiremc.hcf.HCFCore
+description: Desire HCF Core
+depend: ['WorldEdit', 'DesireCore']
