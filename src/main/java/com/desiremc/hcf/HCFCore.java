@@ -9,11 +9,9 @@ import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.commands.UnbanCommand;
 import com.desiremc.core.listeners.ConnectionListener;
 import com.desiremc.core.listeners.ListenerManager;
-import com.desiremc.core.session.AchievementManager;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.StaffHandler;
 import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.commands.AchievementCommand;
 import com.desiremc.hcf.commands.CrowbarCommand;
 import com.desiremc.hcf.commands.EnderChestCommand;
 import com.desiremc.hcf.commands.HCFReloadCommand;
@@ -59,7 +57,6 @@ public class HCFCore extends JavaPlugin
         TagHandler.initialize();
         TicketHandler.initialize();
         StaffHandler.initialize();
-        AchievementManager.initialize();
         CustomCommandHandler.initialize();
 
         registerListeners();
@@ -83,7 +80,6 @@ public class HCFCore extends JavaPlugin
     private void registerCommands()
     {
         CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
-        customCommandHandler.registerCommand(new AchievementCommand(), instance);
         customCommandHandler.registerCommand(new CrowbarCommand(), instance);
         customCommandHandler.registerCommand(new EnderChestCommand(), instance);
         customCommandHandler.registerCommand(new FStatCommand(), instance);
