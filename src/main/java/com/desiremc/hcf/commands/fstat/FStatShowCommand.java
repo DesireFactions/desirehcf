@@ -15,7 +15,7 @@ public class FStatShowCommand extends ValidCommand
 
     public FStatShowCommand()
     {
-        super("show", "show my fstats", Rank.GUEST, new String[]{});
+        super("show", "show my fstats", Rank.GUEST, new String[] {});
         addValidator(new PlayerHasFactionValidator());
     }
 
