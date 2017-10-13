@@ -1,7 +1,15 @@
 package com.desiremc.hcf.listener;
 
-import java.util.function.Consumer;
-
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.session.FactionSession;
+import com.desiremc.hcf.session.FactionSessionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
+import com.massivecraft.factions.Faction;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -9,16 +17,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.ChatUtils;
-import com.desiremc.hcf.session.FactionSession;
-import com.desiremc.hcf.session.FactionSessionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
-import com.massivecraft.factions.Faction;
+import java.util.function.Consumer;
 
 public class ChatListener implements Listener
 {
@@ -33,7 +32,7 @@ public class ChatListener implements Listener
         {
             player.sendMessage(ChatColor.DARK_GRAY + "-----------------------------------------------------");
             player.sendMessage("");
-            ChatUtils.sendCenteredMessage(player, DesireCore.getLangHandler().getPrefix().replace(" ", ""));
+            ChatUtils.sendCenteredMessage(player, HCFCore.getLangHandler().getPrefix().replace(" ", ""));
             player.sendMessage("");
             ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "You are muted and " + ChatColor.RED + "CANNOT " + ChatColor.GRAY + "speak!");
             ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "Visit our rules @ " + ChatColor.YELLOW + "https://desirehcf.net/rules");

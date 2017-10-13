@@ -1,18 +1,7 @@
 package com.desiremc.hcf.commands;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.DyeColor;
-import org.bukkit.Material;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.AchievementManager;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.ChatUtils;
@@ -20,6 +9,15 @@ import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.old_gui.CustomIS;
 import com.desiremc.hcf.old_gui.ItemGUI;
 import com.desiremc.hcf.old_gui.MenuItem;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
+import org.bukkit.Material;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
+import java.util.List;
+import java.util.UUID;
 
 public class AchievementCommand extends ValidCommand
 {
@@ -50,7 +48,7 @@ public class AchievementCommand extends ValidCommand
             @Override
             public void registerItems()
             {
-                List<String> achievements = SessionHandler.getSession(uuid).getAchievements();
+                List<Achievement> achievements = SessionHandler.getSession(uuid).getAchievements();
 
                 if (achievements.size() == 0)
                 {
@@ -70,11 +68,10 @@ public class AchievementCommand extends ValidCommand
 
                 String title = ChatUtils.getNameWithRankColor(uuid, true);
                 int i = 0;
-                for (String s : achievements)
+                for (Achievement s : achievements)
                 {
-                    Achievement achievement = AchievementManager.getInstance().getAchievement(s);
-                    set(i, new MenuItem(new CustomIS().setMaterial(Material.PAPER).setName(ChatColor.YELLOW + "Achievement #" + (++i)).addLore(ChatColor.DARK_GRAY + "---------------------------").addLore(ChatColor.GRAY + "Name: " + ChatColor.YELLOW + achievement.getName()).addLore(ChatColor.GRAY + "Desc: " + ChatColor.YELLOW + achievement.getDesc())
-                            .addLore(ChatColor.GRAY + "Reward: " + ChatColor.YELLOW + achievement.getReward() + " Tokens").addLore(ChatColor.DARK_GRAY + "---------------------------").addLore(ChatColor.GRAY + "This achievement was earned by: " + title), new Runnable()
+                    set(i, new MenuItem(new CustomIS().setMaterial(Material.PAPER).setName(ChatColor.YELLOW + "Achievement #" + (++i)).addLore(ChatColor.DARK_GRAY + "---------------------------").addLore(ChatColor.GRAY + "Name: " + ChatColor.YELLOW + s.getName()).addLore(ChatColor.GRAY + "Desc: " + ChatColor.YELLOW + s.getDescription())
+                            .addLore(ChatColor.GRAY + "Reward: " + ChatColor.YELLOW + s.getReward() + " Tokens").addLore(ChatColor.DARK_GRAY + "---------------------------").addLore(ChatColor.GRAY + "This achievement was earned by: " + title), new Runnable()
                     {
                         @Override
                         public void run()

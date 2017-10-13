@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.region.modify;
 
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.api.LangHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.material.MaterialData;
 
@@ -14,6 +16,8 @@ import com.desiremc.hcf.session.RegionHandler;
 
 public class RegionModifyMaterialCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = HCFCore.getLangHandler();
 
     public RegionModifyMaterialCommand()
     {

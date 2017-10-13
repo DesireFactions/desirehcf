@@ -1,21 +1,24 @@
 package com.desiremc.hcf.commands.region;
 
-import java.util.Collection;
-
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.validator.RegionsExistValidator;
+import org.bukkit.command.CommandSender;
+
+import java.util.Collection;
 
 public class RegionListCommand extends ValidCommand
 {
 
+    private static final LangHandler LANG = HCFCore.getLangHandler();
+
     public RegionListCommand()
     {
-        super("list", "List all the regions created.", Rank.ADMIN, new String[] {});
+        super("list", "List all the regions created.", Rank.ADMIN, new String[]{});
 
         addValidator(new RegionsExistValidator());
     }

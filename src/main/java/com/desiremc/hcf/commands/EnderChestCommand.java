@@ -1,14 +1,16 @@
 package com.desiremc.hcf.commands;
 
-import org.bukkit.command.CommandSender;
-
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.handler.EnderchestHandler;
+import org.bukkit.command.CommandSender;
 
 public class EnderChestCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = HCFCore.getLangHandler();
 
     public EnderChestCommand()
     {
@@ -21,10 +23,10 @@ public class EnderChestCommand extends ValidCommand
         if (EnderchestHandler.getEnderChestStatus())
         {
             EnderchestHandler.setEnderchestStatus(false);
-            DesireCore.getLangHandler().sendRenderMessage(sender, "enderchest.disabled");
+            LANG.sendRenderMessage(sender, "enderchest.disabled");
         } else
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "enderchest.enabled");
+            LANG.sendRenderMessage(sender, "enderchest.enabled");
             EnderchestHandler.setEnderchestStatus(true);
         }
     }

@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.fstat;
 
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.api.LangHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -12,6 +14,8 @@ import com.desiremc.hcf.validator.PlayerHasFactionValidator;
 
 public class FStatShowCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = HCFCore.getLangHandler();
 
     public FStatShowCommand()
     {

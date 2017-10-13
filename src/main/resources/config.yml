@@ -1,12 +1,14 @@
 tag:
   time: 30
+  distance: 10
 brewing:
   speed: 5
 furnace:
   speed: 5
 looting-buffer: 2
 enderchest-disabled: false
-gapple_time: 30
+gapple:
+  time: 30
 spawn-mobs: false
 barrier:
   refresh:
@@ -120,3 +122,15 @@ potion-limiter:
     level: -1
     extended: true
 disabled-potion-msg: true
+xray-ores:
+  - "DIAMOND_ORE"
+  - "IRON_ORE"
+  - "EMERALD_ORE"
+crowbar:
+  uses: 6
+  spawner:
+    cost: 6
+  frame:
+    cost: 1
+logout:
+  time: 25

@@ -1,11 +1,17 @@
 package com.desiremc.hcf.handler;
 
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
-import com.desiremc.core.session.*;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.event.NPCDespawnEvent;
+import com.desiremc.hcf.event.NPCDespawnReason;
+import com.desiremc.hcf.npc.NPC;
+import com.desiremc.hcf.npc.NPCManager;
+import com.desiremc.hcf.npc.NPCPlayerHelper;
+import com.desiremc.hcf.npc.SafeLogoutTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -18,20 +24,14 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.hcf.HCFCore;
-import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.event.NPCDespawnEvent;
-import com.desiremc.hcf.event.NPCDespawnReason;
-import com.desiremc.hcf.npc.NPC;
-import com.desiremc.hcf.npc.NPCManager;
-import com.desiremc.hcf.npc.NPCPlayerHelper;
-import com.desiremc.hcf.npc.SafeLogoutTask;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 public class CombatLoggerHandler implements Listener
 {
-    private long TIMER = DesireCore.getConfigHandler().getInteger("tag.time");
+    private long TIMER = HCFCore.getConfigHandler().getInteger("tag.time");
 
     public CombatLoggerHandler()
     {
@@ -43,7 +43,7 @@ public class CombatLoggerHandler implements Listener
             {
                 for (UUID uuid : TagHandler.getTaggedPlayers())
                 {
-                    EntryRegistry.getInstance().setValue(Bukkit.getPlayer(uuid), DesireCore.getLangHandler().getString("tag.scoreboard"),
+                    EntryRegistry.getInstance().setValue(Bukkit.getPlayer(uuid), HCFCore.getLangHandler().getString("tag.scoreboard"),
                             String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
                 }
             }
@@ -71,7 +71,7 @@ public class CombatLoggerHandler implements Listener
         }
         else if (!SafeLogoutTask.isFinished(player))
         {
-            int tagDistance = DesireCore.getConfigHandler().getInteger("tag.distance");
+            int tagDistance = HCFCore.getConfigHandler().getInteger("tag.distance");
             for (Player p : Bukkit.getOnlinePlayers())
             {
                 if (p.getLocation().distanceSquared(player.getLocation()) <= (tagDistance * tagDistance))

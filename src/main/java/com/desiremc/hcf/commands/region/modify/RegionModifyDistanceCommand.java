@@ -1,18 +1,20 @@
 package com.desiremc.hcf.commands.region.modify;
 
-import org.bukkit.command.CommandSender;
-
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.IntegerParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.IntegerSizeValidator;
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.parser.RegionParser;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
+import org.bukkit.command.CommandSender;
 
 public class RegionModifyDistanceCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = HCFCore.getLangHandler();
 
     public RegionModifyDistanceCommand()
     {
@@ -21,7 +23,7 @@ public class RegionModifyDistanceCommand extends ValidCommand
         addParser(new RegionParser(), "region");
         addParser(new IntegerParser(), "distance");
 
-        addValidator(new IntegerSizeValidator(1, DesireCore.getConfigHandler().getInteger("barrier.max-distance")), "distance");
+        addValidator(new IntegerSizeValidator(1, HCFCore.getConfigHandler().getInteger("barrier.max-distance")), "distance");
     }
 
     @Override

@@ -10,7 +10,6 @@ import com.desiremc.hcf.handler.EnderchestHandler;
 import com.desiremc.hcf.handler.EnderpearlHandler;
 import com.desiremc.hcf.handler.FurnaceSpeedHandler;
 import com.desiremc.hcf.handler.LootingBuffHandler;
-import com.desiremc.hcf.handler.MobStackHandler;
 import com.desiremc.hcf.handler.PotionLimiterHandler;
 
 public class Components
@@ -27,7 +26,6 @@ public class Components
     public void registerListeners()
     {
         HCFCore instance = HCFCore.getInstance();
-        Bukkit.getPluginManager().registerEvents(new MobStackHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new FurnaceSpeedHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new EnderpearlHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new GappleHandler(), instance);

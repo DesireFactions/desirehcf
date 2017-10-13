@@ -1,11 +1,10 @@
 package com.desiremc.hcf.validator;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.HCFCore;
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class SelectedAreaValidator extends PlayerValidator {
 
@@ -20,7 +19,7 @@ public class SelectedAreaValidator extends PlayerValidator {
         if (s != null && s.getArea() >= 1) {
             return true;
         }
-        LANG.sendString(sender, "need_selection");
+        HCFCore.getLangHandler().sendString(sender, "need_selection");
         return false;
     }
 

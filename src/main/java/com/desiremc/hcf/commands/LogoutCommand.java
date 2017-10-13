@@ -4,12 +4,16 @@ import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.npc.SafeLogoutTask;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 public class LogoutCommand extends ValidCommand
 {
+
+    private static final LangHandler LANG = HCFCore.getLangHandler();
+
     public LogoutCommand()
     {
         super("logout", "Start to safely logout", Rank.GUEST, new String[]{});

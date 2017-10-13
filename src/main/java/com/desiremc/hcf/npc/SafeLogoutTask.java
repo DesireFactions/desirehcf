@@ -1,6 +1,5 @@
 package com.desiremc.hcf.npc;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.HCFCore;
 import com.desiremc.hcf.barrier.TagHandler;
@@ -59,7 +58,7 @@ public class SafeLogoutTask extends BukkitRunnable
 
         if (hasMoved(player))
         {
-            DesireCore.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.cancelled");
+            HCFCore.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.cancelled");
             cancel();
             return;
         }
@@ -71,7 +70,7 @@ public class SafeLogoutTask extends BukkitRunnable
             finished = true;
             TagHandler.clearTag(playerId);
 
-            DesireCore.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.success");
+            HCFCore.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.success");
             cancel();
             return;
         }
@@ -80,7 +79,7 @@ public class SafeLogoutTask extends BukkitRunnable
         if (remainingSeconds < this.remainingSeconds)
         {
 
-            DesireCore.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.pending",
+            HCFCore.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.pending",
                     "{remaining}", remainingSeconds + "");
 
             this.remainingSeconds = remainingSeconds;
@@ -100,7 +99,7 @@ public class SafeLogoutTask extends BukkitRunnable
         if (hasTask(player)) return;
 
         // Calculate logout time
-        long logoutTime = System.currentTimeMillis() + (DesireCore.getConfigHandler().getInteger("logout.time") * 1000);
+        long logoutTime = System.currentTimeMillis() + (HCFCore.getConfigHandler().getInteger("logout.time") * 1000);
 
         // Run the task every few ticks for accuracy
         SafeLogoutTask task = new SafeLogoutTask(plugin, player, logoutTime);

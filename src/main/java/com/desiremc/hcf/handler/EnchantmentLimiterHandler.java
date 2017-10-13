@@ -1,10 +1,6 @@
 package com.desiremc.hcf.handler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
+import com.desiremc.hcf.HCFCore;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -21,7 +17,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
-import com.desiremc.core.DesireCore;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 public class EnchantmentLimiterHandler implements Listener
 {
@@ -36,7 +35,7 @@ public class EnchantmentLimiterHandler implements Listener
 
     public void loadEnchantmentLimits()
     {
-        ConfigurationSection configurationSection = DesireCore.getConfigHandler().getConfigurationSection("enchantment-limiter");
+        ConfigurationSection configurationSection = HCFCore.getConfigHandler().getConfigurationSection("enchantment-limiter");
         for (String s : configurationSection.getKeys(false))
         {
             if (configurationSection.getInt(s) == -1)
@@ -89,7 +88,7 @@ public class EnchantmentLimiterHandler implements Listener
                     Iterator<String> iterator2 = currentItem.getItemMeta().getLore().iterator();
                     while (iterator2.hasNext())
                     {
-                        if (iterator2.next().equals(DesireCore.getConfigHandler().getString("unrepairable-lore-line")))
+                        if (iterator2.next().equals(HCFCore.getConfigHandler().getString("unrepairable-lore-line")))
                         {
                             inventoryClickEvent.setCancelled(true);
                             player.sendMessage("This item is not Repairable!");

@@ -1,5 +1,6 @@
 package com.desiremc.hcf.commands.region;
 
+import com.desiremc.hcf.api.LangHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
@@ -23,13 +24,15 @@ import com.sk89q.worldedit.bukkit.selections.Selection;
 public class RegionCreateCommand extends ValidCommand
 {
 
+    private static final LangHandler LANG = HCFCore.getLangHandler();
+
     public RegionCreateCommand()
     {
         super("create", "Create a new region.", Rank.ADMIN, new String[] { "name", "material" }, "new");
         addParser(new StringParser(), "name");
         addParser(new MaterialDataParser(), "material");
 
-        addValidator(new StringLengthValidator(1, DesireCore.getConfigHandler().getInteger("regions.max-name")), "name");
+        addValidator(new StringLengthValidator(1, HCFCore.getConfigHandler().getInteger("regions.max-name")), "name");
         addValidator(new SelectedAreaValidator());
         addValidator(new ItemBlockValidator(), "material");
         addValidator(new UnusedRegionNameValidator(), "name");

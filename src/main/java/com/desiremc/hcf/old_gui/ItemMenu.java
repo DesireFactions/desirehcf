@@ -39,7 +39,7 @@ public class ItemMenu implements Listener {
         this.title = title;
         this.parent = parent;
         this.size = size;
-        items = new HashMap<Integer, MenuItem>();
+        items = new HashMap<>();
     }
 
     public void setCancelTask(int cancel_task) {

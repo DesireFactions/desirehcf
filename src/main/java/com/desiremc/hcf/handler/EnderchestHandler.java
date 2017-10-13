@@ -1,20 +1,19 @@
 package com.desiremc.hcf.handler;
 
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.hcf.HCFCore;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-
 public class EnderchestHandler implements Listener
 {
 
-    public static boolean enderchestDisabled = DesireCore.getConfigHandler().getBoolean("enderchest-disabled");
+    public static boolean enderchestDisabled = HCFCore.getConfigHandler().getBoolean("enderchest-disabled");
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event)
@@ -26,7 +25,7 @@ public class EnderchestHandler implements Listener
                 if (enderchestDisabled)
                 {
                     event.setCancelled(true);
-                    DesireCore.getLangHandler().getString("enderchest.blocked");
+                    HCFCore.getLangHandler().getString("enderchest.blocked");
                 }
                 else
                 {
@@ -48,6 +47,6 @@ public class EnderchestHandler implements Listener
     public static void setEnderchestStatus(boolean status)
     {
         enderchestDisabled = status;
-        DesireCore.getConfigHandler().setBoolean("enderchest-disabled", status);
+        HCFCore.getConfigHandler().setBoolean("enderchest-disabled", status);
     }
 }
