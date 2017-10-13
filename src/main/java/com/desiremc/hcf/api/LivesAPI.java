@@ -1,16 +1,17 @@
 package com.desiremc.hcf.api;
 
-import com.desiremc.hcf.HCFCore;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 
 public class LivesAPI
 {
 
-    private final static LangHandler LANG = HCFCore.getLangHandler();
+    private final static LangHandler LANG = DesireCore.getLangHandler();
 
     public static void takeLives(CommandSender sender, Player target, Integer amount)
     {

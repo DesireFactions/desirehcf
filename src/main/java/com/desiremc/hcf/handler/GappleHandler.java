@@ -26,7 +26,7 @@ public class GappleHandler implements Listener
 
     public GappleHandler()
     {
-        TIMER = HCFCore.getConfigHandler().getInteger("gapple_time");
+        TIMER = DesireCore.getConfigHandler().getInteger("gapple_time");
         history = CacheBuilder.newBuilder().expireAfterWrite(TIMER, TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
         {
 
@@ -36,8 +36,8 @@ public class GappleHandler implements Listener
                 Player p = Bukkit.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    HCFCore.getLangHandler().sendString(p, "gapple.ended");
-                    EntryRegistry.getInstance().removeValue(p, HCFCore.getLangHandler().getString("gapple.scoreboard"));
+                    DesireCore.getLangHandler().sendString(p, "gapple.ended");
+                    EntryRegistry.getInstance().removeValue(p, DesireCore.getLangHandler().getString("gapple.scoreboard"));
                 }
             }
         }).build();
@@ -50,7 +50,7 @@ public class GappleHandler implements Listener
                 for (UUID uuid : history.asMap().keySet())
                 {
                     Player p = Bukkit.getPlayer(uuid);
-                    EntryRegistry.getInstance().setValue(p, HCFCore.getLangHandler().getString("gapple.scoreboard"),
+                    EntryRegistry.getInstance().setValue(p, DesireCore.getLangHandler().getString("gapple.scoreboard"),
                             String.valueOf(TIMER - ((System.currentTimeMillis() - history.getIfPresent(uuid)) / 1000)));
                 }
             }
@@ -74,7 +74,7 @@ public class GappleHandler implements Listener
         else
         {
             event.setCancelled(true);
-            HCFCore.getLangHandler().sendRenderMessage(player, "gapple.message", "{time}",
+            DesireCore.getLangHandler().sendRenderMessage(player, "gapple.message", "{time}",
                     String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
         }
     }

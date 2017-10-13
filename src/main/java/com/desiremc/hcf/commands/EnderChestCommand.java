@@ -1,6 +1,5 @@
 package com.desiremc.hcf.commands;
 
-import com.desiremc.hcf.HCFCore;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.DesireCore;
@@ -22,10 +21,10 @@ public class EnderChestCommand extends ValidCommand
         if (EnderchestHandler.getEnderChestStatus())
         {
             EnderchestHandler.setEnderchestStatus(false);
-            HCFCore.getLangHandler().sendRenderMessage(sender, "enderchest.disabled");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "enderchest.disabled");
         } else
         {
-            HCFCore.getLangHandler().sendRenderMessage(sender, "enderchest.enabled");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "enderchest.enabled");
             EnderchestHandler.setEnderchestStatus(true);
         }
     }

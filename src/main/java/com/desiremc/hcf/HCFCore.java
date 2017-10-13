@@ -1,7 +1,5 @@
 package com.desiremc.hcf;
 
-import com.desiremc.hcf.api.FileHandler;
-import com.desiremc.hcf.api.LangHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -11,11 +9,9 @@ import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.commands.UnbanCommand;
 import com.desiremc.core.listeners.ConnectionListener;
 import com.desiremc.core.listeners.ListenerManager;
-import com.desiremc.core.session.AchievementManager;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.StaffHandler;
 import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.commands.AchievementCommand;
 import com.desiremc.hcf.commands.CrowbarCommand;
 import com.desiremc.hcf.commands.EnderChestCommand;
 import com.desiremc.hcf.commands.HCFReloadCommand;
@@ -41,8 +37,6 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 import net.milkbowl.vault.economy.Economy;
 
-import java.io.File;
-
 public class HCFCore extends JavaPlugin
 {
 
@@ -52,16 +46,10 @@ public class HCFCore extends JavaPlugin
 
     private static RegisteredServiceProvider<Economy> economyProvider;
 
-    private static FileHandler config;
-    private static LangHandler lang;
-
     @Override
     public void onEnable()
     {
         instance = this;
-
-        config = new FileHandler(new File(getDataFolder(), "config.yml"));
-        lang = new LangHandler(new File(getDataFolder(), "lang.yml"));
 
         HCFSessionHandler.initialize();
         FactionSessionHandler.initialize();
@@ -69,7 +57,6 @@ public class HCFCore extends JavaPlugin
         TagHandler.initialize();
         TicketHandler.initialize();
         StaffHandler.initialize();
-        AchievementManager.initialize();
         CustomCommandHandler.initialize();
 
         registerListeners();
@@ -93,7 +80,6 @@ public class HCFCore extends JavaPlugin
     private void registerCommands()
     {
         CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
-        customCommandHandler.registerCommand(new AchievementCommand(), instance);
         customCommandHandler.registerCommand(new CrowbarCommand(), instance);
         customCommandHandler.registerCommand(new EnderChestCommand(), instance);
         customCommandHandler.registerCommand(new FStatCommand(), instance);
@@ -132,16 +118,6 @@ public class HCFCore extends JavaPlugin
     public static HCFCore getInstance()
     {
         return instance;
-    }
-
-    public static FileHandler getConfigHandler()
-    {
-        return config;
-    }
-
-    public static LangHandler getLangHandler()
-    {
-        return lang;
     }
 
 }

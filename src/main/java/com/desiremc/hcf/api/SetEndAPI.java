@@ -1,20 +1,21 @@
 package com.desiremc.hcf.api;
 
-import com.desiremc.hcf.HCFCore;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.utils.Utils;
 
 public class SetEndAPI
 {
 
-    private static final LangHandler LANG = HCFCore.getLangHandler();
+    private static final LangHandler LANG = DesireCore.getLangHandler();
 
     private static void handle(CommandSender sender, String configName, String messageName)
     {
         Player player = (Player) sender;
-        HCFCore.getConfigHandler().setString(configName, Utils.toString(player.getLocation()));
+        DesireCore.getConfigHandler().setString(configName, Utils.toString(player.getLocation()));
         LANG.sendString(sender, messageName);
     }
 

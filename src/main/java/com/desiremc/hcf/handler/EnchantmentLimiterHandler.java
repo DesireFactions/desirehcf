@@ -1,6 +1,10 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.hcf.HCFCore;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -17,10 +21,7 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.EnchantmentStorageMeta;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import com.desiremc.core.DesireCore;
 
 public class EnchantmentLimiterHandler implements Listener
 {
@@ -35,7 +36,7 @@ public class EnchantmentLimiterHandler implements Listener
 
     public void loadEnchantmentLimits()
     {
-        ConfigurationSection configurationSection = HCFCore.getConfigHandler().getConfigurationSection("enchantment-limiter");
+        ConfigurationSection configurationSection = DesireCore.getConfigHandler().getConfigurationSection("enchantment-limiter");
         for (String s : configurationSection.getKeys(false))
         {
             if (configurationSection.getInt(s) == -1)
@@ -78,7 +79,7 @@ public class EnchantmentLimiterHandler implements Listener
         Player player = (Player) inventoryClickEvent.getWhoClicked();
         Inventory inventory = inventoryClickEvent.getInventory();
         InventoryType.SlotType slotType = inventoryClickEvent.getSlotType();
-        if (inventory.getType().equals(InventoryType.ANVIL) && slotType.equals(InventoryType.SlotType.RESULT))
+        if (inventory.getType().equals((Object) InventoryType.ANVIL) && slotType.equals(InventoryType.SlotType.RESULT))
         {
             ItemStack currentItem = inventoryClickEvent.getCurrentItem();
             for (EnchantmentLimit enchantmentLimit : this.enchantmentLimits)
@@ -88,7 +89,7 @@ public class EnchantmentLimiterHandler implements Listener
                     Iterator<String> iterator2 = currentItem.getItemMeta().getLore().iterator();
                     while (iterator2.hasNext())
                     {
-                        if (iterator2.next().equals(HCFCore.getConfigHandler().getString("unrepairable-lore-line")))
+                        if (iterator2.next().equals(DesireCore.getConfigHandler().getString("unrepairable-lore-line")))
                         {
                             inventoryClickEvent.setCancelled(true);
                             player.sendMessage("This item is not Repairable!");
@@ -96,7 +97,7 @@ public class EnchantmentLimiterHandler implements Listener
                     }
                 } else
                 {
-                    if (currentItem.getType().equals(Material.ENCHANTED_BOOK))
+                    if (currentItem.getType().equals((Object) Material.ENCHANTED_BOOK))
                     {
                         EnchantmentStorageMeta enchantmentStorageMeta = (EnchantmentStorageMeta) currentItem.getItemMeta();
                         if (enchantmentStorageMeta.getStoredEnchants().containsKey(enchantmentLimit.getEnchantment()) && enchantmentStorageMeta.getStoredEnchants().get(enchantmentLimit.getEnchantment()) > enchantmentLimit.getLevel())
@@ -112,6 +113,7 @@ public class EnchantmentLimiterHandler implements Listener
                         player.sendMessage("You can't merge those Items!");
                         return;
                     }
+                    continue;
                 }
             }
         }

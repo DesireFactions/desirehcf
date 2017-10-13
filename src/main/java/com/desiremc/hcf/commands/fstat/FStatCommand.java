@@ -8,8 +8,7 @@ public class FStatCommand extends ValidBaseCommand
 
     public FStatCommand()
     {
-        super("fstat", "View your player stats", Rank.GUEST,
-                new String[]{});
+        super("fstat", "View your player stats", Rank.GUEST, new String[] {});
         addSubCommand(new FStatShowCommand());
         addSubCommand(new FStatFactionCommand());
     }

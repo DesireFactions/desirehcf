@@ -10,6 +10,7 @@ import com.desiremc.hcf.handler.EnderchestHandler;
 import com.desiremc.hcf.handler.EnderpearlHandler;
 import com.desiremc.hcf.handler.FurnaceSpeedHandler;
 import com.desiremc.hcf.handler.LootingBuffHandler;
+import com.desiremc.hcf.handler.MobStackHandler;
 import com.desiremc.hcf.handler.PotionLimiterHandler;
 
 public class Components

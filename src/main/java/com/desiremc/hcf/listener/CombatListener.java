@@ -1,7 +1,5 @@
 package com.desiremc.hcf.listener;
 
-import com.desiremc.hcf.HCFCore;
-import com.desiremc.hcf.api.LangHandler;
 import mkremins.fanciful.FancyMessage;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
@@ -14,6 +12,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.hcf.barrier.TagHandler;
@@ -42,7 +41,7 @@ public class CombatListener implements Listener
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onHitHigh(EntityDamageByEntityEvent e)
     {
-        LangHandler lang = HCFCore.getLangHandler();
+        LangHandler l = DesireCore.getLangHandler();
         if (e.getEntity() instanceof Player)
         {
             if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player))
@@ -56,14 +55,14 @@ public class CombatListener implements Listener
                 if (ds.getSafeTimeLeft() > 0)
                 {
                     e.setCancelled(true);
-                    damager.sendMessage(lang.getString("pvp.damager_protected"));
+                    damager.sendMessage(l.getString("pvp.damager_protected"));
                     return;
                 }
 
                 if (vs.getSafeTimeLeft() > 0)
                 {
                     e.setCancelled(true);
-                    damager.sendMessage(lang.getString("pvp.target_protected"));
+                    damager.sendMessage(l.getString("pvp.target_protected"));
                     return;
                 }
 
@@ -85,6 +84,14 @@ public class CombatListener implements Listener
                 if (state != 0)
                 {
                     e.setCancelled(true);
+                }
+                else if (state == 1)
+                {
+                    damager.sendMessage(l.getString("damaged.in-spawn"));
+                }
+                else if (state == 2)
+                {
+                    damager.sendMessage(l.getString("damaged.out-spawn"));
                 }
             }
         }
@@ -113,7 +120,7 @@ public class CombatListener implements Listener
             itemType = "Fist";
         }
 
-        String parsed = HCFCore.getLangHandler().renderMessage("pvp.kill", "{killer}", killer.getName(), "{player}",
+        String parsed = DesireCore.getLangHandler().renderMessage("pvp.kill", "{killer}", killer.getName(), "{player}",
                 player.getName(), "{killerKills}", killer.getKills(DesireCore.getCurrentServer()) + "", "{playerKills}", playerSession.getKills(DesireCore.getCurrentServer()) + "", "{item}", itemType);
 
         for (Player online : Bukkit.getOnlinePlayers())

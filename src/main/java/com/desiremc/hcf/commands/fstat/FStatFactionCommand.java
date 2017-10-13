@@ -13,7 +13,7 @@ public class FStatFactionCommand extends ValidCommand
 
     public FStatFactionCommand()
     {
-        super("faction", "shows faction stats", Rank.MODERATOR, new String[]{"faction"});
+        super("faction", "shows faction stats", Rank.MODERATOR, new String[] { "faction" });
         addParser(new FactionSessionParser(), "faction");
         addValidator(new PlayerValidator());
     }

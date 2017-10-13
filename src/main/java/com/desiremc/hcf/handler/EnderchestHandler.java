@@ -1,20 +1,20 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.hcf.HCFCore;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.MscAchievements;
 
 public class EnderchestHandler implements Listener
 {
 
-    public static boolean enderchestDisabled = HCFCore.getConfigHandler().getBoolean("enderchest-disabled");
+    public static boolean enderchestDisabled = DesireCore.getConfigHandler().getBoolean("enderchest-disabled");
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event)
@@ -26,13 +26,14 @@ public class EnderchestHandler implements Listener
                 if (enderchestDisabled)
                 {
                     event.setCancelled(true);
-                    event.getPlayer().sendMessage("EnderChest are disabled!");
-                } else
+                    DesireCore.getLangHandler().getString("enderchest.blocked");
+                }
+                else
                 {
                     Session s = SessionHandler.getSession(event.getPlayer());
-                    if (!s.hasAchievement(MscAchievements.FIRST_ENDERCHEST_OPEN.getId()))
+                    if (!s.hasAchievement(Achievement.FIRST_ENDERCHEST_OPEN))
                     {
-                        s.awardAchievement(MscAchievements.FIRST_ENDERCHEST_OPEN, true);
+                        s.awardAchievement(Achievement.FIRST_ENDERCHEST_OPEN, true);
                     }
                 }
             }
@@ -47,6 +48,6 @@ public class EnderchestHandler implements Listener
     public static void setEnderchestStatus(boolean status)
     {
         enderchestDisabled = status;
-        HCFCore.getConfigHandler().setBoolean("enderchest-disabled", status);
+        DesireCore.getConfigHandler().setBoolean("enderchest-disabled", status);
     }
 }

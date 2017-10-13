@@ -1,11 +1,8 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.hcf.HCFCore;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,8 +11,13 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.hcf.HCFCore;
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.cache.RemovalListener;
+import com.google.common.cache.RemovalNotification;
 
 public class EnderpearlHandler implements Listener
 {
@@ -26,7 +28,7 @@ public class EnderpearlHandler implements Listener
 
     public EnderpearlHandler()
     {
-        TIMER = HCFCore.getConfigHandler().getInteger("enderpearl.time");
+        TIMER = DesireCore.getConfigHandler().getInteger("enderpearl.time");
         history = CacheBuilder.newBuilder().expireAfterWrite(TIMER, TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
         {
 
@@ -36,8 +38,8 @@ public class EnderpearlHandler implements Listener
                 Player p = Bukkit.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    HCFCore.getLangHandler().sendString(p, "enderpearl.ended");
-                    EntryRegistry.getInstance().removeValue(p, HCFCore.getLangHandler().getString("enderpearl.scoreboard"));
+                    DesireCore.getLangHandler().sendString(p, "enderpearl.ended");
+                    EntryRegistry.getInstance().removeValue(p, DesireCore.getLangHandler().getString("enderpearl.scoreboard"));
                 }
             }
         }).build();
@@ -50,7 +52,7 @@ public class EnderpearlHandler implements Listener
                 for (UUID uuid : history.asMap().keySet())
                 {
                     Player p = Bukkit.getPlayer(uuid);
-                    EntryRegistry.getInstance().setValue(p, HCFCore.getLangHandler().getString("enderpearl.scoreboard"),
+                    EntryRegistry.getInstance().setValue(p, DesireCore.getLangHandler().getString("enderpearl.scoreboard"),
                             String.valueOf(TIMER - ((System.currentTimeMillis() - history.getIfPresent(uuid)) / 1000)));
                 }
             }
@@ -78,7 +80,7 @@ public class EnderpearlHandler implements Listener
             } else
             {
                 e.setCancelled(true);
-                HCFCore.getLangHandler().sendRenderMessage(p, "enderpearl.message", "{time}", String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
+                DesireCore.getLangHandler().sendRenderMessage(p, "enderpearl.message", "{time}", String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
             }
         }
     }
