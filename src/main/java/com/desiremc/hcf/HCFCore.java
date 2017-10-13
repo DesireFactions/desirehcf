@@ -1,5 +1,7 @@
 package com.desiremc.hcf;
 
+import com.desiremc.hcf.api.FileHandler;
+import com.desiremc.hcf.api.LangHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
@@ -39,6 +41,8 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 import net.milkbowl.vault.economy.Economy;
 
+import java.io.File;
+
 public class HCFCore extends JavaPlugin
 {
 
@@ -48,10 +52,16 @@ public class HCFCore extends JavaPlugin
 
     private static RegisteredServiceProvider<Economy> economyProvider;
 
+    private static FileHandler config;
+    private static LangHandler lang;
+
     @Override
     public void onEnable()
     {
         instance = this;
+
+        config = new FileHandler(new File(getDataFolder(), "config.yml"));
+        lang = new LangHandler(new File(getDataFolder(), "lang.yml"));
 
         HCFSessionHandler.initialize();
         FactionSessionHandler.initialize();
@@ -122,6 +132,16 @@ public class HCFCore extends JavaPlugin
     public static HCFCore getInstance()
     {
         return instance;
+    }
+
+    public static FileHandler getConfigHandler()
+    {
+        return config;
+    }
+
+    public static LangHandler getLangHandler()
+    {
+        return lang;
     }
 
 }

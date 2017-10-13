@@ -1,8 +1,8 @@
 package com.desiremc.hcf.validator;
 
+import com.desiremc.hcf.HCFCore;
 import org.bukkit.command.CommandSender;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.CommandValidator;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
@@ -16,7 +16,7 @@ public class UnusedRegionNameValidator extends CommandValidator
         Region r = RegionHandler.getInstance().getRegion((String) arg);
         if (r == null)
         {
-            DesireCore.getLangHandler().sendString(sender, "region.used_name");
+            HCFCore.getLangHandler().sendString(sender, "region.doesnt_exist");
             return false;
         }
 

@@ -1,22 +1,20 @@
 package com.desiremc.hcf.barrier;
 
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import com.desiremc.hcf.HCFCore;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.hcf.HCFCore;
 import com.desiremc.hcf.npc.SafeLogoutTask;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class TagHandler
 {
@@ -29,7 +27,7 @@ public class TagHandler
 
     public static void initialize()
     {
-        tags = CacheBuilder.newBuilder().expireAfterWrite(DesireCore.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
+        tags = CacheBuilder.newBuilder().expireAfterWrite(HCFCore.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
         {
 
             @Override
@@ -38,14 +36,14 @@ public class TagHandler
                 if (entry.getCause().ordinal() > 2)
                 {
                     BarrierTask.addToClear(entry.getKey());
-                    Bukkit.getPlayer(entry.getKey()).sendMessage(DesireCore.getLangHandler().getString("tag.expire"));
+                    Bukkit.getPlayer(entry.getKey()).sendMessage(HCFCore.getLangHandler().getString("tag.expire"));
                     EntryRegistry.getInstance().removeValue(Bukkit.getPlayer(entry.getKey()),
-                            DesireCore.getLangHandler().getString("tag.scoreboard"));
+                            HCFCore.getLangHandler().getString("tag.scoreboard"));
                 }
             }
         }).build();
 
-        history = CacheBuilder.newBuilder().expireAfterWrite(DesireCore.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).build();
+        history = CacheBuilder.newBuilder().expireAfterWrite(HCFCore.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).build();
 
         Bukkit.getScheduler().runTaskTimer(HCFCore.getInstance(), new Runnable()
         {
@@ -66,11 +64,11 @@ public class TagHandler
     {
         if (!isTagged(p))
         {
-            p.sendMessage(DesireCore.getLangHandler().getString("tag.active"));
+            p.sendMessage(HCFCore.getLangHandler().getString("tag.active"));
         }
         if (!isTagged(damager))
         {
-            damager.sendMessage(DesireCore.getLangHandler().getString("tag.active"));
+            damager.sendMessage(HCFCore.getLangHandler().getString("tag.active"));
         }
         tags.put(p.getUniqueId(), System.currentTimeMillis());
         tags.put(damager.getUniqueId(), System.currentTimeMillis());

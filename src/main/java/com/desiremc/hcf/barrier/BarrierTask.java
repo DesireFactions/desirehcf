@@ -1,22 +1,15 @@
 package com.desiremc.hcf.barrier;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.hcf.HCFCore;
-import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
+import java.util.*;
 
 public class BarrierTask implements Runnable
 {
@@ -101,8 +94,8 @@ public class BarrierTask implements Runnable
             task.cancel();
         }
         task = Bukkit.getScheduler().runTaskTimer(HCFCore.getInstance(), new BarrierTask(),
-                DesireCore.getConfigHandler().getInteger("barrier.refresh.ticks"),
-                DesireCore.getConfigHandler().getInteger("barrier.refresh.ticks"));
+                HCFCore.getConfigHandler().getInteger("barrier.refresh.ticks"),
+                HCFCore.getConfigHandler().getInteger("barrier.refresh.ticks"));
     }
 
 }

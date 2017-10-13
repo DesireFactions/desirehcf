@@ -1,8 +1,11 @@
 package com.desiremc.hcf.listener;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.FileHandler;
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.api.LangHandler;
+import com.desiremc.hcf.util.FactionsUtils;
+import com.massivecraft.factions.Faction;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -18,11 +21,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.FileHandler;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.hcf.util.FactionsUtils;
-import com.massivecraft.factions.Faction;
+import java.util.Arrays;
+import java.util.List;
 
 public class CrowbarHandler implements Listener
 {
@@ -34,7 +34,7 @@ public class CrowbarHandler implements Listener
     @EventHandler
     public void onInteract(PlayerInteractEvent e)
     {
-        LangHandler lang = DesireCore.getLangHandler();
+        LangHandler lang = HCFCore.getLangHandler();
         FileHandler config = DesireCore.getConfigHandler();
         Player player = e.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
