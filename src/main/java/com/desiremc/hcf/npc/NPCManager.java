@@ -1,17 +1,17 @@
 package com.desiremc.hcf.npc;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.hcf.HCFCore;
-import com.desiremc.hcf.event.NPCDespawnEvent;
-import com.desiremc.hcf.event.NPCDespawnReason;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.event.NPCDespawnEvent;
+import com.desiremc.hcf.event.NPCDespawnReason;
 
 public class NPCManager
 {
@@ -25,7 +25,10 @@ public class NPCManager
     {
         // Do nothing if player already has a NPC
         NPC NPC = getSpawnedNPC(player.getUniqueId());
-        if (NPC != null) return null;
+        if (NPC != null)
+        {
+            return null;
+        }
 
         // Spawn fake player entity
         NPC = new NPC(NPCPlayerHelper.spawn(player));
@@ -58,7 +61,7 @@ public class NPCManager
         entity.setMetadata("NPC", new FixedMetadataValue(HCFCore.getInstance(), true));
 
         // Create and start the NPCs despawn task
-        long despawnTime = System.currentTimeMillis() + DesireCore.getConfigHandler().getInteger("timers.npc.despawn");
+        long despawnTime = System.currentTimeMillis() + HCFCore.getConfigHandler().getInteger("timers.npc.despawn");
         NPCDespawnTask despawnTask = new NPCDespawnTask(HCFCore.getInstance(), NPC, despawnTime);
         despawnTask.start();
         despawnTasks.put(NPC, despawnTask);
@@ -75,7 +78,10 @@ public class NPCManager
     {
         // Do nothing if NPC isn't spawned or if it's a different NPC
         NPC other = getSpawnedNPC(NPC.getIdentity().getId());
-        if (other == null || other != NPC) return;
+        if (other == null || other != NPC)
+        {
+            return;
+        }
 
         // Call NPC despawn event
         NPCDespawnEvent event = new NPCDespawnEvent(NPC, reason);

@@ -18,7 +18,6 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.hcf.HCFCore;
@@ -138,7 +137,7 @@ public class CrowbarHandler implements Listener
 
     private static List<String> getStartingUses()
     {
-        return Arrays.asList(PREFIX + DesireCore.getConfigHandler().getInteger("crowbar.uses"));
+        return Arrays.asList(PREFIX + HCFCore.getConfigHandler().getInteger("crowbar.uses"));
     }
 
     private static String getCrowbarName()
