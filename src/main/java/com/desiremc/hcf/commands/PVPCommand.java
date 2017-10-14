@@ -1,18 +1,15 @@
 package com.desiremc.hcf.commands;
 
-import com.desiremc.hcf.HCFCore;
-import com.desiremc.hcf.api.LangHandler;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.Rank;
+import com.desiremc.hcf.HCFCore;
 
 public class PVPCommand extends ValidCommand
 {
-
-    private static final LangHandler LANG = HCFCore.getLangHandler();
 
     public PVPCommand()
     {
@@ -25,7 +22,7 @@ public class PVPCommand extends ValidCommand
         HCFSession s = HCFSessionHandler.getHCFSession(sender);
 
         s.setSafeTimeLeft(0);
-        LANG.sendString(sender, "pvp.disabled");
+        HCFCore.getLangHandler().sendString(sender, "pvp.disabled");
     }
 
 }

@@ -1,6 +1,5 @@
 package com.desiremc.hcf.commands.region;
 
-import com.desiremc.hcf.api.LangHandler;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.material.MaterialData;
@@ -23,8 +22,6 @@ import com.sk89q.worldedit.bukkit.selections.Selection;
 
 public class RegionCreateCommand extends ValidCommand
 {
-
-    private static final LangHandler LANG = HCFCore.getLangHandler();
 
     public RegionCreateCommand()
     {
@@ -50,7 +47,7 @@ public class RegionCreateCommand extends ValidCommand
         Region r = new Region(name, s.getWorld().getName(), new RegionBlocks(s.getMaximumPoint(), s.getMinimumPoint()), data, DesireCore.getConfigHandler().getInteger("barrier.view-distance"));
         RegionHandler.getInstance().save(r, true);
 
-        LANG.sendRenderMessage(sender, "region.create", "{name}", name, "{material}", ItemNames.lookup(data));
+        HCFCore.getLangHandler().sendRenderMessage(sender, "region.create", "{name}", name, "{material}", ItemNames.lookup(data));
     }
 
 }

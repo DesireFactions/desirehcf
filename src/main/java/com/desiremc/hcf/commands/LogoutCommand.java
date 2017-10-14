@@ -1,22 +1,20 @@
 package com.desiremc.hcf.commands;
 
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.HCFCore;
-import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.npc.SafeLogoutTask;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class LogoutCommand extends ValidCommand
 {
 
-    private static final LangHandler LANG = HCFCore.getLangHandler();
-
     public LogoutCommand()
     {
-        super("logout", "Start to safely logout", Rank.GUEST, new String[]{});
+        super("logout", "Start to safely logout", Rank.GUEST, new String[] {});
         addValidator(new PlayerValidator());
     }
 
@@ -27,12 +25,12 @@ public class LogoutCommand extends ValidCommand
 
         if (SafeLogoutTask.hasTask(p))
         {
-            LANG.sendRenderMessage(sender, "logout.cancelled");
+            HCFCore.getLangHandler().sendRenderMessage(sender, "logout.cancelled");
             SafeLogoutTask.cancel(p);
         }
         else
         {
-            LANG.sendRenderMessage(sender, "logout.started");
+            HCFCore.getLangHandler().sendRenderMessage(sender, "logout.started");
             SafeLogoutTask.run(HCFCore.getInstance(), p);
         }
 
