@@ -1,14 +1,5 @@
 package com.desiremc.hcf.listener;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
-import com.desiremc.hcf.HCFCore;
-import com.desiremc.hcf.api.LangHandler;
-import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
-import mkremins.fanciful.FancyMessage;
 import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
@@ -21,17 +12,26 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.inventory.ItemStack;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.HCFSession;
+import com.desiremc.core.session.HCFSessionHandler;
+import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.api.LangHandler;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
+
+import mkremins.fanciful.FancyMessage;
+
 public class CombatListener implements Listener
 {
-
-    private LangHandler lang = HCFCore.getLangHandler();
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHitMonitor(EntityDamageByEntityEvent e)
     {
         if (e.getEntity() instanceof Player)
         {
-            if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player))
+            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)
             {
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
@@ -46,7 +46,7 @@ public class CombatListener implements Listener
         LangHandler lang = HCFCore.getLangHandler();
         if (e.getEntity() instanceof Player)
         {
-            if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player))
+            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)
             {
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
@@ -95,7 +95,10 @@ public class CombatListener implements Listener
     public void onPlayerDeath(PlayerDeathEvent event)
     {
         Player player = event.getEntity();
-        if (player.getKiller() == null || !(player.getKiller() instanceof Player)) return;
+        if (player.getKiller() == null || !(player.getKiller() instanceof Player))
+        {
+            return;
+        }
 
         HCFSession killer = HCFSessionHandler.getHCFSession(player.getKiller());
         HCFSession playerSession = HCFSessionHandler.getHCFSession(player);
