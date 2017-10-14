@@ -30,10 +30,6 @@ lives:
   remove: You have removed &c{amount}&7 lives to {player}
   recieved: '{sender} has given you {amount} lives!'
   lost: '{sender} has taken {amount} lives from you!'
-ticket:
-  open: '&7You have opened a new ticket. Staff will get to it soon.'
-tickets:
-  open: "There are {number} tickets open."
 pvp:
   target-protected: '&7That player has pvp disabled'
   damager-protected: '&7You have pvp disabled.'

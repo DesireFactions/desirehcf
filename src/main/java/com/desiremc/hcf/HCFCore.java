@@ -9,26 +9,14 @@ import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.StaffHandler;
 import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.commands.CrowbarCommand;
-import com.desiremc.hcf.commands.EnderChestCommand;
-import com.desiremc.hcf.commands.HCFReloadCommand;
-import com.desiremc.hcf.commands.LogoutCommand;
-import com.desiremc.hcf.commands.PVPCommand;
-import com.desiremc.hcf.commands.SettingsCommand;
+import com.desiremc.hcf.commands.*;
 import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
-import com.desiremc.hcf.commands.ticket.TicketCommand;
-import com.desiremc.hcf.listener.ChatListener;
-import com.desiremc.hcf.listener.CombatListener;
-import com.desiremc.hcf.listener.CreatureSpawnListener;
-import com.desiremc.hcf.listener.CrowbarHandler;
-import com.desiremc.hcf.listener.InteractListener;
-import com.desiremc.hcf.listener.MovementListener;
+import com.desiremc.hcf.listener.*;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
-import com.desiremc.hcf.tickets.TicketHandler;
 import com.desiremc.hcf.util.PlayerCache;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import net.milkbowl.vault.economy.Economy;
@@ -65,7 +53,6 @@ public class HCFCore extends JavaPlugin
         FactionSessionHandler.initialize();
         RegionHandler.initialize();
         TagHandler.initialize();
-        TicketHandler.initialize();
         StaffHandler.initialize();
         CustomCommandHandler.initialize();
 
@@ -99,7 +86,6 @@ public class HCFCore extends JavaPlugin
         customCommandHandler.registerCommand(new RegionCommand(), instance);
         customCommandHandler.registerCommand(new SetEndCommand(), instance);
         customCommandHandler.registerCommand(new SettingsCommand(), instance);
-        customCommandHandler.registerCommand(new TicketCommand(), instance);
         customCommandHandler.registerCommand(new UnbanCommand(), instance);
         customCommandHandler.registerCommand(new LogoutCommand(), instance);
     }
