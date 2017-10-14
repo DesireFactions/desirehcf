@@ -1,31 +1,43 @@
 package com.desiremc.hcf;
 
+import java.io.File;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.api.FileHandler;
+import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.commands.UnbanCommand;
 import com.desiremc.core.listeners.ConnectionListener;
 import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.StaffHandler;
-import com.desiremc.hcf.api.LangHandler;
 import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.commands.*;
+import com.desiremc.hcf.commands.CrowbarCommand;
+import com.desiremc.hcf.commands.EnderChestCommand;
+import com.desiremc.hcf.commands.HCFReloadCommand;
+import com.desiremc.hcf.commands.LogoutCommand;
+import com.desiremc.hcf.commands.PVPCommand;
+import com.desiremc.hcf.commands.SettingsCommand;
 import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
-import com.desiremc.hcf.listener.*;
+import com.desiremc.hcf.listener.ChatListener;
+import com.desiremc.hcf.listener.CombatListener;
+import com.desiremc.hcf.listener.CreatureSpawnListener;
+import com.desiremc.hcf.listener.CrowbarHandler;
+import com.desiremc.hcf.listener.InteractListener;
+import com.desiremc.hcf.listener.MovementListener;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.PlayerCache;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
+import net.milkbowl.vault.economy.Economy;
 
 public class HCFCore extends JavaPlugin
 {
@@ -46,8 +58,8 @@ public class HCFCore extends JavaPlugin
 
         saveDefaultConfig();
         saveResource("lang.yml", false);
-        lang = new LangHandler(new File(getDataFolder(), "lang.yml"));
-        config = new FileHandler(new File(getDataFolder(), "config.yml"));
+        lang = new LangHandler(new File(getDataFolder(), "lang.yml"), this);
+        config = new FileHandler(new File(getDataFolder(), "config.yml"), this);
 
         HCFSessionHandler.initialize();
         FactionSessionHandler.initialize();
