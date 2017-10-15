@@ -34,6 +34,9 @@ pvp:
   target-protected: '&7That player has pvp disabled'
   damager-protected: '&7You have pvp disabled.'
   disabled: '&7You have disabled your pvp protection timer.'
+death:
+  pvp:
+  pve:
   kill: '&7{killer}[{killerKills}] has killed {victim}[{victimKills}] with a {item}!'
 crowbar:
   new_crowbar: '&7You have recieved a crowbar.'

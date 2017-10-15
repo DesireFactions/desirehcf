@@ -1,23 +1,24 @@
 package com.desiremc.hcf.listener;
 
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemStack;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
+import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.core.utils.ItemNames;
 import com.desiremc.hcf.HCFCore;
 import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.barrier.TagHandler.Tag;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 
@@ -94,41 +95,67 @@ public class CombatListener implements Listener
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event)
     {
-        Player vPlayer = event.getEntity();
-        HCFSession victim = HCFSessionHandler.getHCFSession(vPlayer);
-        
-        Player kPlayer = Bukkit.getPlayer(TagHandler.getTagger(vPlayer.getUniqueId()));
-        if (kPlayer != null)
+        try
         {
+            Player vPlayer = event.getEntity();
+            HCFSession victim = HCFSessionHandler.getHCFSession(vPlayer);
+            DamageCause cause = vPlayer.getLastDamageCause().getCause();
 
-            HCFSession killer = HCFSessionHandler.getHCFSession(kPlayer);
-            killer.addKill(DesireCore.getCurrentServer());
-            HCFSessionHandler.getInstance().save(killer);
+            String parsed;
 
-            ItemStack item = killer.getPlayer().getInventory().getItemInMainHand();
-            String itemType;
-
-            if (item != null && item.getType() != Material.AIR)
+            Tag tag = TagHandler.getTag(vPlayer.getUniqueId());
+            if (tag != null)
             {
-                itemType = WordUtils.capitalize(item.getType().name().replace("_", " "));
+                Player kPlayer = Bukkit.getPlayer(tag.getUniqueId());
+                HCFSession killer = HCFSessionHandler.getHCFSession(kPlayer);
+
+                killer.addKill(DesireCore.getCurrentServer());
+                HCFSessionHandler.getInstance().save(killer);
+
+                parsed = HCFCore.getLangHandler().getString("death.pvp." + cause);
+
+                parsed = ChatUtils.renderString(parsed,
+                        "{killer}", killer.getName(),
+                        "{killerKills}", killer.getKills(DesireCore.getCurrentServer()) + "");
+
             }
             else
             {
-                itemType = "Fist";
+                parsed = HCFCore.getLangHandler().getString("death.pve." + cause);
             }
 
-            String parsed = HCFCore.getLangHandler().renderMessage("pvp.kill",
-                    "{killer}", killer.getName(),
-                    "{killerKills}", killer.getKills(DesireCore.getCurrentServer()) + "",
-                    "{victim}", player.getName(),
-                    "{victimKills}", victim.getKills(DesireCore.getCurrentServer()) + "",
-                    "{item}", itemType);
+            parsed = ChatUtils.renderString(parsed,
+                    "{victim}", vPlayer.getName(),
+                    "{victimKills}", String.valueOf(victim.getKills(DesireCore.getCurrentServer())));
 
-            FancyMessage message = new FancyMessage(parsed).itemTooltip(item);
+            FancyMessage message = new FancyMessage();
+            String[] pieces = parsed.split("[^A-Za-z0-9{}]");
+            String str;
+            for (int i = 0; i < pieces.length; i++)
+            {
+                str = pieces[0];
+                message.then();
+                if (str.equals("{item}"))
+                {
+                    message.text(ItemNames.lookup(tag.getItem())).itemTooltip(tag.getItem());
+                }
+                else
+                {
+                    message.text(str);
+                }
+                if (i != pieces.length - 1)
+                {
+                    message.text(" ");
+                }
+            }
             for (Player online : Bukkit.getOnlinePlayers())
             {
                 message.send(online);
             }
+        }
+        catch (Exception ex)
+        {
+            ChatUtils.sendStaffMessage(ex, HCFCore.getInstance());
         }
     }
 }

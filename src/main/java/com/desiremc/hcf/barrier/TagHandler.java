@@ -1,5 +1,15 @@
 package com.desiremc.hcf.barrier;
 
+import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.hcf.HCFCore;
 import com.desiremc.hcf.npc.SafeLogoutTask;
@@ -7,14 +17,6 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
 import com.google.common.cache.RemovalNotification;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class TagHandler
 {
@@ -23,7 +25,7 @@ public class TagHandler
 
     private static Cache<UUID, Long> tags;
 
-    private static Cache<UUID, UUID> history;
+    private static Cache<UUID, Tag> history;
 
     public static void initialize()
     {
@@ -37,8 +39,7 @@ public class TagHandler
                 {
                     BarrierTask.addToClear(entry.getKey());
                     Bukkit.getPlayer(entry.getKey()).sendMessage(HCFCore.getLangHandler().getString("tag.expire"));
-                    EntryRegistry.getInstance().removeValue(Bukkit.getPlayer(entry.getKey()),
-                            HCFCore.getLangHandler().getString("tag.scoreboard"));
+                    EntryRegistry.getInstance().removeValue(Bukkit.getPlayer(entry.getKey()), HCFCore.getLangHandler().getString("tag.scoreboard"));
                 }
             }
         }).build();
@@ -72,7 +73,7 @@ public class TagHandler
         }
         tags.put(p.getUniqueId(), System.currentTimeMillis());
         tags.put(damager.getUniqueId(), System.currentTimeMillis());
-        history.put(p.getUniqueId(), damager.getUniqueId());
+        history.put(p.getUniqueId(), new Tag(damager.getUniqueId(), damager.getInventory().getItemInMainHand()));
 
         SafeLogoutTask.cancel(p);
         SafeLogoutTask.cancel(damager);
@@ -80,7 +81,7 @@ public class TagHandler
 
     public static Location getLastValidLocation(UUID uuid)
     {
-        return (Location) lastValidLocation.get(uuid);
+        return lastValidLocation.get(uuid);
     }
 
     public static boolean hasLastValidLocation(UUID uuid)
@@ -100,7 +101,17 @@ public class TagHandler
 
     public static UUID getTagger(UUID uuid)
     {
-        return history.asMap().get(uuid);
+        Tag tag = history.getIfPresent(uuid);
+        if (tag == null)
+        {
+            return null;
+        }
+        return tag.getUniqueId();
+    }
+
+    public static Tag getTag(UUID uuid)
+    {
+        return history.getIfPresent(uuid);
     }
 
     public static void clearTag(UUID uuid)
@@ -111,6 +122,28 @@ public class TagHandler
     public static Set<UUID> getTaggedPlayers()
     {
         return tags.asMap().keySet();
+    }
+
+    public static class Tag
+    {
+        private UUID uuid;
+        private ItemStack item;
+
+        public Tag(UUID uuid, ItemStack item)
+        {
+            this.uuid = uuid;
+            this.item = item;
+        }
+
+        public UUID getUniqueId()
+        {
+            return uuid;
+        }
+
+        public ItemStack getItem()
+        {
+            return item;
+        }
     }
 
 }
