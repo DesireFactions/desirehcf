@@ -94,37 +94,41 @@ public class CombatListener implements Listener
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event)
     {
-        Player player = event.getEntity();
-        if (player.getKiller() == null || !(player.getKiller() instanceof Player))
+        Player vPlayer = event.getEntity();
+        HCFSession victim = HCFSessionHandler.getHCFSession(vPlayer);
+        
+        Player kPlayer = Bukkit.getPlayer(TagHandler.getTagger(vPlayer.getUniqueId()));
+        if (kPlayer != null)
         {
-            return;
-        }
 
-        HCFSession killer = HCFSessionHandler.getHCFSession(player.getKiller());
-        HCFSession playerSession = HCFSessionHandler.getHCFSession(player);
+            HCFSession killer = HCFSessionHandler.getHCFSession(kPlayer);
+            killer.addKill(DesireCore.getCurrentServer());
+            HCFSessionHandler.getInstance().save(killer);
 
-        killer.addKill(DesireCore.getCurrentServer());
+            ItemStack item = killer.getPlayer().getInventory().getItemInMainHand();
+            String itemType;
 
-        ItemStack item = killer.getPlayer().getInventory().getItemInMainHand();
-        String itemType;
+            if (item != null && item.getType() != Material.AIR)
+            {
+                itemType = WordUtils.capitalize(item.getType().name().replace("_", " "));
+            }
+            else
+            {
+                itemType = "Fist";
+            }
 
-        if (item != null && item.getType() != Material.AIR)
-        {
-            itemType = WordUtils.capitalize(item.getType().name().replace("_", " "));
-        }
-        else
-        {
-            itemType = "Fist";
-        }
+            String parsed = HCFCore.getLangHandler().renderMessage("pvp.kill",
+                    "{killer}", killer.getName(),
+                    "{killerKills}", killer.getKills(DesireCore.getCurrentServer()) + "",
+                    "{victim}", player.getName(),
+                    "{victimKills}", victim.getKills(DesireCore.getCurrentServer()) + "",
+                    "{item}", itemType);
 
-        String parsed = HCFCore.getLangHandler().renderMessage("pvp.kill", "{killer}", killer.getName(), "{player}",
-                player.getName(), "{killerKills}", killer.getKills(DesireCore.getCurrentServer()) + "", "{playerKills}", playerSession.getKills(DesireCore.getCurrentServer()) + "", "{item}", itemType);
-
-        for (Player online : Bukkit.getOnlinePlayers())
-        {
-            new FancyMessage(parsed)
-                    .itemTooltip(item)
-                    .send(online);
+            FancyMessage message = new FancyMessage(parsed).itemTooltip(item);
+            for (Player online : Bukkit.getOnlinePlayers())
+            {
+                message.send(online);
+            }
         }
     }
 }
