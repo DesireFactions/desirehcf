@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.old_gui.PlayerSettingsGUI;
 
 public class SettingsCommand extends ValidCommand
@@ -21,6 +21,6 @@ public class SettingsCommand extends ValidCommand
     @Override
     public void validRun(CommandSender sender, String label, Object... args)
     {
-        new PlayerSettingsGUI(HCFCore.getInstance(), (Player) sender).show();
+        new PlayerSettingsGUI(DesireHCF.getInstance(), (Player) sender).show();
     }
 }

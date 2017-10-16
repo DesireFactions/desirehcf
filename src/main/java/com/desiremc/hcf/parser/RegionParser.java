@@ -4,14 +4,14 @@ import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.ArgumentParser;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 
 public class RegionParser implements ArgumentParser
 {
 
-    private static final LangHandler LANG = HCFCore.getLangHandler();
+    private static final LangHandler LANG = DesireHCF.getLangHandler();
 
     @Override
     public Object parseArgument(CommandSender sender, String label, String arg)

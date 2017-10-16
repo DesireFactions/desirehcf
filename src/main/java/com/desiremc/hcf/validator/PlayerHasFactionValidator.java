@@ -1,6 +1,6 @@
 package com.desiremc.hcf.validator;
 
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -17,7 +17,7 @@ public class PlayerHasFactionValidator extends PlayerValidator {
         }
         
         if (FactionsUtils.getFaction((Player) sender) == null) {
-            HCFCore.getLangHandler().sendString(sender, "no_faction");
+            DesireHCF.getLangHandler().sendString(sender, "no_faction");
             return false;
         }
 

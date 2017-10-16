@@ -1,6 +1,6 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,7 +19,7 @@ public class LootingBuffHandler implements Listener
             if (p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(Enchantment.LOOT_BONUS_MOBS))
             {
                 int dropped = e.getDroppedExp();
-                int bonus = HCFCore.getConfigHandler().getInteger("looting-buffer");
+                int bonus = DesireHCF.getConfigHandler().getInteger("looting-buffer");
                 e.setDroppedExp(dropped * bonus);
             }
         }

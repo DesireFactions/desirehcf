@@ -3,7 +3,7 @@ package com.desiremc.hcf.listener;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.utils.Utils;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
@@ -75,11 +75,11 @@ public class MovementListener implements Listener
         }
         if (e.getCause() == TeleportCause.END_PORTAL)
         {
-            e.setTo(Utils.toLocation(HCFCore.getConfigHandler().getString("set_end.spawn")));
+            e.setTo(Utils.toLocation(DesireHCF.getConfigHandler().getString("set_end.spawn")));
         }
         else if (e.getCause() == TeleportCause.END_GATEWAY)
         {
-            e.setTo(Utils.toLocation(HCFCore.getConfigHandler().getString("set_end.exit")));
+            e.setTo(Utils.toLocation(DesireHCF.getConfigHandler().getString("set_end.exit")));
         }
     }
 

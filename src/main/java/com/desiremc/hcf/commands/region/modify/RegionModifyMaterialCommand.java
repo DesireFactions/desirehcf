@@ -8,7 +8,7 @@ import com.desiremc.core.parsers.MaterialDataParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.utils.ItemNames;
 import com.desiremc.core.validators.ItemBlockValidator;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parser.RegionParser;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
@@ -37,7 +37,7 @@ public class RegionModifyMaterialCommand extends ValidCommand
         r.setBarrierMaterial(data);
         RegionHandler.getInstance().save(r);
 
-        HCFCore.getLangHandler().sendRenderMessage(sender, "region.change", "{change}", "material", "{old}", ItemNames.lookup(oldData), "{new}", ItemNames.lookup(data));
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.change", "{change}", "material", "{old}", ItemNames.lookup(oldData), "{new}", ItemNames.lookup(data));
 
     }
 

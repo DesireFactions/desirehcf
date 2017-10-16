@@ -1,6 +1,6 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.event.EventHandler;
@@ -23,7 +23,7 @@ public class BrewingSpeedHandler implements Listener
             if (state instanceof BrewingStand)
             {
                 BrewingStand brewingStand = (BrewingStand) state;
-                brewingStand.setBrewingTime((short) (brewingStand.getBrewingTime() + HCFCore.getConfigHandler().getInteger("brewing.speed")));
+                brewingStand.setBrewingTime((short) (brewingStand.getBrewingTime() + DesireHCF.getConfigHandler().getInteger("brewing.speed")));
                 brewingStand.setBrewingTime((short) Math.max(1, brewingStand.getBrewingTime() - 1));
             }
         }
@@ -36,9 +36,9 @@ public class BrewingSpeedHandler implements Listener
         if (state instanceof BrewingStand)
         {
             BrewingStand brewingStand = (BrewingStand) state;
-            if (HCFCore.getConfigHandler().getInteger("brewing.speed") > 1)
+            if (DesireHCF.getConfigHandler().getInteger("brewing.speed") > 1)
             {
-                new BrewingUpdateTask(brewingStand).runTaskTimer(HCFCore.getInstance(), 1L, 1L);
+                new BrewingUpdateTask(brewingStand).runTaskTimer(DesireHCF.getInstance(), 1L, 1L);
             }
         }
     }
@@ -54,7 +54,7 @@ public class BrewingSpeedHandler implements Listener
 
         public void run()
         {
-            this.brewingStand.setBrewingTime((short) (this.brewingStand.getBrewingTime() + HCFCore.getConfigHandler().getInteger("brewing.speed")));
+            this.brewingStand.setBrewingTime((short) (this.brewingStand.getBrewingTime() + DesireHCF.getConfigHandler().getInteger("brewing.speed")));
             this.brewingStand.setBrewingTime((short) Math.max(1, this.brewingStand.getBrewingTime() - 1));
             this.brewingStand.update();
             if (this.brewingStand.getBrewingTime() <= 1)

@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.handler.EnderchestHandler;
 
 public class EnderChestCommand extends ValidCommand
@@ -21,12 +21,12 @@ public class EnderChestCommand extends ValidCommand
         if (EnderchestHandler.getEnderChestStatus())
         {
             EnderchestHandler.setEnderchestStatus(false);
-            HCFCore.getLangHandler().sendRenderMessage(sender, "enderchest.disabled");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "enderchest.disabled");
         }
         else
         {
             EnderchestHandler.setEnderchestStatus(true);
-            HCFCore.getLangHandler().sendRenderMessage(sender, "enderchest.enabled");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "enderchest.enabled");
         }
     }
 }

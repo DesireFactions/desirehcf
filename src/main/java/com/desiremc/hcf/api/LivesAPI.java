@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 
 public class LivesAPI
 {
@@ -19,9 +19,9 @@ public class LivesAPI
         HCFSession session = HCFSessionHandler.getHCFSession(target);
         session.takeLives(amount);
 
-        HCFCore.getLangHandler().sendRenderMessage(sender, "lives.remove", "{amount}", strAmount, "{player}", targetName);
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.remove", "{amount}", strAmount, "{player}", targetName);
 
-        HCFCore.getLangHandler().sendRenderMessage(sender, "lives.lost", "{amount}", Integer.toString(amount), "{sender}", senderName);
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.lost", "{amount}", Integer.toString(amount), "{sender}", senderName);
     }
 
     public static void addLives(CommandSender sender, Player target, Integer amount)
@@ -33,7 +33,7 @@ public class LivesAPI
         HCFSession session = HCFSessionHandler.getHCFSession(target);
         session.addLives(amount);
 
-        HCFCore.getLangHandler().sendRenderMessage(sender, "lives.add", "{amount}", strAmount, "{player}", targetName);
-        HCFCore.getLangHandler().sendRenderMessage(sender, "lives.recieved", "{amount}", strAmount, "{sender}", senderName);
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.add", "{amount}", strAmount, "{player}", targetName);
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.recieved", "{amount}", strAmount, "{sender}", senderName);
     }
 }

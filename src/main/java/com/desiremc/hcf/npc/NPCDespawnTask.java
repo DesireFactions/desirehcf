@@ -1,11 +1,11 @@
 package com.desiremc.hcf.npc;
 
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 
 public class NPCDespawnTask implements Runnable
 {
 
-    private final HCFCore plugin;
+    private final DesireHCF plugin;
 
     private final NPC npc;
 
@@ -13,7 +13,7 @@ public class NPCDespawnTask implements Runnable
 
     private int taskId;
 
-    public NPCDespawnTask(HCFCore plugin, NPC npc, long time)
+    public NPCDespawnTask(DesireHCF plugin, NPC npc, long time)
     {
         this.plugin = plugin;
         this.npc = npc;

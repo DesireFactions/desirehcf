@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.npc.SafeLogoutTask;
 
 public class LogoutCommand extends ValidCommand
@@ -25,13 +25,13 @@ public class LogoutCommand extends ValidCommand
 
         if (SafeLogoutTask.hasTask(p))
         {
-            HCFCore.getLangHandler().sendRenderMessage(sender, "logout.cancelled");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "logout.cancelled");
             SafeLogoutTask.cancel(p);
         }
         else
         {
-            HCFCore.getLangHandler().sendRenderMessage(sender, "logout.started");
-            SafeLogoutTask.run(HCFCore.getInstance(), p);
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "logout.started");
+            SafeLogoutTask.run(DesireHCF.getInstance(), p);
         }
 
     }

@@ -2,7 +2,7 @@ package com.desiremc.hcf.handler;
 
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -35,7 +35,7 @@ public class PotionLimiterHandler implements Listener
 
     private void loadPotionLimits()
     {
-        ConfigurationSection configurationSection = HCFCore.getConfigHandler().getConfigurationSection("potion-limiter");
+        ConfigurationSection configurationSection = DesireHCF.getConfigHandler().getConfigurationSection("potion-limiter");
         for (String s : configurationSection.getKeys(false))
         {
             PotionLimit potionLimit = new PotionLimit();
@@ -56,7 +56,7 @@ public class PotionLimiterHandler implements Listener
             if (containsPotion(effect))
             {
                 if (!isPotionAllowed((PotionMeta) potion.getItem().getItemMeta(),
-                        potion.getShooter(), HCFCore.getConfigHandler().getBoolean("potion-disabled")))
+                        potion.getShooter(), DesireHCF.getConfigHandler().getBoolean("potion-disabled")))
                 {
                     event.setCancelled(true);
                 }
@@ -76,7 +76,7 @@ public class PotionLimiterHandler implements Listener
         {
             if (containsPotion(effect))
             {
-                if (!isPotionAllowed(potion, p, HCFCore.getConfigHandler().getBoolean("potion-disabled")))
+                if (!isPotionAllowed(potion, p, DesireHCF.getConfigHandler().getBoolean("potion-disabled")))
                     event.setCancelled(true);
             }
         }
@@ -133,7 +133,7 @@ public class PotionLimiterHandler implements Listener
                     }
                 }
             }
-        }.runTaskLater(HCFCore.getInstance(), 1L);
+        }.runTaskLater(DesireHCF.getInstance(), 1L);
     }
 
     public boolean containsPotion(PotionEffect effect)
@@ -171,7 +171,7 @@ public class PotionLimiterHandler implements Listener
                     {
                         Player p = (Player) source;
                         Session session = SessionHandler.getSession(p);
-                        HCFCore.getLangHandler().sendRenderMessage(session, "potion-disabled");
+                        DesireHCF.getLangHandler().sendRenderMessage(session, "potion-disabled");
                         p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
                     }
                 }

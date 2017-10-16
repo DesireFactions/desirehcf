@@ -16,7 +16,7 @@ import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.core.utils.ItemNames;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.barrier.TagHandler.Tag;
 import com.desiremc.hcf.session.Region;
@@ -44,7 +44,7 @@ public class CombatListener implements Listener
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onHitHigh(EntityDamageByEntityEvent e)
     {
-        LangHandler lang = HCFCore.getLangHandler();
+        LangHandler lang = DesireHCF.getLangHandler();
         if (e.getEntity() instanceof Player)
         {
             if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)
@@ -112,7 +112,7 @@ public class CombatListener implements Listener
                 killer.addKill(DesireCore.getCurrentServer());
                 HCFSessionHandler.getInstance().save(killer);
 
-                parsed = HCFCore.getLangHandler().getString("death.pvp." + cause);
+                parsed = DesireHCF.getLangHandler().getString("death.pvp." + cause);
 
                 parsed = ChatUtils.renderString(parsed,
                         "{killer}", killer.getName(),
@@ -121,7 +121,7 @@ public class CombatListener implements Listener
             }
             else
             {
-                parsed = HCFCore.getLangHandler().getString("death.pve." + cause);
+                parsed = DesireHCF.getLangHandler().getString("death.pve." + cause);
             }
 
             parsed = ChatUtils.renderString(parsed,
@@ -155,7 +155,7 @@ public class CombatListener implements Listener
         }
         catch (Exception ex)
         {
-            ChatUtils.sendStaffMessage(ex, HCFCore.getInstance());
+            ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
         }
     }
 }

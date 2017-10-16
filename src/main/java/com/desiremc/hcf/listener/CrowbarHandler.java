@@ -20,7 +20,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.massivecraft.factions.Faction;
 
@@ -31,8 +31,8 @@ public class CrowbarHandler implements Listener
     private static final String NAME = "§a§k|§cCrowbar§a§k|";
     private static final String SPAWNER = "§a§k|§cSpawner§a§k|§b - §a";
 
-    private LangHandler lang = HCFCore.getLangHandler();
-    private FileHandler config = HCFCore.getConfigHandler();
+    private LangHandler lang = DesireHCF.getLangHandler();
+    private FileHandler config = DesireHCF.getConfigHandler();
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e)
@@ -137,7 +137,7 @@ public class CrowbarHandler implements Listener
 
     private static List<String> getStartingUses()
     {
-        return Arrays.asList(PREFIX + HCFCore.getConfigHandler().getInteger("crowbar.uses"));
+        return Arrays.asList(PREFIX + DesireHCF.getConfigHandler().getInteger("crowbar.uses"));
     }
 
     private static String getCrowbarName()

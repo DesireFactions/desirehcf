@@ -5,7 +5,7 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.ChatUtils;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FactionSession;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
@@ -32,7 +32,7 @@ public class ChatListener implements Listener
         {
             player.sendMessage(ChatColor.DARK_GRAY + "-----------------------------------------------------");
             player.sendMessage("");
-            ChatUtils.sendCenteredMessage(player, HCFCore.getLangHandler().getPrefix().replace(" ", ""));
+            ChatUtils.sendCenteredMessage(player, DesireHCF.getLangHandler().getPrefix().replace(" ", ""));
             player.sendMessage("");
             ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "You are muted and " + ChatColor.RED + "CANNOT " + ChatColor.GRAY + "speak!");
             ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "Visit our rules @ " + ChatColor.YELLOW + "https://desirehcf.net/rules");

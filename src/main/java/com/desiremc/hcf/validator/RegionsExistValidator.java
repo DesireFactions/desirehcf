@@ -1,7 +1,7 @@
 package com.desiremc.hcf.validator;
 
 import com.desiremc.core.api.command.CommandValidator;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 import org.bukkit.command.CommandSender;
@@ -18,7 +18,7 @@ public class RegionsExistValidator extends CommandValidator
         
         if (regions.size() < 1)
         {
-            HCFCore.getLangHandler().sendString(sender, "region.none");
+            DesireHCF.getLangHandler().sendString(sender, "region.none");
             return false;
         }
         

@@ -9,7 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.metadata.FixedMetadataValue;
 
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.event.NPCDespawnEvent;
 import com.desiremc.hcf.event.NPCDespawnReason;
 
@@ -58,11 +58,11 @@ public class NPCManager
         // Send equipment packets to nearby players
         NPCPlayerHelper.updateEquipment(entity);
 
-        entity.setMetadata("NPC", new FixedMetadataValue(HCFCore.getInstance(), true));
+        entity.setMetadata("NPC", new FixedMetadataValue(DesireHCF.getInstance(), true));
 
         // Create and start the NPCs despawn task
-        long despawnTime = System.currentTimeMillis() + HCFCore.getConfigHandler().getInteger("timers.npc.despawn");
-        NPCDespawnTask despawnTask = new NPCDespawnTask(HCFCore.getInstance(), NPC, despawnTime);
+        long despawnTime = System.currentTimeMillis() + DesireHCF.getConfigHandler().getInteger("timers.npc.despawn");
+        NPCDespawnTask despawnTask = new NPCDespawnTask(DesireHCF.getInstance(), NPC, despawnTime);
         despawnTask.start();
         despawnTasks.put(NPC, despawnTask);
 
@@ -98,7 +98,7 @@ public class NPCManager
         // Remove the NPC entity from the world
         NPCPlayerHelper.despawn(NPC.getEntity());
         spawnedNPCs.remove(NPC.getIdentity().getId());
-        NPC.getEntity().removeMetadata("NPC", HCFCore.getInstance());
+        NPC.getEntity().removeMetadata("NPC", DesireHCF.getInstance());
     }
 
     public static NPC getSpawnedNPC(UUID playerId)

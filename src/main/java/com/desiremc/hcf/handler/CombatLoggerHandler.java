@@ -4,7 +4,7 @@ import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.event.NPCDespawnEvent;
 import com.desiremc.hcf.event.NPCDespawnReason;
@@ -31,19 +31,19 @@ import java.util.concurrent.Future;
 
 public class CombatLoggerHandler implements Listener
 {
-    private long TIMER = HCFCore.getConfigHandler().getInteger("tag.time");
+    private long TIMER = DesireHCF.getConfigHandler().getInteger("tag.time");
 
     public CombatLoggerHandler()
     {
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(HCFCore.getInstance(), new Runnable()
+        Bukkit.getScheduler().runTaskTimerAsynchronously(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
             {
                 for (UUID uuid : TagHandler.getTaggedPlayers())
                 {
-                    EntryRegistry.getInstance().setValue(Bukkit.getPlayer(uuid), HCFCore.getLangHandler().getString("tag.scoreboard"),
+                    EntryRegistry.getInstance().setValue(Bukkit.getPlayer(uuid), DesireHCF.getLangHandler().getString("tag.scoreboard"),
                             String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
                 }
             }
@@ -56,7 +56,7 @@ public class CombatLoggerHandler implements Listener
         Player player = event.getPlayer();
 
         NPCPlayerHelper.removePlayerList(player);
-        HCFCore.getInstance().getPlayerCache().removePlayer(player);
+        DesireHCF.getInstance().getPlayerCache().removePlayer(player);
 
         Session session = SessionHandler.getSession(player);
 
@@ -71,7 +71,7 @@ public class CombatLoggerHandler implements Listener
         }
         else if (!SafeLogoutTask.isFinished(player))
         {
-            int tagDistance = HCFCore.getConfigHandler().getInteger("tag.distance");
+            int tagDistance = DesireHCF.getConfigHandler().getInteger("tag.distance");
             for (Player p : Bukkit.getOnlinePlayers())
             {
                 if (p.getLocation().distanceSquared(player.getLocation()) <= (tagDistance * tagDistance))
@@ -90,7 +90,7 @@ public class CombatLoggerHandler implements Listener
 
         NPCPlayerHelper.createPlayerList(player);
 
-        HCFCore.getInstance().getPlayerCache().addPlayer(player);
+        DesireHCF.getInstance().getPlayerCache().addPlayer(player);
 
         NPC npc = NPCManager.getSpawnedNPC(event.getPlayer().getUniqueId());
         if (npc != null)
@@ -111,7 +111,7 @@ public class CombatLoggerHandler implements Listener
 
         TagHandler.clearTag(id);
 
-        Bukkit.getScheduler().scheduleSyncDelayedTask(HCFCore.getInstance(), new Runnable()
+        Bukkit.getScheduler().scheduleSyncDelayedTask(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
@@ -132,7 +132,7 @@ public class CombatLoggerHandler implements Listener
         TagHandler.clearTag(player.getUniqueId());
 
         // Save NPC player data on next tick
-        Bukkit.getScheduler().scheduleSyncDelayedTask(HCFCore.getInstance(), new Runnable()
+        Bukkit.getScheduler().scheduleSyncDelayedTask(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
@@ -150,7 +150,7 @@ public class CombatLoggerHandler implements Listener
         final UUID playerId = event.getUniqueId();
         if (!NPCManager.NPCExists(playerId)) return;
 
-        Future<?> future = Bukkit.getScheduler().callSyncMethod(HCFCore.getInstance(), new Callable<Void>()
+        Future<?> future = Bukkit.getScheduler().callSyncMethod(DesireHCF.getInstance(), new Callable<Void>()
         {
             @Override
             public Void call() throws Exception
@@ -180,7 +180,7 @@ public class CombatLoggerHandler implements Listener
         NPC npc = event.getNPC();
 
         // Save player data when the NPC despawns
-        Player player = HCFCore.getInstance().getPlayerCache().getPlayer(npc.getIdentity().getId());
+        Player player = DesireHCF.getInstance().getPlayerCache().getPlayer(npc.getIdentity().getId());
         if (player == null)
         {
             NPCPlayerHelper.syncOffline(npc.getEntity());

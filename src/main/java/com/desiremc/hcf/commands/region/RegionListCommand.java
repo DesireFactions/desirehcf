@@ -6,7 +6,7 @@ import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.validator.RegionsExistValidator;
@@ -40,7 +40,7 @@ public class RegionListCommand extends ValidCommand
             }
             i++;
         }
-        HCFCore.getLangHandler().sendRenderMessage(sender, "region.list", "{regions}", sb.toString());
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.list", "{regions}", sb.toString());
     }
 
 }

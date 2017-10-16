@@ -6,7 +6,7 @@ import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.Rank;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 
 public class PVPCommand extends ValidCommand
 {
@@ -22,7 +22,7 @@ public class PVPCommand extends ValidCommand
         HCFSession s = HCFSessionHandler.getHCFSession(sender);
 
         s.setSafeTimeLeft(0);
-        HCFCore.getLangHandler().sendString(sender, "pvp.disabled");
+        DesireHCF.getLangHandler().sendString(sender, "pvp.disabled");
     }
 
 }

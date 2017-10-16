@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.npc.SafeLogoutTask;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -29,7 +29,7 @@ public class TagHandler
 
     public static void initialize()
     {
-        tags = CacheBuilder.newBuilder().expireAfterWrite(HCFCore.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
+        tags = CacheBuilder.newBuilder().expireAfterWrite(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
         {
 
             @Override
@@ -38,15 +38,15 @@ public class TagHandler
                 if (entry.getCause().ordinal() > 2)
                 {
                     BarrierTask.addToClear(entry.getKey());
-                    Bukkit.getPlayer(entry.getKey()).sendMessage(HCFCore.getLangHandler().getString("tag.expire"));
-                    EntryRegistry.getInstance().removeValue(Bukkit.getPlayer(entry.getKey()), HCFCore.getLangHandler().getString("tag.scoreboard"));
+                    Bukkit.getPlayer(entry.getKey()).sendMessage(DesireHCF.getLangHandler().getString("tag.expire"));
+                    EntryRegistry.getInstance().removeValue(Bukkit.getPlayer(entry.getKey()), DesireHCF.getLangHandler().getString("tag.scoreboard"));
                 }
             }
         }).build();
 
-        history = CacheBuilder.newBuilder().expireAfterWrite(HCFCore.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).build();
+        history = CacheBuilder.newBuilder().expireAfterWrite(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).build();
 
-        Bukkit.getScheduler().runTaskTimer(HCFCore.getInstance(), new Runnable()
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
@@ -65,11 +65,11 @@ public class TagHandler
     {
         if (!isTagged(p))
         {
-            p.sendMessage(HCFCore.getLangHandler().getString("tag.active"));
+            p.sendMessage(DesireHCF.getLangHandler().getString("tag.active"));
         }
         if (!isTagged(damager))
         {
-            damager.sendMessage(HCFCore.getLangHandler().getString("tag.active"));
+            damager.sendMessage(DesireHCF.getLangHandler().getString("tag.active"));
         }
         tags.put(p.getUniqueId(), System.currentTimeMillis());
         tags.put(damager.getUniqueId(), System.currentTimeMillis());

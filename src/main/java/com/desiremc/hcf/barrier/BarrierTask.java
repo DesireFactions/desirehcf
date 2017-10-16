@@ -1,6 +1,6 @@
 package com.desiremc.hcf.barrier;
 
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 import org.bukkit.Bukkit;
@@ -98,9 +98,9 @@ public class BarrierTask implements Runnable
         {
             task.cancel();
         }
-        task = Bukkit.getScheduler().runTaskTimer(HCFCore.getInstance(), new BarrierTask(),
-                HCFCore.getConfigHandler().getInteger("barrier.refresh.ticks"),
-                HCFCore.getConfigHandler().getInteger("barrier.refresh.ticks"));
+        task = Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new BarrierTask(),
+                DesireHCF.getConfigHandler().getInteger("barrier.refresh.ticks"),
+                DesireHCF.getConfigHandler().getInteger("barrier.refresh.ticks"));
     }
 
 }

@@ -25,7 +25,7 @@ public class Components
 
     public void registerListeners()
     {
-        HCFCore instance = HCFCore.getInstance();
+        DesireHCF instance = DesireHCF.getInstance();
         Bukkit.getPluginManager().registerEvents(new FurnaceSpeedHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new EnderpearlHandler(), instance);
         Bukkit.getPluginManager().registerEvents(new GappleHandler(), instance);

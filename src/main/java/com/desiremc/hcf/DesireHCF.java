@@ -39,10 +39,10 @@ import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 import net.milkbowl.vault.economy.Economy;
 
-public class HCFCore extends JavaPlugin
+public class DesireHCF extends JavaPlugin
 {
 
-    private static HCFCore instance;
+    private static DesireHCF instance;
 
     private final PlayerCache playerCache = new PlayerCache();
 
@@ -123,7 +123,7 @@ public class HCFCore extends JavaPlugin
         return (WorldEditPlugin) p;
     }
 
-    public static HCFCore getInstance()
+    public static DesireHCF getInstance()
     {
         return instance;
     }

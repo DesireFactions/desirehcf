@@ -10,7 +10,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -66,8 +66,8 @@ public class ItemMenu implements Listener {
 
     public void show() {
         player.closeInventory();
-        Bukkit.getPluginManager().registerEvents(this, HCFCore.getInstance());
-        taskid = Bukkit.getScheduler().scheduleSyncDelayedTask(HCFCore.getInstance(), new Runnable() {
+        Bukkit.getPluginManager().registerEvents(this, DesireHCF.getInstance());
+        taskid = Bukkit.getScheduler().scheduleSyncDelayedTask(DesireHCF.getInstance(), new Runnable() {
             public void run() {
                 ItemMenu.this.close();
             }
