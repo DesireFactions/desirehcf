@@ -21,7 +21,6 @@ import com.desiremc.hcf.commands.EnderChestCommand;
 import com.desiremc.hcf.commands.HCFReloadCommand;
 import com.desiremc.hcf.commands.LogoutCommand;
 import com.desiremc.hcf.commands.PVPCommand;
-import com.desiremc.hcf.commands.SettingsCommand;
 import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
@@ -97,7 +96,6 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new PVPCommand(), instance);
         customCommandHandler.registerCommand(new RegionCommand(), instance);
         customCommandHandler.registerCommand(new SetEndCommand(), instance);
-        customCommandHandler.registerCommand(new SettingsCommand(), instance);
         customCommandHandler.registerCommand(new UnbanCommand(), instance);
         customCommandHandler.registerCommand(new LogoutCommand(), instance);
     }
