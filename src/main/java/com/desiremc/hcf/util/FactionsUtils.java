@@ -32,5 +32,15 @@ public class FactionsUtils {
     public static Faction getFaction(HCFSession s) {
         return getFaction(s.getPlayer());
     }
+    
+    public static boolean isWilderness(Faction f)
+    {
+        return isNone(f);
+    }
+    
+    public static boolean isNone(Faction f)
+    {
+        return f == Factions.getInstance().getNone();
+    }
 
 }
