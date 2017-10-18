@@ -12,6 +12,7 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.utils.ChatUtils;
@@ -21,8 +22,6 @@ import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.barrier.TagHandler.Tag;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
-
-import mkremins.fanciful.FancyMessage;
 
 public class CombatListener implements Listener
 {
@@ -124,17 +123,33 @@ public class CombatListener implements Listener
                 parsed = DesireHCF.getLangHandler().getString("death.pve." + cause);
             }
 
+            if (parsed.contains("death.pvp."))
+            {
+                parsed = DesireHCF.getLangHandler().getString("death.pvp.default");
+            }
+            else if (parsed.contains("death.pve."))
+            {
+                parsed = DesireHCF.getLangHandler().getString("death.pve.default");
+            }
+
             parsed = ChatUtils.renderString(parsed,
                     "{victim}", vPlayer.getName(),
                     "{victimKills}", String.valueOf(victim.getKills(DesireCore.getCurrentServer())));
 
+            if (parsed == null)
+            {
+                System.out.println("===NULLL===");
+            }
+            else
+            {
+                System.out.println("===" + parsed + "===");
+            }
             FancyMessage message = new FancyMessage();
             String[] pieces = parsed.split("[^A-Za-z0-9{}]");
             String str;
             for (int i = 0; i < pieces.length; i++)
             {
                 str = pieces[0];
-                message.then();
                 if (str.equals("{item}"))
                 {
                     message.text(ItemNames.lookup(tag.getItem())).itemTooltip(tag.getItem());
@@ -146,6 +161,7 @@ public class CombatListener implements Listener
                 if (i != pieces.length - 1)
                 {
                     message.text(" ");
+                    message.then();
                 }
             }
             for (Player online : Bukkit.getOnlinePlayers())
@@ -157,5 +173,6 @@ public class CombatListener implements Listener
         {
             ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
         }
+        event.setDeathMessage(null);
     }
 }

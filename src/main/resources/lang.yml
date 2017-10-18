@@ -36,8 +36,10 @@ pvp:
   disabled: '&7You have disabled your pvp protection timer.'
 death:
   pvp:
+    default: '&7{killer}[{killerKills}] has killed {victim}[{victimKills}] with a {item}!'
   pve:
-  kill: '&7{killer}[{killerKills}] has killed {victim}[{victimKills}] with a {item}!'
+    default: '&7Oh no! {victim}[{victimKills}] has died in a horrific accident.'
+  kill: 
 crowbar:
   new_crowbar: '&7You have recieved a crowbar.'
   not_yours: '&7You can''t break blocks in someone else''s faction.'
