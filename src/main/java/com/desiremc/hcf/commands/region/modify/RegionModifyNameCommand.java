@@ -2,11 +2,11 @@ package com.desiremc.hcf.commands.region.modify;
 
 import org.bukkit.command.CommandSender;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.StringLengthValidator;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parser.RegionParser;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
@@ -23,7 +23,7 @@ public class RegionModifyNameCommand extends ValidCommand
         addParser(new StringParser(), "name");
 
         addValidator(new UnusedRegionNameValidator(), "name");
-        addValidator(new StringLengthValidator(1, DesireCore.getConfigHandler().getInteger("regions.max-name")), "name");
+        addValidator(new StringLengthValidator(1, DesireHCF.getConfigHandler().getInteger("regions.max-name")), "name");
     }
 
     @Override
@@ -35,14 +35,14 @@ public class RegionModifyNameCommand extends ValidCommand
 
         if (name.equals(oldName))
         {
-            sender.sendMessage(LANG.getString("region.same_name"));
+            sender.sendMessage(DesireHCF.getLangHandler().getString("region.same_name"));
             return;
         }
 
         r.setName(name);
         RegionHandler.getInstance().save(r);
 
-        LANG.sendRenderMessage(sender, "region.changed_distance", "{change}", "name", "{old}", oldName, "{new}", name);
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.changed_name", "{change}", "name", "{old}", oldName, "{new}", name);
 
     }
 

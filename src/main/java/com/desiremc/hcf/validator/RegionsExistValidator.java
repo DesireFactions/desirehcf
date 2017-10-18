@@ -1,12 +1,12 @@
 package com.desiremc.hcf.validator;
 
-import java.util.Collection;
-
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.api.command.CommandValidator;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
+import org.bukkit.command.CommandSender;
+
+import java.util.Collection;
 
 public class RegionsExistValidator extends CommandValidator
 {
@@ -18,7 +18,7 @@ public class RegionsExistValidator extends CommandValidator
         
         if (regions.size() < 1)
         {
-            LANG.sendString(sender, "regions.none");
+            DesireHCF.getLangHandler().sendString(sender, "region.none");
             return false;
         }
         

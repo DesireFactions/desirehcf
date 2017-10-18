@@ -5,13 +5,13 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-import com.desiremc.hcf.HCFCore;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.npc.SafeLogoutTask;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
@@ -25,11 +25,11 @@ public class TagHandler
 
     private static Cache<UUID, Long> tags;
 
-    private static Cache<UUID, UUID> history;
+    private static Cache<UUID, Tag> history;
 
     public static void initialize()
     {
-        tags = CacheBuilder.newBuilder().expireAfterWrite(DesireCore.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
+        tags = CacheBuilder.newBuilder().expireAfterWrite(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
         {
 
             @Override
@@ -38,16 +38,15 @@ public class TagHandler
                 if (entry.getCause().ordinal() > 2)
                 {
                     BarrierTask.addToClear(entry.getKey());
-                    Bukkit.getPlayer(entry.getKey()).sendMessage(DesireCore.getLangHandler().getString("tag.expire"));
-                    EntryRegistry.getInstance().removeValue(Bukkit.getPlayer(entry.getKey()),
-                            DesireCore.getLangHandler().getString("tag.scoreboard"));
+                    Bukkit.getPlayer(entry.getKey()).sendMessage(DesireHCF.getLangHandler().getString("tag.expire"));
+                    EntryRegistry.getInstance().removeValue(Bukkit.getPlayer(entry.getKey()), DesireHCF.getLangHandler().getString("tag.scoreboard"));
                 }
             }
         }).build();
 
-        history = CacheBuilder.newBuilder().expireAfterWrite(DesireCore.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).build();
+        history = CacheBuilder.newBuilder().expireAfterWrite(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).build();
 
-        Bukkit.getScheduler().runTaskTimer(HCFCore.getInstance(), new Runnable()
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
@@ -66,15 +65,15 @@ public class TagHandler
     {
         if (!isTagged(p))
         {
-            p.sendMessage(DesireCore.getLangHandler().getString("tag.active"));
+            p.sendMessage(DesireHCF.getLangHandler().getString("tag.active"));
         }
         if (!isTagged(damager))
         {
-            damager.sendMessage(DesireCore.getLangHandler().getString("tag.active"));
+            damager.sendMessage(DesireHCF.getLangHandler().getString("tag.active"));
         }
         tags.put(p.getUniqueId(), System.currentTimeMillis());
         tags.put(damager.getUniqueId(), System.currentTimeMillis());
-        history.put(p.getUniqueId(), damager.getUniqueId());
+        history.put(p.getUniqueId(), new Tag(damager.getUniqueId(), damager.getInventory().getItemInMainHand()));
 
         SafeLogoutTask.cancel(p);
         SafeLogoutTask.cancel(damager);
@@ -82,7 +81,7 @@ public class TagHandler
 
     public static Location getLastValidLocation(UUID uuid)
     {
-        return (Location) lastValidLocation.get(uuid);
+        return lastValidLocation.get(uuid);
     }
 
     public static boolean hasLastValidLocation(UUID uuid)
@@ -102,7 +101,17 @@ public class TagHandler
 
     public static UUID getTagger(UUID uuid)
     {
-        return history.asMap().get(uuid);
+        Tag tag = history.getIfPresent(uuid);
+        if (tag == null)
+        {
+            return null;
+        }
+        return tag.getUniqueId();
+    }
+
+    public static Tag getTag(UUID uuid)
+    {
+        return history.getIfPresent(uuid);
     }
 
     public static void clearTag(UUID uuid)
@@ -113,6 +122,28 @@ public class TagHandler
     public static Set<UUID> getTaggedPlayers()
     {
         return tags.asMap().keySet();
+    }
+
+    public static class Tag
+    {
+        private UUID uuid;
+        private ItemStack item;
+
+        public Tag(UUID uuid, ItemStack item)
+        {
+            this.uuid = uuid;
+            this.item = item;
+        }
+
+        public UUID getUniqueId()
+        {
+            return uuid;
+        }
+
+        public ItemStack getItem()
+        {
+            return item;
+        }
     }
 
 }

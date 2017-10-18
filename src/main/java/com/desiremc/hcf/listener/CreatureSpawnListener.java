@@ -1,13 +1,12 @@
 package com.desiremc.hcf.listener;
 
+import com.desiremc.hcf.DesireHCF;
 import org.bukkit.World;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.CreatureSpawnEvent.SpawnReason;
-
-import com.desiremc.core.DesireCore;
 
 public class CreatureSpawnListener implements Listener
 {
@@ -24,7 +23,7 @@ public class CreatureSpawnListener implements Listener
             {
                 if (e.getEntity().getType() == EntityType.CREEPER || e.getEntity().getType() == EntityType.ENDERMAN)
                 {
-                    if (!DesireCore.getConfigHandler().getBoolean("spawn-mobs"))
+                    if (!DesireHCF.getConfigHandler().getBoolean("spawn-mobs"))
                     {
                         e.getEntity().remove();
                     }

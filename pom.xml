@@ -3,7 +3,7 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.desiremc</groupId>
-	<artifactId>HCF</artifactId>
+	<artifactId>DesireHCF</artifactId>
 	<version>0.1</version>
 	<repositories>
 		<repository>
@@ -17,14 +17,6 @@
 		<repository>
 			<id>vault-repo</id>
 			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
-		</repository>
-		<repository>
-			<id>stealthyone-repo</id>
-			<url>http://repo.stealthyone.com/content/groups/public</url>
-		</repository>
-		<repository>
-			<id>dynmap-repo</id>
-			<url>http://repo.mikeprimm.com/</url>
 		</repository>
 	</repositories>
 	<dependencies>
@@ -44,19 +36,19 @@
 		<dependency>
 			<groupId>org.spigotmc</groupId>
 			<artifactId>spigot-api</artifactId>
-			<version>1.12.1-R0.1-SNAPSHOT</version>
+			<version>1.12.2-R0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- Vault API -->
 		<dependency>
-			<groupId>net.milkbowl.vault</groupId>
-			<artifactId>VaultAPI</artifactId>
-			<version>1.6</version>
+			<groupId>com.desiremc</groupId>
+			<artifactId>vault</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<!-- Factions API -->
 		<dependency>
 			<groupId>com.massivecraft</groupId>
-			<artifactId>Factions</artifactId>
-			<version>1.6.9.5-U0.1.21</version>
+			<artifactId>HCFactions</artifactId>
+			<version>0.0.8</version>
 		</dependency>
 		<!-- DesireCore API -->
 		<dependency>

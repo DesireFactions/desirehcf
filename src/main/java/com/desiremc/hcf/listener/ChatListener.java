@@ -9,12 +9,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FactionSession;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
@@ -33,7 +33,7 @@ public class ChatListener implements Listener
         {
             player.sendMessage(ChatColor.DARK_GRAY + "-----------------------------------------------------");
             player.sendMessage("");
-            ChatUtils.sendCenteredMessage(player, DesireCore.getLangHandler().getPrefix().replace(" ", ""));
+            ChatUtils.sendCenteredMessage(player, DesireHCF.getLangHandler().getPrefix().replace(" ", ""));
             player.sendMessage("");
             ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "You are muted and " + ChatColor.RED + "CANNOT " + ChatColor.GRAY + "speak!");
             ChatUtils.sendCenteredMessage(player, ChatColor.GRAY + "Visit our rules @ " + ChatColor.YELLOW + "https://desirehcf.net/rules");
@@ -50,38 +50,44 @@ public class ChatListener implements Listener
         System.out.println(player.getName() + ": " + parsedMessage);
         Bukkit.getOnlinePlayers().stream().forEach(new Consumer<Player>()
         {
+
+            private FancyMessage message;
+            
             @Override
-            public void accept(Player players)
+            public void accept(Player player)
             {
 
-                if (f == null)
+                if (FactionsUtils.isNone(f))
                 {
-                    new FancyMessage(s.getRank().getPrefix())
+                    message = new FancyMessage(s.getRank().getPrefix())
                             .then(player.getName())
                             .tooltip(new String[] {
                                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "NO FACTION"
                             })
                             .then(": ")
                             .then(parsedMessage)
-                            .color(s.getRank().getColor())
-                            .send(players);
-                    return;
+                            .color(s.getRank().getColor());
+
+                }
+                else
+                {
+                    FactionSession fSession = FactionSessionHandler.getFactionSession(f.getTag());
+
+                    message = new FancyMessage(s.getRank().getPrefix())
+                            .then(player.getName())
+                            .tooltip(new String[] {
+                                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
+                                    ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getTag() : "NONE"),
+                                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() : "NONE"),
+                                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "---")
+                            })
+                            .then(": ")
+                            .then(parsedMessage)
+                            .color(s.getRank().getColor());
                 }
 
-                FactionSession fSession = FactionSessionHandler.getFactionSession(f.getTag());
-
-                new FancyMessage(s.getRank().getPrefix())
-                        .then(player.getName())
-                        .tooltip(new String[] {
-                                ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
-                                ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getTag() : "NONE"),
-                                ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() : "NONE"),
-                                ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "---")
-                        })
-                        .then(": ")
-                        .then(parsedMessage)
-                        .color(s.getRank().getColor())
-                        .send(players);
+                message.send(player);
+                System.out.println();
             }
         });
     }

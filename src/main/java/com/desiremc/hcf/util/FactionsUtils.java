@@ -13,27 +13,34 @@ import com.massivecraft.factions.Factions;
 
 public class FactionsUtils {
 
-    private static final Faction WILD = Factions.getInstance().getWilderness();
 
     public static Faction getFaction(String name) {
         Faction f = Factions.getInstance().getByTag(name);
-        return f == WILD ? null : f;
+        return f;
     }
 
     public static Faction getFaction(Player p) {
         FPlayer fp = FPlayers.getInstance().getByPlayer(p);
 
-        return fp != null ? fp.getFaction() == WILD ? null : fp.getFaction() : null;
+        return fp != null && fp.getFaction() != null ? fp.getFaction() : null; 
     }
 
     public static Faction getFaction(Location loc) {
-        FLocation fLoc = new FLocation(loc);
-        Faction f = Board.getInstance().getFactionAt(fLoc);
-        return f == WILD ? null : f;
+        return Board.getInstance().getFactionAt(new FLocation(loc));
     }
 
     public static Faction getFaction(HCFSession s) {
         return getFaction(s.getPlayer());
+    }
+    
+    public static boolean isWilderness(Faction f)
+    {
+        return isNone(f);
+    }
+    
+    public static boolean isNone(Faction f)
+    {
+        return f == Factions.getInstance().getNone();
     }
 
 }

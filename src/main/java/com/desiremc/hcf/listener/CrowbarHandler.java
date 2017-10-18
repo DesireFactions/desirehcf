@@ -18,9 +18,9 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.massivecraft.factions.Faction;
 
@@ -31,11 +31,12 @@ public class CrowbarHandler implements Listener
     private static final String NAME = "§a§k|§cCrowbar§a§k|";
     private static final String SPAWNER = "§a§k|§cSpawner§a§k|§b - §a";
 
+    private LangHandler lang = DesireHCF.getLangHandler();
+    private FileHandler config = DesireHCF.getConfigHandler();
+
     @EventHandler
     public void onInteract(PlayerInteractEvent e)
     {
-        LangHandler lang = DesireCore.getLangHandler();
-        FileHandler config = DesireCore.getConfigHandler();
         Player player = e.getPlayer();
         ItemStack item = player.getInventory().getItemInMainHand();
 
@@ -136,7 +137,7 @@ public class CrowbarHandler implements Listener
 
     private static List<String> getStartingUses()
     {
-        return Arrays.asList(PREFIX + DesireCore.getConfigHandler().getInteger("crowbar.uses"));
+        return Arrays.asList(PREFIX + DesireHCF.getConfigHandler().getInteger("crowbar.uses"));
     }
 
     private static String getCrowbarName()
@@ -157,7 +158,7 @@ public class CrowbarHandler implements Listener
             int uses = getUses(is) + change;
             if (uses < 0) { throw new IllegalStateException("Can't have negative uses."); }
             List<String> lore = is.getItemMeta().getLore();
-            lore.set(0, PREFIX + (uses));
+            lore.set(0, PREFIX + uses);
 
             ItemMeta meta = is.getItemMeta();
             meta.setLore(lore);

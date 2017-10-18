@@ -1,0 +1,64 @@
+hcfreload: '&cReloaded the config and lang files.'
+prefix:
+  text: '&7[&bHCF&7]'
+  use: true
+tag:
+  active: '&c&lYou are now combat tagged and can not enter spawn.'
+  expire: '&c&lYou are no longer combat tagged.'
+  scoreboard: "CombatTimer"
+enderchest:
+  disabled: '&7enderchest disabled!'
+  enabled: '&7enderchest enabled!'
+  blocked: '&7Enderchests are currently disabled.'
+region:
+  doesnt_exist: "That region does not exist"
+  changed: '&fChanged the {change} from &b{old}&f to &b{new}&f.'
+  change: "Not sure what this is has args (change}, {old} and {new}"
+  same_name: '&7That is the same name.'
+  changed_name: "You've changed the region name from {old} to {new}"
+  create: '&fCreated region &b{name}&f with the material &a{material}&f.'
+  delete: '&fDeleted region &b{name}&f.'
+  list: '&fList of regions: &e{regions}&f.'
+  not_found: '&7That region does not exist.'
+  none: '&7No regions exist.'
+enderpearl:
+  ended: '&7You may now use an &5EnderPearl&7.'
+  message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
+  scoreboard: "&7Enderpearl Timer"
+lives:
+  add: You have added &c{amount}&7 lives to {player}
+  remove: You have removed &c{amount}&7 lives to {player}
+  recieved: '{sender} has given you {amount} lives!'
+  lost: '{sender} has taken {amount} lives from you!'
+pvp:
+  target-protected: '&7That player has pvp disabled'
+  damager-protected: '&7You have pvp disabled.'
+  disabled: '&7You have disabled your pvp protection timer.'
+death:
+  pvp:
+    default: '&7{killer}[{killerKills}] has killed {victim}[{victimKills}] with a {item}!'
+  pve:
+    default: '&7Oh no! {victim}[{victimKills}] has died in a horrific accident.'
+  kill: 
+crowbar:
+  new_crowbar: '&7You have recieved a crowbar.'
+  not_yours: '&7You can''t break blocks in someone else''s faction.'
+  wrong_block: '&7Only usable on ender portal frames and mob spawners.'
+  not_enough_charges: '&7Your crowbar does not have enough charges for that.'
+  out_of_uses: '&7Your crowbar ran out of uses.'
+gapple:
+  ended: '&7You may now use a &5Gapple&7.'
+  message: '&7You can not use an &5Gapple&7 for &e{time} &7seconds.'
+  scoreboard: "&7Gapple Timer"
+potion-disabled: "&4&lPOTIONS&r&7 This potion effect is disabled!"
+trophy_points: Trophy Points &e{points}
+koth_wins: Trophy Points &e{koth}
+faction: Faction &e{faction}
+logout:
+  cancelled: '&c&lYour safe logout has been cancelled.'
+  success: '&c&lYour safe logout has been successful.'
+  pending: '&c&lYour safe logout is pending for {seconds}s.'
+  exists: "&c&lYou have already started to safely logout."
+  started: "&c&lYou have started to safely logout."
+no_faction: You are not a part of a faction!
+need_selection: '&7You need to make a selection with WorldEdit.'

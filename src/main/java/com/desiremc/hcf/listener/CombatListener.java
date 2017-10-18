@@ -1,25 +1,27 @@
 package com.desiremc.hcf.listener;
 
-import mkremins.fanciful.FancyMessage;
-import org.apache.commons.lang.WordUtils;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.PlayerDeathEvent;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
+import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.core.utils.ItemNames;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.barrier.TagHandler.Tag;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.inventory.ItemStack;
 
 public class CombatListener implements Listener
 {
@@ -29,7 +31,7 @@ public class CombatListener implements Listener
     {
         if (e.getEntity() instanceof Player)
         {
-            if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player))
+            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)
             {
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
@@ -41,10 +43,10 @@ public class CombatListener implements Listener
     @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onHitHigh(EntityDamageByEntityEvent e)
     {
-        LangHandler l = DesireCore.getLangHandler();
+        LangHandler lang = DesireHCF.getLangHandler();
         if (e.getEntity() instanceof Player)
         {
-            if (e.getDamager() instanceof Player || (e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player))
+            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)
             {
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
@@ -55,14 +57,14 @@ public class CombatListener implements Listener
                 if (ds.getSafeTimeLeft() > 0)
                 {
                     e.setCancelled(true);
-                    damager.sendMessage(l.getString("pvp.damager_protected"));
+                    damager.sendMessage(lang.getString("pvp.damager_protected"));
                     return;
                 }
 
                 if (vs.getSafeTimeLeft() > 0)
                 {
                     e.setCancelled(true);
-                    damager.sendMessage(l.getString("pvp.target_protected"));
+                    damager.sendMessage(lang.getString("pvp.target_protected"));
                     return;
                 }
 
@@ -85,14 +87,6 @@ public class CombatListener implements Listener
                 {
                     e.setCancelled(true);
                 }
-                else if (state == 1)
-                {
-                    damager.sendMessage(l.getString("damaged.in-spawn"));
-                }
-                else if (state == 2)
-                {
-                    damager.sendMessage(l.getString("damaged.out-spawn"));
-                }
             }
         }
     }
@@ -100,34 +94,85 @@ public class CombatListener implements Listener
     @EventHandler(ignoreCancelled = true)
     public void onPlayerDeath(PlayerDeathEvent event)
     {
-        Player player = event.getEntity();
-        if (player.getKiller() == null || !(player.getKiller() instanceof Player)) return;
-
-        HCFSession killer = HCFSessionHandler.getHCFSession(player.getKiller());
-        HCFSession playerSession = HCFSessionHandler.getHCFSession(player);
-
-        killer.addKill(DesireCore.getCurrentServer());
-
-        ItemStack item = killer.getPlayer().getInventory().getItemInMainHand();
-        String itemType;
-
-        if (item != null && item.getType() != Material.AIR)
+        try
         {
-            itemType = WordUtils.capitalize(item.getType().name().replace("_", " "));
-        }
-        else
-        {
-            itemType = "Fist";
-        }
+            Player vPlayer = event.getEntity();
+            HCFSession victim = HCFSessionHandler.getHCFSession(vPlayer);
+            DamageCause cause = vPlayer.getLastDamageCause().getCause();
 
-        String parsed = DesireCore.getLangHandler().renderMessage("pvp.kill", "{killer}", killer.getName(), "{player}",
-                player.getName(), "{killerKills}", killer.getKills(DesireCore.getCurrentServer()) + "", "{playerKills}", playerSession.getKills(DesireCore.getCurrentServer()) + "", "{item}", itemType);
+            String parsed;
 
-        for (Player online : Bukkit.getOnlinePlayers())
-        {
-            new FancyMessage(parsed)
-                    .itemTooltip(item)
-                    .send(online);
+            Tag tag = TagHandler.getTag(vPlayer.getUniqueId());
+            if (tag != null)
+            {
+                Player kPlayer = Bukkit.getPlayer(tag.getUniqueId());
+                HCFSession killer = HCFSessionHandler.getHCFSession(kPlayer);
+
+                killer.addKill(DesireCore.getCurrentServer());
+                HCFSessionHandler.getInstance().save(killer);
+
+                parsed = DesireHCF.getLangHandler().getString("death.pvp." + cause);
+
+                parsed = ChatUtils.renderString(parsed,
+                        "{killer}", killer.getName(),
+                        "{killerKills}", killer.getKills(DesireCore.getCurrentServer()) + "");
+
+            }
+            else
+            {
+                parsed = DesireHCF.getLangHandler().getString("death.pve." + cause);
+            }
+
+            if (parsed.contains("death.pvp."))
+            {
+                parsed = DesireHCF.getLangHandler().getString("death.pvp.default");
+            }
+            else if (parsed.contains("death.pve."))
+            {
+                parsed = DesireHCF.getLangHandler().getString("death.pve.default");
+            }
+
+            parsed = ChatUtils.renderString(parsed,
+                    "{victim}", vPlayer.getName(),
+                    "{victimKills}", String.valueOf(victim.getKills(DesireCore.getCurrentServer())));
+
+            if (parsed == null)
+            {
+                System.out.println("===NULLL===");
+            }
+            else
+            {
+                System.out.println("===" + parsed + "===");
+            }
+            FancyMessage message = new FancyMessage();
+            String[] pieces = parsed.split("[^A-Za-z0-9{}]");
+            String str;
+            for (int i = 0; i < pieces.length; i++)
+            {
+                str = pieces[0];
+                if (str.equals("{item}"))
+                {
+                    message.text(ItemNames.lookup(tag.getItem())).itemTooltip(tag.getItem());
+                }
+                else
+                {
+                    message.text(str);
+                }
+                if (i != pieces.length - 1)
+                {
+                    message.text(" ");
+                    message.then();
+                }
+            }
+            for (Player online : Bukkit.getOnlinePlayers())
+            {
+                message.send(online);
+            }
         }
+        catch (Exception ex)
+        {
+            ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
+        }
+        event.setDeathMessage(null);
     }
 }

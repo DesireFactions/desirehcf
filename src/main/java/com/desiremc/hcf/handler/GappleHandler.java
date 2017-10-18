@@ -1,8 +1,7 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.cache.RemovalListener;
@@ -26,7 +25,7 @@ public class GappleHandler implements Listener
 
     public GappleHandler()
     {
-        TIMER = DesireCore.getConfigHandler().getInteger("gapple_time");
+        TIMER = DesireHCF.getConfigHandler().getInteger("gapple.time");
         history = CacheBuilder.newBuilder().expireAfterWrite(TIMER, TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
         {
 
@@ -36,13 +35,13 @@ public class GappleHandler implements Listener
                 Player p = Bukkit.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    DesireCore.getLangHandler().sendString(p, "gapple.ended");
-                    EntryRegistry.getInstance().removeValue(p, DesireCore.getLangHandler().getString("gapple.scoreboard"));
+                    DesireHCF.getLangHandler().sendString(p, "gapple.ended");
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getString("gapple.scoreboard"));
                 }
             }
         }).build();
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(HCFCore.getInstance(), new Runnable()
+        Bukkit.getScheduler().runTaskTimerAsynchronously(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
@@ -50,7 +49,7 @@ public class GappleHandler implements Listener
                 for (UUID uuid : history.asMap().keySet())
                 {
                     Player p = Bukkit.getPlayer(uuid);
-                    EntryRegistry.getInstance().setValue(p, DesireCore.getLangHandler().getString("gapple.scoreboard"),
+                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getString("gapple.scoreboard"),
                             String.valueOf(TIMER - ((System.currentTimeMillis() - history.getIfPresent(uuid)) / 1000)));
                 }
             }
@@ -74,7 +73,7 @@ public class GappleHandler implements Listener
         else
         {
             event.setCancelled(true);
-            DesireCore.getLangHandler().sendRenderMessage(player, "gapple.message", "{time}",
+            DesireHCF.getLangHandler().sendRenderMessage(player, "gapple.message", "{time}",
                     String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
         }
     }

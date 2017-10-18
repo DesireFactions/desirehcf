@@ -1,5 +1,6 @@
 package com.desiremc.hcf.handler;
 
+import com.desiremc.hcf.DesireHCF;
 import org.bukkit.block.BlockState;
 import org.bukkit.block.Furnace;
 import org.bukkit.event.EventHandler;
@@ -9,9 +10,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.inventory.FurnaceBurnEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.scheduler.BukkitRunnable;
-
-import com.desiremc.core.DesireCore;
-import com.desiremc.hcf.HCFCore;
 
 public class FurnaceSpeedHandler implements Listener
 {
@@ -25,7 +23,7 @@ public class FurnaceSpeedHandler implements Listener
             if (state instanceof Furnace)
             {
                 Furnace furnace = (Furnace) state;
-                furnace.setCookTime((short) (furnace.getCookTime() + DesireCore.getConfigHandler().getInteger("furnace.speed")));
+                furnace.setCookTime((short) (furnace.getCookTime() + DesireHCF.getConfigHandler().getInteger("furnace.speed")));
                 furnace.setBurnTime((short) Math.max(1, furnace.getBurnTime() - 1));
             }
         }
@@ -38,9 +36,9 @@ public class FurnaceSpeedHandler implements Listener
         if (state instanceof Furnace)
         {
             Furnace furnace = (Furnace) state;
-            if (DesireCore.getConfigHandler().getInteger("furnace.speed") > 1)
+            if (DesireHCF.getConfigHandler().getInteger("furnace.speed") > 1)
             {
-                new FurnaceUpdateTask(furnace).runTaskTimer(HCFCore.getInstance(), 1L, 1L);
+                new FurnaceUpdateTask(furnace).runTaskTimer(DesireHCF.getInstance(), 1L, 1L);
             }
         }
     }
@@ -56,7 +54,7 @@ public class FurnaceSpeedHandler implements Listener
 
         public void run()
         {
-            this.furnace.setCookTime((short) (this.furnace.getCookTime() + DesireCore.getConfigHandler().getInteger("furnace.speed")));
+            this.furnace.setCookTime((short) (this.furnace.getCookTime() + DesireHCF.getConfigHandler().getInteger("furnace.speed")));
             this.furnace.setBurnTime((short) Math.max(1, this.furnace.getBurnTime() - 1));
             this.furnace.update();
             if (this.furnace.getBurnTime() <= 1)

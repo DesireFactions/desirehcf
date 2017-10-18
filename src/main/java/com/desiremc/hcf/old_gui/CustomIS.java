@@ -1,14 +1,5 @@
 package com.desiremc.hcf.old_gui;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Consumer;
-import java.util.function.Function;
-import java.util.function.Supplier;
-import java.util.stream.Collectors;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
@@ -17,6 +8,15 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.function.Supplier;
+import java.util.stream.Collectors;
 
 public class CustomIS {
 
@@ -30,12 +30,12 @@ public class CustomIS {
 
     public CustomIS() {
         this.name = "";
-        this.lore = new ArrayList<String>();
+        this.lore = new ArrayList<>();
         this.material = Material.DIAMOND;
         this.data = 0;
         this.size = 1;
-        this.enchantments = new HashMap<Enchantment, Integer>();
-        this.flags = new ArrayList<ItemFlag>();
+        this.enchantments = new HashMap<>();
+        this.flags = new ArrayList<>();
     }
 
     public CustomIS(ItemStack is) {
@@ -45,10 +45,10 @@ public class CustomIS {
         this.size = is.getAmount();
         this.enchantments = new HashMap<>();
         this.enchantments.putAll(is.getEnchantments());
-        this.flags = new ArrayList<ItemFlag>();
+        this.flags = new ArrayList<>();
         ItemMeta meta = is.getItemMeta();
         if (meta == null) {
-            this.lore = new ArrayList<String>();
+            this.lore = new ArrayList<>();
             return;
         }
         Iterator<ItemFlag> itim = meta.getItemFlags().iterator();
@@ -61,19 +61,19 @@ public class CustomIS {
         if (meta.hasLore()) {
             this.lore = (ArrayList<String>) meta.getLore();
         } else {
-            this.lore = new ArrayList<String>();
+            this.lore = new ArrayList<>();
         }
     }
 
     @SuppressWarnings("deprecation")
     public CustomIS(final JSONObject dbo) throws IllegalArgumentException {
         this.name = "";
-        this.lore = new ArrayList<String>();
+        this.lore = new ArrayList<>();
         this.material = Material.DIAMOND;
         this.data = 0;
         this.size = 1;
-        this.enchantments = new HashMap<Enchantment, Integer>();
-        this.flags = new ArrayList<ItemFlag>();
+        this.enchantments = new HashMap<>();
+        this.flags = new ArrayList<>();
         try {
             if (dbo.containsKey("name")) {
                 setName(ChatColor.translateAlternateColorCodes('&', (String) dbo.get("name")));
@@ -112,7 +112,7 @@ public class CustomIS {
         return new JSONObject() {
             {
                 put("name", name);
-                put("lore", lore.stream().collect(Collectors.toCollection((Supplier<JSONArray>) new Supplier<JSONArray>() {
+                put("lore", lore.stream().collect(Collectors.toCollection(new Supplier<JSONArray>() {
                     public JSONArray get() {
                         return new JSONArray();
                     }
@@ -243,7 +243,7 @@ public class CustomIS {
     @SuppressWarnings("unchecked")
     public ItemStack get() {
         ItemStack is = new ItemStack(material, size);
-        is.setDurability((short) data);
+        is.setDurability( data);
         final ItemMeta im = is.getItemMeta();
         if (name != null && !name.isEmpty()) {
             im.setDisplayName(name);

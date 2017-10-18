@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FactionSession;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
@@ -24,9 +25,9 @@ public class FStatShowCommand extends ValidCommand
     {
         String faction = FactionsUtils.getFaction((Player) sender).getTag();
         FactionSession session = FactionSessionHandler.getFactionSession(faction);
-        LANG.sendRenderMessage(sender, "faction", "{faction}", faction);
-        LANG.sendRenderMessage(sender, "trophy_points", "{points}", Integer.toString(session.getTrophies()));
-        LANG.sendRenderMessage(sender, "koth_wins", "{koth_wins}", Integer.toString(session.getKoth()));
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "faction", "{faction}", faction);
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "trophy_points", "{points}", Integer.toString(session.getTrophies()));
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "koth_wins", "{koth_wins}", Integer.toString(session.getKoth()));
     }
 
 }

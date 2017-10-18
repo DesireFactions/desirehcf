@@ -5,6 +5,7 @@ import org.bukkit.command.CommandSender;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.hcf.DesireHCF;
 
 public class HCFReloadCommand extends ValidCommand
 {
@@ -18,7 +19,7 @@ public class HCFReloadCommand extends ValidCommand
     public void validRun(CommandSender sender, String label, Object... args)
     {
         FileHandler.reloadAll();
-        LANG.sendString(sender, "hcfreload");
+        DesireHCF.getLangHandler().sendString(sender, "hcfreload");
     }
 
 }

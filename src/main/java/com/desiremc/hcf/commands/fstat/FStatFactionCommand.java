@@ -5,11 +5,13 @@ import org.bukkit.command.CommandSender;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parser.FactionSessionParser;
 import com.desiremc.hcf.session.FactionSession;
 
 public class FStatFactionCommand extends ValidCommand
 {
+
 
     public FStatFactionCommand()
     {
@@ -22,9 +24,9 @@ public class FStatFactionCommand extends ValidCommand
     public void validRun(CommandSender sender, String label, Object... args)
     {
         FactionSession session = (FactionSession) args[0];
-        LANG.sendRenderMessage(sender, "trophy_points", "{points}", Integer.toString(session.getTrophies()));
-        LANG.sendRenderMessage(sender, "koth_wins", "{koth_wins}", Integer.toString(session.getKoth()));
-        LANG.sendRenderMessage(sender, "faction", "{faction}", session.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "trophy_points", "{points}", Integer.toString(session.getTrophies()));
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "koth_wins", "{koth_wins}", Integer.toString(session.getKoth()));
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "faction", "{faction}", session.getName());
     }
 
 }

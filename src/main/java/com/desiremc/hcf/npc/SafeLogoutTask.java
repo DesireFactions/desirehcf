@@ -1,8 +1,7 @@
 package com.desiremc.hcf.npc;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.HCFCore;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -21,7 +20,7 @@ public class SafeLogoutTask extends BukkitRunnable
 
     private final static Map<UUID, SafeLogoutTask> tasks = new HashMap<>();
 
-    private final HCFCore plugin;
+    private final DesireHCF plugin;
 
     private final UUID playerId;
 
@@ -33,7 +32,7 @@ public class SafeLogoutTask extends BukkitRunnable
 
     private boolean finished;
 
-    public SafeLogoutTask(HCFCore plugin, Player player, long logoutTime)
+    public SafeLogoutTask(DesireHCF plugin, Player player, long logoutTime)
     {
         this.plugin = plugin;
         this.playerId = player.getUniqueId();
@@ -59,7 +58,7 @@ public class SafeLogoutTask extends BukkitRunnable
 
         if (hasMoved(player))
         {
-            DesireCore.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.cancelled");
+            DesireHCF.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.cancelled");
             cancel();
             return;
         }
@@ -71,7 +70,7 @@ public class SafeLogoutTask extends BukkitRunnable
             finished = true;
             TagHandler.clearTag(playerId);
 
-            DesireCore.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.success");
+            DesireHCF.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.success");
             cancel();
             return;
         }
@@ -80,7 +79,7 @@ public class SafeLogoutTask extends BukkitRunnable
         if (remainingSeconds < this.remainingSeconds)
         {
 
-            DesireCore.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.pending",
+            DesireHCF.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.pending",
                     "{remaining}", remainingSeconds + "");
 
             this.remainingSeconds = remainingSeconds;
@@ -94,13 +93,13 @@ public class SafeLogoutTask extends BukkitRunnable
                 loc.getBlockY() != l.getBlockY() || loc.getBlockZ() != l.getBlockZ();
     }
 
-    public static void run(HCFCore plugin, Player player)
+    public static void run(DesireHCF plugin, Player player)
     {
         // Do nothing if player already has a task
         if (hasTask(player)) return;
 
         // Calculate logout time
-        long logoutTime = System.currentTimeMillis() + (DesireCore.getConfigHandler().getInteger("logout.time") * 1000);
+        long logoutTime = System.currentTimeMillis() + (DesireHCF.getConfigHandler().getInteger("logout.time") * 1000);
 
         // Run the task every few ticks for accuracy
         SafeLogoutTask task = new SafeLogoutTask(plugin, player, logoutTime);

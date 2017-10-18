@@ -3,20 +3,17 @@ package com.desiremc.hcf.api;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.utils.Utils;
+import com.desiremc.hcf.DesireHCF;
 
 public class SetEndAPI
 {
 
-    private static final LangHandler LANG = DesireCore.getLangHandler();
-
     private static void handle(CommandSender sender, String configName, String messageName)
     {
         Player player = (Player) sender;
-        DesireCore.getConfigHandler().setString(configName, Utils.toString(player.getLocation()));
-        LANG.sendString(sender, messageName);
+        DesireHCF.getConfigHandler().setString(configName, Utils.toString(player.getLocation()));
+        DesireHCF.getLangHandler().sendString(sender, messageName);
     }
 
     public static void setEndSpawn(CommandSender sender, String configName, String messageName)
