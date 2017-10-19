@@ -1,7 +1,6 @@
 package com.desiremc.hcf.listener;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -16,6 +15,7 @@ import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
+import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.core.utils.ItemNames;
 import com.desiremc.hcf.DesireHCF;
@@ -23,6 +23,7 @@ import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.barrier.TagHandler.Tag;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
 
 public class CombatListener implements Listener
 {
@@ -175,62 +176,13 @@ public class CombatListener implements Listener
         event.setDeathMessage(null);
     }
 
-    private FancyMessage processFancyMessage(String string)
+    private FancyMessage processMessage(HCFSession session, DamageCause cause, Tag tag)
     {
-        FancyMessage message;
-        if (string == null || string.length() <= 1 || string.length() == 2 && string.matches("[&][0-9a-fA-Fk-oK-OrR]"))
-        {
-            return new FancyMessage("");
-        }
-        if (!string.contains("&"))
-        {
-            return new FancyMessage(string);
-        }
+        FancyMessage message = new FancyMessage(session.getName())
+                .color(session.getRank().getMain())
+                .tooltip(FactionsUtils.getMouseoverDetails(session))
+                .then("[" + session.getKills(DesireCore.getCurrentServer()) + "]");
 
-        message = new FancyMessage("");
-
-        String[] pieces = string.split("&(?=[0-9a-fA-Fk-oK-OrR])");
-        ChatColor color;
-
-        for (int i = 0; i < pieces.length; i++)
-        {
-            message.then();
-            if (pieces[i].length() == 1)
-            {
-                if (i == pieces.length - 1)
-                {
-                    break;
-                }
-                if (!pieces[i].equalsIgnoreCase("r"))
-                {
-                    color = ChatColor.getByChar(pieces[i]);
-                    if (pieces[i].matches("[0-9a-fA-F]"))
-                    {
-                        message.color(color);
-                    }
-                    else if (pieces[i].matches("[k-oK-O]"))
-                    {
-                        message.style(color);
-                    }
-                    i++;
-                }
-            }
-
-            color = ChatColor.getByChar(pieces[i].charAt(0));
-            if (pieces[i].matches("[0-9a-fA-F].*"))
-            {
-                message.color(color);
-            }
-            else if (pieces[i].matches("[k-oK-O].*"))
-            {
-                message.style(color);
-            }
-            else
-            {
-                message.then();
-            }
-            message.text(pieces[i].substring(1, pieces[i].length()));
-        }
         return message;
     }
 

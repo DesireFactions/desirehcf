@@ -38,7 +38,7 @@ death:
   pvp:
     default: '&7{killer}[{killerKills}] has killed {victim}[{victimKills}] with a {item}!'
   pve:
-    default: '&7Oh no! {victim}[{victimKills}] has died in a horrific accident.'
+    default: '&7{victim}[{victimKills}] has died in a horrific accident.'
   kill: 
 crowbar:
   new_crowbar: '&7You have recieved a crowbar.'
