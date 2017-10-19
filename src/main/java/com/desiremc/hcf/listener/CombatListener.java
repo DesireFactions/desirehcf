@@ -1,6 +1,7 @@
 package com.desiremc.hcf.listener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -145,29 +146,27 @@ public class CombatListener implements Listener
                 System.out.println("===" + parsed + "===");
             }
             FancyMessage message = new FancyMessage();
-            String[] pieces = parsed.split("[^A-Za-z0-9{}]");
-            String str;
-            for (int i = 0; i < pieces.length; i++)
+            String[] pieces = parsed.split("\\{item\\}");
+            if (pieces.length == 1)
             {
-                str = pieces[0];
-                if (str.equals("{item}"))
-                {
-                    message.text(ItemNames.lookup(tag.getItem())).itemTooltip(tag.getItem());
-                }
-                else
-                {
-                    message.text(str);
-                }
-                if (i != pieces.length - 1)
-                {
-                    message.text(" ");
-                    message.then();
-                }
+                message.then(pieces[0]);
             }
+            else if (pieces.length == 2)
+            {
+                message.then(pieces[0]);
+                message.then(ItemNames.lookup(tag.getItem())).itemTooltip(tag.getItem());
+                message.then(pieces[1]);
+            }
+            else
+            {
+                throw new IllegalStateException("{item} can only be used once.");
+            }
+
             for (Player online : Bukkit.getOnlinePlayers())
             {
                 message.send(online);
             }
+            System.out.println(message.toJSONString());
         }
         catch (Exception ex)
         {
@@ -175,4 +174,64 @@ public class CombatListener implements Listener
         }
         event.setDeathMessage(null);
     }
+
+    private FancyMessage processFancyMessage(String string)
+    {
+        FancyMessage message;
+        if (string == null || string.length() <= 1 || string.length() == 2 && string.matches("[&][0-9a-fA-Fk-oK-OrR]"))
+        {
+            return new FancyMessage("");
+        }
+        if (!string.contains("&"))
+        {
+            return new FancyMessage(string);
+        }
+
+        message = new FancyMessage("");
+
+        String[] pieces = string.split("&(?=[0-9a-fA-Fk-oK-OrR])");
+        ChatColor color;
+
+        for (int i = 0; i < pieces.length; i++)
+        {
+            message.then();
+            if (pieces[i].length() == 1)
+            {
+                if (i == pieces.length - 1)
+                {
+                    break;
+                }
+                if (!pieces[i].equalsIgnoreCase("r"))
+                {
+                    color = ChatColor.getByChar(pieces[i]);
+                    if (pieces[i].matches("[0-9a-fA-F]"))
+                    {
+                        message.color(color);
+                    }
+                    else if (pieces[i].matches("[k-oK-O]"))
+                    {
+                        message.style(color);
+                    }
+                    i++;
+                }
+            }
+
+            color = ChatColor.getByChar(pieces[i].charAt(0));
+            if (pieces[i].matches("[0-9a-fA-F].*"))
+            {
+                message.color(color);
+            }
+            else if (pieces[i].matches("[k-oK-O].*"))
+            {
+                message.style(color);
+            }
+            else
+            {
+                message.then();
+            }
+            message.text(pieces[i].substring(1, pieces[i].length()));
+        }
+        return message;
+    }
+
 }
