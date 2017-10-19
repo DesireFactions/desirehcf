@@ -1,6 +1,7 @@
 package com.desiremc.hcf.listener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -15,7 +16,6 @@ import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
-import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.core.utils.ItemNames;
 import com.desiremc.hcf.DesireHCF;
@@ -102,72 +102,22 @@ public class CombatListener implements Listener
             HCFSession victim = HCFSessionHandler.getHCFSession(vPlayer);
             DamageCause cause = vPlayer.getLastDamageCause().getCause();
 
-            String parsed;
-
             Tag tag = TagHandler.getTag(vPlayer.getUniqueId());
             if (tag != null)
             {
                 Player kPlayer = Bukkit.getPlayer(tag.getUniqueId());
                 HCFSession killer = HCFSessionHandler.getHCFSession(kPlayer);
 
-                killer.addKill(DesireCore.getCurrentServer());
+                killer.addKill(DesireCore.getCurrentServer(), vPlayer.getUniqueId());
                 HCFSessionHandler.getInstance().save(killer);
-
-                parsed = DesireHCF.getLangHandler().getString("death.pvp." + cause);
-
-                parsed = ChatUtils.renderString(parsed,
-                        "{killer}", killer.getName(),
-                        "{killerKills}", killer.getKills(DesireCore.getCurrentServer()) + "");
-
-            }
-            else
-            {
-                parsed = DesireHCF.getLangHandler().getString("death.pve." + cause);
             }
 
-            if (parsed.contains("death.pvp."))
-            {
-                parsed = DesireHCF.getLangHandler().getString("death.pvp.default");
-            }
-            else if (parsed.contains("death.pve."))
-            {
-                parsed = DesireHCF.getLangHandler().getString("death.pve.default");
-            }
-
-            parsed = ChatUtils.renderString(parsed,
-                    "{victim}", vPlayer.getName(),
-                    "{victimKills}", String.valueOf(victim.getKills(DesireCore.getCurrentServer())));
-
-            if (parsed == null)
-            {
-                System.out.println("===NULLL===");
-            }
-            else
-            {
-                System.out.println("===" + parsed + "===");
-            }
-            FancyMessage message = new FancyMessage();
-            String[] pieces = parsed.split("\\{item\\}");
-            if (pieces.length == 1)
-            {
-                message.then(pieces[0]);
-            }
-            else if (pieces.length == 2)
-            {
-                message.then(pieces[0]);
-                message.then(ItemNames.lookup(tag.getItem())).itemTooltip(tag.getItem());
-                message.then(pieces[1]);
-            }
-            else
-            {
-                throw new IllegalStateException("{item} can only be used once.");
-            }
+            FancyMessage message = processMessage(victim, cause, tag);
 
             for (Player online : Bukkit.getOnlinePlayers())
             {
                 message.send(online);
             }
-            System.out.println(message.toJSONString());
         }
         catch (Exception ex)
         {
@@ -181,8 +131,99 @@ public class CombatListener implements Listener
         FancyMessage message = new FancyMessage(session.getName())
                 .color(session.getRank().getMain())
                 .tooltip(FactionsUtils.getMouseoverDetails(session))
-                .then("[" + session.getKills(DesireCore.getCurrentServer()) + "]");
+                .then("[" + session.getTotalKills(DesireCore.getCurrentServer()) + "]")
+                .tooltip(session.getKillDisplay(DesireCore.getCurrentServer()));
 
+        String parsed = DesireHCF.getLangHandler().getString("death." + (tag == null ? "pve" : "pvp") + cause.toString());
+        if (parsed.contains("death.pvp."))
+        {
+            parsed = DesireHCF.getLangHandler().getString("death.pvp.default");
+        }
+        else if (parsed.contains("death.pve."))
+        {
+            parsed = DesireHCF.getLangHandler().getString("death.pve.default");
+        }
+
+        processFancyMessage(message, parsed);
+
+        if (tag != null)
+        {
+            HCFSession killer = HCFSessionHandler.getHCFSession(tag.getUniqueId());
+            message.then(killer.getName())
+                        .tooltip(FactionsUtils.getMouseoverDetails(killer))
+                        .color(killer.getRank().getMain())
+                    .then("[")
+                        .color(ChatColor.DARK_RED)
+                    .then(Integer.toString(killer.getTotalKills(DesireCore.getCurrentServer())))
+                        .tooltip(killer.getKillDisplay(DesireCore.getCurrentServer()))
+                        .color(ChatColor.RED)
+                    .then("]")
+                        .color(ChatColor.DARK_RED)
+                    .then(" using ")
+                        .color(ChatColor.WHITE)
+                    .then(ItemNames.lookup(tag.getItem()))
+                        .itemTooltip(tag.getItem())
+                        .color(ChatColor.BLUE)
+                    .then(".")
+                        .color(ChatColor.WHITE);
+        }
+
+        return message;
+    }
+
+    private FancyMessage processFancyMessage(FancyMessage message, String string)
+    {
+        if (string == null || string.length() <= 1 || string.length() == 2 && string.matches("[&][0-9a-fA-Fk-oK-OrR]"))
+        {
+            return message;
+        }
+        if (!string.contains("&"))
+        {
+            return message.then(string);
+        }
+
+        String[] pieces = string.split("&(?=[0-9a-fA-Fk-oK-OrR])");
+        ChatColor color;
+
+        for (int i = 0; i < pieces.length; i++)
+        {
+            message.then();
+            if (pieces[i].length() == 1)
+            {
+                if (i == pieces.length - 1)
+                {
+                    break;
+                }
+                if (!pieces[i].equalsIgnoreCase("r"))
+                {
+                    color = ChatColor.getByChar(pieces[i]);
+                    if (pieces[i].matches("[0-9a-fA-F]"))
+                    {
+                        message.color(color);
+                    }
+                    else if (pieces[i].matches("[k-oK-O]"))
+                    {
+                        message.style(color);
+                    }
+                    i++;
+                }
+            }
+
+            color = ChatColor.getByChar(pieces[i].charAt(0));
+            if (pieces[i].matches("[0-9a-fA-F].*"))
+            {
+                message.color(color);
+            }
+            else if (pieces[i].matches("[k-oK-O].*"))
+            {
+                message.style(color);
+            }
+            else
+            {
+                message.then();
+            }
+            message.text(pieces[i].substring(1, pieces[i].length()));
+        }
         return message;
     }
 
