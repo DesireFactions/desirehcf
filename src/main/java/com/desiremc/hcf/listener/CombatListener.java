@@ -16,6 +16,7 @@ import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
+import com.desiremc.core.utils.BungeeUtils;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.core.utils.ItemNames;
 import com.desiremc.hcf.DesireHCF;
@@ -113,6 +114,7 @@ public class CombatListener implements Listener
             }
 
             victim.addDeath(DesireCore.getCurrentServer(), tag == null ? null : tag.getUniqueId());
+            BungeeUtils.sendToHub(vPlayer);
 
             FancyMessage message = processMessage(victim, cause, tag);
 
