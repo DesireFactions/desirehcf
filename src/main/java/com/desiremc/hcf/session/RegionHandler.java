@@ -3,7 +3,6 @@ package com.desiremc.hcf.session;
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Key;
 import org.mongodb.morphia.dao.BasicDAO;
 
@@ -19,15 +18,16 @@ public class RegionHandler extends BasicDAO<Region, Integer>
 
     private int nextId = 0;
 
-    public RegionHandler(Datastore ds)
+    public RegionHandler()
     {
-        super(Region.class, ds);
+        super(Region.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
+        DesireCore.getInstance().getMongoWrapper().getMorphia().map(Region.class);
         load();
     }
 
     public static void initialize()
     {
-        instance = new RegionHandler(DesireCore.getInstance().getMongoWrapper().getDatastore());
+        instance = new RegionHandler();
     }
 
     private void load()

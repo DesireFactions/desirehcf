@@ -17,6 +17,7 @@ public class FactionSessionHandler extends BasicDAO<FactionSession, String>
     {
         super(FactionSession.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
 
+        DesireCore.getInstance().getMongoWrapper().getMorphia().map(FactionSession.class);
         cache = find().asList();
     }
 

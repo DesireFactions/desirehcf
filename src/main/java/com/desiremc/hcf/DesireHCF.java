@@ -7,6 +7,7 @@ import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
@@ -66,6 +67,7 @@ public class DesireHCF extends JavaPlugin
         TagHandler.initialize();
         StaffHandler.initialize();
         CustomCommandHandler.initialize();
+        DesireCore.getInstance().getMongoWrapper().getDatastore().ensureIndexes();
 
         registerListeners();
         registerCommands();
