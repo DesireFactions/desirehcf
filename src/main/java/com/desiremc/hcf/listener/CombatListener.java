@@ -112,6 +112,8 @@ public class CombatListener implements Listener
                 HCFSessionHandler.getInstance().save(killer);
             }
 
+            victim.addDeath(DesireCore.getCurrentServer(), tag == null ? null : tag.getUniqueId());
+
             FancyMessage message = processMessage(victim, cause, tag);
 
             for (Player online : Bukkit.getOnlinePlayers())
@@ -134,14 +136,14 @@ public class CombatListener implements Listener
                 .then("[" + session.getTotalKills(DesireCore.getCurrentServer()) + "]")
                 .tooltip(session.getKillDisplay(DesireCore.getCurrentServer()));
 
-        String parsed = DesireHCF.getLangHandler().getString("death." + (tag == null ? "pve" : "pvp") + cause.toString());
+        String parsed = DesireHCF.getConfigHandler().getString("death." + (tag == null ? "pve." : "pvp.") + cause.toString().toLowerCase());
         if (parsed.contains("death.pvp."))
         {
-            parsed = DesireHCF.getLangHandler().getString("death.pvp.default");
+            parsed = DesireHCF.getConfigHandler().getString("death.pvp.default");
         }
         else if (parsed.contains("death.pve."))
         {
-            parsed = DesireHCF.getLangHandler().getString("death.pve.default");
+            parsed = DesireHCF.getConfigHandler().getString("death.pve.default");
         }
 
         processFancyMessage(message, parsed);
@@ -150,22 +152,22 @@ public class CombatListener implements Listener
         {
             HCFSession killer = HCFSessionHandler.getHCFSession(tag.getUniqueId());
             message.then(killer.getName())
-                        .tooltip(FactionsUtils.getMouseoverDetails(killer))
-                        .color(killer.getRank().getMain())
+                    .tooltip(FactionsUtils.getMouseoverDetails(killer))
+                    .color(killer.getRank().getMain())
                     .then("[")
-                        .color(ChatColor.DARK_RED)
+                    .color(ChatColor.DARK_RED)
                     .then(Integer.toString(killer.getTotalKills(DesireCore.getCurrentServer())))
-                        .tooltip(killer.getKillDisplay(DesireCore.getCurrentServer()))
-                        .color(ChatColor.RED)
+                    .tooltip(killer.getKillDisplay(DesireCore.getCurrentServer()))
+                    .color(ChatColor.RED)
                     .then("]")
-                        .color(ChatColor.DARK_RED)
+                    .color(ChatColor.DARK_RED)
                     .then(" using ")
-                        .color(ChatColor.WHITE)
+                    .color(ChatColor.WHITE)
                     .then(ItemNames.lookup(tag.getItem()))
-                        .itemTooltip(tag.getItem())
-                        .color(ChatColor.BLUE)
+                    .itemTooltip(tag.getItem())
+                    .color(ChatColor.BLUE)
                     .then(".")
-                        .color(ChatColor.WHITE);
+                    .color(ChatColor.WHITE);
         }
 
         return message;

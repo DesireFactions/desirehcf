@@ -1,3 +1,30 @@
+death:
+  pvp:
+    default: ' &fwas killed by '
+    projectile: ' &fwas shot by '
+  pve:
+    default: ' &fdied in a freak accident.'
+    custom: ' &fwas killed by admin abuse. Grab the pitchforks!'
+    block_explosion: ' &fdied from an exploding block.'
+    contact: ' &ftried to hug a cactus.'
+    dragon_breath: ' &fgave a breath check to a dragon.'
+    drowning: ' &fforgot they didn''t have underwater breathing.'
+    entity_attack: ' &fgot beaten up by a zombie.'
+    entity_explosion: ' &fdidn''t notice the creeper.'
+    fall: ' &ffell off a cliff.'
+    falling_block: ' &fhad an anvil land on their head.'
+    fire: ' &fstood in the flames.'
+    fire_tick: ' &fgot slow roasted.'
+    lava: ' &fswam in lava.'
+    lightning: '&fgot struck by lightning!'
+    poison: ' &fwas poisoned.'
+    projectile: ' &ftook an arrow to the knee.'
+    starvation: ' &fstarved to death.'
+    suffocation: ' &fbreathed in too much sand.'
+    suicide: ' &fdidn''t call 1-800-273-8255.'
+    thorns: ' &fwore a crown of thorns.'
+    void: ' &fwent flying with the elder dragon.'
+    wither: ' &fwithered away.'
 tag:
   time: 30
   distance: 10
