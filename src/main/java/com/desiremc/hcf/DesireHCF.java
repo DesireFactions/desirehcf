@@ -27,6 +27,7 @@ import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
 import com.desiremc.hcf.listener.ChatListener;
 import com.desiremc.hcf.listener.CombatListener;
+import com.desiremc.hcf.listener.ConnectionListener;
 import com.desiremc.hcf.listener.CreatureSpawnListener;
 import com.desiremc.hcf.listener.CrowbarHandler;
 import com.desiremc.hcf.listener.InteractListener;
@@ -78,6 +79,7 @@ public class DesireHCF extends JavaPlugin
     {
         ListenerManager listenerManager = ListenerManager.getInstace();
         listenerManager.addListener(new ChatListener());
+        listenerManager.addListener(new ConnectionListener());
         listenerManager.addListener(new MovementListener());
         listenerManager.addListener(new CombatListener());
         listenerManager.addListener(new InteractListener());

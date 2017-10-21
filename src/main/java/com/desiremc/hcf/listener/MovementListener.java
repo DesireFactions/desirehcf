@@ -27,6 +27,7 @@ public class MovementListener implements Listener
         }
         if (TagHandler.isTagged(e.getPlayer()))
         {
+            boolean valid = true;
             for (Region r : RegionHandler.getInstance().getRegions())
             {
                 if (r.getWorld().equalsIgnoreCase(e.getTo().getWorld().getName()) && r.getRegion().isWithin(e.getTo()))
@@ -39,10 +40,10 @@ public class MovementListener implements Listener
                     {
                         e.setCancelled(true);
                     }
-                    return;
+                    valid = false;
                 }
             }
-            if (!e.isCancelled() && e.getPlayer().isOnGround())
+            if (valid && !e.isCancelled() && e.getPlayer().isOnGround())
             {
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
             }
