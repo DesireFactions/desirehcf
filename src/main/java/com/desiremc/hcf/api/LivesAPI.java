@@ -16,7 +16,7 @@ public class LivesAPI
         String targetName = target.getDisplayName();
         String senderName = ((Player) sender).getDisplayName();
 
-        HCFSession session = HCFSessionHandler.getHCFSession(target);
+        HCFSession session = HCFSessionHandler.getHCFSession(target.getUniqueId());
         session.takeLives(amount);
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.remove", "{amount}", strAmount, "{player}", targetName);
@@ -30,7 +30,7 @@ public class LivesAPI
         String targetName = target.getDisplayName();
         String senderName = ((Player) sender).getDisplayName();
 
-        HCFSession session = HCFSessionHandler.getHCFSession(target);
+        HCFSession session = HCFSessionHandler.getHCFSession(target.getUniqueId());
         session.addLives(amount);
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.add", "{amount}", strAmount, "{player}", targetName);

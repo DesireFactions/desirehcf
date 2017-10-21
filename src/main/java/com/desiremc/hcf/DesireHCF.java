@@ -12,7 +12,6 @@ import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.commands.UnbanCommand;
-import com.desiremc.core.listeners.ConnectionListener;
 import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.StaffHandler;
@@ -78,7 +77,6 @@ public class DesireHCF extends JavaPlugin
     private void registerListeners()
     {
         ListenerManager listenerManager = ListenerManager.getInstace();
-        listenerManager.addListener(new ConnectionListener());
         listenerManager.addListener(new ChatListener());
         listenerManager.addListener(new MovementListener());
         listenerManager.addListener(new CombatListener());

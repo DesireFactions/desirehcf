@@ -21,7 +21,11 @@ public class MovementListener implements Listener
     @EventHandler
     public void onMove(PlayerMoveEvent e)
     {
-        if (TagHandler.isTagged(e.getPlayer()) && differentBlocks(e.getTo(), e.getPlayer().getLocation()))
+        if (!differentBlocks(e.getFrom(), e.getTo()) || e.isCancelled())
+        {
+            return;
+        }
+        if (TagHandler.isTagged(e.getPlayer()))
         {
             for (Region r : RegionHandler.getInstance().getRegions())
             {
@@ -43,23 +47,20 @@ public class MovementListener implements Listener
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
             }
         }
-        HCFSession s = HCFSessionHandler.getHCFSession(e.getPlayer());
+        HCFSession s = HCFSessionHandler.getHCFSession(e.getPlayer().getUniqueId());
         if (s.getSafeTimeLeft() > 0)
         {
-            if (!e.isCancelled() && differentBlocks(e.getTo(), e.getPlayer().getLocation()))
+            for (Region r : RegionHandler.getInstance().getRegions())
             {
-                for (Region r : RegionHandler.getInstance().getRegions())
+                if (r.getWorld().equalsIgnoreCase(e.getTo().getWorld().getName()))
                 {
-                    if (r.getWorld().equalsIgnoreCase(e.getTo().getWorld().getName()))
+                    if (r.getRegion().isWithin(e.getTo()))
                     {
-                        if (r.getRegion().isWithin(e.getTo()))
-                        {
-                            s.getTimer().pause();
-                        }
-                        else if (r.getRegion().isWithin(e.getFrom()))
-                        {
-                            s.getTimer().resume();
-                        }
+                        s.getTimer().pause();
+                    }
+                    else if (r.getRegion().isWithin(e.getFrom()))
+                    {
+                        s.getTimer().resume();
                     }
                 }
             }
@@ -83,7 +84,7 @@ public class MovementListener implements Listener
         }
     }
 
-    private boolean differentBlocks(Location l1, Location l2)
+    public static boolean differentBlocks(Location l1, Location l2)
     {
         return l1.getBlockX() != l2.getBlockX() || l1.getBlockY() != l2.getBlockY() || l1.getBlockZ() != l2.getBlockZ();
     }

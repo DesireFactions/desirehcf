@@ -56,8 +56,8 @@ public class CombatListener implements Listener
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
 
-                HCFSession vs = HCFSessionHandler.getHCFSession(victim);
-                HCFSession ds = HCFSessionHandler.getHCFSession(damager);
+                HCFSession vs = HCFSessionHandler.getHCFSession(victim.getUniqueId());
+                HCFSession ds = HCFSessionHandler.getHCFSession(damager.getUniqueId());
 
                 if (ds.getSafeTimeLeft() > 0)
                 {
