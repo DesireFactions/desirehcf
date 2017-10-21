@@ -1,17 +1,10 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.event.NPCDespawnEvent;
-import com.desiremc.hcf.event.NPCDespawnReason;
-import com.desiremc.hcf.npc.NPC;
-import com.desiremc.hcf.npc.NPCManager;
-import com.desiremc.hcf.npc.NPCPlayerHelper;
-import com.desiremc.hcf.npc.SafeLogoutTask;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -24,10 +17,17 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.event.NPCDespawnEvent;
+import com.desiremc.hcf.event.NPCDespawnReason;
+import com.desiremc.hcf.npc.NPC;
+import com.desiremc.hcf.npc.NPCManager;
+import com.desiremc.hcf.npc.NPCPlayerHelper;
+import com.desiremc.hcf.npc.SafeLogoutTask;
 
 public class CombatLoggerHandler implements Listener
 {
@@ -60,7 +60,10 @@ public class CombatLoggerHandler implements Listener
 
         Session session = SessionHandler.getSession(player);
 
-        if (session.getRank() == Rank.ADMIN) return;
+        if (session.getRank().isManager())
+        {
+            return;
+        }
 
         UUID uuid = player.getUniqueId();
         Long time = TagHandler.getTagTime(uuid);
@@ -103,11 +106,13 @@ public class CombatLoggerHandler implements Listener
     public void despawnNPC(PlayerDeathEvent event)
     {
         Player player = event.getEntity();
-        if (!NPCPlayerHelper.isNpc(player)) return;
+        if (!NPCPlayerHelper.isNpc(player))
+            return;
 
         UUID id = NPCPlayerHelper.getIdentity(player).getId();
         final NPC npc = NPCManager.getSpawnedNPC(id);
-        if (npc == null) return;
+        if (npc == null)
+            return;
 
         TagHandler.clearTag(id);
 
@@ -126,7 +131,8 @@ public class CombatLoggerHandler implements Listener
     {
         // Do nothing if player is not a NPC
         final Player player = event.getEntity();
-        if (!NPCPlayerHelper.isNpc(player)) return;
+        if (!NPCPlayerHelper.isNpc(player))
+            return;
 
         // NPC died, remove player's combat tag
         TagHandler.clearTag(player.getUniqueId());
@@ -145,10 +151,12 @@ public class CombatLoggerHandler implements Listener
     @EventHandler
     public void syncOffline(AsyncPlayerPreLoginEvent event)
     {
-        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) return;
+        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
+            return;
 
         final UUID playerId = event.getUniqueId();
-        if (!NPCManager.NPCExists(playerId)) return;
+        if (!NPCManager.NPCExists(playerId))
+            return;
 
         Future<?> future = Bukkit.getScheduler().callSyncMethod(DesireHCF.getInstance(), new Callable<Void>()
         {
@@ -156,7 +164,8 @@ public class CombatLoggerHandler implements Listener
             public Void call() throws Exception
             {
                 NPC npc = NPCManager.getSpawnedNPC(playerId);
-                if (npc == null) return null;
+                if (npc == null)
+                    return null;
 
                 NPCPlayerHelper.syncOffline(npc.getEntity());
                 return null;

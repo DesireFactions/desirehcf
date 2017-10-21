@@ -1,5 +1,7 @@
 package com.desiremc.hcf.listener;
 
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -113,7 +115,8 @@ public class CombatListener implements Listener
                 HCFSessionHandler.getInstance().save(killer);
             }
 
-            victim.addDeath(DesireCore.getCurrentServer(), tag == null ? null : tag.getUniqueId());
+            UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
+            victim.addDeath(DesireCore.getCurrentServer(), killer);
             BungeeUtils.sendToHub(vPlayer);
 
             FancyMessage message = processMessage(victim, cause, tag);
