@@ -56,3 +56,7 @@ logout:
   started: "&c&lYou have started to safely logout."
 no_faction: You are not a part of a faction!
 need_selection: '&7You need to make a selection with WorldEdit.'
+classes:
+  bard:
+    instant-cooldown-over: "Your bard cooldown is over."
+    on-cooldown: "Your bard effects are still on cooldown."

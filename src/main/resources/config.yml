@@ -224,3 +224,33 @@ blocked:
   - SILVER_SHULKER_BOX
   - WHITE_SHULKER_BOX
   - YELLOW_SHULKER_BOX
+classes:
+  bard:
+    distance: 10
+    duration: 6
+    frequency: 5
+    instant-cooldown: 30
+    timed-effect-strength:
+      strength: 1
+      regen: 2
+      fire: 1
+      speed: 2
+    instant-effect-strength:
+      heal: 6
+      feed: 6
+    rouge-finder:
+      range: 80
+      remainder: 30
+  archer:
+    default-multiplier: 2
+    ranged-divided: 10
+    ranged-damage-reduction: 4
+  rogue:
+    invisible-length: 120
+    uninvis-range: 10
+    uninvis-timer: 30
+    back-stab-amount:
+      archer: 2
+      bard: 2
+      rogue: 2
+      diamond: 4
