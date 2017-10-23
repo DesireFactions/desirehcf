@@ -1,4 +1,4 @@
-package com.desiremc.hcf.listener;
+package com.desiremc.hcf.listener.classes;
 
 import com.desiremc.hcf.event.ArmorEquipEvent;
 import com.desiremc.hcf.util.ArmorType;

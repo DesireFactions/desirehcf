@@ -37,28 +37,45 @@ public enum ArmorType
         switch (itemStack.getType())
         {
             case DIAMOND_HELMET:
+                return HELMET;
             case GOLD_HELMET:
+                return HELMET;
             case IRON_HELMET:
+                return HELMET;
             case CHAINMAIL_HELMET:
+                return HELMET;
             case LEATHER_HELMET:
+                return HELMET;
             case PUMPKIN:
                 return HELMET;
             case DIAMOND_CHESTPLATE:
+                return CHESTPLATE;
             case GOLD_CHESTPLATE:
+                return CHESTPLATE;
             case IRON_CHESTPLATE:
+                return CHESTPLATE;
             case CHAINMAIL_CHESTPLATE:
+                return CHESTPLATE;
             case LEATHER_CHESTPLATE:
                 return CHESTPLATE;
             case DIAMOND_LEGGINGS:
+                return LEGGINGS;
             case GOLD_LEGGINGS:
+                return LEGGINGS;
             case IRON_LEGGINGS:
+                return LEGGINGS;
             case CHAINMAIL_LEGGINGS:
+                return LEGGINGS;
             case LEATHER_LEGGINGS:
                 return LEGGINGS;
             case DIAMOND_BOOTS:
+                return BOOTS;
             case GOLD_BOOTS:
+                return BOOTS;
             case IRON_BOOTS:
+                return BOOTS;
             case CHAINMAIL_BOOTS:
+                return BOOTS;
             case LEATHER_BOOTS:
                 return BOOTS;
             default:
