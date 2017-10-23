@@ -1,12 +1,5 @@
 package com.desiremc.hcf;
 
-import java.io.File;
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -25,7 +18,9 @@ import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
+import com.desiremc.hcf.listener.ArmorListener;
 import com.desiremc.hcf.listener.ChatListener;
+import com.desiremc.hcf.listener.ClassListener;
 import com.desiremc.hcf.listener.CombatListener;
 import com.desiremc.hcf.listener.ConnectionListener;
 import com.desiremc.hcf.listener.CreatureSpawnListener;
@@ -36,8 +31,13 @@ import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.PlayerCache;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-
 import net.milkbowl.vault.economy.Economy;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.RegisteredServiceProvider;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
@@ -85,6 +85,8 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new InteractListener());
         listenerManager.addListener(new CrowbarHandler());
         listenerManager.addListener(new CreatureSpawnListener());
+        listenerManager.addListener(new ArmorListener(getConfigHandler().getStringList("blocked")));
+        listenerManager.addListener(new ClassListener());
     }
 
     private void registerCommands()
