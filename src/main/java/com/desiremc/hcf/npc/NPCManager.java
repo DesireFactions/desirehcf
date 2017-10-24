@@ -20,7 +20,6 @@ public class NPCManager
 
     private static final Map<NPC, NPCDespawnTask> despawnTasks = new HashMap<>();
 
-    @SuppressWarnings("deprecation")
     public static NPC spawn(Player player)
     {
         // Do nothing if player already has a NPC

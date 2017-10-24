@@ -17,11 +17,13 @@ import com.desiremc.core.utils.cache.RemovalListener;
 import com.desiremc.core.utils.cache.RemovalNotification;
 import com.desiremc.hcf.DesireHCF;
 
-public class BardListener extends DesireClass
+public class BardListener implements DesireClass
 {
 
+    private Cache<UUID, Long> cooldown;
+
     @Override
-    protected void initialize()
+    public void initialize()
     {
         cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.instant-cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
