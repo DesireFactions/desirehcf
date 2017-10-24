@@ -11,12 +11,12 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
+import com.desiremc.core.utils.cache.RemovalNotification.Cause;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.npc.SafeLogoutTask;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
 
 public class TagHandler
 {
@@ -29,22 +29,21 @@ public class TagHandler
 
     public static void initialize()
     {
-        tags = CacheBuilder.newBuilder().expireAfterWrite(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
+        tags = new Cache<UUID, Long>(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
-
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
             {
-                if (entry.getCause().ordinal() > 2)
+                if (entry.getCause() == Cause.EXPIRE || entry.getCause() == Cause.REMOVE)
                 {
                     BarrierTask.addToClear(entry.getKey());
                     Bukkit.getPlayer(entry.getKey()).sendMessage(DesireHCF.getLangHandler().getString("tag.expire"));
                     EntryRegistry.getInstance().removeValue(Bukkit.getPlayer(entry.getKey()), DesireHCF.getLangHandler().getString("tag.scoreboard"));
                 }
             }
-        }).build();
+        }, DesireHCF.getInstance());
 
-        history = CacheBuilder.newBuilder().expireAfterWrite(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).build();
+        history = new Cache<UUID, Tag>(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS, DesireHCF.getInstance());
 
         Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
         {
@@ -58,7 +57,7 @@ public class TagHandler
 
     public static boolean isTagged(Player p)
     {
-        return tags.asMap().containsKey(p.getUniqueId());
+        return tags.containsKey(p.getUniqueId());
     }
 
     public static void tagPlayer(Player p, Player damager)
@@ -73,7 +72,7 @@ public class TagHandler
         }
         tags.put(p.getUniqueId(), System.currentTimeMillis());
         tags.put(damager.getUniqueId(), System.currentTimeMillis());
-        history.put(p.getUniqueId(), new Tag(damager.getUniqueId(), damager.getInventory().getItemInMainHand()));
+        history.put(p.getUniqueId(), new Tag(damager.getUniqueId(), damager.getItemInHand()));
 
         SafeLogoutTask.cancel(p);
         SafeLogoutTask.cancel(damager);
@@ -96,12 +95,12 @@ public class TagHandler
 
     public static Long getTagTime(UUID uuid)
     {
-        return tags.getIfPresent(uuid);
+        return tags.get(uuid);
     }
 
     public static UUID getTagger(UUID uuid)
     {
-        Tag tag = history.getIfPresent(uuid);
+        Tag tag = history.get(uuid);
         if (tag == null)
         {
             return null;
@@ -111,17 +110,17 @@ public class TagHandler
 
     public static Tag getTag(UUID uuid)
     {
-        return history.getIfPresent(uuid);
+        return history.get(uuid);
     }
 
     public static void clearTag(UUID uuid)
     {
-        tags.invalidate(uuid);
+        tags.remove(uuid);
     }
 
     public static Set<UUID> getTaggedPlayers()
     {
-        return tags.asMap().keySet();
+        return tags.keySet();
     }
 
     public static class Tag

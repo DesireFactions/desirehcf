@@ -16,7 +16,7 @@ public class LootingBuffHandler implements Listener
         if (e.getEntity().getKiller() != null)
         {
             Player p = e.getEntity().getKiller();
-            if (p.getInventory().getItemInMainHand().getItemMeta().hasEnchant(Enchantment.LOOT_BONUS_MOBS))
+            if (p.getInventory().getItemInHand().getItemMeta().hasEnchant(Enchantment.LOOT_BONUS_MOBS))
             {
                 int dropped = e.getDroppedExp();
                 int bonus = DesireHCF.getConfigHandler().getInteger("looting-buffer");

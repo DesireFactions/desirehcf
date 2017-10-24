@@ -182,7 +182,6 @@ public class CombatLoggerHandler implements Listener
         }
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void syncOffline(NPCDespawnEvent event)
     {
@@ -215,7 +214,6 @@ public class CombatLoggerHandler implements Listener
 
     private static double getRealMaxHealth(Player npcPlayer)
     {
-        @SuppressWarnings("deprecation")
         double health = npcPlayer.getMaxHealth();
         for (PotionEffect p : npcPlayer.getActivePotionEffects())
         {
