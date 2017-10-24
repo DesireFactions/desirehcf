@@ -50,6 +50,12 @@
 			<artifactId>DesireCore</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<!-- Desire Dependencies -->
+		<dependency>
+			<groupId>com.desiremc.depends</groupId>
+			<artifactId>desiredependencies</artifactId>
+			<version>1.0</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>clean install</defaultGoal>
