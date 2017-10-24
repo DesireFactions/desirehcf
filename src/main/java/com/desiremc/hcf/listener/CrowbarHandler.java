@@ -38,7 +38,7 @@ public class CrowbarHandler implements Listener
     public void onInteract(PlayerInteractEvent e)
     {
         Player player = e.getPlayer();
-        ItemStack item = player.getInventory().getItemInMainHand();
+        ItemStack item = player.getItemInHand();
 
         if (item == null || !isCrowbar(item)) { return; }
 
@@ -89,12 +89,12 @@ public class CrowbarHandler implements Listener
             }
 
             adjustUses(item, -cost);
-            player.playSound(block.getLocation(), Sound.BLOCK_LEVER_CLICK, 1, 1);
+            player.playSound(block.getLocation(), Sound.CLICK, 1, 1);
             block.setType(Material.AIR);
 
             if (getUses(item) <= 0)
             {
-                player.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
+                player.setItemInHand(new ItemStack(Material.AIR));
                 lang.sendString(player, "crowbar.out_of_uses");
             }
         }
@@ -106,7 +106,7 @@ public class CrowbarHandler implements Listener
     {
         Player p = e.getPlayer();
         Block b = e.getBlock();
-        ItemStack item = p.getInventory().getItemInMainHand();
+        ItemStack item = p.getItemInHand();
 
         if (isSpawner(item))
         {

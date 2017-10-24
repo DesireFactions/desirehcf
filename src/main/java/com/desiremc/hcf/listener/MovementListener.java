@@ -1,5 +1,13 @@
 package com.desiremc.hcf.listener;
 
+import org.bukkit.Location;
+import org.bukkit.World.Environment;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
+
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.utils.Utils;
@@ -7,13 +15,6 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
-import org.bukkit.Location;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
 
 public class MovementListener implements Listener
 {
@@ -43,6 +44,7 @@ public class MovementListener implements Listener
                     valid = false;
                 }
             }
+            // TODO Look into a better solution.
             if (valid && !e.isCancelled() && e.getPlayer().isOnGround())
             {
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
@@ -75,11 +77,11 @@ public class MovementListener implements Listener
         {
             TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getTo());
         }
-        if (e.getCause() == TeleportCause.END_PORTAL)
+        if (e.getTo().getWorld().getEnvironment() == Environment.THE_END && e.getFrom().getWorld().getEnvironment() != Environment.THE_END)
         {
             e.setTo(Utils.toLocation(DesireHCF.getConfigHandler().getString("set_end.spawn")));
         }
-        else if (e.getCause() == TeleportCause.END_GATEWAY)
+        else if (e.getTo().getWorld().getEnvironment() != Environment.THE_END && e.getFrom().getWorld().getEnvironment() == Environment.THE_END)
         {
             e.setTo(Utils.toLocation(DesireHCF.getConfigHandler().getString("set_end.exit")));
         }
