@@ -61,7 +61,7 @@
         </dependency>
         <!-- Desire NPC -->
         <dependency>
-            <groupId>com.desiremc.desirenpc</groupId>
+            <groupId>com.desiremc.npc</groupId>
             <artifactId>DesireNPC</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
@@ -81,7 +81,27 @@
                     <target>1.8</target>
                 </configuration>
             </plugin>
-
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>2.3</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
+                            <artifactSet>
+                                <includes>
+                                    <include>com.desiremc.npc:DesireNPC</include>
+                                </includes>
+                            </artifactSet>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
     </build>
 </project>
