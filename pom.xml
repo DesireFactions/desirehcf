@@ -5,6 +5,9 @@
     <groupId>com.desiremc</groupId>
     <artifactId>DesireHCF</artifactId>
     <version>0.1</version>
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
     <repositories>
         <repository>
             <id>spigot-repo</id>
