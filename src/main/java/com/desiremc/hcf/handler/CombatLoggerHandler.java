@@ -22,12 +22,12 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.event.NPCDespawnEvent;
-import com.desiremc.hcf.event.NPCDespawnReason;
-import com.desiremc.hcf.npc.NPC;
-import com.desiremc.hcf.npc.NPCManager;
-import com.desiremc.hcf.npc.NPCPlayerHelper;
 import com.desiremc.hcf.npc.SafeLogoutTask;
+import com.desiremc.npc.NPC;
+import com.desiremc.npc.NPCManager;
+import com.desiremc.npc.NPCPlayerHelper;
+import com.desiremc.npc.events.NPCDespawnEvent;
+import com.desiremc.npc.events.NPCDespawnReason;
 
 public class CombatLoggerHandler implements Listener
 {
