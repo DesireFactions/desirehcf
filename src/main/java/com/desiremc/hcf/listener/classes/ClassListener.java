@@ -9,6 +9,8 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 
 public class ClassListener implements Listener
 {
@@ -26,6 +28,14 @@ public class ClassListener implements Listener
         PlayerInventory inv = player.getInventory();
 
         ItemStack helmet = inv.getHelmet();
+
+        if(session.getPvpClass().equals(PVPClass.MINER))
+        {
+            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+            player.removePotionEffect(PotionEffectType.FAST_DIGGING);
+            player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+            player.removePotionEffect(PotionEffectType.SPEED);
+        }
 
         switch (helmet.getType())
         {
@@ -51,6 +61,17 @@ public class ClassListener implements Listener
                 if (isRogue(inv.getArmorContents()))
                 {
                     session.setPvpClass(PVPClass.ROGUE);
+                }
+                break;
+            case IRON_HELMET:
+                if (isMiner(inv.getArmorContents()))
+                {
+                    session.setPvpClass(PVPClass.MINER);
+
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 2));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 1));
+                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
                 }
                 break;
         }
@@ -92,6 +113,16 @@ public class ClassListener implements Listener
         for (ItemStack item : armor)
         {
             if (!item.getType().name().contains("CHAINMAIL"))
+                return false;
+        }
+        return true;
+    }
+
+    private boolean isMiner(ItemStack[] armor)
+    {
+        for (ItemStack item : armor)
+        {
+            if (!item.getType().name().contains("IRON"))
                 return false;
         }
         return true;
