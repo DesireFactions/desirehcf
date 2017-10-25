@@ -244,7 +244,8 @@ classes:
   archer:
     default-multiplier: 2
     ranged-divided: 10
-    ranged-damage-reduction: 4
+    non-archer-to-archer-reduction: 4
+    archer-to-archer-reduction: 1
   rogue:
     invisible-length: 120
     uninvis-range: 10

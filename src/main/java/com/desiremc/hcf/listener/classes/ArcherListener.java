@@ -1,35 +1,43 @@
 package com.desiremc.hcf.listener.classes;
 
-import com.desiremc.core.utils.cache.Cache;
-import com.desiremc.core.utils.cache.RemovalListener;
-import com.desiremc.core.utils.cache.RemovalNotification;
-import com.desiremc.hcf.DesireHCF;
-import org.bukkit.Bukkit;
+import com.desiremc.core.session.HCFSession;
+import com.desiremc.core.session.HCFSessionHandler;
+import com.desiremc.core.session.PVPClass;
+import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
-
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
 public class ArcherListener implements DesireClass
 {
 
-    private Cache<UUID, Long> cooldown;
-
     @Override
     public void initialize()
     {
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.instant-cooldown"), TimeUnit
-                .SECONDS, new RemovalListener<UUID, Long>()
-        {
-            @Override
-            public void onRemoval(RemovalNotification<UUID, Long> entry)
-            {
-                Player p = Bukkit.getPlayer(entry.getKey());
-                if (p != null)
-                {
-                    DesireHCF.getLangHandler().sendString(p, "classes.bard.instant-cooldown-over");
-                }
-            }
-        }, DesireHCF.getInstance());
+    }
+
+    @EventHandler
+    public void onArrowHit(EntityDamageByEntityEvent event)
+    {
+        if (!(event.getDamager() instanceof Arrow))
+            return;
+
+        Projectile pj = (Projectile) event.getDamager();
+
+        if (!(pj.getShooter() instanceof Player))
+            return;
+
+        if (!(event.getEntity() instanceof Player))
+            return;
+
+        Player target = (Player) event.getEntity();
+        Player source = (Player) pj.getShooter();
+
+        HCFSession sourceSession = HCFSessionHandler.getHCFSession(source.getUniqueId());
+
+        if (!sourceSession.getPvpClass().equals(PVPClass.ARCHER))
+            return;
+
     }
 }

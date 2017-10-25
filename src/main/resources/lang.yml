@@ -60,3 +60,7 @@ classes:
   bard:
     instant-cooldown-over: "Your bard cooldown is over."
     on-cooldown: "Your bard effects are still on cooldown."
+  rogue:
+    uninvis-over: "You can now go invisible again."
+    shown: "You have been discovered. Your invisibility is gone."
+    on-cooldown: "Your invisibility effect is on cooldown."

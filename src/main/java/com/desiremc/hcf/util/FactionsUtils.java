@@ -64,7 +64,7 @@ public class FactionsUtils
 
         if (isNone(f))
         {
-            return new String[] {
+            return new String[]{
                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "NO FACTION"
             };
         }
@@ -72,11 +72,13 @@ public class FactionsUtils
         {
             FactionSession fSession = FactionSessionHandler.getFactionSession(f.getTag());
 
-            return new String[] {
+            return new String[]{
                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
                     ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getTag() : "NONE"),
-                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() : "NONE"),
-                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "---")
+                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() :
+                            "NONE"),
+                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ?
+                            fSession.getTrophies() : "---")
             };
         }
     }
@@ -85,7 +87,7 @@ public class FactionsUtils
     {
         return getMouseoverDetails(getFaction(s));
     }
-    
+
     public static String[] getMouseoverDetails(HCFSession s)
     {
         return getMouseoverDetails(getFaction(s));
@@ -98,11 +100,33 @@ public class FactionsUtils
         for (Player p : Bukkit.getOnlinePlayers())
         {
 
-            if(getFaction(p) == null || getFaction(player) == null)
+            if (getFaction(p) == null || getFaction(player) == null)
                 continue;
 
-            if(!getFaction(p).equals(getFaction(player)))
+            if (!getFaction(p).equals(getFaction(player)))
                 continue;
+
+            if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
+            {
+                inRange.add(player);
+            }
+        }
+
+        return inRange;
+    }
+
+    public static List<Player> getNonFactionMembersInRange(Player player, int range)
+    {
+        List<Player> inRange = new ArrayList<>();
+
+        for (Player p : Bukkit.getOnlinePlayers())
+        {
+
+            if (getFaction(player) != null && getFaction(p) != null)
+            {
+                if (getFaction(p).equals(getFaction(player)))
+                    continue;
+            }
 
             if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
             {

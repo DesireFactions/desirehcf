@@ -80,18 +80,15 @@ public class BardListener implements DesireClass
         {
             case SPECKLED_MELON:
                 healInRange(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
-                        ("classes.bard" +
-                        ".distance")));
+                        ("classes.bard.distance")));
                 break;
             case WHEAT:
                 feedInRange(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
-                        ("classes.bard" +
-                        ".distance")));
+                        ("classes.bard.distance")));
                 break;
             case EYE_OF_ENDER:
                 showAllRogues(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
-                        ("classes.bard" +
-                        ".rouge-finder.range")));
+                        ("classes.bard.rouge-finder.range")));
                 break;
         }
 
@@ -109,12 +106,12 @@ public class BardListener implements DesireClass
             return;
         }
 
-        if (timedEffects.get(p.getUniqueId()) != null)
+        if (timedEffects.get(p.getUniqueId()) != null || cooldown.get(p.getUniqueId()) != null)
         {
             DesireHCF.getLangHandler().sendString(p, "classes.bard.on-cooldown");
             return;
         }
-        timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
+
         applyEffect(p);
     }
 
@@ -124,23 +121,23 @@ public class BardListener implements DesireClass
         {
             case BLAZE_ROD:
                 applyStrength(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
-                        ("classes.bard" +
-                        ".distance")));
+                        ("classes.bard.distance")));
+                timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
                 break;
             case GHAST_TEAR:
                 applyRegen(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes" +
-                        ".bard" +
-                        ".distance")));
+                        ".bard.distance")));
+                timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
                 break;
             case MAGMA_CREAM:
                 applyFire(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes" +
-                        ".bard" +
-                        ".distance")));
+                        ".bard.distance")));
+                timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
                 break;
             case SUGAR:
                 applySpeed(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes" +
-                        ".bard" +
-                        ".distance")));
+                        ".bard.distance")));
+                timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
                 break;
         }
     }
