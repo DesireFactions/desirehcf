@@ -77,6 +77,11 @@ public class RogueListener implements DesireClass
         Player target = (Player) event.getEntity();
         Player player = (Player) event.getDamager();
 
+        double degrees = player.getLocation().getDirection().angle(target.getLocation().getDirection()) / 180 * Math.PI;
+
+        if(degrees < 225 || degrees > 315)
+            return;
+
         HCFSession targetSession = HCFSessionHandler.getHCFSession(target.getUniqueId());
         HCFSession playerSession = HCFSessionHandler.getHCFSession(player.getUniqueId());
 
@@ -89,16 +94,16 @@ public class RogueListener implements DesireClass
         switch (targetSession.getPvpClass())
         {
             case BARD:
-
+                event.setDamage(target.getMaxHealth() / 2);
                 break;
             case ROGUE:
-
+                event.setDamage(target.getMaxHealth() / 2);
                 break;
             case ARCHER:
-
+                event.setDamage(target.getMaxHealth() / 2);
                 break;
             case DIAMOND:
-
+                event.setDamage(target.getMaxHealth() / 4);
                 break;
             default:
                 return;
