@@ -24,14 +24,18 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.npc.SafeLogoutTask;
 import com.desiremc.npc.NPC;
+import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCManager;
 import com.desiremc.npc.NPCPlayerHelper;
+import com.desiremc.npc.NPCRegistry;
 import com.desiremc.npc.events.NPCDespawnEvent;
 import com.desiremc.npc.events.NPCDespawnReason;
 
 public class CombatLoggerHandler implements Listener
 {
     private long TIMER = DesireHCF.getConfigHandler().getInteger("tag.time");
+    
+    private NPCRegistry reg = NPCLib.getNPCRegistry(DesireHCF.getInstance());
 
     public CombatLoggerHandler()
     {
@@ -70,7 +74,7 @@ public class CombatLoggerHandler implements Listener
 
         if (time != null)
         {
-            NPCManager.spawn(player);
+            reg.createHumanNPC(uuid, player.getName());
         }
         else if (!SafeLogoutTask.isFinished(player))
         {
@@ -79,7 +83,7 @@ public class CombatLoggerHandler implements Listener
             {
                 if (p.getLocation().distanceSquared(player.getLocation()) <= (tagDistance * tagDistance))
                 {
-                    NPCManager.spawn(player);
+                    reg.createHumanNPC(uuid, player.getName());
                     break;
                 }
             }
@@ -95,7 +99,7 @@ public class CombatLoggerHandler implements Listener
 
         DesireHCF.getInstance().getPlayerCache().addPlayer(player);
 
-        NPC npc = NPCManager.getSpawnedNPC(event.getPlayer().getUniqueId());
+        NPC npc = reg.getByUUID(event.getPlayer().getUniqueId());
         if (npc != null)
         {
             NPCManager.despawn(npc);
