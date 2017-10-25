@@ -1,84 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.desiremc</groupId>
-	<artifactId>DesireHCF</artifactId>
-	<version>0.1</version>
-	<repositories>
-		<repository>
-			<id>spigot-repo</id>
-			<url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
-		</repository>
-		<repository>
-			<id>sk89q-repo</id>
-			<url>http://maven.sk89q.com/repo/</url>
-		</repository>
-		<repository>
-			<id>vault-repo</id>
-			<url>http://nexus.hc.to/content/repositories/pub_releases</url>
-		</repository>
-	</repositories>
-	<dependencies>
-		<!-- WorldEdit API -->
-		<dependency>
-			<groupId>com.sk89q.worldedit</groupId>
-			<artifactId>worldedit-bukkit</artifactId>
-			<version>6.1.5</version>
-		</dependency>
-		<!-- Spigot API -->
-		<dependency>
-			<groupId>org.github.paperspigot</groupId>
-			<artifactId>paperspigot-api</artifactId>
-			<version>1.7.10-R0.1-SNAPSHOT</version>
-		</dependency>
-		<!-- Vault API -->
-		<dependency>
-			<groupId>com.desiremc</groupId>
-			<artifactId>vault</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<!-- Factions API -->
-		<dependency>
-			<groupId>com.massivecraft</groupId>
-			<artifactId>HCFactions</artifactId>
-			<version>0.0.8</version>
-		</dependency>
-		<!-- DesireCore API -->
-		<dependency>
-			<groupId>com.desiremc</groupId>
-			<artifactId>DesireCore</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<!-- Desire Dependencies -->
-		<dependency>
-			<groupId>com.desiremc.depends</groupId>
-			<artifactId>desiredependencies</artifactId>
-			<version>1.0</version>
-		</dependency>
-		<!-- Desire NPC -->
-		<dependency>
-			<groupId>com.desiremc.desirenpc</groupId>
-			<artifactId>DesireNPC</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-	</dependencies>
-	<build>
-		<defaultGoal>clean install</defaultGoal>
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>com.desiremc</groupId>
+    <artifactId>DesireHCF</artifactId>
+    <version>0.1</version>
+    <repositories>
+        <repository>
+            <id>spigot-repo</id>
+            <url>https://hub.spigotmc.org/nexus/content/repositories/snapshots/</url>
+        </repository>
+        <repository>
+            <id>sk89q-repo</id>
+            <url>http://maven.sk89q.com/repo/</url>
+        </repository>
+        <repository>
+            <id>vault-repo</id>
+            <url>http://nexus.hc.to/content/repositories/pub_releases</url>
+        </repository>
+    </repositories>
+    <dependencies>
+        <!-- WorldEdit API -->
+        <dependency>
+            <groupId>com.sk89q.worldedit</groupId>
+            <artifactId>worldedit-bukkit</artifactId>
+            <version>6.1.5</version>
+        </dependency>
+        <!-- Spigot API -->
+        <dependency>
+            <groupId>org.github.paperspigot</groupId>
+            <artifactId>paperspigot-api</artifactId>
+            <version>1.7.10-R0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- Vault API -->
+        <dependency>
+            <groupId>com.desiremc</groupId>
+            <artifactId>vault</artifactId>
+            <version>0.0.3-SNAPSHOT</version>
+        </dependency>
+        <!-- Factions API -->
+        <dependency>
+            <groupId>com.massivecraft</groupId>
+            <artifactId>HCFactions</artifactId>
+            <version>0.0.8</version>
+        </dependency>
+        <!-- DesireCore API -->
+        <dependency>
+            <groupId>com.desiremc</groupId>
+            <artifactId>DesireCore</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <!-- Desire Dependencies -->
+        <dependency>
+            <groupId>com.desiremc.depends</groupId>
+            <artifactId>desiredependencies</artifactId>
+            <version>1.0</version>
+        </dependency>
+        <!-- Desire NPC -->
+        <dependency>
+            <groupId>com.desiremc.desirenpc</groupId>
+            <artifactId>DesireNPC</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+    <build>
+        <defaultGoal>clean install</defaultGoal>
 
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.5.1</version>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
 
-				<configuration>
-					<encoding>UTF-8</encoding>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
 
-		</plugins>
-	</build>
+        </plugins>
+    </build>
 </project>
