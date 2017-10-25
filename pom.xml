@@ -56,6 +56,12 @@
 			<artifactId>desiredependencies</artifactId>
 			<version>1.0</version>
 		</dependency>
+		<!-- Desire NPC -->
+		<dependency>
+			<groupId>com.desiremc.desirenpc</groupId>
+			<artifactId>DesireNPC</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 	</dependencies>
 	<build>
 		<defaultGoal>clean install</defaultGoal>
