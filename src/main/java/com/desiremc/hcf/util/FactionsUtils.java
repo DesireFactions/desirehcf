@@ -1,9 +1,5 @@
 package com.desiremc.hcf.util;
 
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.session.FactionSession;
@@ -14,6 +10,13 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FactionsUtils
 {
@@ -86,6 +89,28 @@ public class FactionsUtils
     public static String[] getMouseoverDetails(HCFSession s)
     {
         return getMouseoverDetails(getFaction(s));
+    }
+
+    public static List<Player> getFactionMembersInRange(Player player, int range)
+    {
+        List<Player> inRange = new ArrayList<>();
+
+        for (Player p : Bukkit.getOnlinePlayers())
+        {
+
+            if(getFaction(p) == null || getFaction(player) == null)
+                continue;
+
+            if(!getFaction(p).equals(getFaction(player)))
+                continue;
+
+            if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
+            {
+                inRange.add(player);
+            }
+        }
+
+        return inRange;
     }
 
 }

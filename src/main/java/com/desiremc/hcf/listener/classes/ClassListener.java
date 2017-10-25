@@ -19,7 +19,7 @@ public class ClassListener implements Listener
         updateClass(event.getPlayer());
     }
 
-    public void updateClass(Player player)
+    private void updateClass(Player player)
     {
         HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
 
@@ -61,7 +61,8 @@ public class ClassListener implements Listener
     {
         for (ItemStack item : armor)
         {
-            if (!item.getType().name().contains("DIAMOND")) return false;
+            if (!item.getType().name().contains("DIAMOND"))
+                return false;
         }
         return true;
     }
@@ -70,7 +71,8 @@ public class ClassListener implements Listener
     {
         for (ItemStack item : armor)
         {
-            if (!item.getType().name().contains("LEATHER")) return false;
+            if (!item.getType().name().contains("LEATHER"))
+                return false;
         }
         return true;
     }
@@ -79,7 +81,8 @@ public class ClassListener implements Listener
     {
         for (ItemStack item : armor)
         {
-            if (!item.getType().name().contains("GOLDEN")) return false;
+            if (!item.getType().name().contains("GOLDEN"))
+                return false;
         }
         return true;
     }
@@ -88,7 +91,8 @@ public class ClassListener implements Listener
     {
         for (ItemStack item : armor)
         {
-            if (!item.getType().name().contains("CHAINMAIL")) return false;
+            if (!item.getType().name().contains("CHAINMAIL"))
+                return false;
         }
         return true;
     }

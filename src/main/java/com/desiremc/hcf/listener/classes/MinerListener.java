@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
-public class RogueListener implements DesireClass
+public class MinerListener implements DesireClass
 {
 
     private Cache<UUID, Long> cooldown;
@@ -33,8 +33,4 @@ public class RogueListener implements DesireClass
         }, DesireHCF.getInstance());
     }
 
-    public static void caughtByBard(Player target)
-    {
-
-    }
 }
