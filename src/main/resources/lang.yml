@@ -34,6 +34,7 @@ pvp:
   target-protected: '&7That player has pvp disabled'
   damager-protected: '&7You have pvp disabled.'
   disabled: '&7You have disabled your pvp protection timer.'
+  already-disabled: '&7You have already disabled your pvp protection timer.'
 crowbar:
   new_crowbar: '&7You have recieved a crowbar.'
   not_yours: '&7You can''t break blocks in someone else''s faction.'

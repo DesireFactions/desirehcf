@@ -1,5 +1,6 @@
 package com.desiremc.hcf.commands;
 
+import com.desiremc.hcf.validator.PlayerHasSafeTimeLeft;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
@@ -18,6 +19,7 @@ public class PVPCommand extends ValidCommand
         super("pvp", "Disable your PVP timer.", Rank.GUEST, new String[] {});
 
         addValidator(new PlayerValidator());
+        addValidator(new PlayerHasSafeTimeLeft());
     }
 
     @Override
