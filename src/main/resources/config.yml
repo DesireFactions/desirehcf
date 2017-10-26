@@ -248,6 +248,7 @@ classes:
     speed:
       duration: 20
       amplifier: 4
+      cooldown: 60
     diamonds:
       100:
         - SPEED-1

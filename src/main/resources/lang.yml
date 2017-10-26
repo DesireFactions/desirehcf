@@ -67,3 +67,5 @@ classes:
   archer:
     hit: "You've been tagged by an Archer. You will now take increased Archer arrow damage."
     hit-off: "Your Archer tag is now over."
+    speed-ready: "Your speed effect is now ready."
+    speed-cd: "Your speed effect is on cooldown."

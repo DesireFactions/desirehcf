@@ -25,6 +25,7 @@ public class ArcherListener implements DesireClass
 {
 
     private Cache<UUID, Long> archerHit;
+    private Cache<UUID, Long> cooldown;
 
     @Override
     public void initialize()
@@ -39,6 +40,20 @@ public class ArcherListener implements DesireClass
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.archer.hit-off");
+                }
+            }
+        }, DesireHCF.getInstance());
+
+        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.speed.cooldown"), TimeUnit
+                .SECONDS, new RemovalListener<UUID, Long>()
+        {
+            @Override
+            public void onRemoval(RemovalNotification<UUID, Long> entry)
+            {
+                Player p = Bukkit.getPlayer(entry.getKey());
+                if (p != null)
+                {
+                    DesireHCF.getLangHandler().sendString(p, "classes.archer.speed-ready");
                 }
             }
         }, DesireHCF.getInstance());
@@ -103,11 +118,18 @@ public class ArcherListener implements DesireClass
         if (!session.getPvpClass().equals(PVPClass.ARCHER))
             return;
 
+        if(cooldown.get(p.getUniqueId()) != null)
+        {
+            DesireHCF.getLangHandler().sendString(p, "classes.archer.speed-cd");
+            return;
+        }
+
         PotionEffect effect = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger
                 ("classes.archer.speed.duration"),
                 DesireHCF.getConfigHandler().getInteger("classes.archer.speed.amplifier"));
 
         p.addPotionEffect(effect);
+        cooldown.put(p.getUniqueId(), System.currentTimeMillis());
 
     }
 }
