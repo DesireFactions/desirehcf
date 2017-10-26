@@ -80,7 +80,7 @@ public class ClassListener implements Listener
                     if(indexs.size() == 0)
                         return;
 
-                    for(String info : DesireHCF.getConfigHandler().getConfigurationSection("classes.archer.diamonds" + indexs.get(indexs.size() - 1)).getKeys(false))
+                    for(String info : DesireHCF.getConfigHandler().getStringList("classes.archer.diamonds" + indexs.get(indexs.size() - 1)))
                     {
                         PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info.split("-")[0]), Integer.MAX_VALUE, Integer.valueOf(info.split("-")[1]));
                         player.addPotionEffect(effect);
