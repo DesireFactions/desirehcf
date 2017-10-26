@@ -242,10 +242,29 @@ classes:
       range: 80
       remainder: 30
   archer:
-    default-multiplier: 2
-    ranged-divided: 10
-    non-archer-to-archer-reduction: 4
-    archer-to-archer-reduction: 1
+    range: 10
+    increase-percent: 1.20
+    hit-time: 30
+    speed:
+      duration: 20
+      amplifier: 4
+    diamonds:
+      100:
+        - SPEED-1
+      250:
+        - SPEED-1
+        - DAMAGE_RESISTANCE-1
+      500:
+        - SPEED-2
+        - DAMAGE_RESISTANCE-1
+      1000:
+        - SPEED-2
+        - DAMAGE_RESISTANCE-1
+        - FAST_DIGGING-3
+      2500:
+        - SPEED-2
+        - DAMAGE_RESISTANCE-2
+        - FAST_DIGGING-3
   rogue:
     invisible-length: 120
     uninvis-range: 10

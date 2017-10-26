@@ -3,6 +3,7 @@ package com.desiremc.hcf.listener.classes;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.PVPClass;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.event.ArmorEquipEvent;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -11,6 +12,9 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ClassListener implements Listener
 {
@@ -29,13 +33,7 @@ public class ClassListener implements Listener
 
         ItemStack helmet = inv.getHelmet();
 
-        if(session.getPvpClass().equals(PVPClass.MINER))
-        {
-            player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-            player.removePotionEffect(PotionEffectType.FAST_DIGGING);
-            player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
-            player.removePotionEffect(PotionEffectType.SPEED);
-        }
+        removePermanentEffects(session.getPvpClass(), player);
 
         switch (helmet.getType())
         {
@@ -49,6 +47,7 @@ public class ClassListener implements Listener
                 if (isArcher(inv.getArmorContents()))
                 {
                     session.setPvpClass(PVPClass.ARCHER);
+                    applyPermanentEffects(PVPClass.ARCHER, player);
                 }
                 break;
             case GOLD_HELMET:
@@ -67,11 +66,25 @@ public class ClassListener implements Listener
                 if (isMiner(inv.getArmorContents()))
                 {
                     session.setPvpClass(PVPClass.MINER);
+                    applyPermanentEffects(PVPClass.MINER, player);
 
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 2));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 1));
-                    player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
+                    List<Integer> indexs = new ArrayList<>();
+
+                    for(String temp : DesireHCF.getConfigHandler().getConfigurationSection("classes.archer.diamonds").getKeys(false))
+                    {
+                        indexs.add(Integer.valueOf(temp));
+                    }
+
+                    indexs.removeIf(integer -> integer > session.getDiamonds());
+
+                    if(indexs.size() == 0)
+                        return;
+
+                    for(String info : DesireHCF.getConfigHandler().getConfigurationSection("classes.archer.diamonds" + indexs.get(indexs.size() - 1)).getKeys(false))
+                    {
+                        PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info.split("-")[0]), Integer.MAX_VALUE, Integer.valueOf(info.split("-")[1]));
+                        player.addPotionEffect(effect);
+                    }
                 }
                 break;
         }
@@ -126,5 +139,58 @@ public class ClassListener implements Listener
                 return false;
         }
         return true;
+    }
+
+    private void applyPermanentEffects(PVPClass pvpClass, Player player)
+    {
+        switch (pvpClass)
+        {
+            case BARD:
+
+                break;
+            case MINER:
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 2));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
+                break;
+            case ROGUE:
+
+                break;
+            case ARCHER:
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 3));
+                break;
+            case DIAMOND:
+
+                break;
+        }
+    }
+
+    private void removePermanentEffects(PVPClass pvpClass, Player player)
+    {
+        switch (pvpClass)
+        {
+            case BARD:
+
+                break;
+            case MINER:
+                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                player.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                player.removePotionEffect(PotionEffectType.SPEED);
+                break;
+            case ROGUE:
+
+                break;
+            case ARCHER:
+                player.removePotionEffect(PotionEffectType.SPEED);
+                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                break;
+            case DIAMOND:
+
+                break;
+        }
     }
 }

@@ -64,3 +64,6 @@ classes:
     uninvis-over: "You can now go invisible again."
     shown: "You have been discovered. Your invisibility is gone."
     on-cooldown: "Your invisibility effect is on cooldown."
+  archer:
+    hit: "You've been tagged by an Archer. You will now take increased Archer arrow damage."
+    hit-off: "Your Archer tag is now over."
