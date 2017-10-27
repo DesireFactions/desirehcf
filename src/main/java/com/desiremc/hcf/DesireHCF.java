@@ -18,6 +18,15 @@ import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
+import com.desiremc.hcf.handler.BrewingSpeedHandler;
+import com.desiremc.hcf.handler.CombatLoggerHandler;
+import com.desiremc.hcf.handler.EnchantmentLimiterHandler;
+import com.desiremc.hcf.handler.EnderchestHandler;
+import com.desiremc.hcf.handler.EnderpearlHandler;
+import com.desiremc.hcf.handler.FurnaceSpeedHandler;
+import com.desiremc.hcf.handler.GappleHandler;
+import com.desiremc.hcf.handler.LootingBuffHandler;
+import com.desiremc.hcf.handler.PotionLimiterHandler;
 import com.desiremc.hcf.listener.classes.ArcherListener;
 import com.desiremc.hcf.listener.classes.ArmorListener;
 import com.desiremc.hcf.listener.ChatListener;
@@ -95,6 +104,16 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new BardListener());
         listenerManager.addListener(new MinerListener());
         listenerManager.addListener(new RogueListener());
+
+        listenerManager.addListener(new FurnaceSpeedHandler());
+        listenerManager.addListener(new EnderpearlHandler());
+        listenerManager.addListener(new GappleHandler());
+        listenerManager.addListener(new CombatLoggerHandler());
+        listenerManager.addListener(new EnderchestHandler());
+        listenerManager.addListener(new BrewingSpeedHandler());
+        listenerManager.addListener(new LootingBuffHandler());
+        listenerManager.addListener(new EnchantmentLimiterHandler());
+        listenerManager.addListener(new PotionLimiterHandler());
     }
 
     private void registerCommands()
