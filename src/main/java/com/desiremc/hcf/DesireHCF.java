@@ -18,8 +18,10 @@ import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
+import com.desiremc.hcf.listener.classes.ArcherListener;
 import com.desiremc.hcf.listener.classes.ArmorListener;
 import com.desiremc.hcf.listener.ChatListener;
+import com.desiremc.hcf.listener.classes.BardListener;
 import com.desiremc.hcf.listener.classes.ClassListener;
 import com.desiremc.hcf.listener.CombatListener;
 import com.desiremc.hcf.listener.ConnectionListener;
@@ -27,6 +29,8 @@ import com.desiremc.hcf.listener.CreatureSpawnListener;
 import com.desiremc.hcf.listener.CrowbarHandler;
 import com.desiremc.hcf.listener.InteractListener;
 import com.desiremc.hcf.listener.MovementListener;
+import com.desiremc.hcf.listener.classes.MinerListener;
+import com.desiremc.hcf.listener.classes.RogueListener;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.PlayerCache;
@@ -87,6 +91,10 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new CreatureSpawnListener());
         listenerManager.addListener(new ArmorListener(getConfigHandler().getStringList("blocked")));
         listenerManager.addListener(new ClassListener());
+        listenerManager.addListener(new ArcherListener());
+        listenerManager.addListener(new BardListener());
+        listenerManager.addListener(new MinerListener());
+        listenerManager.addListener(new RogueListener());
     }
 
     private void registerCommands()
