@@ -19,6 +19,7 @@ import com.desiremc.hcf.session.RegionHandler;
 public class MovementListener implements Listener
 {
 
+    @SuppressWarnings("deprecation")
     @EventHandler
     public void onMove(PlayerMoveEvent e)
     {
