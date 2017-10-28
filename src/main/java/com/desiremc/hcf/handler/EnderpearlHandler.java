@@ -41,7 +41,7 @@ public class EnderpearlHandler implements Listener
 
         }, DesireHCF.getInstance());
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(DesireHCF.getInstance(), new Runnable()
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
