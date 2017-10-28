@@ -33,7 +33,10 @@ public class ClassListener implements Listener
 
         ItemStack helmet = inv.getHelmet();
 
-        removePermanentEffects(session.getPvpClass(), player);
+        if(session.getPvpClass() != null)
+        {
+            removePermanentEffects(session.getPvpClass(), player);
+        }
 
         switch (helmet.getType())
         {
