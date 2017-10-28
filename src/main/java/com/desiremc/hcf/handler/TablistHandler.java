@@ -56,7 +56,14 @@ public class TablistHandler implements Listener
         for (FPlayer fp : FactionsUtils.getOnlineFPlayers())
         {
             entry = tab.getEntry(i / 20, i % 20);
-            entry.setText((fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName()).send();
+            if (entry == null)
+            {
+                Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new WhyDoTablistsHaveToSuckSoMuch(user, fp, i), 60l);
+            }
+            else
+            {
+                entry.setText((fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName()).setSkin(fp.getPlayer().getName()).send();
+            }
             i++;
         }
     }
@@ -64,6 +71,28 @@ public class TablistHandler implements Listener
     private void applyFactions(Player player)
     {
         applyClassic(player);
+    }
+
+    private static class WhyDoTablistsHaveToSuckSoMuch implements Runnable
+    {
+        private FPlayer user;
+        private FPlayer fp;
+        private int i;
+
+        public WhyDoTablistsHaveToSuckSoMuch(FPlayer user, FPlayer fp, int i)
+        {
+            this.fp = fp;
+            this.user = user;
+            this.i = i;
+        }
+
+        public void run()
+        {
+            Tab tab = Tab.getByPlayer(user.getPlayer());
+            tab.assemble();
+            Entry entry = tab.getEntry(i / 20, i % 20);
+            entry.setText((fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName()).send();
+        }
     }
 
 }
