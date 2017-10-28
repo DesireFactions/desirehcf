@@ -30,8 +30,7 @@ public class ArcherListener implements DesireClass
     @Override
     public void initialize()
     {
-        archerHit = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.hit-time"), TimeUnit
-                .SECONDS, new RemovalListener<UUID, Long>()
+        archerHit = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.hit-time"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -44,8 +43,7 @@ public class ArcherListener implements DesireClass
             }
         }, DesireHCF.getInstance());
 
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.speed.cooldown"), TimeUnit
-                .SECONDS, new RemovalListener<UUID, Long>()
+        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.speed.cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -81,20 +79,23 @@ public class ArcherListener implements DesireClass
         Player target = (Player) event.getEntity();
         Player source = (Player) pj.getShooter();
 
+        HCFSession sourceSession = HCFSessionHandler.getHCFSession(source.getUniqueId());
+
+        if (!PVPClass.ARCHER.equals(sourceSession.getPvpClass()))
+        {
+            return;
+        }
+
         int range = DesireHCF.getConfigHandler().getInteger("classes.archer.range");
 
         if (source.getLocation().distanceSquared(target.getLocation()) < (range * range))
+        {
             return;
-
-        HCFSession sourceSession = HCFSessionHandler.getHCFSession(source.getUniqueId());
-
-        if (!sourceSession.getPvpClass().equals(PVPClass.ARCHER))
-            return;
+        }
 
         if (archerHit.get(target.getUniqueId()) != null)
         {
-            event.setDamage(event.getDamage() * DesireHCF.getConfigHandler().getDouble("classes.archer" +
-                    ".increase-percent"));
+            event.setDamage(event.getDamage() * DesireHCF.getConfigHandler().getDouble("classes.archer.increase-percent"));
         }
         else
         {
@@ -115,17 +116,16 @@ public class ArcherListener implements DesireClass
 
         HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
 
-        if (!session.getPvpClass().equals(PVPClass.ARCHER))
+        if (!PVPClass.ARCHER.equals(session.getPvpClass()))
             return;
 
-        if(cooldown.get(p.getUniqueId()) != null)
+        if (cooldown.get(p.getUniqueId()) != null)
         {
             DesireHCF.getLangHandler().sendString(p, "classes.archer.speed-cd");
             return;
         }
 
-        PotionEffect effect = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger
-                ("classes.archer.speed.duration"),
+        PotionEffect effect = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger("classes.archer.speed.duration"),
                 DesireHCF.getConfigHandler().getInteger("classes.archer.speed.amplifier"));
 
         p.addPotionEffect(effect);

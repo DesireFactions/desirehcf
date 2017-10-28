@@ -22,7 +22,7 @@ public class MinerListener implements DesireClass
         Player p = event.getPlayer();
         HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
 
-        if (!session.getPvpClass().equals(PVPClass.MINER))
+        if (!PVPClass.MINER.equals(session.getPvpClass()))
             return;
 
         if (!event.getBlock().getType().equals(Material.DIAMOND_ORE))

@@ -1,5 +1,15 @@
 package com.desiremc.hcf.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.session.FactionSession;
@@ -10,13 +20,7 @@ import com.massivecraft.factions.FPlayer;
 import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
+import com.massivecraft.factions.struct.Relation;
 
 public class FactionsUtils
 {
@@ -64,7 +68,7 @@ public class FactionsUtils
 
         if (isNone(f))
         {
-            return new String[]{
+            return new String[] {
                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "NO FACTION"
             };
         }
@@ -72,13 +76,11 @@ public class FactionsUtils
         {
             FactionSession fSession = FactionSessionHandler.getFactionSession(f.getTag());
 
-            return new String[]{
+            return new String[] {
                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
                     ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getTag() : "NONE"),
-                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() :
-                            "NONE"),
-                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ?
-                            fSession.getTrophies() : "---")
+                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() : "NONE"),
+                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "---")
             };
         }
     }
@@ -135,6 +137,38 @@ public class FactionsUtils
         }
 
         return inRange;
+    }
+
+    public static Collection<FPlayer> getOnlineFPlayers()
+    {
+        LinkedList<FPlayer> online = new LinkedList<>();
+        for (Player p : Bukkit.getOnlinePlayers())
+        {
+            online.add(getFPlayer(p));
+        }
+        return online;
+    }
+
+    public static FPlayer getFPlayer(Player p)
+    {
+        return FPlayers.getInstance().getByPlayer(p);
+    }
+
+    public static ChatColor getRelationshipColor(Relation r)
+    {
+        switch (r)
+        {
+            case ALLY:
+                return ChatColor.LIGHT_PURPLE;
+            case NEUTRAL:
+                return ChatColor.YELLOW;
+            case ENEMY:
+                return ChatColor.RED;
+            case MEMBER:
+                return ChatColor.GREEN;
+            default:
+                return ChatColor.WHITE;
+        }
     }
 
 }
