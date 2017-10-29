@@ -1,18 +1,5 @@
 package com.desiremc.hcf.handler;
 
-import java.util.UUID;
-import java.util.concurrent.Callable;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -26,6 +13,18 @@ import com.desiremc.npc.NPCPlayerHelper;
 import com.desiremc.npc.NPCRegistry;
 import com.desiremc.npc.events.NPCDespawnEvent;
 import com.desiremc.npc.events.NPCDespawnEvent.NPCDespawnReason;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 public class CombatLoggerHandler implements Listener
 {
@@ -43,6 +42,12 @@ public class CombatLoggerHandler implements Listener
             {
                 for (UUID uuid : TagHandler.getTaggedPlayers())
                 {
+
+                    if(TagHandler.getTagTime(uuid) == null)
+                    {
+                        TagHandler.clearTag(uuid);
+                    }
+
                     EntryRegistry.getInstance().setValue(Bukkit.getPlayer(uuid), DesireHCF.getLangHandler().getString("tag.scoreboard"),
                             String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
                 }

@@ -1,15 +1,5 @@
 package com.desiremc.hcf.barrier;
 
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.utils.cache.Cache;
 import com.desiremc.core.utils.cache.RemovalListener;
@@ -17,6 +7,15 @@ import com.desiremc.core.utils.cache.RemovalNotification;
 import com.desiremc.core.utils.cache.RemovalNotification.Cause;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.npc.SafeLogoutTask;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class TagHandler
 {
@@ -29,7 +28,7 @@ public class TagHandler
 
     public static void initialize()
     {
-        tags = new Cache<UUID, Long>(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        tags = new Cache<>(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -43,7 +42,7 @@ public class TagHandler
             }
         }, DesireHCF.getInstance());
 
-        history = new Cache<UUID, Tag>(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS, DesireHCF.getInstance());
+        history = new Cache<>(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS, DesireHCF.getInstance());
 
         Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
         {
