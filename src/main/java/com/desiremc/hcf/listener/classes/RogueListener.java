@@ -114,16 +114,27 @@ public class RogueListener implements DesireClass
     public void onRightClick(PlayerInteractEvent event)
     {
         if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
+        {
             return;
+        }
 
-        if (event.getItem().getType() != Material.EYE_OF_ENDER)
+        if(event.getItem() == null || event.getItem().getType() == Material.AIR)
+        {
             return;
+        }
+
+        if(event.getItem().getType() != Material.EYE_OF_ENDER)
+        {
+            return;
+        }
 
         Player p = event.getPlayer();
         HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
 
         if (!session.getPvpClass().equals(PVPClass.ROGUE))
+        {
             return;
+        }
 
         if (invisCooldown.get(p.getUniqueId()) != null)
         {

@@ -34,6 +34,6 @@ public class LivesAPI
         session.addLives(amount);
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.add", "{amount}", strAmount, "{player}", targetName);
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.recieved", "{amount}", strAmount, "{sender}", senderName);
+        DesireHCF.getLangHandler().sendRenderMessage(target, "lives.recieved", "{amount}", strAmount, "{sender}", senderName);
     }
 }

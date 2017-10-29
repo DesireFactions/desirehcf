@@ -33,7 +33,7 @@ public class ClassListener implements Listener
 
         ItemStack helmet = inv.getHelmet();
 
-        if(session.getPvpClass() != null)
+        if (session.getPvpClass() != null)
         {
             removePermanentEffects(session.getPvpClass(), player);
         }
@@ -73,19 +73,22 @@ public class ClassListener implements Listener
 
                     List<Integer> indexs = new ArrayList<>();
 
-                    for(String temp : DesireHCF.getConfigHandler().getConfigurationSection("classes.archer.diamonds").getKeys(false))
+                    for (String temp : DesireHCF.getConfigHandler().getConfigurationSection("classes.archer" +
+                            ".diamonds").getKeys(false))
                     {
                         indexs.add(Integer.valueOf(temp));
                     }
 
                     indexs.removeIf(integer -> integer > session.getDiamonds());
 
-                    if(indexs.size() == 0)
+                    if (indexs.size() == 0)
                         return;
 
-                    for(String info : DesireHCF.getConfigHandler().getStringList("classes.archer.diamonds" + indexs.get(indexs.size() - 1)))
+                    for (String info : DesireHCF.getConfigHandler().getStringList("classes.archer.diamonds" + indexs
+                            .get(indexs.size() - 1)))
                     {
-                        PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info.split("-")[0]), Integer.MAX_VALUE, Integer.valueOf(info.split("-")[1]));
+                        PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info.split("-")[0]),
+                                Integer.MAX_VALUE, Integer.valueOf(info.split("-")[1]));
                         player.addPotionEffect(effect);
                     }
                 }
