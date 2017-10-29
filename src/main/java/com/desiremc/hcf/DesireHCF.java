@@ -7,7 +7,7 @@ import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.commands.UnbanCommand;
 import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.session.HCFSessionHandler;
-import com.desiremc.core.session.StaffHandler;
+import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.commands.CrowbarCommand;
 import com.desiremc.hcf.commands.EnderChestCommand;

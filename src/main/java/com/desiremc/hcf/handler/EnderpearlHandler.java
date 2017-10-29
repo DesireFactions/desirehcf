@@ -36,7 +36,7 @@ public class EnderpearlHandler implements Listener
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "enderpearl.ended");
-                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getString("enderpearl.scoreboard"));
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("enderpearl.scoreboard"));
                 }
             }
 
