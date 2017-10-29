@@ -19,6 +19,7 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.npc.SafeLogoutTask;
+import com.desiremc.npc.HumanNPC;
 import com.desiremc.npc.NPC;
 import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCPlayerHelper;
@@ -76,9 +77,15 @@ public class CombatLoggerHandler implements Listener
             int tagDistance = DesireHCF.getConfigHandler().getInteger("tag.distance");
             for (Player p : Bukkit.getOnlinePlayers())
             {
+                if (p == player)
+                {
+                    continue;
+                }
                 if (p.getLocation().distanceSquared(player.getLocation()) <= (tagDistance * tagDistance))
                 {
-                    reg.createHumanNPC(uuid, player.getName()).spawn(player.getLocation());
+                    HumanNPC npc = reg.createHumanNPC(uuid, player.getName());
+                    npc.setSkin(uuid);
+                    npc.spawn(player.getLocation());
                     break;
                 }
             }
@@ -95,7 +102,7 @@ public class CombatLoggerHandler implements Listener
         DesireHCF.getInstance().getPlayerCache().addPlayer(player);
 
         NPC npc = reg.getByUUID(event.getPlayer().getUniqueId());
-        if (npc != null)
+        if (npc != null && npc.isSpawned())
         {
             npc.despawn(NPCDespawnReason.DESPAWN);
         }
