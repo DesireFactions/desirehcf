@@ -24,7 +24,7 @@ region:
 enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
-  scoreboard: "&7Enderpearl Timer"
+  scoreboard: '&5&lEnderpearl'
 lives:
   add: You have added &c{amount}&7 lives to {player}
   remove: You have removed &c{amount}&7 lives to {player}

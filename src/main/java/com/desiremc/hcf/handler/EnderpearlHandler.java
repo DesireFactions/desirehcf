@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -39,20 +40,9 @@ public class EnderpearlHandler implements Listener
                 }
             }
 
-        }, DesireHCF.getInstance());
+        }, DesireHCF.getInstance(), true);
 
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(DesireHCF.getInstance(), new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                for (UUID uuid : history.keySet())
-                {
-                    Player p = Bukkit.getPlayer(uuid);
-                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getString("enderpearl.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - history.get(uuid)) / 1000)));
-                }
-            }
-        }, 0, 10);
+        Bukkit.getScheduler().runTask(DesireHCF.getInstance(), new EnderpearlUpdater());
     }
 
     @EventHandler
@@ -80,6 +70,23 @@ public class EnderpearlHandler implements Listener
                 DesireHCF.getLangHandler().sendRenderMessage(p, "enderpearl.message", "{time}", String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
             }
         }
+    }
+
+    private class EnderpearlUpdater implements Runnable
+    {
+
+        @Override
+        public void run()
+        {
+            for (Entry<UUID, Long> entry : history.entrySet())
+            {
+                Player p = Bukkit.getPlayer(entry.getKey());
+                EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("enderpearl.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
+            }
+            Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), this, 10);
+
+        }
+
     }
 
 }

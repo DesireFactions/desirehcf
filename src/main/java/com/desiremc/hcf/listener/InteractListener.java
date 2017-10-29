@@ -7,30 +7,33 @@ import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.desiremc.core.session.StaffHandler;
 
-public class InteractListener implements Listener {
+public class InteractListener implements Listener
+{
 
     private static final StaffHandler STAFF = StaffHandler.getInstance();
 
     @EventHandler
-    public void onInteract(PlayerInteractEvent e) {
-        // TODO uncomment debug code
-        // e.getPlayer().sendMessage(STAFF.runningCPSTests() ? "t - turn off
-        // your debug when you push" : "f - turn off your debug when you push");
+    public void onInteract(PlayerInteractEvent e)
+    {
 
-        if (STAFF.inStaffMode(e.getPlayer())) {
-            STAFF.playerInteract(e);
+        if (STAFF.inStaffMode(e.getPlayer()))
+        {
+            //STAFF.playerInteract(e);
         }
 
-        if (STAFF.runningCPSTests()) {
+        if (STAFF.runningCPSTests())
+        {
             STAFF.handleCPSTest(e);
         }
-        
+
     }
 
     @EventHandler
-    public void onInteractEntity(PlayerInteractEntityEvent e) {
-        if (STAFF.inStaffMode(e.getPlayer())) {
-            STAFF.playerInteractEntity(e);
+    public void onInteractEntity(PlayerInteractEntityEvent e)
+    {
+        if (STAFF.inStaffMode(e.getPlayer()))
+        {
+            //STAFF.playerInteractEntity(e);
         }
     }
 
