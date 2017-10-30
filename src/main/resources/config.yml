@@ -249,6 +249,16 @@ classes:
       duration: 20
       amplifier: 4
       cooldown: 60
+  rogue:
+    invisible-length: 120
+    uninvis-range: 10
+    uninvis-timer: 30
+    back-stab-amount:
+      archer: 2
+      bard: 2
+      rogue: 2
+      diamond: 4
+  miner:
     diamonds:
       100:
         - SPEED-1
@@ -266,12 +276,3 @@ classes:
         - SPEED-2
         - DAMAGE_RESISTANCE-2
         - FAST_DIGGING-3
-  rogue:
-    invisible-length: 120
-    uninvis-range: 10
-    uninvis-timer: 30
-    back-stab-amount:
-      archer: 2
-      bard: 2
-      rogue: 2
-      diamond: 4
