@@ -6,6 +6,7 @@ import com.desiremc.core.session.PVPClass;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.event.ArmorEquipEvent;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -44,6 +45,11 @@ public class ClassListener implements Listener
             removePermanentEffects(session.getPvpClass(), player);
         }
 
+        if (item == null || item.getType().equals(Material.AIR))
+        {
+            session.setPvpClass(null);
+            return;
+        }
         switch (item.getType().name().split("_")[0])
         {
             case "DIAMOND":
@@ -93,7 +99,6 @@ public class ClassListener implements Listener
                     for (String info : DesireHCF.getConfigHandler().getStringList("classes.miner.diamonds" + indexs
                             .get(indexs.size() - 1)))
                     {
-                        Bukkit.broadcastMessage(info);
                         PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info.split("-")[0]),
                                 Integer.MAX_VALUE, Integer.valueOf(info.split("-")[1]));
                         player.addPotionEffect(effect);
@@ -109,7 +114,9 @@ public class ClassListener implements Listener
         for (ItemStack item : armor)
         {
             if (!item.getType().name().contains("DIAMOND"))
+            {
                 return false;
+            }
         }
         return true;
     }
@@ -119,7 +126,9 @@ public class ClassListener implements Listener
         for (ItemStack item : armor)
         {
             if (!item.getType().name().contains("LEATHER"))
+            {
                 return false;
+            }
         }
         return true;
     }
@@ -128,8 +137,10 @@ public class ClassListener implements Listener
     {
         for (ItemStack item : armor)
         {
-            if (!item.getType().name().contains("GOLDEN"))
+            if (!item.getType().name().contains("GOLD"))
+            {
                 return false;
+            }
         }
         return true;
     }
@@ -139,7 +150,9 @@ public class ClassListener implements Listener
         for (ItemStack item : armor)
         {
             if (!item.getType().name().contains("CHAINMAIL"))
+            {
                 return false;
+            }
         }
         return true;
     }
@@ -149,7 +162,9 @@ public class ClassListener implements Listener
         for (ItemStack item : armor)
         {
             if (!item.getType().name().contains("IRON"))
+            {
                 return false;
+            }
         }
         return true;
     }

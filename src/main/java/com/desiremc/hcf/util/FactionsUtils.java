@@ -1,15 +1,5 @@
 package com.desiremc.hcf.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.session.FactionSession;
@@ -21,6 +11,15 @@ import com.massivecraft.factions.FPlayers;
 import com.massivecraft.factions.Faction;
 import com.massivecraft.factions.Factions;
 import com.massivecraft.factions.struct.Relation;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 public class FactionsUtils
 {
@@ -110,7 +109,7 @@ public class FactionsUtils
 
             if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
             {
-                inRange.add(player);
+                inRange.add(p);
             }
         }
 
@@ -132,7 +131,7 @@ public class FactionsUtils
 
             if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
             {
-                inRange.add(player);
+                inRange.add(p);
             }
         }
 

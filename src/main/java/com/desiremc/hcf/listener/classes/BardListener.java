@@ -26,10 +26,16 @@ public class BardListener implements DesireClass
     private Cache<UUID, Long> cooldown;
     private Cache<UUID, Long> timedEffects;
 
+    public BardListener()
+    {
+        initialize();
+    }
+
     @Override
     public void initialize()
     {
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.instant-cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.instant-cooldown"), TimeUnit
+                .SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -42,7 +48,8 @@ public class BardListener implements DesireClass
             }
         }, DesireHCF.getInstance());
 
-        timedEffects = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.frequency"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        timedEffects = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.frequency"), TimeUnit
+                .SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -73,17 +80,19 @@ public class BardListener implements DesireClass
             DesireHCF.getLangHandler().sendString(p, "classes.bard.on-cooldown");
             return;
         }
-
         switch (p.getItemInHand().getType())
         {
             case SPECKLED_MELON:
-                healInRange(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.bard.distance")));
+                healInRange(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
+                        ("classes.bard.distance")));
                 break;
             case WHEAT:
-                feedInRange(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.bard.distance")));
+                feedInRange(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
+                        ("classes.bard.distance")));
                 break;
             case EYE_OF_ENDER:
-                showAllRogues(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.bard.rouge-finder.range")));
+                showAllRogues(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
+                        ("classes.bard.rouge-finder.range")));
                 break;
         }
 
@@ -103,7 +112,6 @@ public class BardListener implements DesireClass
 
         if (timedEffects.get(p.getUniqueId()) != null || cooldown.get(p.getUniqueId()) != null)
         {
-            DesireHCF.getLangHandler().sendString(p, "classes.bard.on-cooldown");
             return;
         }
 
@@ -115,7 +123,8 @@ public class BardListener implements DesireClass
         switch (p.getItemInHand().getType())
         {
             case BLAZE_ROD:
-                applyStrength(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.bard.distance")));
+                applyStrength(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
+                        ("classes.bard.distance")));
                 timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
                 break;
             case GHAST_TEAR:
