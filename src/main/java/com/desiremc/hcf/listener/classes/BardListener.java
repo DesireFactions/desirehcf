@@ -200,7 +200,7 @@ public class BardListener implements DesireClass
             PotionEffect strength = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, DesireHCF.getConfigHandler()
                     .getInteger("classes.bard.duration") * 20,
                     DesireHCF.getConfigHandler()
-                            .getInteger("classes.bard.timed-effect-strength.strength"));
+                            .getInteger("classes.bard.timed-effect-strength.strength") - 1);
             target.addPotionEffect(strength);
         }
     }
@@ -212,7 +212,7 @@ public class BardListener implements DesireClass
             PotionEffect regen = new PotionEffect(PotionEffectType.REGENERATION, DesireHCF.getConfigHandler()
                     .getInteger("classes.bard.duration") * 20,
                     DesireHCF.getConfigHandler()
-                            .getInteger("classes.bard.timed-effect-strength.regen"));
+                            .getInteger("classes.bard.timed-effect-strength.regen") - 1);
             target.addPotionEffect(regen);
         }
     }
@@ -224,7 +224,7 @@ public class BardListener implements DesireClass
             PotionEffect fire = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, DesireHCF.getConfigHandler()
                     .getInteger("classes.bard.duration") * 20,
                     DesireHCF.getConfigHandler()
-                            .getInteger("classes.bard.timed-effect-strength.fire"));
+                            .getInteger("classes.bard.timed-effect-strength.fire") - 1);
             target.addPotionEffect(fire);
         }
     }
@@ -236,7 +236,7 @@ public class BardListener implements DesireClass
             PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler()
                     .getInteger("classes.bard.duration") * 20,
                     DesireHCF.getConfigHandler()
-                            .getInteger("classes.bard.timed-effect-strength.speed"));
+                            .getInteger("classes.bard.timed-effect-strength.speed") - 1);
             target.addPotionEffect(speed);
         }
     }

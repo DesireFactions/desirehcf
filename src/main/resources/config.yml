@@ -261,18 +261,18 @@ classes:
   miner:
     diamonds:
       100:
-        - SPEED-1
+        - SPEED-2
       250:
-        - SPEED-1
+        - SPEED-2
         - DAMAGE_RESISTANCE-1
       500:
-        - SPEED-2
+        - SPEED-3
         - DAMAGE_RESISTANCE-1
       1000:
-        - SPEED-2
+        - SPEED-3
         - DAMAGE_RESISTANCE-1
         - FAST_DIGGING-3
       2500:
-        - SPEED-2
+        - SPEED-3
         - DAMAGE_RESISTANCE-2
         - FAST_DIGGING-3

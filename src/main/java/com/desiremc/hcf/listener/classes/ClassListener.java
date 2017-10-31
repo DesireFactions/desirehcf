@@ -105,7 +105,7 @@ public class ClassListener implements Listener
                     {
                         Bukkit.broadcastMessage(info);
                         PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info.split("-")[0]),
-                                Integer.MAX_VALUE, Integer.valueOf(info.split("-")[1])-1);
+                                Integer.MAX_VALUE, Integer.valueOf(info.split("-")[1]) - 1);
                         player.addPotionEffect(effect);
                     }
                 }
