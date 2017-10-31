@@ -110,39 +110,38 @@ public class BardListener implements DesireClass
             return;
         }
 
-        if (timedEffects.get(p.getUniqueId()) != null || cooldown.get(p.getUniqueId()) != null)
-        {
-            return;
-        }
-
         applyEffect(p);
     }
 
     private void applyEffect(Player p)
     {
+        if (timedEffects.get(p.getUniqueId()) != null || cooldown.get(p.getUniqueId()) != null)
+        {
+            return;
+        }
+
         switch (p.getItemInHand().getType())
         {
             case BLAZE_ROD:
                 applyStrength(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
                         ("classes.bard.distance")));
-                timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
                 break;
             case GHAST_TEAR:
                 applyRegen(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes" +
                         ".bard.distance")));
-                timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
                 break;
             case MAGMA_CREAM:
                 applyFire(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes" +
                         ".bard.distance")));
-                timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
                 break;
             case SUGAR:
                 applySpeed(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes" +
                         ".bard.distance")));
-                timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
                 break;
+            default:
+                return;
         }
+        timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
     }
 
     private void healInRange(List<Player> players)
@@ -199,7 +198,7 @@ public class BardListener implements DesireClass
         for (Player target : players)
         {
             PotionEffect strength = new PotionEffect(PotionEffectType.INCREASE_DAMAGE, DesireHCF.getConfigHandler()
-                    .getInteger("classes.bard.duration"),
+                    .getInteger("classes.bard.duration") * 20,
                     DesireHCF.getConfigHandler()
                             .getInteger("classes.bard.timed-effect-strength.strength"));
             target.addPotionEffect(strength);
@@ -211,7 +210,7 @@ public class BardListener implements DesireClass
         for (Player target : players)
         {
             PotionEffect regen = new PotionEffect(PotionEffectType.REGENERATION, DesireHCF.getConfigHandler()
-                    .getInteger("classes.bard.duration"),
+                    .getInteger("classes.bard.duration") * 20,
                     DesireHCF.getConfigHandler()
                             .getInteger("classes.bard.timed-effect-strength.regen"));
             target.addPotionEffect(regen);
@@ -223,7 +222,7 @@ public class BardListener implements DesireClass
         for (Player target : players)
         {
             PotionEffect fire = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, DesireHCF.getConfigHandler()
-                    .getInteger("classes.bard.duration"),
+                    .getInteger("classes.bard.duration") * 20,
                     DesireHCF.getConfigHandler()
                             .getInteger("classes.bard.timed-effect-strength.fire"));
             target.addPotionEffect(fire);
@@ -235,7 +234,7 @@ public class BardListener implements DesireClass
         for (Player target : players)
         {
             PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler()
-                    .getInteger("classes.bard.duration"),
+                    .getInteger("classes.bard.duration") * 20,
                     DesireHCF.getConfigHandler()
                             .getInteger("classes.bard.timed-effect-strength.speed"));
             target.addPotionEffect(speed);

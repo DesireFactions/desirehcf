@@ -227,7 +227,7 @@ blocked:
 classes:
   bard:
     distance: 10
-    duration: 6
+    duration: 12
     frequency: 5
     instant-cooldown: 30
     timed-effect-strength:

@@ -89,18 +89,23 @@ public class ClassListener implements Listener
                             ".diamonds").getKeys(false))
                     {
                         indexs.add(Integer.valueOf(temp));
+                        Bukkit.broadcastMessage(temp);
                     }
 
                     indexs.removeIf(integer -> integer > session.getDiamonds());
 
                     if (indexs.size() == 0)
+                    {
+                        Bukkit.broadcastMessage("test");
                         return;
+                    }
 
                     for (String info : DesireHCF.getConfigHandler().getStringList("classes.miner.diamonds" + indexs
                             .get(indexs.size() - 1)))
                     {
+                        Bukkit.broadcastMessage(info);
                         PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info.split("-")[0]),
-                                Integer.MAX_VALUE, Integer.valueOf(info.split("-")[1]));
+                                Integer.MAX_VALUE, Integer.valueOf(info.split("-")[1])-1);
                         player.addPotionEffect(effect);
                     }
                 }
@@ -177,10 +182,10 @@ public class ClassListener implements Listener
 
                 break;
             case MINER:
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 1));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 2));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 1));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
                 break;
             case ROGUE:
 
