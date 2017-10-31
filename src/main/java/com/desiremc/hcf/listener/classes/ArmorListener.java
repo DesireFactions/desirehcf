@@ -55,7 +55,7 @@ public class ArmorListener implements Listener
         if (e.getSlotType() != SlotType.ARMOR && e.getSlotType() != SlotType.QUICKBAR && e.getSlotType() != SlotType
                 .CONTAINER)
             return;
-        if (e.getInventory() != null && !e.getInventory().getType().equals(InventoryType.PLAYER))
+        if (e.getInventory() != null && !e.getInventory().getType().equals(InventoryType.CRAFTING))
             return;
         if (!e.getInventory().getType().equals(InventoryType.CRAFTING) && !e.getInventory().getType().equals
                 (InventoryType.PLAYER))

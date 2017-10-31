@@ -227,7 +227,7 @@ blocked:
 classes:
   bard:
     distance: 10
-    duration: 6
+    duration: 12
     frequency: 5
     instant-cooldown: 30
     timed-effect-strength:
@@ -249,23 +249,6 @@ classes:
       duration: 20
       amplifier: 4
       cooldown: 60
-    diamonds:
-      100:
-        - SPEED-1
-      250:
-        - SPEED-1
-        - DAMAGE_RESISTANCE-1
-      500:
-        - SPEED-2
-        - DAMAGE_RESISTANCE-1
-      1000:
-        - SPEED-2
-        - DAMAGE_RESISTANCE-1
-        - FAST_DIGGING-3
-      2500:
-        - SPEED-2
-        - DAMAGE_RESISTANCE-2
-        - FAST_DIGGING-3
   rogue:
     invisible-length: 120
     uninvis-range: 10
@@ -275,3 +258,21 @@ classes:
       bard: 2
       rogue: 2
       diamond: 4
+  miner:
+    diamonds:
+      100:
+        - SPEED-2
+      250:
+        - SPEED-2
+        - DAMAGE_RESISTANCE-1
+      500:
+        - SPEED-3
+        - DAMAGE_RESISTANCE-1
+      1000:
+        - SPEED-3
+        - DAMAGE_RESISTANCE-1
+        - FAST_DIGGING-3
+      2500:
+        - SPEED-3
+        - DAMAGE_RESISTANCE-2
+        - FAST_DIGGING-3
