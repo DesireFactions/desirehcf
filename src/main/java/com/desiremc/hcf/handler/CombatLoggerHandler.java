@@ -1,18 +1,8 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.npc.SafeLogoutTask;
-import com.desiremc.npc.HumanNPC;
-import com.desiremc.npc.NPC;
-import com.desiremc.npc.NPCLib;
-import com.desiremc.npc.NPCPlayerHelper;
-import com.desiremc.npc.NPCRegistry;
-import com.desiremc.npc.events.NPCDespawnEvent;
-import com.desiremc.npc.events.NPCDespawnEvent.NPCDespawnReason;
+import java.util.UUID;
+import java.util.concurrent.Callable;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -23,8 +13,20 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.UUID;
-import java.util.concurrent.Callable;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.npc.SafeLogoutTask;
+import com.desiremc.npc.HumanNPC;
+import com.desiremc.npc.NPC;
+import com.desiremc.npc.NPCLib;
+import com.desiremc.npc.NPCPlayerHelper;
+import com.desiremc.npc.NPCRegistry;
+import com.desiremc.npc.events.NPCDespawnEvent;
+import com.desiremc.npc.events.NPCDespawnEvent.NPCDespawnReason;
 
 public class CombatLoggerHandler implements Listener
 {
@@ -43,13 +45,12 @@ public class CombatLoggerHandler implements Listener
                 for (UUID uuid : TagHandler.getTaggedPlayers())
                 {
 
-                    if(TagHandler.getTagTime(uuid) == null)
+                    if (TagHandler.getTagTime(uuid) == null)
                     {
                         TagHandler.clearTag(uuid);
                     }
 
-                    EntryRegistry.getInstance().setValue(Bukkit.getPlayer(uuid), DesireHCF.getLangHandler().getString("tag.scoreboard"),
-                            String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
+                    EntryRegistry.getInstance().setValue(PlayerUtils.getPlayer(uuid), DesireHCF.getLangHandler().getString("tag.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
                 }
             }
         }, 0, 10);

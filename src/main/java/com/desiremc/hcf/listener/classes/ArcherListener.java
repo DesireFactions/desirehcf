@@ -1,13 +1,8 @@
 package com.desiremc.hcf.listener.classes;
 
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.utils.cache.Cache;
-import com.desiremc.core.utils.cache.RemovalListener;
-import com.desiremc.core.utils.cache.RemovalNotification;
-import com.desiremc.hcf.DesireHCF;
-import org.bukkit.Bukkit;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
@@ -18,8 +13,14 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import com.desiremc.core.session.HCFSession;
+import com.desiremc.core.session.HCFSessionHandler;
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
+import com.desiremc.hcf.DesireHCF;
 
 public class ArcherListener implements DesireClass
 {
@@ -41,7 +42,7 @@ public class ArcherListener implements DesireClass
                     @Override
                     public void onRemoval(RemovalNotification<UUID, Long> entry)
                     {
-                        Player p = Bukkit.getPlayer(entry.getKey());
+                        Player p = PlayerUtils.getPlayer(entry.getKey());
                         if (p != null)
                         {
                             DesireHCF.getLangHandler().sendString(p, "classes.archer.hit-off");
@@ -49,13 +50,12 @@ public class ArcherListener implements DesireClass
                     }
                 }, DesireHCF.getInstance());
 
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.speed.cooldown"), TimeUnit
-                .SECONDS, new RemovalListener<UUID, Long>()
+        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.speed.cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
             {
-                Player p = Bukkit.getPlayer(entry.getKey());
+                Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.archer.speed-ready");
@@ -141,8 +141,7 @@ public class ArcherListener implements DesireClass
             return;
         }
 
-        PotionEffect effect = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger
-                ("classes.archer.speed.duration"),
+        PotionEffect effect = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger("classes.archer.speed.duration"),
                 DesireHCF.getConfigHandler().getInteger("classes.archer.speed.amplifier"));
 
         p.addPotionEffect(effect);

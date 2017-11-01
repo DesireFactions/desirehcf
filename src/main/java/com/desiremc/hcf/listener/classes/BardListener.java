@@ -1,14 +1,9 @@
 package com.desiremc.hcf.listener.classes;
 
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.utils.cache.Cache;
-import com.desiremc.core.utils.cache.RemovalListener;
-import com.desiremc.core.utils.cache.RemovalNotification;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.util.FactionsUtils;
-import org.bukkit.Bukkit;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -16,9 +11,15 @@ import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import com.desiremc.core.session.HCFSession;
+import com.desiremc.core.session.HCFSessionHandler;
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.util.FactionsUtils;
 
 public class BardListener implements DesireClass
 {
@@ -34,13 +35,12 @@ public class BardListener implements DesireClass
     @Override
     public void initialize()
     {
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.instant-cooldown"), TimeUnit
-                .SECONDS, new RemovalListener<UUID, Long>()
+        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.instant-cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
             {
-                Player p = Bukkit.getPlayer(entry.getKey());
+                Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.bard.instant-cooldown-over");
@@ -48,13 +48,12 @@ public class BardListener implements DesireClass
             }
         }, DesireHCF.getInstance());
 
-        timedEffects = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.frequency"), TimeUnit
-                .SECONDS, new RemovalListener<UUID, Long>()
+        timedEffects = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.frequency"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
             {
-                Player p = Bukkit.getPlayer(entry.getKey());
+                Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
                     applyEffect(p);
@@ -83,16 +82,13 @@ public class BardListener implements DesireClass
         switch (p.getItemInHand().getType())
         {
             case SPECKLED_MELON:
-                healInRange(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
-                        ("classes.bard.distance")));
+                healInRange(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.bard.distance")));
                 break;
             case WHEAT:
-                feedInRange(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
-                        ("classes.bard.distance")));
+                feedInRange(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.bard.distance")));
                 break;
             case EYE_OF_ENDER:
-                showAllRogues(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
-                        ("classes.bard.rouge-finder.range")));
+                showAllRogues(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.bard.rouge-finder.range")));
                 break;
         }
 
@@ -123,8 +119,7 @@ public class BardListener implements DesireClass
         switch (p.getItemInHand().getType())
         {
             case BLAZE_ROD:
-                applyStrength(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger
-                        ("classes.bard.distance")));
+                applyStrength(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.bard.distance")));
                 break;
             case GHAST_TEAR:
                 applyRegen(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes" +

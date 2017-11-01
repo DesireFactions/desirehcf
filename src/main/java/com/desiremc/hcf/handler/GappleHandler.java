@@ -1,10 +1,8 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.utils.cache.Cache;
-import com.desiremc.core.utils.cache.RemovalListener;
-import com.desiremc.core.utils.cache.RemovalNotification;
-import com.desiremc.hcf.DesireHCF;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -12,8 +10,12 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
+import com.desiremc.hcf.DesireHCF;
 
 public class GappleHandler implements Listener
 {
@@ -31,7 +33,7 @@ public class GappleHandler implements Listener
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
             {
-                Player p = Bukkit.getPlayer(entry.getKey());
+                Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "gapple.ended");
@@ -47,7 +49,7 @@ public class GappleHandler implements Listener
             {
                 for (UUID uuid : history.keySet())
                 {
-                    Player p = Bukkit.getPlayer(uuid);
+                    Player p = PlayerUtils.getPlayer(uuid);
                     if (p != null)
                     {
                         EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getString("gapple.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - history.get(uuid)) / 1000)));

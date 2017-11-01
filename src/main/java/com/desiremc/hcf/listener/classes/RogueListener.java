@@ -1,15 +1,8 @@
 package com.desiremc.hcf.listener.classes;
 
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.cache.Cache;
-import com.desiremc.core.utils.cache.RemovalListener;
-import com.desiremc.core.utils.cache.RemovalNotification;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.util.FactionsUtils;
-import org.bukkit.Bukkit;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,8 +13,15 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import com.desiremc.core.session.HCFSession;
+import com.desiremc.core.session.HCFSessionHandler;
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.util.FactionsUtils;
 
 public class RogueListener implements DesireClass
 {
@@ -42,7 +42,7 @@ public class RogueListener implements DesireClass
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
             {
-                Player p = Bukkit.getPlayer(entry.getKey());
+                Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.rogue.uninvis-over");

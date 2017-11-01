@@ -21,6 +21,7 @@ import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.utils.BungeeUtils;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.core.utils.ItemNames;
+import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.barrier.TagHandler.Tag;
@@ -108,7 +109,7 @@ public class CombatListener implements Listener
             Tag tag = TagHandler.getTag(vPlayer.getUniqueId());
             if (tag != null)
             {
-                Player kPlayer = Bukkit.getPlayer(tag.getUniqueId());
+                Player kPlayer = PlayerUtils.getPlayer(tag.getUniqueId());
                 HCFSession killer = HCFSessionHandler.getHCFSession(kPlayer);
 
                 killer.addKill(DesireCore.getCurrentServer(), vPlayer.getUniqueId());

@@ -1,20 +1,22 @@
 package com.desiremc.hcf.barrier;
 
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
+
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
 
 public class BarrierTask implements Runnable
 {
@@ -32,7 +34,7 @@ public class BarrierTask implements Runnable
         Player p;
         for (UUID uuid : TagHandler.getTaggedPlayers())
         {
-            p = Bukkit.getPlayer(uuid);
+            p = PlayerUtils.getPlayer(uuid);
             if (p == null)
             {
                 continue;
@@ -66,7 +68,7 @@ public class BarrierTask implements Runnable
         }
         for (UUID uuid : toClear)
         {
-            Player pl = Bukkit.getPlayer(uuid);
+            Player pl = PlayerUtils.getPlayer(uuid);
             if (pl != null)
             {
                 Set<Block> localCache = cache.get(uuid);

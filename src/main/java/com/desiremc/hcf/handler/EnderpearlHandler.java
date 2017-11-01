@@ -1,10 +1,9 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.utils.cache.Cache;
-import com.desiremc.core.utils.cache.RemovalListener;
-import com.desiremc.core.utils.cache.RemovalNotification;
-import com.desiremc.hcf.DesireHCF;
+import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -13,9 +12,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.Map.Entry;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
+import com.desiremc.hcf.DesireHCF;
 
 public class EnderpearlHandler implements Listener
 {
@@ -32,7 +34,7 @@ public class EnderpearlHandler implements Listener
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
             {
-                Player p = Bukkit.getPlayer(entry.getKey());
+                Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "enderpearl.ended");
@@ -79,7 +81,7 @@ public class EnderpearlHandler implements Listener
         {
             for (Entry<UUID, Long> entry : history.entrySet())
             {
-                Player p = Bukkit.getPlayer(entry.getKey());
+                Player p = PlayerUtils.getPlayer(entry.getKey());
                 EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("enderpearl.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
             }
             Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), this, 10);
