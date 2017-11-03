@@ -41,7 +41,7 @@ public class EnderpearlHandler implements Listener
                     EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("enderpearl.scoreboard"));
                 }
             }
-        }, DesireHCF.getInstance(), true);
+        }, DesireHCF.getInstance());
 
         Bukkit.getScheduler().runTask(DesireHCF.getInstance(), new EnderpearlUpdater());
     }
