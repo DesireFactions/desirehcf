@@ -11,6 +11,7 @@ public class LivesCommand extends ValidBaseCommand
         super("lives", "Add or remove lives.", Rank.MODERATOR);
         addSubCommand(new LivesAddCommand());
         addSubCommand(new LivesRemoveCommand());
+        addSubCommand(new LivesUseCommand());
     }
 
 }
