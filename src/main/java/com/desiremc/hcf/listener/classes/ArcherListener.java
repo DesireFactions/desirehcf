@@ -123,7 +123,7 @@ public class ArcherListener implements DesireClass
             return;
         }
 
-        if (!event.getItem().getType().equals(Material.SUGAR))
+        if (!event.hasItem() || !event.getItem().getType().equals(Material.SUGAR))
         {
             return;
         }

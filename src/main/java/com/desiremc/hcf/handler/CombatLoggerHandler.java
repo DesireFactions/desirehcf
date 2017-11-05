@@ -37,7 +37,7 @@ public class CombatLoggerHandler implements Listener
     public CombatLoggerHandler()
     {
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(DesireHCF.getInstance(), new Runnable()
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()

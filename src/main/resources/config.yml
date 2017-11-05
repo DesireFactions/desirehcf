@@ -45,7 +45,7 @@ barrier:
 regions:
   max-name: 16
 enderpearl:
-  time: 60
+  time: 15
 enchantment-limiter:
   ARROW_DAMAGE: 4
   ARROW_FIRE: 0
