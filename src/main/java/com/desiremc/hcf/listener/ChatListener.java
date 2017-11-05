@@ -20,9 +20,19 @@ import com.massivecraft.factions.Faction;
 public class ChatListener implements Listener
 {
 
-    @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
-    public void chat(AsyncPlayerChatEvent event)
+    private static final boolean DEBUG = true;
+    
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onChat(AsyncPlayerChatEvent event)
     {
+        if (DEBUG)
+        {
+            System.out.println("ChatListener.onChat() called.");
+        }
+        if (event.isCancelled())
+        {
+            return;
+        }
         Player player = event.getPlayer();
         event.setCancelled(true);
         Session s = SessionHandler.getSession(player);
@@ -44,7 +54,7 @@ public class ChatListener implements Listener
         Faction f = FactionsUtils.getFaction(player);
 
         String parsedMessage = s.getRank().getId() >= Rank.ADMIN.getId() ? ChatColor.translateAlternateColorCodes('&', msg) : msg;
-        
+
         FancyMessage message = new FancyMessage(s.getRank().getPrefix())
                 .then(player.getName())
                 .tooltip(FactionsUtils.getMouseoverDetails(f))

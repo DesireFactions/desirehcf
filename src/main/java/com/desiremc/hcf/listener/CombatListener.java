@@ -32,9 +32,13 @@ import com.desiremc.hcf.util.FactionsUtils;
 public class CombatListener implements Listener
 {
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onHitMonitor(EntityDamageByEntityEvent e)
     {
+        if (e.isCancelled())
+        {
+            return;
+        }
         if (e.getEntity() instanceof Player)
         {
             if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)
@@ -46,9 +50,13 @@ public class CombatListener implements Listener
         }
     }
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
-    public void onHitHigh(EntityDamageByEntityEvent e)
+    @EventHandler(priority = EventPriority.LOW)
+    public void onHit(EntityDamageByEntityEvent e)
     {
+        if (e.isCancelled())
+        {
+            return;
+        }
         LangHandler lang = DesireHCF.getLangHandler();
         if (e.getEntity() instanceof Player)
         {
@@ -97,7 +105,7 @@ public class CombatListener implements Listener
         }
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler()
     public void onPlayerDeath(PlayerDeathEvent event)
     {
         try

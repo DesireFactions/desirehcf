@@ -139,7 +139,7 @@ public class CombatLoggerHandler implements Listener
         });
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void syncOffline(PlayerDeathEvent event)
     {
         // Do nothing if player is not a NPC

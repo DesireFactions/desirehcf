@@ -10,7 +10,7 @@ import com.desiremc.core.session.HCFSessionHandler;
 public class ConnectionListener implements Listener
 {
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e)
     {
         HCFSessionHandler.initializeHCFSession(e.getPlayer().getUniqueId(), true);
