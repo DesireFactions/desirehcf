@@ -42,7 +42,7 @@ public class TagHandler
                     if (p != null)
                     {
                         DesireHCF.getLangHandler().sendRenderMessage(p, "tag.expire");
-                        EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getString("tag.scoreboard"));
+                        EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("tag.scoreboard"));
                     }
                 }
             }
