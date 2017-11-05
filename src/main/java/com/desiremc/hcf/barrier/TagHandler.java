@@ -39,8 +39,11 @@ public class TagHandler
                 {
                     Player p = PlayerUtils.getPlayer(entry.getKey());
                     BarrierTask.addToClear(entry.getKey());
-                    DesireHCF.getLangHandler().sendRenderMessage(p, "tag.expire");
-                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getString("tag.scoreboard"));
+                    if (p != null)
+                    {
+                        DesireHCF.getLangHandler().sendRenderMessage(p, "tag.expire");
+                        EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getString("tag.scoreboard"));
+                    }
                 }
             }
         }, DesireHCF.getInstance());
