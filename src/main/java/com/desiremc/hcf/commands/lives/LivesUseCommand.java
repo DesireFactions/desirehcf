@@ -2,7 +2,6 @@ package com.desiremc.hcf.commands.lives;
 
 import org.bukkit.command.CommandSender;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerHCFSessionParser;
 import com.desiremc.core.session.HCFSession;
@@ -28,7 +27,7 @@ public class LivesUseCommand extends ValidCommand
         HCFSession session = HCFSessionHandler.getHCFSession(sender);
         HCFSession target = (HCFSession) args[0];
 
-        target.revive(DesireCore.getCurrentServer());
+        target.revive();
         
         if (!session.getRank().isManager())
         {

@@ -120,12 +120,12 @@ public class CombatListener implements Listener
                 Player kPlayer = PlayerUtils.getPlayer(tag.getUniqueId());
                 HCFSession killer = HCFSessionHandler.getHCFSession(kPlayer);
 
-                killer.addKill(DesireCore.getCurrentServer(), vPlayer.getUniqueId());
+                killer.addKill(vPlayer.getUniqueId());
                 HCFSessionHandler.getInstance().save(killer);
             }
 
             UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
-            victim.addDeath(DesireCore.getCurrentServer(), killer);
+            victim.addDeath(killer);
             BungeeUtils.sendToHub(vPlayer);
 
             FancyMessage message = processMessage(victim, cause, tag);
@@ -147,8 +147,8 @@ public class CombatListener implements Listener
         FancyMessage message = new FancyMessage(session.getName())
                 .color(session.getRank().getMain())
                 .tooltip(FactionsUtils.getMouseoverDetails(session))
-                .then("[" + session.getTotalKills(DesireCore.getCurrentServer()) + "]")
-                .tooltip(session.getKillDisplay(DesireCore.getCurrentServer()));
+                .then("[" + session.getTotalKills() + "]")
+                .tooltip(session.getKillDisplay());
 
         String parsed = DesireHCF.getConfigHandler().getString("death." + (tag == null ? "pve." : "pvp.") + cause.toString().toLowerCase());
         if (parsed.contains("death.pvp."))
@@ -170,8 +170,8 @@ public class CombatListener implements Listener
                     .color(killer.getRank().getMain())
                     .then("[")
                     .color(ChatColor.DARK_RED)
-                    .then(Integer.toString(killer.getTotalKills(DesireCore.getCurrentServer())))
-                    .tooltip(killer.getKillDisplay(DesireCore.getCurrentServer()))
+                    .then(Integer.toString(killer.getTotalKills()))
+                    .tooltip(killer.getKillDisplay())
                     .color(ChatColor.RED)
                     .then("]")
                     .color(ChatColor.DARK_RED)
