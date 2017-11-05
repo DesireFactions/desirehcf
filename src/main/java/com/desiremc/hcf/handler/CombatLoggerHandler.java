@@ -36,7 +36,6 @@ public class CombatLoggerHandler implements Listener
 
     public CombatLoggerHandler()
     {
-
         Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
         {
             @Override
@@ -49,8 +48,11 @@ public class CombatLoggerHandler implements Listener
                     {
                         TagHandler.clearTag(uuid);
                     }
-
-                    EntryRegistry.getInstance().setValue(PlayerUtils.getPlayer(uuid), DesireHCF.getLangHandler().getString("tag.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
+                    Player p = PlayerUtils.getPlayer(uuid);
+                    if (p != null)
+                    {
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getString("tag.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
+                    }
                 }
             }
         }, 0, 10);
