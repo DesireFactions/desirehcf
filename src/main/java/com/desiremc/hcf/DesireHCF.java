@@ -133,9 +133,9 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new LogoutCommand(), instance);
     }
 
-    public static RegisteredServiceProvider<Economy> getEconomy()
+    public static Economy getEconomy()
     {
-        return economyProvider;
+        return economyProvider.getProvider();
     }
 
     public PlayerCache getPlayerCache()
