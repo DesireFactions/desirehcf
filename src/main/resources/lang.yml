@@ -5,17 +5,17 @@ prefix:
 tag:
   active: '&c&lYou are now combat tagged and can not enter spawn.'
   expire: '&c&lYou are no longer combat tagged.'
-  scoreboard: "CombatTimer"
+  scoreboard: CombatTimer
 enderchest:
   disabled: '&7enderchest disabled!'
   enabled: '&7enderchest enabled!'
   blocked: '&7Enderchests are currently disabled.'
 region:
-  doesnt_exist: "That region does not exist"
+  doesnt_exist: That region does not exist
   changed: '&fChanged the {change} from &b{old}&f to &b{new}&f.'
-  change: "Not sure what this is has args (change}, {old} and {new}"
+  change: Not sure what this is has args (change}, {old} and {new}
   same_name: '&7That is the same name.'
-  changed_name: "You've changed the region name from {old} to {new}"
+  changed_name: You've changed the region name from {old} to {new}
   create: '&fCreated region &b{name}&f with the material &a{material}&f.'
   delete: '&fDeleted region &b{name}&f.'
   list: '&fList of regions: &e{regions}&f.'
@@ -26,11 +26,15 @@ enderpearl:
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
   scoreboard: '&5&lEnderpearl'
 lives:
-  add: '&7You have added &c{amount}&7 lives to {player}.'
-  remove: '&7You have removed &c{amount}&7 lives to {player}.'
-  recieved: '&b{sender} &7has given you &a{amount} lives!'
-  lost: '&b{sender} has taken &c{amount} lives from you!'
+  add: '&7You have added &a{amount} &7lives to &c{player}&7.'
+  remove: '&7You have removed &c{amount}&7 lives from {player}.'
+  recieved: '&7You have received &a{amount} &7lives.'
+  use: '&7Used a life on &c{target}&7.'
   no_lives: '&cYou currently have no lives.'
+  check:
+    self: '&7You have &a{lives} &7lives.'
+    others: '&c{target} &7has &a{lives} &7lives.'
+revive: '&7Revived &c{target} &7early for reason ''&e{reason}&7''.'
 pvp:
   target-protected: '&7That player has pvp disabled'
   damager-protected: '&7You have pvp disabled.'
@@ -45,8 +49,8 @@ crowbar:
 gapple:
   ended: '&7You may now use a &5Gapple&7.'
   message: '&7You can not use an &5Gapple&7 for &e{time} &7seconds.'
-  scoreboard: "&7Gapple Timer"
-potion-disabled: "&4&lPOTIONS&r&7 This potion effect is disabled!"
+  scoreboard: '&7Gapple Timer'
+potion-disabled: '&4&lPOTIONS&r&7 This potion effect is disabled!'
 trophy_points: Trophy Points &e{points}
 koth_wins: Trophy Points &e{koth}
 faction: Faction &e{faction}
@@ -54,21 +58,21 @@ logout:
   cancelled: '&c&lYour safe logout has been cancelled.'
   success: '&c&lYour safe logout has been successful.'
   pending: '&c&lYour safe logout is pending for {seconds}s.'
-  exists: "&c&lYou have already started to safely logout."
-  started: "&c&lYou have started to safely logout."
+  exists: '&c&lYou have already started to safely logout.'
+  started: '&c&lYou have started to safely logout.'
 no_faction: You are not a part of a faction!
 need_selection: '&7You need to make a selection with WorldEdit.'
 no_deathban: '&7That player does not have an active deathban.'
 classes:
   bard:
-    instant-cooldown-over: "Your bard cooldown is over."
-    on-cooldown: "Your bard effects are still on cooldown."
+    instant-cooldown-over: Your bard cooldown is over.
+    on-cooldown: Your bard effects are still on cooldown.
   rogue:
-    uninvis-over: "You can now go invisible again."
-    shown: "You have been discovered. Your invisibility is gone."
-    on-cooldown: "Your invisibility effect is on cooldown."
+    uninvis-over: You can now go invisible again.
+    shown: You have been discovered. Your invisibility is gone.
+    on-cooldown: Your invisibility effect is on cooldown.
   archer:
-    hit: "You've been tagged by an Archer. You will now take increased Archer arrow damage."
-    hit-off: "Your Archer tag is now over."
-    speed-ready: "Your speed effect is now ready."
-    speed-cd: "Your speed effect is on cooldown."
+    hit: You've been tagged by an Archer. You will now take increased Archer arrow damage.
+    hit-off: Your Archer tag is now over.
+    speed-ready: Your speed effect is now ready.
+    speed-cd: Your speed effect is on cooldown.

@@ -31,7 +31,6 @@ public class LivesRemoveCommand extends ValidCommand
         session.takeLives(amount);
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.remove", "{amount}", String.valueOf(amount), "{player}", target.getName());
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.lost", "{amount}", Integer.toString(amount), "{sender}", sender.getName());
     }
 
 }

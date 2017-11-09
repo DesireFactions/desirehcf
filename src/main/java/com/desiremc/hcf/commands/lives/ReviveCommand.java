@@ -4,35 +4,36 @@ import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.PlayerHCFSessionParser;
+import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.validator.PlayerHasDeathbanValidator;
-import com.desiremc.hcf.validator.PlayerHasLivesValidator;
 
-public class LivesUseCommand extends ValidCommand
+public class ReviveCommand extends ValidCommand
 {
 
-    public LivesUseCommand()
+    public ReviveCommand()
     {
-        super("use", "Use a life to revive another player.", Rank.GUEST, new String[] { "target" }, new String[] { "revive" });
+        super("revive", "Revive a player before their ban.", Rank.JRMOD, ARITY_REQUIRED_VARIADIC, new String[] { "target", "reason" });
+
         addParser(new PlayerHCFSessionParser(), "target");
+        addParser(new StringParser(), "reason");
 
         addValidator(new PlayerHasDeathbanValidator(), "target");
-        addValidator(new PlayerHasLivesValidator());
     }
 
     @Override
     public void validRun(CommandSender sender, String label, Object... args)
     {
-        HCFSession session = HCFSessionHandler.getHCFSession(sender);
         HCFSession target = (HCFSession) args[0];
+        String reason = (String) args[1];
 
-        target.revive(session.getUniqueId() + " used a life.", false, session.getUniqueId());
-        session.takeLives(1);
+        target.revive(reason, true, PlayerUtils.getUUIDFromSender(sender));
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.use", "{target}", target.getName());
+
     }
 
 }

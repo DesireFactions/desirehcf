@@ -31,7 +31,7 @@ public class LivesAddCommand extends ValidCommand
         session.addLives(amount);
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.add", "{amount}", String.valueOf(amount), "{player}", target.getName());
-        DesireHCF.getLangHandler().sendRenderMessage(target, "lives.recieved", "{amount}", String.valueOf(amount), "{sender}", sender.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(target, "lives.recieved", "{amount}", String.valueOf(amount));
     }
 
 }

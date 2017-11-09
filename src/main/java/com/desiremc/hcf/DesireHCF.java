@@ -16,6 +16,7 @@ import com.desiremc.hcf.commands.LogoutCommand;
 import com.desiremc.hcf.commands.PVPCommand;
 import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
+import com.desiremc.hcf.commands.lives.ReviveCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
 import com.desiremc.hcf.handler.BrewingSpeedHandler;
@@ -131,6 +132,7 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new SetEndCommand(), instance);
         customCommandHandler.registerCommand(new UnbanCommand(), instance);
         customCommandHandler.registerCommand(new LogoutCommand(), instance);
+        customCommandHandler.registerCommand(new ReviveCommand(), instance);
     }
 
     public static Economy getEconomy()
