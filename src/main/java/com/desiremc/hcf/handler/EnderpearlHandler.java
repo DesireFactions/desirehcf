@@ -82,10 +82,16 @@ public class EnderpearlHandler implements Listener
             for (Entry<UUID, Long> entry : history.entrySet())
             {
                 Player p = PlayerUtils.getPlayer(entry.getKey());
-                EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("enderpearl.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
+                if (p != null)
+                {
+                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("enderpearl.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
+                }
+                else
+                {
+                    history.toRemove(entry.getKey());
+                }
             }
             Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), this, 10);
-
         }
 
     }
