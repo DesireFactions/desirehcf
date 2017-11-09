@@ -1,4 +1,4 @@
-hcfreload: '&cReloaded the config and lang files.'
+hcfreload: '&cReloaded the lang files.'
 prefix:
   text: '&7[&bHCF&7]'
   use: true
@@ -15,7 +15,7 @@ region:
   changed: '&fChanged the {change} from &b{old}&f to &b{new}&f.'
   change: Not sure what this is has args (change}, {old} and {new}
   same_name: '&7That is the same name.'
-  changed_name: You've changed the region name from {old} to {new}
+  changed_name: You've changed the region name from {old} to {new}.
   create: '&fCreated region &b{name}&f with the material &a{material}&f.'
   delete: '&fDeleted region &b{name}&f.'
   list: '&fList of regions: &e{regions}&f.'
@@ -51,9 +51,9 @@ gapple:
   message: '&7You can not use an &5Gapple&7 for &e{time} &7seconds.'
   scoreboard: '&7Gapple Timer'
 potion-disabled: '&4&lPOTIONS&r&7 This potion effect is disabled!'
-trophy_points: Trophy Points &e{points}
-koth_wins: Trophy Points &e{koth}
-faction: Faction &e{faction}
+trophy_points: 'Trophy Points &e{points}'
+koth_wins: 'Trophy Points &e{koth}'
+faction: 'Faction &e{faction}'
 logout:
   cancelled: '&c&lYour safe logout has been cancelled.'
   success: '&c&lYour safe logout has been successful.'
@@ -76,3 +76,14 @@ classes:
     hit-off: Your Archer tag is now over.
     speed-ready: Your speed effect is now ready.
     speed-cd: Your speed effect is on cooldown.
+cobble:
+  disable: '&7Picking up cobblestone enabled.'
+coords:
+- '&7&m---------------------'
+- '&9KOTHs:'
+- '&eFiller: &70&e, &70'
+- '&eFiller 2: &710&e, &740'
+- '&eFiller 3: &720&e, &750'
+- '&eFiller 4: &730&e, &760'
+- '&9Ender Portals:'
+- '&e71000, 1000 in each direction.'

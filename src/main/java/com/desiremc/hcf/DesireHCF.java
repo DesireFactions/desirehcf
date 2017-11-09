@@ -15,6 +15,8 @@ import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.commands.CobbleCommand;
+import com.desiremc.hcf.commands.CoordsCommand;
 import com.desiremc.hcf.commands.CrowbarCommand;
 import com.desiremc.hcf.commands.EnderChestCommand;
 import com.desiremc.hcf.commands.HCFReloadCommand;
@@ -42,6 +44,7 @@ import com.desiremc.hcf.listener.CreatureSpawnListener;
 import com.desiremc.hcf.listener.CrowbarHandler;
 import com.desiremc.hcf.listener.InteractListener;
 import com.desiremc.hcf.listener.MovementListener;
+import com.desiremc.hcf.listener.PickupListener;
 import com.desiremc.hcf.listener.classes.ArcherListener;
 import com.desiremc.hcf.listener.classes.ArmorListener;
 import com.desiremc.hcf.listener.classes.BardListener;
@@ -102,6 +105,7 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new MinerListener());
         listenerManager.addListener(new RogueListener());
         listenerManager.addListener(new TablistHandler());
+        listenerManager.addListener(new PickupListener());
         // EVERYTHING BELOW HERE IS UNTESTED
         listenerManager.addListener(new FurnaceSpeedHandler());
         listenerManager.addListener(new EnderpearlHandler());
@@ -117,17 +121,19 @@ public class DesireHCF extends JavaPlugin
     private void registerCommands()
     {
         CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
-        customCommandHandler.registerCommand(new CrowbarCommand(), instance);
-        customCommandHandler.registerCommand(new EnderChestCommand(), instance);
-        customCommandHandler.registerCommand(new FStatCommand(), instance);
-        customCommandHandler.registerCommand(new HCFReloadCommand(), instance);
-        customCommandHandler.registerCommand(new LivesCommand(), instance);
-        customCommandHandler.registerCommand(new PVPCommand(), instance);
-        customCommandHandler.registerCommand(new RegionCommand(), instance);
-        customCommandHandler.registerCommand(new SetEndCommand(), instance);
-        customCommandHandler.registerCommand(new UnbanCommand(), instance);
-        customCommandHandler.registerCommand(new LogoutCommand(), instance);
-        customCommandHandler.registerCommand(new ReviveCommand(), instance);
+        customCommandHandler.registerCommand(new CrowbarCommand(), this);
+        customCommandHandler.registerCommand(new EnderChestCommand(), this);
+        customCommandHandler.registerCommand(new FStatCommand(), this);
+        customCommandHandler.registerCommand(new HCFReloadCommand(), this);
+        customCommandHandler.registerCommand(new LivesCommand(), this);
+        customCommandHandler.registerCommand(new PVPCommand(), this);
+        customCommandHandler.registerCommand(new RegionCommand(), this);
+        customCommandHandler.registerCommand(new SetEndCommand(), this);
+        customCommandHandler.registerCommand(new UnbanCommand(), this);
+        customCommandHandler.registerCommand(new LogoutCommand(), this);
+        customCommandHandler.registerCommand(new ReviveCommand(), this);
+        customCommandHandler.registerCommand(new CoordsCommand(), this);
+        customCommandHandler.registerCommand(new CobbleCommand(), this);
     }
 
     public PlayerCache getPlayerCache()
