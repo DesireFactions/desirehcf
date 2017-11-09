@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Projectile;
 import org.bukkit.event.EventHandler;
@@ -60,7 +61,7 @@ public class CombatListener implements Listener
         LangHandler lang = DesireHCF.getLangHandler();
         if (e.getEntity() instanceof Player)
         {
-            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)
+            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && !(e.getDamager() instanceof EnderPearl) && ((Projectile) e.getDamager()).getShooter() instanceof Player)
             {
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
