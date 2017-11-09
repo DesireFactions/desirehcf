@@ -71,7 +71,7 @@ public class TagHandler
         {
             p.sendMessage(DesireHCF.getLangHandler().getString("tag.active"));
         }
-        if (!isTagged(damager))
+        if (p != damager && !isTagged(damager))
         {
             damager.sendMessage(DesireHCF.getLangHandler().getString("tag.active"));
         }

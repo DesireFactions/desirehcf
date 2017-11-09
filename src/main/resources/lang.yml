@@ -77,13 +77,15 @@ classes:
     speed-ready: Your speed effect is now ready.
     speed-cd: Your speed effect is on cooldown.
 cobble:
-  disable: '&7Picking up cobblestone enabled.'
+  enable: '&7Picking up cobblestone enabled.'
+  disable: '&7Picking up cobblestone disabled.'
 coords:
-- '&7&m---------------------'
+- '&7&m-----------------------------'
 - '&9KOTHs:'
 - '&eFiller: &70&e, &70'
 - '&eFiller 2: &710&e, &740'
 - '&eFiller 3: &720&e, &750'
 - '&eFiller 4: &730&e, &760'
 - '&9Ender Portals:'
-- '&e71000, 1000 in each direction.'
+- '&71000&e, &71000 &ein each direction.'
+- '&7&m-----------------------------'

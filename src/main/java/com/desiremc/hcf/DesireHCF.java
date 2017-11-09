@@ -106,8 +106,8 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new RogueListener());
         listenerManager.addListener(new TablistHandler());
         listenerManager.addListener(new PickupListener());
-        // EVERYTHING BELOW HERE IS UNTESTED
         listenerManager.addListener(new FurnaceSpeedHandler());
+        // EVERYTHING BELOW HERE IS UNTESTED
         listenerManager.addListener(new EnderpearlHandler());
         listenerManager.addListener(new GappleHandler());
         listenerManager.addListener(new CombatLoggerHandler());
