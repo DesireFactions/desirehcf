@@ -1,5 +1,11 @@
 package com.desiremc.hcf;
 
+import java.io.File;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -29,30 +35,23 @@ import com.desiremc.hcf.handler.GappleHandler;
 import com.desiremc.hcf.handler.LootingBuffHandler;
 import com.desiremc.hcf.handler.PotionLimiterHandler;
 import com.desiremc.hcf.handler.TablistHandler;
-import com.desiremc.hcf.listener.classes.ArcherListener;
-import com.desiremc.hcf.listener.classes.ArmorListener;
 import com.desiremc.hcf.listener.ChatListener;
-import com.desiremc.hcf.listener.classes.BardListener;
-import com.desiremc.hcf.listener.classes.ClassListener;
 import com.desiremc.hcf.listener.CombatListener;
 import com.desiremc.hcf.listener.ConnectionListener;
 import com.desiremc.hcf.listener.CreatureSpawnListener;
 import com.desiremc.hcf.listener.CrowbarHandler;
 import com.desiremc.hcf.listener.InteractListener;
 import com.desiremc.hcf.listener.MovementListener;
+import com.desiremc.hcf.listener.classes.ArcherListener;
+import com.desiremc.hcf.listener.classes.ArmorListener;
+import com.desiremc.hcf.listener.classes.BardListener;
+import com.desiremc.hcf.listener.classes.ClassListener;
 import com.desiremc.hcf.listener.classes.MinerListener;
 import com.desiremc.hcf.listener.classes.RogueListener;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.PlayerCache;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import net.milkbowl.vault.economy.Economy;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.RegisteredServiceProvider;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
@@ -63,8 +62,6 @@ public class DesireHCF extends JavaPlugin
 
     private static LangHandler lang;
     private static FileHandler config;
-
-    private static RegisteredServiceProvider<Economy> economyProvider;
 
     @Override
     public void onEnable()
@@ -86,8 +83,6 @@ public class DesireHCF extends JavaPlugin
 
         registerListeners();
         registerCommands();
-
-        economyProvider = Bukkit.getServicesManager().getRegistration(Economy.class);
     }
 
     private void registerListeners()
@@ -133,11 +128,6 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new UnbanCommand(), instance);
         customCommandHandler.registerCommand(new LogoutCommand(), instance);
         customCommandHandler.registerCommand(new ReviveCommand(), instance);
-    }
-
-    public static Economy getEconomy()
-    {
-        return economyProvider.getProvider();
     }
 
     public PlayerCache getPlayerCache()
