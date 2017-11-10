@@ -1,22 +1,23 @@
 package com.desiremc.hcf.commands;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.npc.SafeLogoutTask;
+import com.desiremc.hcf.validator.PlayerIsNotTaggedValidator;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class LogoutCommand extends ValidCommand
 {
 
     public LogoutCommand()
     {
-        super("logout", "Start to safely logout", Rank.GUEST, new String[] {});
-        
+        super("logout", "Start to safely logout", Rank.GUEST, new String[]{});
+
         addValidator(new PlayerValidator());
+        addValidator(new PlayerIsNotTaggedValidator());
     }
 
     @Override
