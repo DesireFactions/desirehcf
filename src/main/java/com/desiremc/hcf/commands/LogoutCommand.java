@@ -15,6 +15,7 @@ public class LogoutCommand extends ValidCommand
     public LogoutCommand()
     {
         super("logout", "Start to safely logout", Rank.GUEST, new String[] {});
+        
         addValidator(new PlayerValidator());
     }
 

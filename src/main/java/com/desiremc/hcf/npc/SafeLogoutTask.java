@@ -1,6 +1,8 @@
 package com.desiremc.hcf.npc;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import org.bukkit.Bukkit;
@@ -17,6 +19,8 @@ import java.util.UUID;
 
 public class SafeLogoutTask extends BukkitRunnable
 {
+
+    private final static int TIMER = DesireHCF.getConfigHandler().getInteger("logout.time");
 
     private final static Map<UUID, SafeLogoutTask> tasks = new HashMap<>();
 
@@ -63,6 +67,8 @@ public class SafeLogoutTask extends BukkitRunnable
             return;
         }
 
+        EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("loguout.scoreboard"), String.valueOf((logoutTime - System.currentTimeMillis()) / 1000));
+
         // Safely logout the player once timer is up
         int remainingSeconds = getRemainingSeconds();
         if (remainingSeconds <= 0)
@@ -86,6 +92,15 @@ public class SafeLogoutTask extends BukkitRunnable
         }
     }
 
+    public void cancel()
+    {
+        super.cancel();
+        Player p = PlayerUtils.getPlayer(playerId);
+        if (p != null) {
+            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("loguout.scoreboard"));
+        }
+    }
+
     private boolean hasMoved(Player player)
     {
         Location l = player.getLocation();
@@ -96,10 +111,11 @@ public class SafeLogoutTask extends BukkitRunnable
     public static void run(DesireHCF plugin, Player player)
     {
         // Do nothing if player already has a task
-        if (hasTask(player)) return;
+        if (hasTask(player))
+            return;
 
         // Calculate logout time
-        long logoutTime = System.currentTimeMillis() + (DesireHCF.getConfigHandler().getInteger("logout.time") * 1000);
+        long logoutTime = System.currentTimeMillis() + (TIMER * 1000);
 
         // Run the task every few ticks for accuracy
         SafeLogoutTask task = new SafeLogoutTask(plugin, player, logoutTime);
@@ -112,7 +128,8 @@ public class SafeLogoutTask extends BukkitRunnable
     public static boolean hasTask(Player player)
     {
         SafeLogoutTask task = tasks.get(player.getUniqueId());
-        if (task == null) return false;
+        if (task == null)
+            return false;
 
         BukkitScheduler s = Bukkit.getScheduler();
         if (s.isQueued(task.getTaskId()) || s.isCurrentlyRunning(task.getTaskId()))
@@ -132,7 +149,8 @@ public class SafeLogoutTask extends BukkitRunnable
     public static boolean cancel(Player player)
     {
         // Do nothing if player has no logout task
-        if (!hasTask(player)) return false;
+        if (!hasTask(player))
+            return false;
 
         // Cancel logout task
         Bukkit.getScheduler().cancelTask(tasks.get(player.getUniqueId()).getTaskId());
