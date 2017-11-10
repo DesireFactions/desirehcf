@@ -66,23 +66,6 @@ public class CombatListener implements Listener
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
 
-                HCFSession vs = HCFSessionHandler.getHCFSession(victim.getUniqueId());
-                HCFSession ds = HCFSessionHandler.getHCFSession(damager.getUniqueId());
-
-                if (ds.getSafeTimeLeft() > 0)
-                {
-                    e.setCancelled(true);
-                    damager.sendMessage(lang.getString("pvp.damager_protected"));
-                    return;
-                }
-
-                if (vs.getSafeTimeLeft() > 0)
-                {
-                    e.setCancelled(true);
-                    damager.sendMessage(lang.getString("pvp.target_protected"));
-                    return;
-                }
-
                 // 0 = valid, 1 = damager in region, 2 = victim in region
                 int state = 0;
                 for (Region r : RegionHandler.getInstance().getRegions())
@@ -101,6 +84,24 @@ public class CombatListener implements Listener
                 if (state != 0)
                 {
                     e.setCancelled(true);
+                    return;
+                }
+
+                HCFSession vs = HCFSessionHandler.getHCFSession(victim.getUniqueId());
+                HCFSession ds = HCFSessionHandler.getHCFSession(damager.getUniqueId());
+
+                if (ds.getSafeTimeLeft() > 0)
+                {
+                    e.setCancelled(true);
+                    damager.sendMessage(lang.getString("pvp.damager_protected"));
+                    return;
+                }
+
+                if (vs.getSafeTimeLeft() > 0)
+                {
+                    e.setCancelled(true);
+                    damager.sendMessage(lang.getString("pvp.target_protected"));
+                    return;
                 }
             }
         }
