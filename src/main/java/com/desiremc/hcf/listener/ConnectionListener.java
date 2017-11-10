@@ -1,24 +1,29 @@
 package com.desiremc.hcf.listener;
 
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerLoginEvent.Result;
+import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.DeathBan;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.utils.DateUtils;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
 
 public class ConnectionListener implements Listener
 {
 
-    private static final boolean DEBUG = true;
-    
+    private static final boolean DEBUG = false;
+
+    @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent e)
     {
@@ -26,7 +31,21 @@ public class ConnectionListener implements Listener
         {
             System.out.println("ConnectionListener.onJoin() event fired.");
         }
+        Player p = e.getPlayer();
         HCFSession session = HCFSessionHandler.initializeHCFSession(e.getPlayer().getUniqueId(), true);
+        boolean safe = false;
+        for (Region r : RegionHandler.getInstance().getRegions())
+        {
+            if (r.getWorld().equalsIgnoreCase(p.getLocation().getWorld().getName()) && r.getRegion().isWithin(p.getLocation()))
+            {
+                safe = true;
+            }
+        }
+        // TODO Look into a better solution for isOnGround.
+        if (safe && p.isOnGround())
+        {
+            TagHandler.setLastValidLocation(p.getUniqueId(), p.getLocation());
+        }
 
         if (session.getSafeTimeLeft() > 0)
         {
@@ -34,15 +53,22 @@ public class ConnectionListener implements Listener
             {
                 System.out.println("ConnectionListener.onJoin() safe time > 0.");
             }
-            session.getSafeTimer().resume();
+            if (safe)
+            {
+                session.getSafeTimer().setScoreboard();
+            }
+            else
+            {
+                session.getSafeTimer().resume();
+            }
         }
     }
-    
+
     @EventHandler
     public void onLeave(PlayerQuitEvent e)
     {
         HCFSession session = HCFSessionHandler.getHCFSession(e.getPlayer().getUniqueId());
-        
+
         HCFSessionHandler.getInstance().save(session);
     }
 
