@@ -1,11 +1,5 @@
 package com.desiremc.hcf;
 
-import java.io.File;
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -44,7 +38,6 @@ import com.desiremc.hcf.listener.CombatListener;
 import com.desiremc.hcf.listener.ConnectionListener;
 import com.desiremc.hcf.listener.CreatureSpawnListener;
 import com.desiremc.hcf.listener.CrowbarHandler;
-import com.desiremc.hcf.listener.InteractListener;
 import com.desiremc.hcf.listener.MovementListener;
 import com.desiremc.hcf.listener.PickupListener;
 import com.desiremc.hcf.listener.classes.ArcherListener;
@@ -56,6 +49,11 @@ import com.desiremc.hcf.listener.classes.RogueListener;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
