@@ -1,10 +1,10 @@
 package com.desiremc.hcf.npc;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.barrier.TagHandler;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,10 +12,11 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.NumberConversions;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
 
 public class SafeLogoutTask extends BukkitRunnable
 {
@@ -23,8 +24,6 @@ public class SafeLogoutTask extends BukkitRunnable
     private final static int TIMER = DesireHCF.getConfigHandler().getInteger("logout.time");
 
     private final static Map<UUID, SafeLogoutTask> tasks = new HashMap<>();
-
-    private final DesireHCF plugin;
 
     private final UUID playerId;
 
@@ -36,9 +35,8 @@ public class SafeLogoutTask extends BukkitRunnable
 
     private boolean finished;
 
-    public SafeLogoutTask(DesireHCF plugin, Player player, long logoutTime)
+    public SafeLogoutTask(Player player, long logoutTime)
     {
-        this.plugin = plugin;
         this.playerId = player.getUniqueId();
         this.loc = player.getLocation();
         this.logoutTime = logoutTime;
@@ -53,7 +51,7 @@ public class SafeLogoutTask extends BukkitRunnable
     @Override
     public void run()
     {
-        Player player = plugin.getPlayerCache().getPlayer(playerId);
+        Player player = PlayerUtils.getPlayer(playerId);
         if (player == null)
         {
             cancel();
@@ -96,7 +94,8 @@ public class SafeLogoutTask extends BukkitRunnable
     {
         super.cancel();
         Player p = PlayerUtils.getPlayer(playerId);
-        if (p != null) {
+        if (p != null)
+        {
             EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("loguout.scoreboard"));
         }
     }
@@ -118,7 +117,7 @@ public class SafeLogoutTask extends BukkitRunnable
         long logoutTime = System.currentTimeMillis() + (TIMER * 1000);
 
         // Run the task every few ticks for accuracy
-        SafeLogoutTask task = new SafeLogoutTask(plugin, player, logoutTime);
+        SafeLogoutTask task = new SafeLogoutTask(player, logoutTime);
         task.runTaskTimer(plugin, 0, 5);
 
         // Cache the task

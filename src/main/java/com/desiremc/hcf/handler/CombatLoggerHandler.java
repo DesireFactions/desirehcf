@@ -64,7 +64,6 @@ public class CombatLoggerHandler implements Listener
         Player player = event.getPlayer();
 
         NPCPlayerHelper.removePlayerList(player);
-        DesireHCF.getInstance().getPlayerCache().removePlayer(player);
 
         Session session = SessionHandler.getSession(player);
 
@@ -106,8 +105,6 @@ public class CombatLoggerHandler implements Listener
         Player player = event.getPlayer();
 
         NPCPlayerHelper.createPlayerList(player);
-
-        DesireHCF.getInstance().getPlayerCache().addPlayer(player);
 
         NPC npc = reg.getByUUID(event.getPlayer().getUniqueId());
         if (npc != null && npc.isSpawned())
@@ -192,7 +189,7 @@ public class CombatLoggerHandler implements Listener
         NPC npc = event.getNPC();
 
         // Save player data when the NPC despawns
-        Player player = DesireHCF.getInstance().getPlayerCache().getPlayer(npc.getUUID());
+        Player player = PlayerUtils.getPlayer(npc.getUUID());
         if (player == null)
         {
             NPCPlayerHelper.syncOffline((Player) npc.getEntity());

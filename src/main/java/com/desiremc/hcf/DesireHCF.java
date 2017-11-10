@@ -53,15 +53,12 @@ import com.desiremc.hcf.listener.classes.MinerListener;
 import com.desiremc.hcf.listener.classes.RogueListener;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
-import com.desiremc.hcf.util.PlayerCache;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 
 public class DesireHCF extends JavaPlugin
 {
 
     private static DesireHCF instance;
-
-    private final PlayerCache playerCache = new PlayerCache();
 
     private static LangHandler lang;
     private static FileHandler config;
@@ -134,11 +131,6 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new ReviveCommand(), this);
         customCommandHandler.registerCommand(new CoordsCommand(), this);
         customCommandHandler.registerCommand(new CobbleCommand(), this);
-    }
-
-    public PlayerCache getPlayerCache()
-    {
-        return playerCache;
     }
 
     public static WorldEditPlugin getWorldEdit()
