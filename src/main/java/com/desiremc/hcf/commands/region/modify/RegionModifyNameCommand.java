@@ -33,16 +33,14 @@ public class RegionModifyNameCommand extends ValidCommand
         String name = (String) args[1];
         String oldName = r.getName();
 
-        if (name.equals(oldName))
-        {
-            sender.sendMessage(DesireHCF.getLangHandler().getString("region.same_name"));
-            return;
-        }
-
         r.setName(name);
         RegionHandler.getInstance().save(r);
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.changed_name", "{change}", "name", "{old}", oldName, "{new}", name);
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.change",
+                "{change}", "name",
+                "{region}", r.getName(),
+                "{old}", oldName,
+                "{new}", name);
 
     }
 

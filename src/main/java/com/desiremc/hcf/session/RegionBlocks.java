@@ -99,7 +99,7 @@ public class RegionBlocks
 
     public boolean isWithin(double x, double y, double z)
     {
-        return (x <= this.maxX) && (x >= this.minX) && (y <= this.maxY) && (y >= this.minY) && (z <= this.maxZ) && (z >= this.minZ);
+        return (x <= this.maxX + 1.3) && (x >= this.minX - 0.3) && (y <= this.maxY + 1.3) && (y >= this.minY - 0.3) && (z <= this.maxZ + 1.3) && (z >= this.minZ - 0.3);
     }
 
     public boolean isWithin(Location loc)

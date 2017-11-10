@@ -32,8 +32,12 @@ public class RegionModifyDistanceCommand extends ValidCommand
         int oldDistance = r.getViewDistance();
         r.setViewDistance(distance);
         RegionHandler.getInstance().save(r);
-        
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.changed", "{change}", "distance", "{old}", String.valueOf(oldDistance), "{new}", String.valueOf(distance));
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.change",
+                "{change}", "distance",
+                "{region}", r.getName(),
+                "{old}", oldDistance,
+                "{new}", distance);
 
     }
 

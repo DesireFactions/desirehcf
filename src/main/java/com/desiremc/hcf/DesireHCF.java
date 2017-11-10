@@ -15,6 +15,7 @@ import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.hcf.barrier.BarrierTask;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.commands.CobbleCommand;
 import com.desiremc.hcf.commands.CoordsCommand;
@@ -81,6 +82,7 @@ public class DesireHCF extends JavaPlugin
         StaffHandler.initialize();
         CustomCommandHandler.initialize();
         DesireCore.getInstance().getMongoWrapper().getDatastore().ensureIndexes();
+        BarrierTask.initialize();
 
         registerListeners();
         registerCommands();

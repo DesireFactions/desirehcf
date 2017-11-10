@@ -37,7 +37,11 @@ public class RegionModifyMaterialCommand extends ValidCommand
         r.setBarrierMaterial(data);
         RegionHandler.getInstance().save(r);
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.change", "{change}", "material", "{old}", ItemNames.lookup(oldData), "{new}", ItemNames.lookup(data));
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.change",
+                "{change}", "material",
+                "{region}", r.getName(),
+                "{old}", ItemNames.lookup(oldData),
+                "{new}", ItemNames.lookup(data));
 
     }
 

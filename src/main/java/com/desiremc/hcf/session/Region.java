@@ -68,11 +68,13 @@ public class Region
     public void setName(String name)
     {
         this.name = name;
+        save();
     }
 
     public void setViewDistance(int viewDistance)
     {
         this.viewDistance = viewDistance;
+        save();
     }
 
     public RegionBlocks getRegion()
@@ -89,6 +91,7 @@ public class Region
     {
         this.world = world;
         this.region = region;
+        save();
     }
 
     public short getBarrierMaterialData()
@@ -106,5 +109,11 @@ public class Region
     {
         this.barrierMaterial = data.getItemType();
         this.barrierMaterialData = data.getData();
+        save();
+    }
+    
+    private void save()
+    {
+        RegionHandler.getInstance().save(this);
     }
 }

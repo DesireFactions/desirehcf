@@ -12,10 +12,8 @@ enderchest:
   blocked: '&7Enderchests are currently disabled.'
 region:
   doesnt_exist: That region does not exist
-  changed: '&fChanged the {change} from &b{old}&f to &b{new}&f.'
-  change: 'Not sure what this is has args {change}, {old} and {new}'
+  change: '&7Changed the {change} of &c{region}&7 from &e{old} &7to &e{new}&7.'
   same_name: '&7That is the same name.'
-  changed_name: 'You''ve changed the region name from {old} to {new}.'
   used_name: '&7That name is already used.'
   create: '&fCreated region &b{name}&f with the material &a{material}&f.'
   delete: '&fDeleted region &b{name}&f.'
@@ -39,6 +37,8 @@ revive: '&7Revived &c{target} &7early for reason ''&e{reason}&7''.'
 pvp:
   target_protected: '&7That player has pvp disabled.'
   damager_protected: '&7You have pvp disabled.'
+  damager_safe: '&7You are in a safe zone.'
+  victim_safe: '&7That player is in a safe zone.'
   disabled: '&7You have disabled your pvp protection timer.'
   already-disabled: '&7You do not have an active PVP timer.'
 crowbar:

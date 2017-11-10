@@ -4,7 +4,9 @@ import com.desiremc.hcf.validator.PlayerHasSafeTimeLeft;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.Rank;
@@ -29,6 +31,7 @@ public class PVPCommand extends ValidCommand
 
         s.setSafeTimeLeft(0);
         DesireHCF.getLangHandler().sendString(sender, "pvp.disabled");
+        EntryRegistry.getInstance().removeValue(s.getPlayer(), DesireCore.getLangHandler().getStringNoPrefix("pvp.scoreboard"));
     }
 
 }
