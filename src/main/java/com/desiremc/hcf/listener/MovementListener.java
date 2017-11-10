@@ -45,7 +45,7 @@ public class MovementListener implements Listener
                     valid = false;
                 }
             }
-            // TODO Look into a better solution.
+            // TODO Look into a better solution for isOnGround.
             if (valid && !e.isCancelled() && e.getPlayer().isOnGround())
             {
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
@@ -60,11 +60,11 @@ public class MovementListener implements Listener
                 {
                     if (r.getRegion().isWithin(e.getTo()))
                     {
-                        s.getTimer().pause();
+                        s.getSafeTimer().pause();
                     }
                     else if (r.getRegion().isWithin(e.getFrom()))
                     {
-                        s.getTimer().resume();
+                        s.getSafeTimer().resume();
                     }
                 }
             }
