@@ -13,7 +13,7 @@ public class UnusedRegionNameValidator extends CommandValidator
     public boolean validateArgument(CommandSender sender, String label, Object arg)
     {
         Region r = RegionHandler.getInstance().getRegion((String) arg);
-        if (r == null)
+        if (r != null)
         {
             DesireHCF.getLangHandler().sendString(sender, "region.used_name");
             return false;

@@ -12,6 +12,7 @@ import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.commands.UnbanCommand;
 import com.desiremc.core.listeners.ListenerManager;
+import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.hcf.barrier.TagHandler;
@@ -83,6 +84,18 @@ public class DesireHCF extends JavaPlugin
 
         registerListeners();
         registerCommands();
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(this, new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (HCFSession session : HCFSessionHandler.getSessions())
+                {
+                    HCFSessionHandler.getInstance().save(session);
+                }
+            }
+        }, 10, 600);
     }
 
     private void registerListeners()
