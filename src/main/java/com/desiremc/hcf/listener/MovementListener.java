@@ -8,6 +8,7 @@ import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -93,7 +94,7 @@ public class MovementListener implements Listener
 
     private boolean isOnGround(Player player)
     {
-        return !player.isFlying() && player.getLocation().subtract(0, 0.1, 0).getBlock().getType().isSolid();
+        return !player.isFlying() && player.getLocation().subtract(0, 0.1, 0).getBlock().getType() != Material.AIR;
     }
 
 }
