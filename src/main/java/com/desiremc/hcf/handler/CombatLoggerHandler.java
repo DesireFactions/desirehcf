@@ -1,18 +1,5 @@
 package com.desiremc.hcf.handler;
 
-import java.util.UUID;
-import java.util.concurrent.Callable;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -27,12 +14,24 @@ import com.desiremc.npc.NPCPlayerHelper;
 import com.desiremc.npc.NPCRegistry;
 import com.desiremc.npc.events.NPCDespawnEvent;
 import com.desiremc.npc.events.NPCDespawnEvent.NPCDespawnReason;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.UUID;
+import java.util.concurrent.Callable;
 
 public class CombatLoggerHandler implements Listener
 {
     private long TIMER = DesireHCF.getConfigHandler().getInteger("tag.time");
 
-    private NPCRegistry reg = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+    private NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
 
     public CombatLoggerHandler()
     {
@@ -51,7 +50,9 @@ public class CombatLoggerHandler implements Listener
                     Player p = PlayerUtils.getPlayer(uuid);
                     if (p != null)
                     {
-                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("tag.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("tag" +
+                                ".scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler
+                                .getTagTime(uuid)) / 1000)));
                     }
                 }
             }
@@ -67,7 +68,7 @@ public class CombatLoggerHandler implements Listener
 
         Session session = SessionHandler.getSession(player);
 
-        if (session.getRank().isManager())
+        if (session.getRank().isManager() || player.getHealth() <= 0)
         {
             return;
         }
@@ -77,11 +78,12 @@ public class CombatLoggerHandler implements Listener
 
         if (time != null)
         {
-            reg.createHumanNPC(uuid, player.getName()).spawn(player.getLocation());
+            npcRegistry.createHumanNPC(uuid, player.getName()).spawn(player.getLocation());
         }
         else if (!SafeLogoutTask.isFinished(player))
         {
             int tagDistance = DesireHCF.getConfigHandler().getInteger("tag.distance");
+
             for (Player p : Bukkit.getOnlinePlayers())
             {
                 if (p == player)
@@ -90,7 +92,7 @@ public class CombatLoggerHandler implements Listener
                 }
                 if (p.getLocation().distanceSquared(player.getLocation()) <= (tagDistance * tagDistance))
                 {
-                    HumanNPC npc = reg.createHumanNPC(uuid, player.getName());
+                    HumanNPC npc = npcRegistry.createHumanNPC(uuid, player.getName());
                     npc.setSkin(uuid);
                     npc.spawn(player.getLocation());
                     break;
@@ -106,7 +108,7 @@ public class CombatLoggerHandler implements Listener
 
         NPCPlayerHelper.createPlayerList(player);
 
-        NPC npc = reg.getByUUID(event.getPlayer().getUniqueId());
+        NPC npc = npcRegistry.getByUUID(event.getPlayer().getUniqueId());
         if (npc != null && npc.isSpawned())
         {
             npc.despawn(NPCDespawnReason.DESPAWN);
@@ -117,10 +119,13 @@ public class CombatLoggerHandler implements Listener
     public void despawnNPC(PlayerDeathEvent event)
     {
         Player player = event.getEntity();
-        if (!reg.isNPC(player))
+        if (!npcRegistry.isNPC(player))
+        {
             return;
+        }
 
-        final NPC npc = reg.getByUUID(player.getUniqueId());
+        final NPC npc = npcRegistry.getByUUID(player.getUniqueId());
+
         if (npc == null)
         {
             throw new IllegalStateException("Entity is NPC but could not retrieve by UUID.");
@@ -143,8 +148,10 @@ public class CombatLoggerHandler implements Listener
     {
         // Do nothing if player is not a NPC
         final Player player = event.getEntity();
-        if (!reg.isNPC(player))
+        if (!npcRegistry.isNPC(player))
+        {
             return;
+        }
 
         // NPC died, remove player's combat tag
         TagHandler.clearTag(player.getUniqueId());
@@ -164,12 +171,16 @@ public class CombatLoggerHandler implements Listener
     public void syncOffline(AsyncPlayerPreLoginEvent event)
     {
         if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
+        {
             return;
+        }
 
-        final UUID playerId = event.getUniqueId();
-        NPC npc = reg.getByUUID(playerId);
+        NPC npc = npcRegistry.getByUUID(event.getUniqueId());
+
         if (npc == null)
+        {
             return;
+        }
 
         Bukkit.getScheduler().callSyncMethod(DesireHCF.getInstance(), new Callable<Void>()
         {
@@ -193,7 +204,6 @@ public class CombatLoggerHandler implements Listener
         if (player == null)
         {
             NPCPlayerHelper.syncOffline((Player) npc.getEntity());
-            return;
         }
     }
 }
