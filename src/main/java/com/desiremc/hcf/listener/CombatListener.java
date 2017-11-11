@@ -33,7 +33,7 @@ import java.util.UUID;
 public class CombatListener implements Listener
 {
 
-    private NPCRegistry reg = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+    private NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onHitMonitor(EntityDamageByEntityEvent e)
@@ -60,7 +60,7 @@ public class CombatListener implements Listener
     {
         Player victim = (Player) e.getEntity();
 
-        if (e.getEntity() instanceof Player && !reg.isNPC(victim))
+        if (e.getEntity() instanceof Player && !npcRegistry.isNPC(victim))
         {
             if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && !(e.getDamager()
                     instanceof EnderPearl) && ((Projectile) e.getDamager()).getShooter() instanceof Player)

@@ -31,7 +31,7 @@ public class CombatLoggerHandler implements Listener
 {
     private long TIMER = DesireHCF.getConfigHandler().getInteger("tag.time");
 
-    private NPCRegistry reg = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+    private NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
 
     public CombatLoggerHandler()
     {
@@ -68,7 +68,7 @@ public class CombatLoggerHandler implements Listener
 
         Session session = SessionHandler.getSession(player);
 
-        if (session.getRank().isManager())
+        if (session.getRank().isManager() || player.getHealth() <= 0)
         {
             return;
         }
@@ -78,7 +78,7 @@ public class CombatLoggerHandler implements Listener
 
         if (time != null)
         {
-            reg.createHumanNPC(uuid, player.getName()).spawn(player.getLocation());
+            npcRegistry.createHumanNPC(uuid, player.getName()).spawn(player.getLocation());
         }
         else if (!SafeLogoutTask.isFinished(player))
         {
@@ -92,7 +92,7 @@ public class CombatLoggerHandler implements Listener
                 }
                 if (p.getLocation().distanceSquared(player.getLocation()) <= (tagDistance * tagDistance))
                 {
-                    HumanNPC npc = reg.createHumanNPC(uuid, player.getName());
+                    HumanNPC npc = npcRegistry.createHumanNPC(uuid, player.getName());
                     npc.setSkin(uuid);
                     npc.spawn(player.getLocation());
                     break;
@@ -108,7 +108,7 @@ public class CombatLoggerHandler implements Listener
 
         NPCPlayerHelper.createPlayerList(player);
 
-        NPC npc = reg.getByUUID(event.getPlayer().getUniqueId());
+        NPC npc = npcRegistry.getByUUID(event.getPlayer().getUniqueId());
         if (npc != null && npc.isSpawned())
         {
             npc.despawn(NPCDespawnReason.DESPAWN);
@@ -119,10 +119,13 @@ public class CombatLoggerHandler implements Listener
     public void despawnNPC(PlayerDeathEvent event)
     {
         Player player = event.getEntity();
-        if (!reg.isNPC(player))
+        if (!npcRegistry.isNPC(player))
+        {
             return;
+        }
 
-        final NPC npc = reg.getByUUID(player.getUniqueId());
+        final NPC npc = npcRegistry.getByUUID(player.getUniqueId());
+
         if (npc == null)
         {
             throw new IllegalStateException("Entity is NPC but could not retrieve by UUID.");
@@ -145,8 +148,10 @@ public class CombatLoggerHandler implements Listener
     {
         // Do nothing if player is not a NPC
         final Player player = event.getEntity();
-        if (!reg.isNPC(player))
+        if (!npcRegistry.isNPC(player))
+        {
             return;
+        }
 
         // NPC died, remove player's combat tag
         TagHandler.clearTag(player.getUniqueId());
@@ -166,12 +171,16 @@ public class CombatLoggerHandler implements Listener
     public void syncOffline(AsyncPlayerPreLoginEvent event)
     {
         if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
+        {
             return;
+        }
 
-        final UUID playerId = event.getUniqueId();
-        NPC npc = reg.getByUUID(playerId);
+        NPC npc = npcRegistry.getByUUID(event.getUniqueId());
+
         if (npc == null)
+        {
             return;
+        }
 
         Bukkit.getScheduler().callSyncMethod(DesireHCF.getInstance(), new Callable<Void>()
         {
@@ -195,7 +204,6 @@ public class CombatLoggerHandler implements Listener
         if (player == null)
         {
             NPCPlayerHelper.syncOffline((Player) npc.getEntity());
-            return;
         }
     }
 }
