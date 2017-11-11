@@ -1,13 +1,5 @@
 package com.desiremc.hcf.listener;
 
-import org.bukkit.Location;
-import org.bukkit.World.Environment;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
-
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.utils.Utils;
@@ -15,11 +7,17 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
+import org.bukkit.Location;
+import org.bukkit.World.Environment;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 
 public class MovementListener implements Listener
 {
-
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void onMove(PlayerMoveEvent e)
     {
@@ -45,8 +43,7 @@ public class MovementListener implements Listener
                     valid = false;
                 }
             }
-            // TODO Look into a better solution for isOnGround.
-            if (valid && !e.isCancelled() && e.getPlayer().isOnGround())
+            if (valid && !e.isCancelled() && isOnGround(e.getPlayer()))
             {
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
             }
@@ -91,6 +88,12 @@ public class MovementListener implements Listener
     public static boolean differentBlocks(Location l1, Location l2)
     {
         return l1.getBlockX() != l2.getBlockX() || l1.getBlockY() != l2.getBlockY() || l1.getBlockZ() != l2.getBlockZ();
+    }
+
+
+    private boolean isOnGround(Player player)
+    {
+        return !player.isFlying() && player.getLocation().subtract(0, 0.1, 0).getBlock().getType().isSolid();
     }
 
 }
