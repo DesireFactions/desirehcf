@@ -65,7 +65,7 @@ public class SafeLogoutTask extends BukkitRunnable
             return;
         }
 
-        EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("loguout.scoreboard"), String.valueOf((logoutTime - System.currentTimeMillis()) / 1000));
+        EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("logout.scoreboard"), String.valueOf((logoutTime - System.currentTimeMillis()) / 1000));
 
         // Safely logout the player once timer is up
         int remainingSeconds = getRemainingSeconds();
@@ -84,7 +84,7 @@ public class SafeLogoutTask extends BukkitRunnable
         {
 
             DesireHCF.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.pending",
-                    "{remaining}", remainingSeconds + "");
+                    "{seconds}", remainingSeconds + "");
 
             this.remainingSeconds = remainingSeconds;
         }
@@ -96,7 +96,7 @@ public class SafeLogoutTask extends BukkitRunnable
         Player p = PlayerUtils.getPlayer(playerId);
         if (p != null)
         {
-            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("loguout.scoreboard"));
+            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("logout.scoreboard"));
         }
     }
 
