@@ -105,7 +105,6 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new ConnectionListener());
         listenerManager.addListener(new MovementListener());
         listenerManager.addListener(new CombatListener());
-        listenerManager.addListener(new InteractListener());
         listenerManager.addListener(new CrowbarHandler());
         listenerManager.addListener(new CreatureSpawnListener());
         listenerManager.addListener(new ArmorListener(getConfigHandler().getStringList("blocked")));

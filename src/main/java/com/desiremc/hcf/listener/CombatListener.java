@@ -1,21 +1,6 @@
 package com.desiremc.hcf.listener;
 
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.PlayerDeathEvent;
-
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
@@ -29,9 +14,26 @@ import com.desiremc.hcf.barrier.TagHandler.Tag;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
+import com.desiremc.npc.NPCLib;
+import com.desiremc.npc.NPCRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.PlayerDeathEvent;
+
+import java.util.UUID;
 
 public class CombatListener implements Listener
 {
+
+    private NPCRegistry reg = NPCLib.getNPCRegistry(DesireHCF.getInstance());
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onHitMonitor(EntityDamageByEntityEvent e)
@@ -42,29 +44,29 @@ public class CombatListener implements Listener
         }
         if (e.getEntity() instanceof Player)
         {
-            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && ((Projectile) e.getDamager()).getShooter() instanceof Player)
+            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && ((Projectile) e
+                    .getDamager()).getShooter() instanceof Player)
             {
                 Player victim = (Player) e.getEntity();
-                Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
+                Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager())
+                        .getShooter() : e.getDamager());
                 TagHandler.tagPlayer(victim, damager);
             }
         }
     }
 
-    @EventHandler(priority = EventPriority.LOW)
+    @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onHit(EntityDamageByEntityEvent e)
     {
-        if (e.isCancelled())
+        Player victim = (Player) e.getEntity();
+
+        if (e.getEntity() instanceof Player && !reg.isNPC(victim))
         {
-            return;
-        }
-        LangHandler lang = DesireHCF.getLangHandler();
-        if (e.getEntity() instanceof Player)
-        {
-            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && !(e.getDamager() instanceof EnderPearl) && ((Projectile) e.getDamager()).getShooter() instanceof Player)
+            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && !(e.getDamager()
+                    instanceof EnderPearl) && ((Projectile) e.getDamager()).getShooter() instanceof Player)
             {
-                Player victim = (Player) e.getEntity();
-                Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
+                Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager())
+                        .getShooter() : e.getDamager());
 
                 // 0 = valid, 1 = damager in region, 2 = victim in region
                 int state = 0;
@@ -95,15 +97,14 @@ public class CombatListener implements Listener
                 if (ds.getSafeTimeLeft() > 0)
                 {
                     e.setCancelled(true);
-                    damager.sendMessage(lang.getString("pvp.damager_protected"));
+                    damager.sendMessage(DesireHCF.getLangHandler().getString("pvp.damager_protected"));
                     return;
                 }
 
                 if (vs.getSafeTimeLeft() > 0)
                 {
                     e.setCancelled(true);
-                    damager.sendMessage(lang.getString("pvp.target_protected"));
-                    return;
+                    damager.sendMessage(DesireHCF.getLangHandler().getString("pvp.target_protected"));
                 }
             }
         }
@@ -128,7 +129,8 @@ public class CombatListener implements Listener
                 HCFSessionHandler.getInstance().save(killer);
             }
 
-            UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
+            UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer
+                    .getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
             victim.addDeath(killer);
             BungeeUtils.sendToHub(vPlayer);
 
@@ -138,8 +140,7 @@ public class CombatListener implements Listener
             {
                 message.send(online);
             }
-        }
-        catch (Exception ex)
+        } catch (Exception ex)
         {
             ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
         }
@@ -154,7 +155,8 @@ public class CombatListener implements Listener
                 .then("[" + session.getTotalKills() + "]")
                 .tooltip(session.getKillDisplay());
 
-        String parsed = DesireHCF.getConfigHandler().getString("death." + (tag == null ? "pve." : "pvp.") + cause.toString().toLowerCase());
+        String parsed = DesireHCF.getConfigHandler().getString("death." + (tag == null ? "pve." : "pvp.") + cause
+                .toString().toLowerCase());
         if (parsed.contains("death.pvp."))
         {
             parsed = DesireHCF.getConfigHandler().getString("death.pvp.default");
