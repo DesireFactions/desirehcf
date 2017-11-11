@@ -1,10 +1,15 @@
 package com.desiremc.hcf;
 
+import java.io.File;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
-import com.desiremc.core.commands.UnbanCommand;
 import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
@@ -49,11 +54,6 @@ import com.desiremc.hcf.listener.classes.RogueListener;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
@@ -138,7 +138,6 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new PVPCommand(), this);
         customCommandHandler.registerCommand(new RegionCommand(), this);
         customCommandHandler.registerCommand(new SetEndCommand(), this);
-        customCommandHandler.registerCommand(new UnbanCommand(), this);
         customCommandHandler.registerCommand(new LogoutCommand(), this);
         customCommandHandler.registerCommand(new ReviveCommand(), this);
         customCommandHandler.registerCommand(new CoordsCommand(), this);

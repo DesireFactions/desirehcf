@@ -20,7 +20,7 @@ import com.massivecraft.factions.Faction;
 public class ChatListener implements Listener
 {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
     
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent event)
