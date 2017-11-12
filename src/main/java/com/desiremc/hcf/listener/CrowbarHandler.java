@@ -40,25 +40,30 @@ public class CrowbarHandler implements Listener
         Player player = e.getPlayer();
         ItemStack item = player.getItemInHand();
 
-        if (item == null || !isCrowbar(item)) { return; }
+        if (item == null || !isCrowbar(item))
+        {
+            return;
+        }
 
         int uses = getUses(item);
 
         if (e.getAction() == Action.LEFT_CLICK_BLOCK)
         {
             Block block = e.getClickedBlock();
-            Faction target = FactionsUtils.getFaction(block.getLocation());
-            Faction source = FactionsUtils.getFaction(player);
-            if (target != null && target != source)
-            {
-                e.setCancelled(true);
-                lang.sendString(player, "crowbar.not_yours");
-                return;
-            }
             if (!(block.getType() == Material.MOB_SPAWNER || block.getType() == Material.ENDER_PORTAL_FRAME))
             {
                 e.setCancelled(true);
                 lang.sendString(player, "crowbar.wrong_block");
+                return;
+            }
+            
+            Faction target = FactionsUtils.getFaction(block.getLocation());
+            Faction source = FactionsUtils.getFaction(player);
+            
+            if (target != null && target != source)
+            {
+                e.setCancelled(true);
+                lang.sendString(player, "crowbar.not_yours");
                 return;
             }
 
@@ -147,7 +152,10 @@ public class CrowbarHandler implements Listener
 
     public static int getUses(ItemStack is)
     {
-        if (!isCrowbar(is)) { return -1; }
+        if (!isCrowbar(is))
+        {
+            return -1;
+        }
         return Integer.parseInt(is.getItemMeta().getLore().get(0).replace(PREFIX, ""));
     }
 
@@ -156,7 +164,10 @@ public class CrowbarHandler implements Listener
         if (isCrowbar(is))
         {
             int uses = getUses(is) + change;
-            if (uses < 0) { throw new IllegalStateException("Can't have negative uses."); }
+            if (uses < 0)
+            {
+                throw new IllegalStateException("Can't have negative uses.");
+            }
             List<String> lore = is.getItemMeta().getLore();
             lore.set(0, PREFIX + uses);
 
