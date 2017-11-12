@@ -160,7 +160,7 @@ crowbar:
   frame:
     cost: 1
 logout:
-  time: 25
+  time: 15
 blocked:
   - FURNACE
   - CHEST
