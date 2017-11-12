@@ -35,13 +35,9 @@ public class CombatListener implements Listener
 
     private NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
 
-    @EventHandler(priority = EventPriority.MONITOR)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onHitMonitor(EntityDamageByEntityEvent e)
     {
-        if (e.isCancelled())
-        {
-            return;
-        }
         if (e.getEntity() instanceof Player)
         {
             if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && ((Projectile) e
