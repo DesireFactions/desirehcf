@@ -4,9 +4,9 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerLoginEvent;
-import org.bukkit.event.player.PlayerLoginEvent.Result;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.desiremc.core.DesireCore;
@@ -73,9 +73,9 @@ public class ConnectionListener implements Listener
     }
 
     @EventHandler
-    public void onLogin(PlayerLoginEvent event)
+    public void onLogin(AsyncPlayerPreLoginEvent event)
     {
-        HCFSession s = HCFSessionHandler.initializeHCFSession(event.getPlayer().getUniqueId(), false);
+        HCFSession s = HCFSessionHandler.initializeHCFSession(event.getUniqueId(), false);
         DeathBan ban = s.getActiveDeathBan();
         if (ban != null)
         {

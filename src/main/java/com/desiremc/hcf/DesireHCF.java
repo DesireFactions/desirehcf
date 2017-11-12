@@ -101,30 +101,30 @@ public class DesireHCF extends JavaPlugin
     private void registerListeners()
     {
         ListenerManager listenerManager = ListenerManager.getInstace();
-        listenerManager.addListener(new ChatListener());
-        listenerManager.addListener(new ConnectionListener());
-        listenerManager.addListener(new MovementListener());
-        listenerManager.addListener(new CombatListener());
-        listenerManager.addListener(new CrowbarHandler());
-        listenerManager.addListener(new CreatureSpawnListener());
-        listenerManager.addListener(new ArmorListener(getConfigHandler().getStringList("blocked")));
-        listenerManager.addListener(new ClassListener());
-        listenerManager.addListener(new ArcherListener());
-        listenerManager.addListener(new BardListener());
-        listenerManager.addListener(new MinerListener());
-        listenerManager.addListener(new RogueListener());
-        listenerManager.addListener(new TablistHandler());
-        listenerManager.addListener(new PickupListener());
-        listenerManager.addListener(new FurnaceSpeedHandler());
+        listenerManager.addListener(new ChatListener(), this);
+        listenerManager.addListener(new ConnectionListener(), this);
+        listenerManager.addListener(new MovementListener(), this);
+        listenerManager.addListener(new CombatListener(), this);
+        listenerManager.addListener(new CrowbarHandler(), this);
+        listenerManager.addListener(new CreatureSpawnListener(), this);
+        listenerManager.addListener(new ArmorListener(getConfigHandler().getStringList("blocked")), this);
+        listenerManager.addListener(new ClassListener(), this);
+        listenerManager.addListener(new ArcherListener(), this);
+        listenerManager.addListener(new BardListener(), this);
+        listenerManager.addListener(new MinerListener(), this);
+        listenerManager.addListener(new RogueListener(), this);
+        listenerManager.addListener(new TablistHandler(), this);
+        listenerManager.addListener(new PickupListener(), this);
+        listenerManager.addListener(new FurnaceSpeedHandler(), this);
         // EVERYTHING BELOW HERE IS UNTESTED
-        listenerManager.addListener(new EnderpearlHandler());
-        listenerManager.addListener(new GappleHandler());
-        listenerManager.addListener(new CombatLoggerHandler());
-        listenerManager.addListener(new EnderchestHandler());
-        listenerManager.addListener(new BrewingSpeedHandler());
-        listenerManager.addListener(new LootingBuffHandler());
-        listenerManager.addListener(new EnchantmentLimiterHandler());
-        listenerManager.addListener(new PotionLimiterHandler());
+        listenerManager.addListener(new EnderpearlHandler(), this);
+        listenerManager.addListener(new GappleHandler(), this);
+        listenerManager.addListener(new CombatLoggerHandler(), this);
+        listenerManager.addListener(new EnderchestHandler(), this);
+        listenerManager.addListener(new BrewingSpeedHandler(), this);
+        listenerManager.addListener(new LootingBuffHandler(), this);
+        listenerManager.addListener(new EnchantmentLimiterHandler(), this);
+        listenerManager.addListener(new PotionLimiterHandler(), this);
     }
 
     private void registerCommands()
