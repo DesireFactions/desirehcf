@@ -28,8 +28,9 @@ lives:
   add: '&7You have added &a{amount} &7lives to &c{player}&7.'
   remove: '&7You have removed &c{amount}&7 lives from {player}.'
   recieved: '&7You have received &a{amount} &7lives.'
-  use: '&7Used a life on &c{target}&7.'
+  use: '&7You have used a life on &c{target}&7.'
   no_lives: '&cYou currently have no lives.'
+  revive: '&7You have revived &c{target}&7.'
   check:
     self: '&7You have &a{lives} &7lives.'
     others: '&c{target} &7has &a{lives} &7lives.'

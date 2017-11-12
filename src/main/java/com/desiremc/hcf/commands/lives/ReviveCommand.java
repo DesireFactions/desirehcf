@@ -32,7 +32,7 @@ public class ReviveCommand extends ValidCommand
 
         target.revive(reason, true, PlayerUtils.getUUIDFromSender(sender));
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.use", "{target}", target.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.revive", "{target}", target.getName());
 
     }
 
