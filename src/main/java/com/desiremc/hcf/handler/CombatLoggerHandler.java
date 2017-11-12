@@ -101,7 +101,7 @@ public class CombatLoggerHandler implements Listener
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void despawnNPC(PlayerJoinEvent event)
     {
         Player player = event.getPlayer();

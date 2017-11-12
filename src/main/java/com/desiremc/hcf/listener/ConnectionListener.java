@@ -24,7 +24,7 @@ public class ConnectionListener implements Listener
     private static final boolean DEBUG = false;
 
     @SuppressWarnings("deprecation")
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.LOW)
     public void onJoin(PlayerJoinEvent e)
     {
         if (DEBUG)
