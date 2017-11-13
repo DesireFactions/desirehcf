@@ -1,9 +1,25 @@
 package com.desiremc.hcf.listener;
 
+import java.util.UUID;
+
+import org.bukkit.ChatColor;
+import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.PlayerDeathEvent;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.HCFSessionHandler;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.utils.BungeeUtils;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.core.utils.ItemNames;
@@ -16,19 +32,6 @@ import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCRegistry;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.PlayerDeathEvent;
-
-import java.util.UUID;
 
 public class CombatListener implements Listener
 {
@@ -58,8 +61,7 @@ public class CombatListener implements Listener
 
         if (e.getEntity() instanceof Player && !npcRegistry.isNPC(victim))
         {
-            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && !(e.getDamager()
-                    instanceof EnderPearl) && ((Projectile) e.getDamager()).getShooter() instanceof Player)
+            if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && !(e.getDamager() instanceof EnderPearl) && ((Projectile) e.getDamager()).getShooter() instanceof Player)
             {
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager())
                         .getShooter() : e.getDamager());
@@ -125,18 +127,21 @@ public class CombatListener implements Listener
                 HCFSessionHandler.getInstance().save(killer);
             }
 
-            UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer
-                    .getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
+            UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
             victim.addDeath(killer);
             BungeeUtils.sendToHub(vPlayer);
 
             FancyMessage message = processMessage(victim, cause, tag);
 
-            for (Player online : Bukkit.getOnlinePlayers())
+            for (Session s : SessionHandler.getInstance().getSessions())
             {
-                message.send(online);
+                if (s.getSetting(SessionSetting.DEATH))
+                {
+                    message.send(s.getPlayer());
+                }
             }
-        } catch (Exception ex)
+        }
+        catch (Exception ex)
         {
             ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
         }
