@@ -10,6 +10,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.tablist.Entry;
 import com.desiremc.core.tablist.Tab;
 import com.desiremc.hcf.DesireHCF;
@@ -30,7 +31,7 @@ public class TablistHandler implements Listener
             {
                 for (Session s : SessionHandler.getInstance().getSessions())
                 {
-                    if (s.getSettings().hasClassicTablist())
+                    if (s.getSetting(SessionSetting.CLASSICTAB))
                     {
                         applyClassic(s.getPlayer());
                     }

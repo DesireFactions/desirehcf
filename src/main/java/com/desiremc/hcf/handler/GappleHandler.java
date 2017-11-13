@@ -42,7 +42,7 @@ public class GappleHandler implements Listener
             }
         }, DesireHCF.getInstance());
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(DesireHCF.getInstance(), new Runnable()
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
@@ -52,7 +52,7 @@ public class GappleHandler implements Listener
                     Player p = PlayerUtils.getPlayer(uuid);
                     if (p != null)
                     {
-                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getString("gapple.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - history.get(uuid)) / 1000)));
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("gapple.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - history.get(uuid)) / 1000)));
                     }
                 }
             }
