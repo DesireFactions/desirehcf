@@ -68,7 +68,7 @@ public class CombatLoggerHandler implements Listener
 
         Session session = SessionHandler.getSession(player);
 
-        if (session.getRank().isManager() || player.getHealth() <= 0)
+        if (session.getRank().isManager())
         {
             return;
         }
@@ -80,7 +80,7 @@ public class CombatLoggerHandler implements Listener
         {
             npcRegistry.createHumanNPC(uuid, player.getName()).spawn(player.getLocation());
         }
-        else if (!SafeLogoutTask.isFinished(player))
+        else if (SafeLogoutTask.hasTask(player) && !SafeLogoutTask.isFinished(player))
         {
             int tagDistance = DesireHCF.getConfigHandler().getInteger("tag.distance");
 
