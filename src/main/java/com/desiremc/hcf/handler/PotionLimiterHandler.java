@@ -72,15 +72,16 @@ public class PotionLimiterHandler implements Listener
         if (!event.getItem().getType().equals(Material.POTION)) return;
 
         Player p = event.getPlayer();
-        PotionMeta potionMeta = (PotionMeta) event.getItem().getItemMeta();
         Potion potion = Potion.fromItemStack(event.getItem());
 
-        for (PotionEffect effect : potionMeta.getCustomEffects())
+        for (PotionEffect effect : potion.getEffects())
         {
             if (containsPotion(effect))
             {
                 if (!isPotionAllowed(potion, p, DesireHCF.getConfigHandler().getBoolean("potion-disabled")))
+                {
                     event.setCancelled(true);
+                }
             }
         }
     }
@@ -104,6 +105,12 @@ public class PotionLimiterHandler implements Listener
             {
                 for (ItemStack item : contents.getContents())
                 {
+
+                    if (item == null || item.getType() == Material.AIR)
+                    {
+                        continue;
+                    }
+
                     Potion potion = Potion.fromItemStack(item);
                     PotionMeta meta = (PotionMeta) item.getItemMeta();
                     for (PotionEffect potionEffect : meta.getCustomEffects())
@@ -144,7 +151,10 @@ public class PotionLimiterHandler implements Listener
     {
         for (PotionLimit limits : potionLimits)
         {
-            if (limits.getType().equals(effect.getType())) return true;
+            if (limits.getType().equals(effect.getType()))
+            {
+                return true;
+            }
         }
         return false;
     }
@@ -153,7 +163,10 @@ public class PotionLimiterHandler implements Listener
     {
         for (PotionLimit limit : potionLimits)
         {
-            if (limit.getType().equals(type)) return limit;
+            if (limit.getType().equals(type))
+            {
+                return limit;
+            }
         }
         return null;
     }
