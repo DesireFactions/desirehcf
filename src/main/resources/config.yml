@@ -149,10 +149,9 @@ potion-limiter:
     level: -1
     extended: true
 disabled-potion-msg: true
-xray-ores:
-  - "DIAMOND_ORE"
-  - "IRON_ORE"
-  - "EMERALD_ORE"
+findore:
+  - 'diamond_ore'
+  - 'emerald_ore'
 crowbar:
   uses: 6
   spawner:

@@ -83,6 +83,8 @@ classes:
 cobble:
   enable: '&7Picking up cobblestone enabled.'
   disable: '&7Picking up cobblestone disabled.'
+findore:
+  notification: '&b{player} has found a vein of &a{count} &c{ore}&7.'
 coords:
 - '&7&m-----------------------------'
 - '&9KOTHs:'
