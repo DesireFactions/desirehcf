@@ -5,6 +5,7 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.npc.SafeLogoutTask;
+import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.hcf.validator.PlayerIsNotTaggedValidator;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -23,17 +24,24 @@ public class LogoutCommand extends ValidCommand
     @Override
     public void validRun(CommandSender sender, String label, Object... args)
     {
-        Player p = (Player) sender;
+        Player player = (Player) sender;
 
-        if (SafeLogoutTask.hasTask(p))
+        if (SafeLogoutTask.hasTask(player))
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "logout.cancelled");
-            SafeLogoutTask.cancel(p);
+            SafeLogoutTask.cancel(player);
         }
         else
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "logout.started");
-            SafeLogoutTask.run(DesireHCF.getInstance(), p);
+            if(FactionsUtils.isInSafeZone(player))
+            {
+                player.kickPlayer(DesireHCF.getLangHandler().renderMessageNoPrefix("logout.success"));
+            }
+            else
+            {
+                DesireHCF.getLangHandler().sendRenderMessage(sender, "logout.started");
+                SafeLogoutTask.run(DesireHCF.getInstance(), player);
+            }
         }
 
     }

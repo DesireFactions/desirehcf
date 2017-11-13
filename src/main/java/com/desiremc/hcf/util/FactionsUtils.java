@@ -78,8 +78,10 @@ public class FactionsUtils
             return new String[] {
                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
                     ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getTag() : "NONE"),
-                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() : "NONE"),
-                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "---")
+                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() :
+                            "NONE"),
+                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ?
+                            fSession.getTrophies() : "---")
             };
         }
     }
@@ -168,6 +170,13 @@ public class FactionsUtils
             default:
                 return ChatColor.WHITE;
         }
+    }
+
+    public static boolean isInSafeZone(Player player)
+    {
+        Faction faction = getFaction(player.getLocation());
+
+        return faction.isSafeZone();
     }
 
 }

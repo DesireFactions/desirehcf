@@ -1,10 +1,10 @@
 package com.desiremc.hcf.npc;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
-
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,11 +12,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.NumberConversions;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.barrier.TagHandler;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
 
 public class SafeLogoutTask extends BukkitRunnable
 {
@@ -74,8 +73,7 @@ public class SafeLogoutTask extends BukkitRunnable
             finished = true;
             TagHandler.clearTag(playerId);
 
-            DesireHCF.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.success");
-            cancel();
+            player.kickPlayer(DesireHCF.getLangHandler().renderMessageNoPrefix("logout.success"));            cancel();
             return;
         }
 
