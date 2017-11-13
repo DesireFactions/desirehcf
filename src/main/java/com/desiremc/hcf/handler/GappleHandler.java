@@ -8,6 +8,8 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
 import com.desiremc.core.scoreboard.EntryRegistry;
@@ -37,7 +39,7 @@ public class GappleHandler implements Listener
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "gapple.ended");
-                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getString("gapple.scoreboard"));
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("gapple.scoreboard"));
                 }
             }
         }, DesireHCF.getInstance());
@@ -57,6 +59,26 @@ public class GappleHandler implements Listener
                 }
             }
         }, 0, 10);
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event)
+    {
+        if (event.getPlayer().getItemInHand() != null && (event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && event.getPlayer().getItemInHand().getType() == Material.GOLDEN_APPLE)
+        {
+            UUID uuid = event.getPlayer().getUniqueId();
+            Long time = history.get(uuid);
+
+            if (time == null)
+            {
+                history.put(uuid, System.currentTimeMillis());
+            }
+            else
+            {
+                event.setCancelled(true);
+                DesireHCF.getLangHandler().sendRenderMessage(event.getPlayer(), "gapple.message", "{time}", String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
+            }
+        }
     }
 
     @EventHandler(ignoreCancelled = true)

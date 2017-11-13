@@ -51,7 +51,7 @@ crowbar:
 gapple:
   ended: '&7You may now use a &5Gapple&7.'
   message: '&7You can not use an &5Gapple&7 for &e{time} &7seconds.'
-  scoreboard: '&7Gapple Timer'
+  scoreboard: '&6&lGapple Timer'
 potion-disabled: '&4&lPOTIONS&r&7 This potion effect is disabled!'
 trophy_points: 'Trophy Points &e{points}'
 koth_wins: 'Trophy Points &e{koth}'
