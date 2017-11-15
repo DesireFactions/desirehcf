@@ -1,5 +1,7 @@
 package com.desiremc.hcf.handler;
 
+import java.util.Iterator;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -29,8 +31,15 @@ public class TablistHandler implements Listener
             @Override
             public void run()
             {
-                for (Session s : SessionHandler.getInstance().getSessions())
+                Session s;
+                for (Iterator<Session> it = SessionHandler.getInstance().getSessions().iterator(); it.hasNext();)
                 {
+                    s = it.next();
+                    if (s.getPlayer() == null || !s.getPlayer().isOnline())
+                    {
+                        it.remove();
+                        continue;
+                    }
                     if (s.getSetting(SessionSetting.CLASSICTAB))
                     {
                         applyClassic(s.getPlayer());
