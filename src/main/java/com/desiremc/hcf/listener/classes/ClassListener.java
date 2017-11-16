@@ -1,12 +1,14 @@
 package com.desiremc.hcf.listener.classes;
 
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.event.ArmorEquipEvent;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -85,24 +87,22 @@ public class ClassListener implements Listener
 
                     List<Integer> indexs = new ArrayList<>();
 
-                    for (String temp : DesireHCF.getConfigHandler().getConfigurationSection("classes.miner" +
-                            ".diamonds").getKeys(false))
+                    for (String temp : DesireHCF.getConfigHandler().getConfigurationSection("classes.miner" + ".diamonds").getKeys(false))
                     {
                         indexs.add(Integer.valueOf(temp));
                     }
 
-                    indexs.removeIf(integer -> integer > session.getDiamonds());
+                    indexs.removeIf(integer -> integer > session.getCurrentOre().getDiamondCount());
 
                     if (indexs.size() == 0)
                     {
                         return;
                     }
 
-                    for (String info : DesireHCF.getConfigHandler().getStringList("classes.miner.diamonds" + indexs
-                            .get(indexs.size() - 1)))
+                    ConfigurationSection cs = DesireHCF.getConfigHandler().getConfigurationSection("classes.miner.diamonds." + indexs.get(indexs.size() - 1));
+                    for (String info : cs.getKeys(false))
                     {
-                        PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info.split("-")[0]),
-                                Integer.MAX_VALUE, Integer.valueOf(info.split("-")[1]) - 1);
+                        PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info), Integer.MAX_VALUE, Integer.valueOf(cs.getInt(info)) - 1);
                         player.addPotionEffect(effect);
                     }
                 }

@@ -3,11 +3,11 @@ package com.desiremc.hcf.commands.lives;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerHCFSessionParser;
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.parser.PlayerHCFSessionParser;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.validator.PlayerHasDeathbanValidator;
 import com.desiremc.hcf.validator.PlayerHasLivesValidator;
 

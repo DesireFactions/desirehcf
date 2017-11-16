@@ -4,12 +4,12 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.PlayerHCFSessionParser;
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.parser.PlayerHCFSessionParser;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
 
 public class LivesCheckCommand extends ValidCommand
 {

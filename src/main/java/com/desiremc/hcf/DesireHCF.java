@@ -11,8 +11,6 @@ import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.listeners.ListenerManager;
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.hcf.barrier.BarrierTask;
 import com.desiremc.hcf.barrier.TagHandler;
@@ -52,6 +50,8 @@ import com.desiremc.hcf.listener.classes.ClassListener;
 import com.desiremc.hcf.listener.classes.MinerListener;
 import com.desiremc.hcf.listener.classes.RogueListener;
 import com.desiremc.hcf.session.FactionSessionHandler;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 

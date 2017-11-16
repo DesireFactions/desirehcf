@@ -1,9 +1,10 @@
 package com.desiremc.hcf.validator;
 
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
+
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 

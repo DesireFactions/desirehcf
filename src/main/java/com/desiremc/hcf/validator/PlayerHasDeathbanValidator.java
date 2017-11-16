@@ -3,8 +3,8 @@ package com.desiremc.hcf.validator;
 import org.bukkit.command.CommandSender;
 
 import com.desiremc.core.api.command.CommandValidator;
-import com.desiremc.core.session.HCFSession;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.HCFSession;
 
 public class PlayerHasDeathbanValidator extends CommandValidator
 {

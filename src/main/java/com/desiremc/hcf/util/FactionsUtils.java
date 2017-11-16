@@ -1,9 +1,9 @@
 package com.desiremc.hcf.util;
 
-import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.session.FactionSession;
 import com.desiremc.hcf.session.FactionSessionHandler;
+import com.desiremc.hcf.session.HCFSession;
 import com.massivecraft.factions.Board;
 import com.massivecraft.factions.FLocation;
 import com.massivecraft.factions.FPlayer;

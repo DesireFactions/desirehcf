@@ -11,10 +11,10 @@ import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.DeathBan;
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 
