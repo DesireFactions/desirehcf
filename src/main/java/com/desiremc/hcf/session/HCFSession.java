@@ -21,7 +21,6 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.DeathBan;
 import com.desiremc.core.session.DeathBanHandler;
-import com.desiremc.core.session.OreData;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
@@ -420,6 +419,10 @@ public class HCFSession
 
     public OreData getCurrentOre()
     {
+        if (currentOre == null)
+        {
+            currentOre = new OreData();
+        }
         return currentOre;
     }
     

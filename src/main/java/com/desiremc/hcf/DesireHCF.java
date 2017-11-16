@@ -37,6 +37,7 @@ import com.desiremc.hcf.handler.GappleHandler;
 import com.desiremc.hcf.handler.LootingBuffHandler;
 import com.desiremc.hcf.handler.PotionLimiterHandler;
 import com.desiremc.hcf.handler.TablistHandler;
+import com.desiremc.hcf.listener.BlockListener;
 import com.desiremc.hcf.listener.ChatListener;
 import com.desiremc.hcf.listener.CombatListener;
 import com.desiremc.hcf.listener.ConnectionListener;
@@ -117,6 +118,7 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new TablistHandler(), this);
         listenerManager.addListener(new PickupListener(), this);
         listenerManager.addListener(new FurnaceSpeedHandler(), this);
+        listenerManager.addListener(new BlockListener(), this);
         // EVERYTHING BELOW HERE IS UNTESTED
         listenerManager.addListener(new EnderpearlHandler(), this);
         listenerManager.addListener(new GappleHandler(), this);

@@ -6,8 +6,8 @@ import org.bukkit.material.MaterialData;
 
 import com.desiremc.core.gui.Menu;
 import com.desiremc.core.gui.MenuItem;
-import com.desiremc.core.session.OreData;
 import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.OreData;
 
 public class OreMenu extends Menu
 {

@@ -1,27 +1,64 @@
 package com.desiremc.hcf.listener;
 
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Set;
 
+import org.bukkit.Material;
 import org.bukkit.block.Block;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockPlaceEvent;
 
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.utils.StringUtils;
+import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.HCFSessionHandler;
 
-public class BlockListener
+public class BlockListener implements Listener
 {
-    @EventHandler
+
+    private static final boolean DEBUG = true;
+
+    private final static LinkedList<Material> ALWAYS = new LinkedList<>(Arrays.asList(Material.GOLD_ORE, Material.IRON_ORE));
+    private final static LinkedList<Material> NON_SILK = new LinkedList<>(Arrays.asList(Material.EMERALD_ORE, Material.DIAMOND_ORE, Material.COAL_ORE));
+
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onOreBreak(BlockBreakEvent event)
     {
+        if (event.isCancelled())
+        {
+            return;
+        }
+        if (DEBUG)
+        {
+            System.out.println("BlockListener.onOreBreak() fired.");
+        }
         Player p = event.getPlayer();
+        Material type = event.getBlock().getType();
 
-        String name = StringUtils.capitalize(event.getBlock().getType().name().toLowerCase().replace("_", ""));
+        if ((ALWAYS.contains(type) || (!p.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH) && NON_SILK.contains(type))))
+        {
+            if (DEBUG)
+            {
+                System.out.println("BlockListener.onOreBreak() processing current ore.");
+            }
+            try
+            {
+                HCFSessionHandler.getHCFSession(p.getUniqueId()).getCurrentOre().add(type, 1);
+            }
+            catch (Exception ex)
+            {
+                ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
+            }
+        }
 
         if (!DesireHCF.getConfigHandler().getStringList("xray_ores").contains(event.getBlock().getType().name().toLowerCase()))
         {
@@ -37,9 +74,14 @@ public class BlockListener
                 DesireHCF.getLangHandler().sendRenderMessage(session, "findore.notification",
                         "{player}", p.getName(),
                         "{count}", vein.size(),
-                        "{ore}", name);
+                        "{ore}", type.name().replaceAll("_", " "));
             }
         }
+    }
+
+    @EventHandler
+    public void onPlace(BlockPlaceEvent event)
+    {
     }
 
     private Set<Block> getVein(Block block)
