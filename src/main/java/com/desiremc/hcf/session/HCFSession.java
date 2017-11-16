@@ -64,7 +64,7 @@ public class HCFSession
     private OreData currentOre;
 
     @Embedded
-    private List<OreData> historicalOre;
+    private List<OreData> oreHistory;
 
     @Transient
     private Session session;
@@ -84,6 +84,7 @@ public class HCFSession
         kills = new LinkedList<>();
         deaths = new LinkedList<>();
         deathBans = new LinkedList<>();
+        oreHistory = new LinkedList<>();
     }
 
     protected void setId(int id)
@@ -420,6 +421,22 @@ public class HCFSession
     public OreData getCurrentOre()
     {
         return currentOre;
+    }
+    
+    public OreData getTotalOre()
+    {
+        OreData data = currentOre.copy();
+        for(OreData ore : oreHistory)
+        {
+            data.addEmerald(ore.getEmeraldCount());
+            data.addDiamond(ore.getDiamondCount());
+            data.addGold(ore.getGoldCount());
+            data.addLapis(ore.getLapisCount());
+            data.addRedstone(ore.getRedstoneCount());
+            data.addIron(ore.getIronCount());
+            data.addCoal(ore.getCoalCount());
+        }
+        return data;
     }
 
     private void save()

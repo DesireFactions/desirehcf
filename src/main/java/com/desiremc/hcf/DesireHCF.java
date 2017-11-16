@@ -20,6 +20,7 @@ import com.desiremc.hcf.commands.CrowbarCommand;
 import com.desiremc.hcf.commands.EnderChestCommand;
 import com.desiremc.hcf.commands.HCFReloadCommand;
 import com.desiremc.hcf.commands.LogoutCommand;
+import com.desiremc.hcf.commands.OreCommand;
 import com.desiremc.hcf.commands.PVPCommand;
 import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
@@ -142,6 +143,7 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new ReviveCommand(), this);
         customCommandHandler.registerCommand(new CoordsCommand(), this);
         customCommandHandler.registerCommand(new CobbleCommand(), this);
+        customCommandHandler.registerCommand(new OreCommand(), this);
     }
 
     public static WorldEditPlugin getWorldEdit()
