@@ -44,7 +44,7 @@ public class EnderpearlHandler implements Listener
         Bukkit.getScheduler().runTask(DesireHCF.getInstance(), new EnderpearlUpdater());
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onInteract(PlayerInteractEvent e)
     {
         Player p = e.getPlayer();
