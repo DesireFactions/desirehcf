@@ -1,7 +1,6 @@
 package com.desiremc.hcf.handler;
 
 import com.desiremc.hcf.DesireHCF;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
