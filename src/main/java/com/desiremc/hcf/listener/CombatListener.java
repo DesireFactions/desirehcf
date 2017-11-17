@@ -2,6 +2,7 @@ package com.desiremc.hcf.listener;
 
 import java.util.UUID;
 
+import com.massivecraft.factions.P;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
@@ -57,6 +58,17 @@ public class CombatListener implements Listener
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onHit(EntityDamageByEntityEvent e)
     {
+
+        if(!(e.getEntity() instanceof Player))
+        {
+            return;
+        }
+
+        if(!(e.getDamager() instanceof Player))
+        {
+            return;
+        }
+
         Player victim = (Player) e.getEntity();
 
         if (e.getEntity() instanceof Player && !npcRegistry.isNPC(victim))
