@@ -1,16 +1,5 @@
 package com.desiremc.hcf.listener.classes;
 
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -20,6 +9,18 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class BardListener implements DesireClass
 {
@@ -56,7 +57,7 @@ public class BardListener implements DesireClass
                 Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    applyEffect(p);
+                    applyEffect(p, p.getItemInHand());
                     timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
                 }
             }
@@ -106,19 +107,25 @@ public class BardListener implements DesireClass
             return;
         }
 
-        applyEffect(p);
+        ItemStack item = p.getInventory().getItem(event.getNewSlot());
+
+        if (item == null || item.getType().equals(Material.AIR))
+        {
+            return;
+        }
+        applyEffect(p, item);
     }
 
-    private void applyEffect(Player p)
+    private void applyEffect(Player p, ItemStack item)
     {
         if (timedEffects.get(p.getUniqueId()) != null || cooldown.get(p.getUniqueId()) != null)
         {
             return;
         }
 
-        switch (p.getItemInHand().getType())
+        switch (item.getType())
         {
-            case BLAZE_ROD:
+            case BLAZE_POWDER:
                 applyStrength(FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.bard.distance")));
                 break;
             case GHAST_TEAR:

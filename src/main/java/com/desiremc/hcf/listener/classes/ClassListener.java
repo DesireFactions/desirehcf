@@ -5,7 +5,6 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.event.ArmorEquipEvent;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -52,6 +51,7 @@ public class ClassListener implements Listener
             session.setPvpClass(null);
             return;
         }
+
         switch (item.getType().name().split("_")[0])
         {
             case "DIAMOND":
