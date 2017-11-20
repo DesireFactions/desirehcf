@@ -5,13 +5,13 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.event.ArmorEquipEvent;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
-
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -36,6 +36,13 @@ public class ClassListener implements Listener
         }, 2L);
     }
 
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event)
+    {
+        Player player = event.getPlayer();
+        updateClass(player, player.getInventory().getHelmet());
+    }
+
     private void updateClass(Player player, ItemStack item)
     {
         HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
@@ -52,12 +59,14 @@ public class ClassListener implements Listener
             session.setPvpClass(null);
             return;
         }
+
         switch (item.getType().name().split("_")[0])
         {
             case "DIAMOND":
                 if (isDiamond(inv.getArmorContents()))
                 {
                     session.setPvpClass(PVPClass.DIAMOND);
+                    applyPermanentEffects(PVPClass.DIAMOND, player);
                 }
                 break;
             case "LEATHER":
@@ -71,12 +80,14 @@ public class ClassListener implements Listener
                 if (isBard(inv.getArmorContents()))
                 {
                     session.setPvpClass(PVPClass.BARD);
+                    applyPermanentEffects(PVPClass.BARD, player);
                 }
                 break;
             case "CHAINMAIL":
                 if (isRogue(inv.getArmorContents()))
                 {
                     session.setPvpClass(PVPClass.ROGUE);
+                    applyPermanentEffects(PVPClass.ROGUE, player);
                 }
                 break;
             case "IRON":
@@ -102,7 +113,7 @@ public class ClassListener implements Listener
                     ConfigurationSection cs = DesireHCF.getConfigHandler().getConfigurationSection("classes.miner.diamonds." + indexs.get(indexs.size() - 1));
                     for (String info : cs.getKeys(false))
                     {
-                        PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info), Integer.MAX_VALUE, Integer.valueOf(cs.getInt(info)) - 1);
+                        PotionEffect effect = new PotionEffect(PotionEffectType.getByName(info), Integer.MAX_VALUE, cs.getInt(info) - 1);
                         player.addPotionEffect(effect);
                     }
                 }
@@ -171,28 +182,27 @@ public class ClassListener implements Listener
         return true;
     }
 
-    private void applyPermanentEffects(PVPClass pvpClass, Player player)
+    public static void applyPermanentEffects(PVPClass pvpClass, Player player)
     {
         switch (pvpClass)
         {
             case BARD:
-
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
                 break;
             case MINER:
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 1));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 0));
                 break;
             case ROGUE:
-
+                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
                 break;
             case ARCHER:
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 3));
-                break;
-            case DIAMOND:
-
+                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
                 break;
         }
     }
@@ -202,7 +212,9 @@ public class ClassListener implements Listener
         switch (pvpClass)
         {
             case BARD:
-
+                player.removePotionEffect(PotionEffectType.SPEED);
+                player.removePotionEffect(PotionEffectType.REGENERATION);
+                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
                 break;
             case MINER:
                 player.removePotionEffect(PotionEffectType.NIGHT_VISION);
@@ -212,14 +224,12 @@ public class ClassListener implements Listener
                 player.removePotionEffect(PotionEffectType.SPEED);
                 break;
             case ROGUE:
-
+                player.removePotionEffect(PotionEffectType.JUMP);
+                player.removePotionEffect(PotionEffectType.SPEED);
                 break;
             case ARCHER:
                 player.removePotionEffect(PotionEffectType.SPEED);
                 player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-                break;
-            case DIAMOND:
-
                 break;
         }
     }

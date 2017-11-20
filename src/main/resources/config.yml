@@ -225,18 +225,32 @@ blocked:
   - YELLOW_SHULKER_BOX
 classes:
   bard:
-    distance: 10
+    range: 10
     duration: 12
     frequency: 5
     instant-cooldown: 30
-    timed-effect-strength:
-      strength: 1
-      regen: 2
-      fire: 1
-      speed: 2
-    instant-effect-strength:
-      heal: 6
-      feed: 6
+    effects:
+      SPEED:
+        click: 3
+        hold: 2
+      STRENGTH:
+        click: 2
+        hold: 1
+      RESISTANCE:
+        click: 3
+        hold: 1
+      WITHER:
+        click: 1
+        hold: -1
+      REGEN:
+        click: 3
+        hold: 1
+      JUMP_BOOST:
+        click: 4
+        hold: 3
+      FIRE_RESISTANCE:
+        click: 1
+        hold: 1
     rouge-finder:
       range: 80
       remainder: 30
@@ -244,11 +258,20 @@ classes:
     range: 10
     increase-percent: 1.20
     hit-time: 30
-    speed:
-      duration: 20
-      amplifier: 4
-      cooldown: 60
+    cooldown: 20
+    effects:
+      SPEED:
+        duration: 12
+        item: SUGAR
+        click: 3
+        hold: -1
+      JUMP_BOOST:
+        duration: 12
+        item: FEATHER
+        click: 6
+        hold: 3
   rogue:
+    cooldown: 20
     invisible-length: 120
     uninvis-range: 10
     uninvis-timer: 30
@@ -257,6 +280,17 @@ classes:
       bard: 2
       rogue: 2
       diamond: 4
+    effects:
+      SPEED:
+        duration: 12
+        item: SUGAR
+        click: 5
+        hold: -1
+      JUMP_BOOST:
+        duration: 12
+        item: FEATHER
+        click: 6
+        hold: -1
   miner:
     diamonds:
       100:
