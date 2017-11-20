@@ -2,7 +2,6 @@ package com.desiremc.hcf.listener;
 
 import java.util.UUID;
 
-import com.massivecraft.factions.P;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Player;
