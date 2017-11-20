@@ -66,6 +66,12 @@ public class ArcherListener implements DesireClass
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.archer.speed-ready");
+
+                    HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+                    if (PVPClass.ARCHER.equals(session.getPvpClass()))
+                    {
+                        ClassListener.applyPermanentEffects(PVPClass.ARCHER, p);
+                    }
                 }
             }
         }, DesireHCF.getInstance());
@@ -202,12 +208,16 @@ public class ArcherListener implements DesireClass
         switch (item.getType())
         {
             case FEATHER:
-                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.duration"),
+                p.removePotionEffect(PotionEffectType.JUMP);
+                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP,
+                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.duration") * 20,
                         DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.click"));
                 p.addPotionEffect(jump);
                 break;
             case SUGAR:
-                PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.duration"),
+                p.removePotionEffect(PotionEffectType.SPEED);
+                PotionEffect speed = new PotionEffect(PotionEffectType.SPEED,
+                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.duration") * 20,
                         DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.click"));
                 p.addPotionEffect(speed);
                 break;

@@ -11,6 +11,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -33,6 +34,13 @@ public class ClassListener implements Listener
                 updateClass(event.getPlayer(), event.getNewArmorPiece());
             }
         }, 2L);
+    }
+
+    @EventHandler
+    public void onJoin(PlayerJoinEvent event)
+    {
+        Player player = event.getPlayer();
+        updateClass(player, player.getInventory().getHelmet());
     }
 
     private void updateClass(Player player, ItemStack item)
@@ -58,6 +66,7 @@ public class ClassListener implements Listener
                 if (isDiamond(inv.getArmorContents()))
                 {
                     session.setPvpClass(PVPClass.DIAMOND);
+                    applyPermanentEffects(PVPClass.DIAMOND, player);
                 }
                 break;
             case "LEATHER":
@@ -71,12 +80,14 @@ public class ClassListener implements Listener
                 if (isBard(inv.getArmorContents()))
                 {
                     session.setPvpClass(PVPClass.BARD);
+                    applyPermanentEffects(PVPClass.BARD, player);
                 }
                 break;
             case "CHAINMAIL":
                 if (isRogue(inv.getArmorContents()))
                 {
                     session.setPvpClass(PVPClass.ROGUE);
+                    applyPermanentEffects(PVPClass.ROGUE, player);
                 }
                 break;
             case "IRON":
@@ -171,7 +182,7 @@ public class ClassListener implements Listener
         return true;
     }
 
-    private void applyPermanentEffects(PVPClass pvpClass, Player player)
+    public static void applyPermanentEffects(PVPClass pvpClass, Player player)
     {
         switch (pvpClass)
         {

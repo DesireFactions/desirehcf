@@ -59,6 +59,12 @@ public class RogueListener implements DesireClass
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.rogue.effect-over");
+
+                    HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+                    if (PVPClass.ROGUE.equals(session.getPvpClass()))
+                    {
+                        ClassListener.applyPermanentEffects(PVPClass.ROGUE, p);
+                    }
                 }
             }
         }, DesireHCF.getInstance());
@@ -199,25 +205,22 @@ public class RogueListener implements DesireClass
 
         if (cooldown.get(p.getUniqueId()) != null)
         {
-            switch (item.getType())
-            {
-                case FEATHER:
-                    DesireHCF.getLangHandler().sendString(p, "classes.rogue.effect-cd");
-                    break;
-            }
+            DesireHCF.getLangHandler().sendString(p, "classes.rogue.effect-cd");
             return;
         }
 
         switch (item.getType())
         {
             case FEATHER:
-                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.duration"),
-                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.click"));
+                p.removePotionEffect(PotionEffectType.JUMP);
+                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP_BOOST.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP_BOOST.click"));
                 p.addPotionEffect(jump);
                 break;
             case SUGAR:
-                PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP_BOOST.duration"),
-                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP_BOOST.click"));
+                p.removePotionEffect(PotionEffectType.SPEED);
+                PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.click"));
                 p.addPotionEffect(speed);
                 break;
         }

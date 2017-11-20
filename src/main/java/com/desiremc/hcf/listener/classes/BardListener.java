@@ -108,7 +108,8 @@ public class BardListener implements DesireClass
             case MAGMA_CREAM:
                 for (Player target : players)
                 {
-                    PotionEffect effect = new PotionEffect(PotionEffectType.FIRE_RESISTANCE, 180 * 20,
+                    PotionEffect effect = new PotionEffect(PotionEffectType.FIRE_RESISTANCE,
+                            180 * 20,
                             DesireHCF.getConfigHandler().getInteger("classes.bard.effects.FIRE_RESISTANCE.click") - 1);
                     target.addPotionEffect(effect);
                 }
