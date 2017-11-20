@@ -1,18 +1,5 @@
 package com.desiremc.hcf.listener.classes;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.bukkit.Material;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -21,12 +8,28 @@ import com.desiremc.core.utils.cache.RemovalNotification;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Material;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class ArcherListener implements DesireClass
 {
 
-    private Cache<UUID, Long> archerHit;
+    private Cache<UUID, UUID> archerHit;
     private Cache<UUID, Long> cooldown;
+    private Cache<UUID, Long> timedEffects;
 
     public ArcherListener()
     {
@@ -37,11 +40,15 @@ public class ArcherListener implements DesireClass
     public void initialize()
     {
         archerHit = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.hit-time"), TimeUnit.SECONDS,
-                new RemovalListener<UUID, Long>()
+                new RemovalListener<UUID, UUID>()
                 {
                     @Override
-                    public void onRemoval(RemovalNotification<UUID, Long> entry)
+                    public void onRemoval(RemovalNotification<UUID, UUID> entry)
                     {
+                        if (entry.getCause() != RemovalNotification.Cause.EXPIRE)
+                        {
+                            return;
+                        }
                         Player p = PlayerUtils.getPlayer(entry.getKey());
                         if (p != null)
                         {
@@ -50,7 +57,7 @@ public class ArcherListener implements DesireClass
                     }
                 }, DesireHCF.getInstance());
 
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.speed.cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -62,6 +69,48 @@ public class ArcherListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
+
+        timedEffects = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.duration"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        {
+            @Override
+            public void onRemoval(RemovalNotification<UUID, Long> entry)
+            {
+                Player p = PlayerUtils.getPlayer(entry.getKey());
+                if (p != null)
+                {
+                    applyEffect(p, p.getItemInHand());
+                }
+            }
+        }, DesireHCF.getInstance());
+    }
+
+    @EventHandler
+    public void onHit(EntityDamageByEntityEvent event)
+    {
+        if (!(event.getDamager() instanceof Player))
+        {
+            return;
+        }
+
+        if (!(event.getEntity() instanceof Player))
+        {
+            return;
+        }
+
+        Player source = (Player) event.getDamager();
+        Player target = (Player) event.getEntity();
+
+        if (archerHit.get(target.getUniqueId()) == null)
+        {
+            return;
+        }
+
+        if (FactionsUtils.getFaction(source) != FactionsUtils.getFaction(archerHit.get(target.getUniqueId())))
+        {
+            return;
+        }
+
+        event.setDamage(event.getDamage() * DesireHCF.getConfigHandler().getDouble("classes.archer.increase-percent"));
     }
 
     @EventHandler
@@ -104,12 +153,11 @@ public class ArcherListener implements DesireClass
 
         if (archerHit.get(target.getUniqueId()) != null)
         {
-            event.setDamage(event.getDamage() * DesireHCF.getConfigHandler().getDouble("classes.archer" +
-                    ".increase-percent"));
+            archerHit.put(target.getUniqueId(), source.getUniqueId());
         }
         else
         {
-            archerHit.put(target.getUniqueId(), System.currentTimeMillis());
+            archerHit.replace(target.getUniqueId(), source.getUniqueId());
         }
     }
 
@@ -123,7 +171,7 @@ public class ArcherListener implements DesireClass
             return;
         }
 
-        if (!event.hasItem() || !event.getItem().getType().equals(Material.SUGAR))
+        if (!event.hasItem() || event.getItem().getType().equals(Material.AIR))
         {
             return;
         }
@@ -135,16 +183,78 @@ public class ArcherListener implements DesireClass
             return;
         }
 
+        ItemStack item = event.getItem();
+
         if (cooldown.get(p.getUniqueId()) != null)
         {
-            DesireHCF.getLangHandler().sendString(p, "classes.archer.speed-cd");
+            switch (item.getType())
+            {
+                case FEATHER:
+                    DesireHCF.getLangHandler().sendString(p, "classes.archer.jump-cd");
+                    break;
+                case SUGAR:
+                    DesireHCF.getLangHandler().sendString(p, "classes.archer.speed-cd");
+                    break;
+            }
             return;
         }
 
-        PotionEffect effect = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger("classes.archer.speed.duration"),
-                DesireHCF.getConfigHandler().getInteger("classes.archer.speed.amplifier"));
+        switch (item.getType())
+        {
+            case FEATHER:
+                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.duration"),
+                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.click"));
+                p.addPotionEffect(jump);
+                break;
+            case SUGAR:
+                PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.duration"),
+                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.click"));
+                p.addPotionEffect(speed);
+                break;
+        }
 
-        p.addPotionEffect(effect);
         cooldown.put(p.getUniqueId(), System.currentTimeMillis());
+    }
+
+    @EventHandler
+    public void playerItemHeldEvent(PlayerItemHeldEvent event)
+    {
+        Player p = event.getPlayer();
+        HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+
+        if (!PVPClass.ARCHER.equals(session.getPvpClass()))
+        {
+            return;
+        }
+
+        ItemStack item = p.getInventory().getItem(event.getNewSlot());
+
+        if (item == null || item.getType().equals(Material.AIR))
+        {
+            return;
+        }
+        applyEffect(p, item);
+    }
+
+    private void applyEffect(Player p, ItemStack item)
+    {
+        if (timedEffects.get(p.getUniqueId()) != null || cooldown.get(p.getUniqueId()) != null)
+        {
+            return;
+        }
+
+        switch (item.getType())
+        {
+            case FEATHER:
+                PotionEffect effect = new PotionEffect(PotionEffectType.JUMP,
+                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.hold"));
+                p.addPotionEffect(effect);
+                break;
+            default:
+                return;
+        }
+
+        timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
     }
 }

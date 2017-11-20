@@ -1,18 +1,5 @@
 package com.desiremc.hcf.listener.classes;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -22,11 +9,25 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class RogueListener implements DesireClass
 {
 
     private static Cache<UUID, Long> invisCooldown;
+    private Cache<UUID, Long> cooldown;
 
     public RogueListener()
     {
@@ -46,6 +47,18 @@ public class RogueListener implements DesireClass
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.rogue.uninvis-over");
+                }
+            }
+        }, DesireHCF.getInstance());
+        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.rogue.cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        {
+            @Override
+            public void onRemoval(RemovalNotification<UUID, Long> entry)
+            {
+                Player p = PlayerUtils.getPlayer(entry.getKey());
+                if (p != null)
+                {
+                    DesireHCF.getLangHandler().sendString(p, "classes.rogue.effect-over");
                 }
             }
         }, DesireHCF.getInstance());
@@ -118,7 +131,7 @@ public class RogueListener implements DesireClass
     }
 
     @EventHandler
-    public void onRightClick(PlayerInteractEvent event)
+    public void onInvisToggle(PlayerInteractEvent event)
     {
         if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
         {
@@ -158,6 +171,58 @@ public class RogueListener implements DesireClass
             p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, DesireHCF.getConfigHandler().getInteger
                     ("classes.rogue.invisible-length"), 1));
         }
+    }
+
+    @EventHandler
+    public void onRightClick(PlayerInteractEvent event)
+    {
+        Player p = event.getPlayer();
+
+        if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
+        {
+            return;
+        }
+
+        if (!event.hasItem() || event.getItem().getType().equals(Material.AIR))
+        {
+            return;
+        }
+
+        HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+
+        if (!PVPClass.ROGUE.equals(session.getPvpClass()))
+        {
+            return;
+        }
+
+        ItemStack item = event.getItem();
+
+        if (cooldown.get(p.getUniqueId()) != null)
+        {
+            switch (item.getType())
+            {
+                case FEATHER:
+                    DesireHCF.getLangHandler().sendString(p, "classes.rogue.effect-cd");
+                    break;
+            }
+            return;
+        }
+
+        switch (item.getType())
+        {
+            case FEATHER:
+                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.duration"),
+                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.click"));
+                p.addPotionEffect(jump);
+                break;
+            case SUGAR:
+                PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP_BOOST.duration"),
+                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP_BOOST.click"));
+                p.addPotionEffect(speed);
+                break;
+        }
+
+        cooldown.put(p.getUniqueId(), System.currentTimeMillis());
     }
 
     public static void caughtByBard(Player target)

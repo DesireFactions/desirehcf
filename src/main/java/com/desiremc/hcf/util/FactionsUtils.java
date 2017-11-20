@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.UUID;
 
 public class FactionsUtils
 {
@@ -33,6 +34,13 @@ public class FactionsUtils
     public static Faction getFaction(Player p)
     {
         FPlayer fp = FPlayers.getInstance().getByPlayer(p);
+
+        return fp != null && fp.getFaction() != null ? fp.getFaction() : null;
+    }
+
+    public static Faction getFaction(UUID uuid)
+    {
+        FPlayer fp = FPlayers.getInstance().getById(uuid.toString());
 
         return fp != null && fp.getFaction() != null ? fp.getFaction() : null;
     }

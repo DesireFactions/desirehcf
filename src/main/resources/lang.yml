@@ -75,11 +75,15 @@ classes:
     uninvis-over: You can now go invisible again.
     shown: You have been discovered. Your invisibility is gone.
     on-cooldown: Your invisibility effect is on cooldown.
+    effect-cd: Your effects are on cooldown.
+    effect-over: Your effects are now ready.
   archer:
     hit: You've been tagged by an Archer. You will now take increased Archer arrow damage.
     hit-off: Your Archer tag is now over.
     speed-ready: Your speed effect is now ready.
     speed-cd: Your speed effect is on cooldown.
+    jump-ready: Your jump effect is now ready.
+    jump-cd: Your jump effect is on cooldown.
 cobble:
   enable: '&7Picking up cobblestone enabled.'
   disable: '&7Picking up cobblestone disabled.'
