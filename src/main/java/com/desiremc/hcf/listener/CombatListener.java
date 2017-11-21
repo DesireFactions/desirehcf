@@ -54,7 +54,11 @@ public class CombatListener implements Listener
                 Player victim = (Player) e.getEntity();
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager())
                         .getShooter() : e.getDamager());
-                TagHandler.tagPlayer(victim, damager);
+
+                if (!victim.getName().equalsIgnoreCase(damager.getName()))
+                {
+                    TagHandler.tagPlayer(victim, damager);
+                }
             }
         }
     }

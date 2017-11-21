@@ -36,6 +36,10 @@ public class EnderpearlHandler implements Listener
                 Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
+                    if (entry.getCause() != RemovalNotification.Cause.EXPIRE)
+                    {
+                        return;
+                    }
                     EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("enderpearl.scoreboard"));
                 }
             }
@@ -44,7 +48,7 @@ public class EnderpearlHandler implements Listener
         Bukkit.getScheduler().runTask(DesireHCF.getInstance(), new EnderpearlUpdater());
     }
 
-    @EventHandler(ignoreCancelled = true)
+    @EventHandler
     public void onInteract(PlayerInteractEvent e)
     {
         Player p = e.getPlayer();
@@ -54,7 +58,7 @@ public class EnderpearlHandler implements Listener
             return;
         }
 
-        if (p.getInventory().getItemInHand().getType() == Material.ENDER_PEARL)
+        if (e.getItem() != null && e.getItem().getType().equals(Material.ENDER_PEARL))
         {
             UUID uuid = p.getUniqueId();
             Long time = history.get(uuid);
