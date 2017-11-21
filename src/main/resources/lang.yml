@@ -5,7 +5,7 @@ prefix:
 tag:
   active: '&c&lYou are now combat tagged and can not enter spawn.'
   expire: '&c&lYou are no longer combat tagged.'
-  scoreboard: CombatTimer
+  scoreboard: '&6&lCombat Tag'
 enderchest:
   disabled: '&7enderchest disabled!'
   enabled: '&7enderchest enabled!'
