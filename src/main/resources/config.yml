@@ -314,3 +314,10 @@ classes:
         - SPEED-3
         - DAMAGE_RESISTANCE-2
         - FAST_DIGGING-3
+spawn:
+  x: 0
+  y: 0
+  z: 0
+  yaw: 0
+  pitch: 0
+  world: world

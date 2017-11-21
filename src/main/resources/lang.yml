@@ -67,6 +67,8 @@ no_faction: You are not a part of a faction!
 need_selection: '&7You need to make a selection with WorldEdit.'
 no_deathban: '&7That player does not have an active deathban.'
 tagged: "You cannot log out with an active PvP Timer."
+set-spawn: "You have set the spawn to your location."
+spawn: "You have teleported to spawn."
 classes:
   bard:
     instant-cooldown-over: Your bard cooldown is over.
