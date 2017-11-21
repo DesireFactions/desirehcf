@@ -1,19 +1,7 @@
 package com.desiremc.hcf.listener;
 
-import java.util.UUID;
-
-import org.bukkit.ChatColor;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.PlayerDeathEvent;
-
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -32,9 +20,26 @@ import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.util.UUID;
 
 public class CombatListener implements Listener
 {
+
+    private FileHandler config = DesireHCF.getConfigHandler();
 
     private NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
 
@@ -117,6 +122,14 @@ public class CombatListener implements Listener
                 }
             }
         }
+    }
+
+    @EventHandler
+    public void onRespawn(PlayerRespawnEvent event)
+    {
+        Location loc = new Location(Bukkit.getWorld(config.getString("spawn.world")), config.getDouble("spawn.x"), config.getDouble("spawn.y"),
+                config.getDouble("spawn.z"), (float) config.getDouble("spawn.yaw").doubleValue(), (float) config.getDouble("spawn.pitch").doubleValue());
+        event.setRespawnLocation(loc);
     }
 
     @EventHandler()

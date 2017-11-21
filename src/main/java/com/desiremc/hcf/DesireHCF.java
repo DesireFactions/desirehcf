@@ -1,11 +1,5 @@
 package com.desiremc.hcf;
 
-import java.io.File;
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -27,6 +21,8 @@ import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.lives.ReviveCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
+import com.desiremc.hcf.commands.spawn.SetSpawnCommand;
+import com.desiremc.hcf.commands.spawn.SpawnCommand;
 import com.desiremc.hcf.handler.BrewingSpeedHandler;
 import com.desiremc.hcf.handler.CombatLoggerHandler;
 import com.desiremc.hcf.handler.EnchantmentLimiterHandler;
@@ -56,6 +52,11 @@ import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
@@ -146,6 +147,9 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new CoordsCommand(), this);
         customCommandHandler.registerCommand(new CobbleCommand(), this);
         customCommandHandler.registerCommand(new OreCommand(), this);
+
+        customCommandHandler.registerCommand(new SetSpawnCommand(), this);
+        customCommandHandler.registerCommand(new SpawnCommand(), this);
     }
 
     public static WorldEditPlugin getWorldEdit()

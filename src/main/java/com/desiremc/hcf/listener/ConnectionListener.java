@@ -1,5 +1,17 @@
 package com.desiremc.hcf.listener;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.FileHandler;
+import com.desiremc.core.session.DeathBan;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,19 +21,18 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.DeathBan;
-import com.desiremc.core.utils.DateUtils;
-import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
-import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class ConnectionListener implements Listener
 {
 
     private static final boolean DEBUG = false;
+
+    public static List<UUID> firstJoin = new ArrayList<>();
+
+    private FileHandler config = DesireHCF.getConfigHandler();
 
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOW)
@@ -61,6 +72,15 @@ public class ConnectionListener implements Listener
             {
                 session.getSafeTimer().resume();
             }
+        }
+
+        if (firstJoin.contains(p.getUniqueId()))
+        {
+            Location loc = new Location(Bukkit.getWorld(config.getString("spawn.world")), config.getDouble("spawn.x"), config.getDouble("spawn.y"),
+                    config.getDouble("spawn.z"), (float) config.getDouble("spawn.yaw").doubleValue(), (float) config.getDouble("spawn.pitch").doubleValue());
+
+            p.teleport(loc);
+            firstJoin.remove(p.getUniqueId());
         }
     }
 

@@ -1,9 +1,10 @@
 package com.desiremc.hcf.session;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.RedBlackTree;
+import com.desiremc.hcf.listener.ConnectionListener;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.command.CommandSender;
@@ -13,10 +14,9 @@ import org.mongodb.morphia.Key;
 import org.mongodb.morphia.dao.BasicDAO;
 import org.mongodb.morphia.query.Query;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.RedBlackTree;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.UUID;
 
 public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
 {
@@ -210,6 +210,8 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
         HCFSession session = new HCFSession();
         session.assignDefault(uuid, server);
         getInstance().save(session);
+
+        ConnectionListener.firstJoin.add(uuid);
 
         return session;
     }
