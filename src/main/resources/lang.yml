@@ -50,7 +50,7 @@ crowbar:
   out_of_uses: '&7Your crowbar ran out of uses.'
 gapple:
   ended: '&7You may now use a &5Gapple&7.'
-  message: '&7You can not use an &5Gapple&7 for &e{time} &7seconds.'
+  message: '&7You can not use a &5Gapple&7 for &e{time} &7seconds.'
   scoreboard: '&6&lGapple Timer'
 potion-disabled: '&4&lPOTIONS&r&7 This potion effect is disabled!'
 trophy_points: 'Trophy Points &e{points}'
