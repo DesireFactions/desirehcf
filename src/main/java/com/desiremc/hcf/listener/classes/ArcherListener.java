@@ -21,6 +21,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -30,6 +32,7 @@ public class ArcherListener implements DesireClass
     private Cache<UUID, UUID> archerHit;
     private Cache<UUID, Long> cooldown;
     private Cache<UUID, Long> timedEffects;
+    private List<Material> classItems;
 
     public ArcherListener()
     {
@@ -88,6 +91,8 @@ public class ArcherListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
+
+        classItems = Arrays.asList(Material.FEATHER, Material.SUGAR);
     }
 
     @EventHandler
@@ -193,14 +198,9 @@ public class ArcherListener implements DesireClass
 
         if (cooldown.get(p.getUniqueId()) != null)
         {
-            switch (item.getType())
+            if (isClassItem(item))
             {
-                case FEATHER:
-                    DesireHCF.getLangHandler().sendString(p, "classes.archer.jump-cd");
-                    break;
-                case SUGAR:
-                    DesireHCF.getLangHandler().sendString(p, "classes.archer.speed-cd");
-                    break;
+                //cooldown message
             }
             return;
         }
@@ -266,5 +266,10 @@ public class ArcherListener implements DesireClass
         }
 
         timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
+    }
+
+    private boolean isClassItem(ItemStack item)
+    {
+        return classItems.contains(item.getType());
     }
 }

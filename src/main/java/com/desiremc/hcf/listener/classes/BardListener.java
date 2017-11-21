@@ -12,12 +12,14 @@ import com.desiremc.hcf.util.FactionsUtils;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -26,7 +28,7 @@ public class BardListener implements DesireClass
 {
 
     private Cache<UUID, Long> cooldown;
-    private Cache<UUID, Long> timedEffects;
+    private List<Material> classItems;
 
     public BardListener()
     {
@@ -49,23 +51,18 @@ public class BardListener implements DesireClass
             }
         }, DesireHCF.getInstance());
 
-        timedEffects = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.frequency"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
-        {
-            @Override
-            public void onRemoval(RemovalNotification<UUID, Long> entry)
-            {
-                Player p = PlayerUtils.getPlayer(entry.getKey());
-                if (p != null)
-                {
-                    applyEffect(p, p.getItemInHand());
-                }
-            }
-        }, DesireHCF.getInstance());
+        classItems = Arrays.asList(Material.EYE_OF_ENDER, Material.BLAZE_POWDER, Material.GHAST_TEAR, Material.MAGMA_CREAM, Material.SUGAR,
+                Material.IRON_AXE, Material.SPIDER_EYE, Material.FEATHER);
     }
 
     @EventHandler
     public void onRightClickAbility(PlayerInteractEvent event)
     {
+        if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
+        {
+            return;
+        }
+
         Player p = event.getPlayer();
         HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
 
@@ -76,7 +73,10 @@ public class BardListener implements DesireClass
 
         if (cooldown.get(p.getUniqueId()) != null)
         {
-            DesireHCF.getLangHandler().sendString(p, "classes.bard.on-cooldown");
+            if (isClassItem(p.getItemInHand()))
+            {
+                DesireHCF.getLangHandler().sendString(p, "classes.bard.on-cooldown");
+            }
             return;
         }
 
@@ -88,66 +88,66 @@ public class BardListener implements DesireClass
                 showAllRogues(p);
                 break;
             case BLAZE_POWDER:
+                PotionEffect strength = new PotionEffect(PotionEffectType.INCREASE_DAMAGE,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.effects.STRENGTH.click") - 1);
                 for (Player target : players)
                 {
-                    PotionEffect effect = new PotionEffect(PotionEffectType.INCREASE_DAMAGE,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.effects.STRENGTH.click") - 1);
-                    target.addPotionEffect(effect);
+                    target.addPotionEffect(strength);
                 }
                 break;
             case GHAST_TEAR:
+                PotionEffect regen = new PotionEffect(PotionEffectType.REGENERATION,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.effects.REGEN.click") - 1);
                 for (Player target : players)
                 {
-                    PotionEffect effect = new PotionEffect(PotionEffectType.REGENERATION,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.effects.REGEN.click") - 1);
-                    target.addPotionEffect(effect);
+                    target.addPotionEffect(regen);
                 }
                 break;
             case MAGMA_CREAM:
+                PotionEffect fireRes = new PotionEffect(PotionEffectType.FIRE_RESISTANCE,
+                        180 * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.effects.FIRE_RESISTANCE.click") - 1);
                 for (Player target : players)
                 {
-                    PotionEffect effect = new PotionEffect(PotionEffectType.FIRE_RESISTANCE,
-                            180 * 20,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.effects.FIRE_RESISTANCE.click") - 1);
-                    target.addPotionEffect(effect);
+                    target.addPotionEffect(fireRes);
                 }
                 break;
             case SUGAR:
+                PotionEffect speed = new PotionEffect(PotionEffectType.SPEED,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.effects.SPEED.click") - 1);
                 for (Player target : players)
                 {
-                    PotionEffect effect = new PotionEffect(PotionEffectType.SPEED,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.effects.SPEED.click") - 1);
-                    target.addPotionEffect(effect);
+                    target.addPotionEffect(speed);
                 }
                 break;
             case IRON_INGOT:
+                PotionEffect resistance = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.effects.RESISTANCE.click") - 1);
                 for (Player target : players)
                 {
-                    PotionEffect effect = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.effects.RESISTANCE.click") - 1);
-                    target.addPotionEffect(effect);
+                    target.addPotionEffect(resistance);
                 }
                 break;
             case SPIDER_EYE:
+                PotionEffect wither = new PotionEffect(PotionEffectType.WITHER,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.effects.WITHER.click") - 1);
                 for (Player target : players)
                 {
-                    PotionEffect effect = new PotionEffect(PotionEffectType.WITHER,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.effects.WITHER.click") - 1);
-                    target.addPotionEffect(effect);
+                    target.addPotionEffect(wither);
                 }
                 break;
             case FEATHER:
+                PotionEffect jumpBoost = new PotionEffect(PotionEffectType.JUMP,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.bard.effects.JUMP_BOOST.click") - 1);
                 for (Player target : players)
                 {
-                    PotionEffect effect = new PotionEffect(PotionEffectType.JUMP,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20,
-                            DesireHCF.getConfigHandler().getInteger("classes.bard.effects.JUMP_BOOST.click") - 1);
-                    target.addPotionEffect(effect);
+                    target.addPotionEffect(jumpBoost);
                 }
                 break;
             default:
@@ -174,16 +174,17 @@ public class BardListener implements DesireClass
         {
             return;
         }
+
+        if (!isClassItem(item))
+        {
+            return;
+        }
+
         applyEffect(p, item);
     }
 
     private void applyEffect(Player p, ItemStack item)
     {
-        if (timedEffects.get(p.getUniqueId()) != null || cooldown.get(p.getUniqueId()) != null)
-        {
-            return;
-        }
-
         List<Player> players = FactionsUtils.getFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.bard.range"));
 
         switch (item.getType())
@@ -245,7 +246,6 @@ public class BardListener implements DesireClass
             default:
                 return;
         }
-        timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
     }
 
     private void showAllRogues(Player source)
@@ -261,5 +261,10 @@ public class BardListener implements DesireClass
                 RogueListener.caughtByBard(target);
             }
         }
+    }
+
+    private boolean isClassItem(ItemStack item)
+    {
+        return classItems.contains(item.getType());
     }
 }

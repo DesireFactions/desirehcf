@@ -268,7 +268,7 @@ classes:
       JUMP_BOOST:
         duration: 12
         item: FEATHER
-        click: 6
+        click: 7
         hold: 3
   rogue:
     cooldown: 20
@@ -290,6 +290,11 @@ classes:
         duration: 12
         item: FEATHER
         click: 6
+        hold: -1
+      RESISTANCE:
+        duration: 12
+        item: IRON_INGOT
+        click: 2
         hold: -1
   miner:
     diamonds:

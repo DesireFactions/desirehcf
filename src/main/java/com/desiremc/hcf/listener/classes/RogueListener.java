@@ -20,6 +20,8 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -28,6 +30,7 @@ public class RogueListener implements DesireClass
 
     private static Cache<UUID, Long> invisCooldown;
     private Cache<UUID, Long> cooldown;
+    private List<Material> classItems;
 
     public RogueListener()
     {
@@ -68,6 +71,8 @@ public class RogueListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
+
+        classItems = Arrays.asList(Material.EYE_OF_ENDER, Material.FEATHER, Material.SUGAR, Material.IRON_INGOT);
     }
 
     @EventHandler
@@ -205,7 +210,10 @@ public class RogueListener implements DesireClass
 
         if (cooldown.get(p.getUniqueId()) != null)
         {
-            DesireHCF.getLangHandler().sendString(p, "classes.rogue.effect-cd");
+            if (isClassItem(item))
+            {
+                DesireHCF.getLangHandler().sendString(p, "classes.rogue.effect-cd");
+            }
             return;
         }
 
@@ -223,6 +231,12 @@ public class RogueListener implements DesireClass
                         DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.click"));
                 p.addPotionEffect(speed);
                 break;
+            case IRON_INGOT:
+                p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                PotionEffect resistance = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.RESISTANCE.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.RESISTANCE.click"));
+                p.addPotionEffect(resistance);
+                break;
         }
 
         cooldown.put(p.getUniqueId(), System.currentTimeMillis());
@@ -231,5 +245,10 @@ public class RogueListener implements DesireClass
     public static void caughtByBard(Player target)
     {
         invisCooldown.put(target.getUniqueId(), System.currentTimeMillis());
+    }
+
+    private boolean isClassItem(ItemStack item)
+    {
+        return classItems.contains(item.getType());
     }
 }

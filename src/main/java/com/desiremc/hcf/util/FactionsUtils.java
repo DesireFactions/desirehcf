@@ -110,12 +110,20 @@ public class FactionsUtils
 
         for (Player p : Bukkit.getOnlinePlayers())
         {
+            if (p.getName().equalsIgnoreCase(player.getName()))
+            {
+                continue;
+            }
 
             if (getFaction(p) == null || getFaction(player) == null)
+            {
                 continue;
+            }
 
             if (!getFaction(p).equals(getFaction(player)))
+            {
                 continue;
+            }
 
             if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
             {
@@ -136,7 +144,9 @@ public class FactionsUtils
             if (getFaction(player) != null && getFaction(p) != null)
             {
                 if (getFaction(p).equals(getFaction(player)))
+                {
                     continue;
+                }
             }
 
             if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
