@@ -68,6 +68,11 @@ public class GappleHandler implements Listener
             return;
         }
 
+        if (event.getItem().getDurability() != 1)
+        {
+            return;
+        }
+
         UUID uuid = player.getUniqueId();
         Long time = history.get(uuid);
 
