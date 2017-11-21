@@ -31,7 +31,6 @@ public class ArcherListener implements DesireClass
 
     private Cache<UUID, UUID> archerHit;
     private Cache<UUID, Long> cooldown;
-    private Cache<UUID, Long> timedEffects;
     private List<Material> classItems;
 
     public ArcherListener()
@@ -68,26 +67,13 @@ public class ArcherListener implements DesireClass
                 Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    DesireHCF.getLangHandler().sendString(p, "classes.archer.speed-ready");
+                    DesireHCF.getLangHandler().sendString(p, "classes.archer.effects-over");
 
                     HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
                     if (PVPClass.ARCHER.equals(session.getPvpClass()))
                     {
                         ClassListener.applyPermanentEffects(PVPClass.ARCHER, p);
                     }
-                }
-            }
-        }, DesireHCF.getInstance());
-
-        timedEffects = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.duration"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
-        {
-            @Override
-            public void onRemoval(RemovalNotification<UUID, Long> entry)
-            {
-                Player p = PlayerUtils.getPlayer(entry.getKey());
-                if (p != null)
-                {
-                    applyEffect(p, p.getItemInHand());
                 }
             }
         }, DesireHCF.getInstance());
@@ -116,7 +102,7 @@ public class ArcherListener implements DesireClass
             return;
         }
 
-        if (FactionsUtils.getFaction(source) != FactionsUtils.getFaction(archerHit.get(target.getUniqueId())))
+        if (FactionsUtils.getFaction(source) == FactionsUtils.getFaction(archerHit.get(target.getUniqueId())))
         {
             return;
         }
@@ -248,11 +234,6 @@ public class ArcherListener implements DesireClass
 
     private void applyEffect(Player p, ItemStack item)
     {
-        if (timedEffects.get(p.getUniqueId()) != null || cooldown.get(p.getUniqueId()) != null)
-        {
-            return;
-        }
-
         switch (item.getType())
         {
             case FEATHER:
@@ -261,11 +242,7 @@ public class ArcherListener implements DesireClass
                         DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.hold"));
                 p.addPotionEffect(effect);
                 break;
-            default:
-                return;
         }
-
-        timedEffects.put(p.getUniqueId(), System.currentTimeMillis());
     }
 
     private boolean isClassItem(ItemStack item)

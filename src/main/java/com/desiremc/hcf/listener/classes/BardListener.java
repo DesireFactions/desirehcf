@@ -243,8 +243,6 @@ public class BardListener implements DesireClass
                     target.addPotionEffect(effect);
                 }
                 break;
-            default:
-                return;
         }
     }
 
