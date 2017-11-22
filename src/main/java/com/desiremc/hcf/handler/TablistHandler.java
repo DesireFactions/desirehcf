@@ -1,81 +1,91 @@
 package com.desiremc.hcf.handler;
 
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.desiremc.core.newlist.PlayerList;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.tablist.Entry;
-import com.desiremc.core.tablist.Tab;
-import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.massivecraft.factions.FPlayer;
 
 public class TablistHandler implements Listener
 {
 
+    private static HashMap<UUID, PlayerList> lists = new HashMap<>();
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event)
     {
-        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
+        Session s;
+        for (Iterator<Session> it = SessionHandler.getInstance().getSessions().iterator(); it.hasNext();)
         {
-
-            @Override
-            public void run()
+            s = it.next();
+            if (s.getPlayer() == null || !s.getPlayer().isOnline())
             {
-                Session s;
-                for (Iterator<Session> it = SessionHandler.getInstance().getSessions().iterator(); it.hasNext();)
-                {
-                    s = it.next();
-                    if (s.getPlayer() == null || !s.getPlayer().isOnline())
-                    {
-                        it.remove();
-                        continue;
-                    }
-                    if (s.getSetting(SessionSetting.CLASSICTAB))
-                    {
-                        applyClassic(s.getPlayer());
-                    }
-                    else
-                    {
-                        applyFactions(s.getPlayer());
-                    }
-                }
+                it.remove();
+                continue;
             }
-        }, 5l);
+            if (s.getSetting(SessionSetting.CLASSICTAB))
+            {
+                applyClassic(s.getPlayer());
+            }
+            else
+            {
+                applyFactions(s.getPlayer());
+            }
+        }
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event)
+    {
+        Session s;
+        for (Iterator<Session> it = SessionHandler.getInstance().getSessions().iterator(); it.hasNext();)
+        {
+            s = it.next();
+            if (s.getPlayer() == null || !s.getPlayer().isOnline())
+            {
+                it.remove();
+                continue;
+            }
+            if (s.getSetting(SessionSetting.CLASSICTAB))
+            {
+                applyClassic(s.getPlayer());
+            }
+            else
+            {
+                applyFactions(s.getPlayer());
+            }
+        }
     }
 
     private void applyClassic(Player player)
     {
+        /*
         FPlayer user = FactionsUtils.getFPlayer(player);
         if (user == null)
         {
             return;
         }
         int i = 0;
-        Tab tab = Tab.getByPlayer(player);
-        Entry entry;
+        PlayerList list = getPlayerList(player);
         for (FPlayer fp : FactionsUtils.getOnlineFPlayers())
         {
-            entry = tab.getEntry(i / 20, i % 20);
-            if (entry == null)
-            {
-                Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new WhyDoTablistsHaveToSuckSoMuch(user, fp, i), 60l);
-            }
-            else
-            {
-                entry.setText((fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName()).setSkin(fp.getPlayer().getName()).send();
-            }
+            list.updateSlot(i, (fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName());
+
             i++;
-        }
+        }*/
     }
 
     private void applyFactions(Player player)
@@ -83,26 +93,16 @@ public class TablistHandler implements Listener
         applyClassic(player);
     }
 
-    private static class WhyDoTablistsHaveToSuckSoMuch implements Runnable
+    private static PlayerList getPlayerList(Player player)
     {
-        private FPlayer user;
-        private FPlayer fp;
-        private int i;
-
-        public WhyDoTablistsHaveToSuckSoMuch(FPlayer user, FPlayer fp, int i)
+        PlayerList list = lists.get(player.getUniqueId());
+        if (list == null)
         {
-            this.fp = fp;
-            this.user = user;
-            this.i = i;
+            list = new PlayerList(player, PlayerList.SIZE_THREE);
+            list.initTable();
+            lists.put(player.getUniqueId(), list);
         }
-
-        public void run()
-        {
-            Tab tab = Tab.getByPlayer(user.getPlayer());
-            tab.assemble();
-            Entry entry = tab.getEntry(i / 20, i % 20);
-            entry.setText((fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName()).send();
-        }
+        return list;
     }
 
 }
