@@ -1,10 +1,12 @@
 package com.desiremc.hcf.listener.classes;
 
+import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.event.ArmorEquipEvent;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -18,10 +20,23 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ClassListener implements Listener
 {
+
+    private static FileHandler config;
+
+    private static List<Material> archerItems;
+    private static List<Material> bardItems;
+    private static List<Material> minerItems;
+    private static List<Material> rogueItems;
+
+    public ClassListener()
+    {
+        config = DesireHCF.getConfigHandler();
+    }
 
     @EventHandler
     public void onArmorChange(ArmorEquipEvent event)
@@ -34,6 +49,11 @@ public class ClassListener implements Listener
                 updateClass(event.getPlayer(), event.getNewArmorPiece());
             }
         }, 2L);
+
+        archerItems = Arrays.asList(Material.FEATHER, Material.SUGAR);
+        bardItems = Arrays.asList(Material.EYE_OF_ENDER, Material.BLAZE_POWDER, Material.GHAST_TEAR, Material.MAGMA_CREAM, Material.SUGAR,
+                Material.IRON_AXE, Material.SPIDER_EYE, Material.FEATHER, Material.IRON_INGOT);
+        rogueItems = Arrays.asList(Material.EYE_OF_ENDER, Material.FEATHER, Material.SUGAR, Material.IRON_INGOT);
     }
 
     @EventHandler
@@ -199,6 +219,7 @@ public class ClassListener implements Listener
             case ROGUE:
                 player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
+                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
                 break;
             case ARCHER:
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
@@ -226,11 +247,71 @@ public class ClassListener implements Listener
             case ROGUE:
                 player.removePotionEffect(PotionEffectType.JUMP);
                 player.removePotionEffect(PotionEffectType.SPEED);
+                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
                 break;
             case ARCHER:
                 player.removePotionEffect(PotionEffectType.SPEED);
                 player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
                 break;
+        }
+    }
+
+    public static void applyEffect(Player player, PotionEffectType type, String effectType, PVPClass pvpClass, int duration, int range, boolean faction, boolean self)
+    {
+        String location = "classes." + pvpClass.name() + ".effects." + type.getName() + "." + effectType;
+
+        PotionEffect effect = new PotionEffect(type, duration, config.getInteger(location));
+
+        List<Player> players;
+
+        if (faction)
+        {
+            players = FactionsUtils.getFactionMembersInRange(player, range);
+        }
+        else
+        {
+            players = FactionsUtils.getNonFactionMembersInRange(player, range);
+        }
+
+        if (self)
+        {
+            players.add(player);
+        }
+
+        for (Player target : players)
+        {
+            target.addPotionEffect(effect);
+        }
+    }
+
+    public static void applyEffectSelf(Player player, PotionEffectType type, String effectType, PVPClass pvpClass, int duration)
+    {
+        String location = "classes." + pvpClass.name() + ".effects." + type.getName() + "." + effectType;
+
+        PotionEffect effect = new PotionEffect(type, duration, config.getInteger(location));
+
+        player.addPotionEffect(effect);
+    }
+
+    public static boolean isClassItem(ItemStack item, PVPClass pvpClass)
+    {
+        if (item == null || item.getType().equals(Material.AIR))
+        {
+            return false;
+        }
+
+        switch (pvpClass.name())
+        {
+            case "ARCHER":
+                return archerItems.contains(item.getType());
+            case "BARD":
+                return bardItems.contains(item.getType());
+            case "MINER":
+                return minerItems.contains(item.getType());
+            case "ROGUE":
+                return rogueItems.contains(item.getType());
+            default:
+                return false;
         }
     }
 }

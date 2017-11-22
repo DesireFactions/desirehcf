@@ -232,24 +232,38 @@ classes:
     effects:
       SPEED:
         click: 3
+          self: true
+          faction: true
         hold: 2
       STRENGTH:
         click: 2
+          self: true
+          faction: true
         hold: 1
       RESISTANCE:
         click: 3
+          self: true
+          faction: true
         hold: 1
       WITHER:
         click: 1
+          self: true
+          faction: false
         hold: -1
       REGEN:
         click: 3
+          self: true
+          faction: true
         hold: 1
-      JUMP_BOOST:
+      JUMP:
         click: 4
+          self: true
+          faction: true
         hold: 3
       FIRE_RESISTANCE:
         click: 1
+          self: true
+          faction: true
         hold: 1
     rouge-finder:
       range: 80
@@ -265,7 +279,7 @@ classes:
         item: SUGAR
         click: 3
         hold: -1
-      JUMP_BOOST:
+      JUMP:
         duration: 12
         item: FEATHER
         click: 7
@@ -286,7 +300,7 @@ classes:
         item: SUGAR
         click: 5
         hold: -1
-      JUMP_BOOST:
+      JUMP:
         duration: 12
         item: FEATHER
         click: 6

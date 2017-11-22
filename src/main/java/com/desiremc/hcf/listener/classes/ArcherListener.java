@@ -18,11 +18,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -31,7 +28,8 @@ public class ArcherListener implements DesireClass
 
     private Cache<UUID, UUID> archerHit;
     private Cache<UUID, Long> cooldown;
-    private List<Material> classItems;
+
+    private int duration;
 
     public ArcherListener()
     {
@@ -77,8 +75,7 @@ public class ArcherListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
-
-        classItems = Arrays.asList(Material.FEATHER, Material.SUGAR);
+        duration = DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.duration") * 20;
     }
 
     @EventHandler
@@ -173,6 +170,13 @@ public class ArcherListener implements DesireClass
             return;
         }
 
+        ItemStack item = event.getItem();
+
+        if (!ClassListener.isClassItem(item, PVPClass.ARCHER))
+        {
+            return;
+        }
+
         HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
 
         if (!PVPClass.ARCHER.equals(session.getPvpClass()))
@@ -180,14 +184,9 @@ public class ArcherListener implements DesireClass
             return;
         }
 
-        ItemStack item = event.getItem();
-
         if (cooldown.get(p.getUniqueId()) != null)
         {
-            if (isClassItem(item))
-            {
-                //cooldown message
-            }
+            //cooldown message
             return;
         }
 
@@ -195,17 +194,11 @@ public class ArcherListener implements DesireClass
         {
             case FEATHER:
                 p.removePotionEffect(PotionEffectType.JUMP);
-                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP,
-                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.duration") * 20,
-                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.click"));
-                p.addPotionEffect(jump);
+                ClassListener.applyEffectSelf(p, PotionEffectType.JUMP, "click", PVPClass.ARCHER, duration);
                 break;
             case SUGAR:
                 p.removePotionEffect(PotionEffectType.SPEED);
-                PotionEffect speed = new PotionEffect(PotionEffectType.SPEED,
-                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.duration") * 20,
-                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.click"));
-                p.addPotionEffect(speed);
+                ClassListener.applyEffectSelf(p, PotionEffectType.SPEED, "click", PVPClass.ARCHER, duration);
                 break;
         }
 
@@ -237,16 +230,8 @@ public class ArcherListener implements DesireClass
         switch (item.getType())
         {
             case FEATHER:
-                PotionEffect effect = new PotionEffect(PotionEffectType.JUMP,
-                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.duration") * 20,
-                        DesireHCF.getConfigHandler().getInteger("classes.archer.effects.JUMP_BOOST.hold"));
-                p.addPotionEffect(effect);
+                ClassListener.applyEffectSelf(p, PotionEffectType.JUMP, "hold", PVPClass.ARCHER, duration);
                 break;
         }
-    }
-
-    private boolean isClassItem(ItemStack item)
-    {
-        return classItems.contains(item.getType());
     }
 }

@@ -20,17 +20,14 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 public class RogueListener implements DesireClass
 {
 
-    private static Cache<UUID, Long> invisCooldown;
+    public static Cache<UUID, Long> invisCooldown;
     private Cache<UUID, Long> cooldown;
-    private List<Material> classItems;
 
     public RogueListener()
     {
@@ -71,8 +68,6 @@ public class RogueListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
-
-        classItems = Arrays.asList(Material.EYE_OF_ENDER, Material.FEATHER, Material.SUGAR, Material.IRON_INGOT);
     }
 
     @EventHandler
@@ -210,7 +205,7 @@ public class RogueListener implements DesireClass
 
         if (cooldown.get(p.getUniqueId()) != null)
         {
-            if (isClassItem(item))
+            if (ClassListener.isClassItem(item, PVPClass.ROGUE))
             {
                 DesireHCF.getLangHandler().sendString(p, "classes.rogue.effect-cd");
             }
@@ -221,8 +216,8 @@ public class RogueListener implements DesireClass
         {
             case FEATHER:
                 p.removePotionEffect(PotionEffectType.JUMP);
-                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP_BOOST.duration") * 20,
-                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP_BOOST.click"));
+                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP.duration") * 20,
+                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP.click"));
                 p.addPotionEffect(jump);
                 break;
             case SUGAR:
@@ -240,15 +235,5 @@ public class RogueListener implements DesireClass
         }
 
         cooldown.put(p.getUniqueId(), System.currentTimeMillis());
-    }
-
-    public static void caughtByBard(Player target)
-    {
-        invisCooldown.put(target.getUniqueId(), System.currentTimeMillis());
-    }
-
-    private boolean isClassItem(ItemStack item)
-    {
-        return classItems.contains(item.getType());
     }
 }

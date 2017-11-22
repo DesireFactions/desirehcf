@@ -140,7 +140,10 @@ public class FactionsUtils
 
         for (Player p : Bukkit.getOnlinePlayers())
         {
-
+            if (p.getName().equalsIgnoreCase(player.getName()))
+            {
+                continue;
+            }
             if (getFaction(player) != null && getFaction(p) != null)
             {
                 if (getFaction(p).equals(getFaction(player)))
