@@ -12,10 +12,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.desiremc.core.newlist.PlayerList;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.tablist.PlayerList;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.massivecraft.factions.FPlayer;
 
@@ -72,7 +72,7 @@ public class TablistHandler implements Listener
 
     private void applyClassic(Player player)
     {
-        /*
+
         FPlayer user = FactionsUtils.getFPlayer(player);
         if (user == null)
         {
@@ -82,10 +82,10 @@ public class TablistHandler implements Listener
         PlayerList list = getPlayerList(player);
         for (FPlayer fp : FactionsUtils.getOnlineFPlayers())
         {
-            list.updateSlot(i, (fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName());
+            //list.updateLocation(i, (fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName());
 
             i++;
-        }*/
+        }
     }
 
     private void applyFactions(Player player)
@@ -98,7 +98,7 @@ public class TablistHandler implements Listener
         PlayerList list = lists.get(player.getUniqueId());
         if (list == null)
         {
-            list = new PlayerList(player, PlayerList.SIZE_THREE);
+            list = new PlayerList(player);
             list.initTable();
             lists.put(player.getUniqueId(), list);
         }
