@@ -238,8 +238,38 @@ classes:
         item: FEATHER
         click: 7
         hold: 3
+  bard:
+    range: 10
+    duration: 12
+    frequency: 5
+    instant-cooldown: 30
+    effects:
+      SPEED:
+        click: 3
+        hold: 2
+      STRENGTH:
+        click: 2
+        hold: 1
+      RESISTANCE:
+        click: 3
+        hold: 1
+      WITHER:
+        click: 1
+        hold: -1
+      REGEN:
+        click: 3
+        hold: 1
+      JUMP:
+        click: 4
+        hold: 3
+      FIRE_RESISTANCE:
+        click: 1
+        hold: 1
+    rouge-finder:
+      range: 80
+      remainder: 30
   rogue:
-    cooldown: 20
+    duration: 20
     invisible-length: 120
     uninvis-range: 10
     uninvis-timer: 30
@@ -250,17 +280,14 @@ classes:
       diamond: 4
     effects:
       SPEED:
-        duration: 12
         item: SUGAR
         click: 5
         hold: -1
       JUMP:
-        duration: 12
         item: FEATHER
         click: 6
         hold: -1
       RESISTANCE:
-        duration: 12
         item: IRON_INGOT
         click: 2
         hold: -1

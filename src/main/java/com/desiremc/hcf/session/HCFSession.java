@@ -1,11 +1,14 @@
 package com.desiremc.hcf.session;
 
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.DeathBan;
+import com.desiremc.core.session.DeathBanHandler;
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.Ticker;
+import com.desiremc.core.utils.PlayerUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Embedded;
@@ -17,15 +20,11 @@ import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.DeathBan;
-import com.desiremc.core.session.DeathBanHandler;
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.Ticker;
-import com.desiremc.core.utils.PlayerUtils;
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class HCFSession
@@ -305,6 +304,7 @@ public class HCFSession
             if (DEBUG)
             {
                 System.out.println("getActiveDeathBan() loop with values " + ban.getStartTime() + " and " + ban.isRevived());
+                System.out.println("getActiveDeathBan() times = " + (ban.getStartTime() + session.getRank().getDeathBanTime()) + " vs " + System.currentTimeMillis());
             }
             if (!ban.wasStaffRevived() && !ban.isRevived() && ban.getStartTime() + session.getRank().getDeathBanTime() > System.currentTimeMillis())
             {

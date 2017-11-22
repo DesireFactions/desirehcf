@@ -286,7 +286,7 @@ public class ClassListener implements Listener
 
     public static void applyEffectSelf(Player player, PotionEffectType type, String effectType, PVPClass pvpClass, int duration)
     {
-        String location = "classes." + pvpClass.name() + ".effects." + type.getName() + "." + effectType;
+        String location = "classes." + pvpClass.name().toLowerCase() + ".effects." + type.getName() + "." + effectType;
 
         PotionEffect effect = new PotionEffect(type, duration, config.getInteger(location));
 

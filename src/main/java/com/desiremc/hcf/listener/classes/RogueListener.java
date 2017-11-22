@@ -29,6 +29,8 @@ public class RogueListener implements DesireClass
     public static Cache<UUID, Long> invisCooldown;
     private Cache<UUID, Long> cooldown;
 
+    private int duration;
+
     public RogueListener()
     {
         initialize();
@@ -37,6 +39,8 @@ public class RogueListener implements DesireClass
     @Override
     public void initialize()
     {
+        duration = DesireHCF.getConfigHandler().getInteger("classes.rogue.duration");
+
         invisCooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.rogue.uninvis-timer"), TimeUnit
                 .SECONDS, new RemovalListener<UUID, Long>()
         {
@@ -50,7 +54,7 @@ public class RogueListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.rogue.cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        cooldown = new Cache<>(duration, TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -230,21 +234,15 @@ public class RogueListener implements DesireClass
         {
             case FEATHER:
                 p.removePotionEffect(PotionEffectType.JUMP);
-                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP.duration") * 20,
-                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP.click"));
-                p.addPotionEffect(jump);
+                ClassListener.applyEffectSelf(p, PotionEffectType.JUMP, "click", PVPClass.ROGUE, duration);
                 break;
             case SUGAR:
                 p.removePotionEffect(PotionEffectType.SPEED);
-                PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.duration") * 20,
-                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.click"));
-                p.addPotionEffect(speed);
+                ClassListener.applyEffectSelf(p, PotionEffectType.SPEED, "click", PVPClass.ROGUE, duration);
                 break;
             case IRON_INGOT:
                 p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-                PotionEffect resistance = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.RESISTANCE.duration") * 20,
-                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.RESISTANCE.click"));
-                p.addPotionEffect(resistance);
+                ClassListener.applyEffectSelf(p, PotionEffectType.DAMAGE_RESISTANCE, "click", PVPClass.ROGUE, duration);
                 break;
         }
 
