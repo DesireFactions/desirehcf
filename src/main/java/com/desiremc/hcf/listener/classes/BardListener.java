@@ -65,14 +65,14 @@ public class BardListener implements DesireClass
 
         Player p = event.getPlayer();
 
-        if (!ClassListener.isClassItem(p.getItemInHand(), PVPClass.BARD))
+        HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+
+        if (!PVPClass.BARD.equals(session.getPvpClass()))
         {
             return;
         }
 
-        HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
-
-        if (!PVPClass.BARD.equals(session.getPvpClass()))
+        if (!ClassListener.isClassItem(p.getItemInHand(), PVPClass.BARD))
         {
             return;
         }

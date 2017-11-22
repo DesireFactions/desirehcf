@@ -36,6 +36,11 @@ public class ClassListener implements Listener
     public ClassListener()
     {
         config = DesireHCF.getConfigHandler();
+
+        archerItems = Arrays.asList(Material.FEATHER, Material.SUGAR);
+        bardItems = Arrays.asList(Material.EYE_OF_ENDER, Material.BLAZE_POWDER, Material.GHAST_TEAR, Material.MAGMA_CREAM, Material.SUGAR,
+                Material.IRON_AXE, Material.SPIDER_EYE, Material.FEATHER, Material.IRON_INGOT);
+        rogueItems = Arrays.asList(Material.EYE_OF_ENDER, Material.FEATHER, Material.SUGAR, Material.IRON_INGOT);
     }
 
     @EventHandler
@@ -49,11 +54,6 @@ public class ClassListener implements Listener
                 updateClass(event.getPlayer(), event.getNewArmorPiece());
             }
         }, 2L);
-
-        archerItems = Arrays.asList(Material.FEATHER, Material.SUGAR);
-        bardItems = Arrays.asList(Material.EYE_OF_ENDER, Material.BLAZE_POWDER, Material.GHAST_TEAR, Material.MAGMA_CREAM, Material.SUGAR,
-                Material.IRON_AXE, Material.SPIDER_EYE, Material.FEATHER, Material.IRON_INGOT);
-        rogueItems = Arrays.asList(Material.EYE_OF_ENDER, Material.FEATHER, Material.SUGAR, Material.IRON_INGOT);
     }
 
     @EventHandler

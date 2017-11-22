@@ -39,6 +39,8 @@ public class ArcherListener implements DesireClass
     @Override
     public void initialize()
     {
+        duration = DesireHCF.getConfigHandler().getInteger("classes.archer.duration") * 20;
+
         archerHit = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.hit-time"), TimeUnit.SECONDS,
                 new RemovalListener<UUID, UUID>()
                 {
@@ -57,7 +59,7 @@ public class ArcherListener implements DesireClass
                     }
                 }, DesireHCF.getInstance());
 
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.duration"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -75,7 +77,6 @@ public class ArcherListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
-        duration = DesireHCF.getConfigHandler().getInteger("classes.archer.effects.SPEED.duration") * 20;
     }
 
     @EventHandler
@@ -172,14 +173,14 @@ public class ArcherListener implements DesireClass
 
         ItemStack item = event.getItem();
 
-        if (!ClassListener.isClassItem(item, PVPClass.ARCHER))
+        HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+
+        if (!PVPClass.ARCHER.equals(session.getPvpClass()))
         {
             return;
         }
 
-        HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
-
-        if (!PVPClass.ARCHER.equals(session.getPvpClass()))
+        if (!ClassListener.isClassItem(item, PVPClass.ARCHER))
         {
             return;
         }

@@ -77,10 +77,14 @@ public class RogueListener implements DesireClass
         HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
 
         if (!PVPClass.ROGUE.equals(session.getPvpClass()))
+        {
             return;
+        }
 
         if (!PlayerUtils.hasEffect(p, PotionEffectType.INVISIBILITY))
+        {
             return;
+        }
 
         if (FactionsUtils.getNonFactionMembersInRange(p, DesireHCF.getConfigHandler().getInteger("classes.rogue" +
                 ".uninvis-range")).size() > 0)
@@ -94,9 +98,13 @@ public class RogueListener implements DesireClass
     public void onAttack(EntityDamageByEntityEvent event)
     {
         if (!(event.getDamager() instanceof Player))
+        {
             return;
+        }
         if (!(event.getEntity() instanceof Player))
+        {
             return;
+        }
 
         Player target = (Player) event.getEntity();
         Player player = (Player) event.getDamager();
@@ -104,16 +112,22 @@ public class RogueListener implements DesireClass
         double degrees = player.getLocation().getDirection().angle(target.getLocation().getDirection()) / 180 * Math.PI;
 
         if (degrees < 225 || degrees > 315)
+        {
             return;
+        }
 
         HCFSession targetSession = HCFSessionHandler.getHCFSession(target.getUniqueId());
         HCFSession playerSession = HCFSessionHandler.getHCFSession(player.getUniqueId());
 
         if (!playerSession.getPvpClass().equals(PVPClass.ROGUE))
+        {
             return;
+        }
 
         if (!player.getItemInHand().getType().equals(Material.GOLD_SWORD))
+        {
             return;
+        }
 
         switch (targetSession.getPvpClass())
         {

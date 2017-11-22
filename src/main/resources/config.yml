@@ -272,15 +272,13 @@ classes:
     range: 10
     increase-percent: 1.20
     hit-time: 30
-    cooldown: 20
+    duration: 20
     effects:
       SPEED:
-        duration: 12
         item: SUGAR
         click: 3
         hold: -1
       JUMP:
-        duration: 12
         item: FEATHER
         click: 7
         hold: 3
