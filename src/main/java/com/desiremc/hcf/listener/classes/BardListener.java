@@ -37,7 +37,9 @@ public class BardListener implements DesireClass
     @Override
     public void initialize()
     {
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.instant-cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        duration = DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20;
+
+        cooldown = new Cache<>(duration / 20, TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -46,13 +48,17 @@ public class BardListener implements DesireClass
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.bard.instant-cooldown-over");
+
+                    HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+                    if (PVPClass.BARD.equals(session.getPvpClass()))
+                    {
+                        ClassListener.applyPermanentEffects(PVPClass.BARD, p);
+                    }
                 }
             }
         }, DesireHCF.getInstance());
 
         range = DesireHCF.getConfigHandler().getInteger("classes.bard.range");
-
-        duration = DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20;
     }
 
     @EventHandler
@@ -82,8 +88,6 @@ public class BardListener implements DesireClass
             DesireHCF.getLangHandler().sendString(p, "classes.bard.on-cooldown");
             return;
         }
-
-        List<Player> players = FactionsUtils.getFactionMembersInRange(p, range);
 
         switch (p.getItemInHand().getType())
         {
@@ -172,7 +176,7 @@ public class BardListener implements DesireClass
         {
             HCFSession session = HCFSessionHandler.getHCFSession(target.getUniqueId());
 
-            if (session.getPvpClass().equals(PVPClass.ROGUE))
+            if (PVPClass.ROGUE.equals(session.getPvpClass()))
             {
                 RogueListener.invisCooldown.put(target.getUniqueId(), System.currentTimeMillis());
             }

@@ -39,7 +39,7 @@ public class RogueListener implements DesireClass
     @Override
     public void initialize()
     {
-        duration = DesireHCF.getConfigHandler().getInteger("classes.rogue.duration");
+        duration = DesireHCF.getConfigHandler().getInteger("classes.rogue.duration") * 20;
 
         invisCooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.rogue.uninvis-timer"), TimeUnit
                 .SECONDS, new RemovalListener<UUID, Long>()
@@ -54,7 +54,7 @@ public class RogueListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
-        cooldown = new Cache<>(duration, TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        cooldown = new Cache<>(duration / 20, TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)

@@ -245,26 +245,26 @@ classes:
     instant-cooldown: 30
     effects:
       SPEED:
-        click: 3
-        hold: 2
-      STRENGTH:
         click: 2
         hold: 1
-      RESISTANCE:
-        click: 3
-        hold: 1
-      WITHER:
+      STRENGTH:
         click: 1
+        hold: 0
+      RESISTANCE:
+        click: 2
+        hold: 0
+      WITHER:
+        click: 0
         hold: -1
       REGEN:
-        click: 3
-        hold: 1
+        click: 2
+        hold: 0
       JUMP:
-        click: 4
+        click: 6
         hold: 3
       FIRE_RESISTANCE:
         click: 1
-        hold: 1
+        hold: 0
     rouge-finder:
       range: 80
       remainder: 30
@@ -273,11 +273,6 @@ classes:
     invisible-length: 120
     uninvis-range: 10
     uninvis-timer: 30
-    back-stab-amount:
-      archer: 2
-      bard: 2
-      rogue: 2
-      diamond: 4
     effects:
       SPEED:
         item: SUGAR

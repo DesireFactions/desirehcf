@@ -59,7 +59,7 @@ public class ArcherListener implements DesireClass
                     }
                 }, DesireHCF.getInstance());
 
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.duration"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        cooldown = new Cache<>(duration / 20, TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
