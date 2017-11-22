@@ -2,6 +2,7 @@ package com.desiremc.hcf.listener.classes;
 
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.event.ArmorEquipEvent;
 import com.desiremc.hcf.session.HCFSession;
@@ -72,6 +73,8 @@ public class ClassListener implements Listener
         if (session.getPvpClass() != null)
         {
             removePermanentEffects(session.getPvpClass(), player);
+
+            DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.disable", "{class}", StringUtils.capitalize(session.getPvpClass().name().toLowerCase()));
         }
 
         if (item == null || item.getType().equals(Material.AIR))
@@ -87,6 +90,8 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.DIAMOND);
                     applyPermanentEffects(PVPClass.DIAMOND, player);
+
+                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Diamond");
                 }
                 break;
             case "LEATHER":
@@ -94,6 +99,8 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.ARCHER);
                     applyPermanentEffects(PVPClass.ARCHER, player);
+
+                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Archer");
                 }
                 break;
             case "GOLD":
@@ -101,6 +108,8 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.BARD);
                     applyPermanentEffects(PVPClass.BARD, player);
+
+                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Bard");
                 }
                 break;
             case "CHAINMAIL":
@@ -108,6 +117,8 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.ROGUE);
                     applyPermanentEffects(PVPClass.ROGUE, player);
+
+                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Rogue");
                 }
                 break;
             case "IRON":
@@ -115,6 +126,8 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.MINER);
                     applyPermanentEffects(PVPClass.MINER, player);
+
+                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Miner");
 
                     List<Integer> indexs = new ArrayList<>();
 
