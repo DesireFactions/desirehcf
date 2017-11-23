@@ -14,6 +14,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -343,5 +344,31 @@ public class ClassListener implements Listener
             default:
                 return false;
         }
+    }
+
+    @EventHandler
+    public void onMilkedUp(PlayerItemConsumeEvent event)
+    {
+        if (!event.getItem().getType().equals(Material.MILK_BUCKET))
+        {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+
+        if (session.getPvpClass() == null)
+        {
+            return;
+        }
+
+        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                applyPermanentEffects(session.getPvpClass(), player);
+            }
+        }, 5L);
     }
 }
