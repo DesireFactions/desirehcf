@@ -380,6 +380,7 @@ public class HCFSession
             if (safeTimer <= 0)
             {
                 EntryRegistry.getInstance().removeValue(getPlayer(), DesireCore.getLangHandler().getStringNoPrefix("pvp.scoreboard"));
+                safeTimer = 0;
             }
             else
             {
