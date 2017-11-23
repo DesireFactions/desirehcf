@@ -21,7 +21,7 @@ import com.massivecraft.factions.FPlayer;
 public class TablistHandler implements Listener
 {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event)
@@ -83,12 +83,12 @@ public class TablistHandler implements Listener
         }
     }
 
-    private void applyClassic(Player player)
+    private TabList applyClassic(Player player)
     {
         FPlayer user = FactionsUtils.getFPlayer(player);
         if (user == null)
         {
-            return;
+            return null;
         }
         int i = 0;
         TabList list = getTabList(player);
@@ -124,22 +124,25 @@ public class TablistHandler implements Listener
             i++;
         }
         list.send();
+        return list;
     }
 
-    private void applyFactions(Player player)
+    private TabList applyFactions(Player player)
     {
-        applyClassic(player);
+        return applyClassic(player);
     }
 
-    private void clearClassic(Player updated, Player cleared)
+    private TabList clearClassic(Player updated, Player cleared)
     {
-        getTabList(updated).clearSlot(cleared.getName());
-        getTabList(updated).send();
+        TabList list = getTabList(updated);
+        list.clearSlot(cleared.getName());
+        list.send();
+        return list;
     }
 
-    private void clearFactions(Player updated, Player changed)
+    private TabList clearFactions(Player updated, Player changed)
     {
-        this.clearClassic(updated, changed);
+        return this.clearClassic(updated, changed);
     }
 
     private static TabList getTabList(Player player)
