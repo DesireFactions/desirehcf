@@ -6,6 +6,7 @@ import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.core.utils.BungeeUtils;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.core.utils.ItemNames;
@@ -85,6 +86,11 @@ public class CombatListener implements Listener
             {
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager())
                         .getShooter() : e.getDamager());
+
+                if (StaffHandler.getInstance().isFrozen(damager))
+                {
+                    e.setCancelled(true);
+                }
 
                 // 0 = valid, 1 = damager in region, 2 = victim in region
                 int state = 0;
