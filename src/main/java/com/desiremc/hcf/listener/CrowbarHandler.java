@@ -1,8 +1,10 @@
 package com.desiremc.hcf.listener;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.desiremc.core.api.FileHandler;
+import com.desiremc.core.api.LangHandler;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.util.FactionsUtils;
+import com.massivecraft.factions.Faction;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -18,11 +20,8 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.desiremc.core.api.FileHandler;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.util.FactionsUtils;
-import com.massivecraft.factions.Faction;
+import java.util.Arrays;
+import java.util.List;
 
 public class CrowbarHandler implements Listener
 {
@@ -59,8 +58,8 @@ public class CrowbarHandler implements Listener
             
             Faction target = FactionsUtils.getFaction(block.getLocation());
             Faction source = FactionsUtils.getFaction(player);
-            
-            if (target != null && target != source)
+
+            if (target != source && !target.isWilderness())
             {
                 e.setCancelled(true);
                 lang.sendString(player, "crowbar.not_yours");
