@@ -21,15 +21,29 @@ import com.massivecraft.factions.FPlayer;
 public class TablistHandler implements Listener
 {
 
+    private static final boolean DEBUG = true;
+
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event)
     {
+        if (DEBUG)
+        {
+            System.out.println("TablistHandler.onJoin() called.");
+        }
         Session iterSession;
         for (Iterator<Session> it = SessionHandler.getInstance().getSessions().iterator(); it.hasNext();)
         {
             iterSession = it.next();
+            if (DEBUG)
+            {
+                System.out.println("TablistHandler.onJoin() iterated with " + iterSession.getName());
+            }
             if (iterSession.getPlayer() == null || !iterSession.getPlayer().isOnline())
             {
+                if (DEBUG)
+                {
+                    System.out.println("TablistHandler.onJoin() removed offline or null player.");
+                }
                 it.remove();
                 continue;
             }
@@ -42,12 +56,13 @@ public class TablistHandler implements Listener
                 applyFactions(iterSession.getPlayer());
             }
         }
+
     }
 
     @EventHandler
     public void onQuit(PlayerQuitEvent event)
     {
-
+        TabAPI.removePlayer(event.getPlayer());
         Session iterSession;
         for (Iterator<Session> it = SessionHandler.getInstance().getSessions().iterator(); it.hasNext();)
         {
@@ -80,7 +95,7 @@ public class TablistHandler implements Listener
 
         for (FPlayer fp : FactionsUtils.getOnlineFPlayers())
         {
-            String prefix = null, name, suffix = null;
+            String prefix = null, name, suffix = "";
             String str = (fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName();
 
             if (str.length() <= 16)
@@ -108,7 +123,7 @@ public class TablistHandler implements Listener
             }
             i++;
         }
-        list.update();
+        list.send();
     }
 
     private void applyFactions(Player player)
@@ -116,14 +131,10 @@ public class TablistHandler implements Listener
         applyClassic(player);
     }
 
-    private void clearClassic(Player updated, Player changed)
+    private void clearClassic(Player updated, Player cleared)
     {
-        TabList list = getTabList(updated);
-        int slot = list.getSlot(changed.getName());
-        if (slot != -1)
-        {
-            list.clearSlot(slot);
-        }
+        getTabList(updated).clearSlot(cleared.getName());
+        getTabList(updated).send();
     }
 
     private void clearFactions(Player updated, Player changed)
@@ -133,10 +144,23 @@ public class TablistHandler implements Listener
 
     private static TabList getTabList(Player player)
     {
+        if (DEBUG)
+        {
+            System.out.println("TablistHandler.getTabList(Player) called.");
+        }
         TabList list = TabAPI.getPlayerTabList(player);
         if (list == null)
         {
+            if (DEBUG)
+            {
+                System.out.println("TablistHandler.getTabList(Player) it's null, populate.");
+            }
             list = TabAPI.createTabListForPlayer(player);
+            list.send();
+        }
+        if (DEBUG)
+        {
+            System.out.println("TablistHandler.getTabList(Player) return the list.");
         }
         return list;
     }
