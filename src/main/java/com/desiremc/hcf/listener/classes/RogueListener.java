@@ -1,5 +1,6 @@
 package com.desiremc.hcf.listener.classes;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -9,6 +10,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -63,6 +65,7 @@ public class RogueListener implements DesireClass
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.rogue.effect-over");
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard-cooldown"));
 
                     HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
                     if (PVPClass.ROGUE.equals(session.getPvpClass()))
@@ -72,6 +75,22 @@ public class RogueListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
+
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (UUID uuid : cooldown.keySet())
+                {
+                    Player p = PlayerUtils.getPlayer(uuid);
+                    if (p != null)
+                    {
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard-cooldown"), String.valueOf((duration / 20) - ((System.currentTimeMillis() - cooldown.get(uuid)) / 1000)));
+                    }
+                }
+            }
+        }, 0, 10);
     }
 
     @EventHandler

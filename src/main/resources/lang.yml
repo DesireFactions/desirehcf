@@ -72,6 +72,8 @@ spawn: "You have teleported to spawn."
 classes:
   enable: "&bClasses: &l{class}&r&b --> &2Enabled!"
   disable: "&bClasses: &l{class}&r&b --> &cDisabled!"
+  scoreboard: "&3Class"
+  scoreboard-cooldown: "&9Cooldown"
   bard:
     instant-cooldown-over: Your bard cooldown is over.
     on-cooldown: Your bard effects are still on cooldown.
