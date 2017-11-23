@@ -292,6 +292,12 @@ public class HCFSession
         save();
     }
 
+    public void resetPVPTimer()
+    {
+        pvpTimer = new PVPTimer();
+        safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
+    }
+
     public DeathBan getActiveDeathBan()
     {
         if (DEBUG)

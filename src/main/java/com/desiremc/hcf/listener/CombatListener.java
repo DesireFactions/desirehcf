@@ -157,6 +157,7 @@ public class CombatListener implements Listener
 
             UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
             victim.addDeath(killer);
+            victim.resetPVPTimer();
             BungeeUtils.sendToHub(vPlayer);
 
             FancyMessage message = processMessage(victim, cause, tag);
