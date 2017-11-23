@@ -1,7 +1,9 @@
 package com.desiremc.hcf.listener.classes;
 
 import com.desiremc.core.api.FileHandler;
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.event.ArmorEquipEvent;
 import com.desiremc.hcf.session.HCFSession;
@@ -13,6 +15,7 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -63,7 +66,7 @@ public class ClassListener implements Listener
         updateClass(player, player.getInventory().getHelmet());
     }
 
-    private void updateClass(Player player, ItemStack item)
+    public static void updateClass(Player player, ItemStack item)
     {
         HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
 
@@ -72,6 +75,9 @@ public class ClassListener implements Listener
         if (session.getPvpClass() != null)
         {
             removePermanentEffects(session.getPvpClass(), player);
+
+            DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.disable", "{class}", StringUtils.capitalize(session.getPvpClass().name().toLowerCase()));
+            EntryRegistry.getInstance().removeValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"));
         }
 
         if (item == null || item.getType().equals(Material.AIR))
@@ -87,6 +93,9 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.DIAMOND);
                     applyPermanentEffects(PVPClass.DIAMOND, player);
+
+                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Diamond");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Diamond");
                 }
                 break;
             case "LEATHER":
@@ -94,6 +103,9 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.ARCHER);
                     applyPermanentEffects(PVPClass.ARCHER, player);
+
+                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Archer");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Archer");
                 }
                 break;
             case "GOLD":
@@ -101,6 +113,9 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.BARD);
                     applyPermanentEffects(PVPClass.BARD, player);
+
+                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Bard");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Bard");
                 }
                 break;
             case "CHAINMAIL":
@@ -108,6 +123,9 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.ROGUE);
                     applyPermanentEffects(PVPClass.ROGUE, player);
+
+                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Rogue");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Rogue");
                 }
                 break;
             case "IRON":
@@ -115,6 +133,9 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.MINER);
                     applyPermanentEffects(PVPClass.MINER, player);
+
+                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Miner");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Miner");
 
                     List<Integer> indexs = new ArrayList<>();
 
@@ -142,7 +163,7 @@ public class ClassListener implements Listener
 
     }
 
-    private boolean isDiamond(ItemStack[] armor)
+    private static boolean isDiamond(ItemStack[] armor)
     {
         for (ItemStack item : armor)
         {
@@ -154,7 +175,7 @@ public class ClassListener implements Listener
         return true;
     }
 
-    private boolean isArcher(ItemStack[] armor)
+    private static boolean isArcher(ItemStack[] armor)
     {
         for (ItemStack item : armor)
         {
@@ -166,7 +187,7 @@ public class ClassListener implements Listener
         return true;
     }
 
-    private boolean isBard(ItemStack[] armor)
+    private static boolean isBard(ItemStack[] armor)
     {
         for (ItemStack item : armor)
         {
@@ -178,7 +199,7 @@ public class ClassListener implements Listener
         return true;
     }
 
-    private boolean isRogue(ItemStack[] armor)
+    private static boolean isRogue(ItemStack[] armor)
     {
         for (ItemStack item : armor)
         {
@@ -190,7 +211,7 @@ public class ClassListener implements Listener
         return true;
     }
 
-    private boolean isMiner(ItemStack[] armor)
+    private static boolean isMiner(ItemStack[] armor)
     {
         for (ItemStack item : armor)
         {
@@ -207,28 +228,43 @@ public class ClassListener implements Listener
         switch (pvpClass)
         {
             case BARD:
+                player.removePotionEffect(PotionEffectType.SPEED);
+                player.removePotionEffect(PotionEffectType.REGENERATION);
+                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
                 break;
             case MINER:
+                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
+                player.removePotionEffect(PotionEffectType.FAST_DIGGING);
+                player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
+
                 player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 1));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0));
                 break;
             case ROGUE:
+                player.removePotionEffect(PotionEffectType.JUMP);
+                player.removePotionEffect(PotionEffectType.SPEED);
+                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+
                 player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
                 break;
             case ARCHER:
+                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                player.removePotionEffect(PotionEffectType.SPEED);
+
                 player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
                 player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
                 break;
         }
     }
 
-    private void removePermanentEffects(PVPClass pvpClass, Player player)
+    private static void removePermanentEffects(PVPClass pvpClass, Player player)
     {
         switch (pvpClass)
         {
@@ -258,7 +294,7 @@ public class ClassListener implements Listener
 
     public static void applyEffect(Player player, PotionEffectType type, String effectType, PVPClass pvpClass, int duration, int range, boolean faction, boolean self)
     {
-        String location = "classes." + pvpClass.name() + ".effects." + type.getName() + "." + effectType;
+        String location = "classes." + pvpClass.name().toLowerCase() + ".effects." + type.getName() + "." + effectType;
 
         PotionEffect effect = new PotionEffect(type, duration, config.getInteger(location));
 
@@ -280,16 +316,18 @@ public class ClassListener implements Listener
 
         for (Player target : players)
         {
+            target.removePotionEffect(effect.getType());
             target.addPotionEffect(effect);
         }
     }
 
     public static void applyEffectSelf(Player player, PotionEffectType type, String effectType, PVPClass pvpClass, int duration)
     {
-        String location = "classes." + pvpClass.name() + ".effects." + type.getName() + "." + effectType;
+        String location = "classes." + pvpClass.name().toLowerCase() + ".effects." + type.getName() + "." + effectType;
 
         PotionEffect effect = new PotionEffect(type, duration, config.getInteger(location));
 
+        player.removePotionEffect(effect.getType());
         player.addPotionEffect(effect);
     }
 
@@ -313,5 +351,31 @@ public class ClassListener implements Listener
             default:
                 return false;
         }
+    }
+
+    @EventHandler
+    public void onMilkedUp(PlayerItemConsumeEvent event)
+    {
+        if (!event.getItem().getType().equals(Material.MILK_BUCKET))
+        {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+
+        if (session.getPvpClass() == null)
+        {
+            return;
+        }
+
+        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                applyPermanentEffects(session.getPvpClass(), player);
+            }
+        }, 5L);
     }
 }

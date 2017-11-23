@@ -1,5 +1,6 @@
 package com.desiremc.hcf.listener.classes;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -9,6 +10,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -29,6 +31,8 @@ public class RogueListener implements DesireClass
     public static Cache<UUID, Long> invisCooldown;
     private Cache<UUID, Long> cooldown;
 
+    private int duration;
+
     public RogueListener()
     {
         initialize();
@@ -37,6 +41,8 @@ public class RogueListener implements DesireClass
     @Override
     public void initialize()
     {
+        duration = DesireHCF.getConfigHandler().getInteger("classes.rogue.duration") * 20;
+
         invisCooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.rogue.uninvis-timer"), TimeUnit
                 .SECONDS, new RemovalListener<UUID, Long>()
         {
@@ -50,7 +56,7 @@ public class RogueListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.rogue.cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        cooldown = new Cache<>(duration / 20, TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -59,6 +65,7 @@ public class RogueListener implements DesireClass
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.rogue.effect-over");
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard-cooldown"));
 
                     HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
                     if (PVPClass.ROGUE.equals(session.getPvpClass()))
@@ -68,6 +75,22 @@ public class RogueListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
+
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (UUID uuid : cooldown.keySet())
+                {
+                    Player p = PlayerUtils.getPlayer(uuid);
+                    if (p != null)
+                    {
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard-cooldown"), String.valueOf((duration / 20) - ((System.currentTimeMillis() - cooldown.get(uuid)) / 1000)));
+                    }
+                }
+            }
+        }, 0, 10);
     }
 
     @EventHandler
@@ -230,21 +253,15 @@ public class RogueListener implements DesireClass
         {
             case FEATHER:
                 p.removePotionEffect(PotionEffectType.JUMP);
-                PotionEffect jump = new PotionEffect(PotionEffectType.JUMP, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP.duration") * 20,
-                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.JUMP.click"));
-                p.addPotionEffect(jump);
+                ClassListener.applyEffectSelf(p, PotionEffectType.JUMP, "click", PVPClass.ROGUE, duration);
                 break;
             case SUGAR:
                 p.removePotionEffect(PotionEffectType.SPEED);
-                PotionEffect speed = new PotionEffect(PotionEffectType.SPEED, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.duration") * 20,
-                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.SPEED.click"));
-                p.addPotionEffect(speed);
+                ClassListener.applyEffectSelf(p, PotionEffectType.SPEED, "click", PVPClass.ROGUE, duration);
                 break;
             case IRON_INGOT:
                 p.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-                PotionEffect resistance = new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.RESISTANCE.duration") * 20,
-                        DesireHCF.getConfigHandler().getInteger("classes.rogue.effects.RESISTANCE.click"));
-                p.addPotionEffect(resistance);
+                ClassListener.applyEffectSelf(p, PotionEffectType.DAMAGE_RESISTANCE, "click", PVPClass.ROGUE, duration);
                 break;
         }
 

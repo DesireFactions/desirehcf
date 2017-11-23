@@ -1,5 +1,6 @@
 package com.desiremc.hcf.listener.classes;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -9,6 +10,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -37,7 +39,9 @@ public class BardListener implements DesireClass
     @Override
     public void initialize()
     {
-        cooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.bard.instant-cooldown"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        duration = DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20;
+
+        cooldown = new Cache<>(duration / 20, TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -46,13 +50,34 @@ public class BardListener implements DesireClass
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendString(p, "classes.bard.instant-cooldown-over");
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard-cooldown"));
+
+                    HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+                    if (PVPClass.BARD.equals(session.getPvpClass()))
+                    {
+                        ClassListener.applyPermanentEffects(PVPClass.BARD, p);
+                    }
                 }
             }
         }, DesireHCF.getInstance());
 
-        range = DesireHCF.getConfigHandler().getInteger("classes.bard.range");
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (UUID uuid : cooldown.keySet())
+                {
+                    Player p = PlayerUtils.getPlayer(uuid);
+                    if (p != null)
+                    {
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard-cooldown"), String.valueOf((duration / 20) - ((System.currentTimeMillis() - cooldown.get(uuid)) / 1000)));
+                    }
+                }
+            }
+        }, 0, 10);
 
-        duration = DesireHCF.getConfigHandler().getInteger("classes.bard.duration") * 20;
+        range = DesireHCF.getConfigHandler().getInteger("classes.bard.range");
     }
 
     @EventHandler
@@ -82,8 +107,6 @@ public class BardListener implements DesireClass
             DesireHCF.getLangHandler().sendString(p, "classes.bard.on-cooldown");
             return;
         }
-
-        List<Player> players = FactionsUtils.getFactionMembersInRange(p, range);
 
         switch (p.getItemInHand().getType())
         {
@@ -172,7 +195,7 @@ public class BardListener implements DesireClass
         {
             HCFSession session = HCFSessionHandler.getHCFSession(target.getUniqueId());
 
-            if (session.getPvpClass().equals(PVPClass.ROGUE))
+            if (PVPClass.ROGUE.equals(session.getPvpClass()))
             {
                 RogueListener.invisCooldown.put(target.getUniqueId(), System.currentTimeMillis());
             }
