@@ -1,6 +1,6 @@
 hcfreload: '&cReloaded the lang files.'
 prefix:
-  text: '&7[&bHCF&7]'
+  text: '&7[&bDesire&7]'
   use: true
 tag:
   active: '&c&lYou are now combat tagged and can not enter spawn.'
