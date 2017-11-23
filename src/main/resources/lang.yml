@@ -26,10 +26,13 @@ enderpearl:
   scoreboard: '&5&lEnderpearl'
 lives:
   add: '&7You have added &a{amount} &7lives to &c{player}&7.'
+  send: '&7You have sent &a{amount} &7lives to &c{player}&7.'
+  send_target: '&c{player}&7 has sent &a{amount} &7lives to you.'
   remove: '&7You have removed &c{amount}&7 lives from {player}.'
   recieved: '&7You have received &a{amount} &7lives.'
   use: '&7You have used a life on &c{target}&7.'
   no_lives: '&cYou currently have no lives.'
+  not_enough: '&cYou do not have enough lives.'
   revive: '&7You have revived &c{target}&7.'
   check:
     self: '&7You have &a{lives} &7lives.'

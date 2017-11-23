@@ -1,8 +1,5 @@
 package com.desiremc.hcf.commands.lives;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
@@ -10,13 +7,15 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parser.PlayerHCFSessionParser;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class LivesCheckCommand extends ValidCommand
 {
 
     public LivesCheckCommand()
     {
-        super("check", "Check how many lives you have.", Rank.JRMOD, ARITY_OPTIONAL, new String[] { "target" });
+        super("check", "Check how many lives you have.", Rank.GUEST, ARITY_OPTIONAL, new String[] {"target"});
 
         addParser(new PlayerHCFSessionParser(), "target");
 
