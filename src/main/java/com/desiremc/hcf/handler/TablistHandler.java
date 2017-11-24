@@ -13,8 +13,8 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.tablistfive.TabAPI;
-import com.desiremc.core.tablistfive.TabList;
+import com.desiremc.core.tablistsix.TabAPI;
+import com.desiremc.core.tablistsix.TabList;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.massivecraft.factions.FPlayer;
 
@@ -49,11 +49,11 @@ public class TablistHandler implements Listener
             }
             if (iterSession.getSetting(SessionSetting.CLASSICTAB))
             {
-                applyClassic(iterSession.getPlayer());
+                applyClassic(iterSession.getPlayer(), null);
             }
             else
             {
-                applyFactions(iterSession.getPlayer());
+                applyFactions(iterSession.getPlayer(), null);
             }
         }
 
@@ -71,19 +71,22 @@ public class TablistHandler implements Listener
                 it.remove();
                 continue;
             }
-            if (iterSession.getSetting(SessionSetting.CLASSICTAB))
+            if (event.getPlayer() != iterSession.getPlayer())
             {
-                clearClassic(iterSession.getPlayer(), event.getPlayer());
-            }
-            else
-            {
-                clearFactions(iterSession.getPlayer(), event.getPlayer());
+                if (iterSession.getSetting(SessionSetting.CLASSICTAB))
+                {
+                    applyClassic(iterSession.getPlayer(), event.getPlayer());
+                }
+                else
+                {
+                    applyFactions(iterSession.getPlayer(), event.getPlayer());
+                }
             }
         }
         TabAPI.removePlayer(event.getPlayer());
     }
 
-    private TabList applyClassic(Player player)
+    private TabList applyClassic(Player player, Player ignored)
     {
         FPlayer user = FactionsUtils.getFPlayer(player);
         if (user == null)
@@ -92,9 +95,18 @@ public class TablistHandler implements Listener
         }
         int i = 0;
         TabList list = getTabList(player);
+        if (!list.isOld())
+        {
+            return null;
+        }
+        list.clearAllSlots();
 
         for (FPlayer fp : FactionsUtils.getOnlineFPlayers())
         {
+            if (fp.getPlayer() == ignored)
+            {
+                continue;
+            }
             String prefix = null, name, suffix = "";
             String str = (fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName();
 
@@ -123,26 +135,13 @@ public class TablistHandler implements Listener
             }
             i++;
         }
-        list.send();
+        list.update();
         return list;
     }
 
-    private TabList applyFactions(Player player)
+    private TabList applyFactions(Player player, Player ignored)
     {
-        return applyClassic(player);
-    }
-
-    private TabList clearClassic(Player updated, Player cleared)
-    {
-        TabList list = getTabList(updated);
-        list.clearSlot(cleared.getName());
-        list.send();
-        return list;
-    }
-
-    private TabList clearFactions(Player updated, Player changed)
-    {
-        return this.clearClassic(updated, changed);
+        return applyClassic(player, ignored);
     }
 
     private static TabList getTabList(Player player)
