@@ -52,6 +52,7 @@ import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
+import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -161,6 +162,17 @@ public class DesireHCF extends JavaPlugin
             return null;
         }
         return (WorldEditPlugin) p;
+    }
+
+    public static WorldGuardPlugin getWorldGuard()
+    {
+        Plugin p = Bukkit.getPluginManager().getPlugin("WorldGuard");
+        if (p == null)
+        {
+            System.out.println("This could would crash if that were to happen.");
+            return null;
+        }
+        return (WorldGuardPlugin) p;
     }
 
     public static DesireHCF getInstance()
