@@ -80,10 +80,6 @@ public class SafeLogoutTask extends BukkitRunnable
         // Inform player
         if (remainingSeconds < this.remainingSeconds)
         {
-
-            DesireHCF.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.pending",
-                    "{seconds}", remainingSeconds + "");
-
             this.remainingSeconds = remainingSeconds;
         }
     }
