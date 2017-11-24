@@ -62,7 +62,6 @@ public class TablistHandler implements Listener
     @EventHandler
     public void onQuit(PlayerQuitEvent event)
     {
-        TabAPI.removePlayer(event.getPlayer());
         Session iterSession;
         for (Iterator<Session> it = SessionHandler.getInstance().getSessions().iterator(); it.hasNext();)
         {
@@ -81,6 +80,7 @@ public class TablistHandler implements Listener
                 clearFactions(iterSession.getPlayer(), event.getPlayer());
             }
         }
+        TabAPI.removePlayer(event.getPlayer());
     }
 
     private TabList applyClassic(Player player)
