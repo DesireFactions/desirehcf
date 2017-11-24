@@ -51,6 +51,9 @@ crowbar:
   wrong_block: '&7Only usable on ender portal frames and mob spawners.'
   not_enough_charges: '&7Your crowbar does not have enough charges for that.'
   out_of_uses: '&7Your crowbar ran out of uses.'
+  prefix: "§aUses: §b"
+  name: "§a§k|§cCrowbar§a§k|"
+  spawner: "§a§k|§cSpawner§a§k|§b - §a"
 gapple:
   ended: '&7You may now use a &5Gapple&7.'
   message: '&7You can not use a &5Gapple&7 for &e{time} &7seconds.'

@@ -1,13 +1,12 @@
 package com.desiremc.hcf.commands;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.listener.CrowbarHandler;
+import com.desiremc.hcf.handler.CrowbarHandler;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class CrowbarCommand extends ValidCommand
 {
@@ -22,7 +21,7 @@ public class CrowbarCommand extends ValidCommand
     public void validRun(CommandSender sender, String label, Object... args)
     {
         ((Player) sender).getInventory().addItem(CrowbarHandler.getNewCrowbar());
-        
+
         DesireHCF.getLangHandler().sendString(sender, "crowbar.new_crowbar");
     }
 }

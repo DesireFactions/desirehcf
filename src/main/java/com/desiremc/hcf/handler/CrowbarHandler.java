@@ -1,4 +1,4 @@
-package com.desiremc.hcf.listener;
+package com.desiremc.hcf.handler;
 
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -25,13 +25,8 @@ import java.util.List;
 
 public class CrowbarHandler implements Listener
 {
-
-    private static final String PREFIX = "§aUses: §b";
-    private static final String NAME = "§a§k|§cCrowbar§a§k|";
-    private static final String SPAWNER = "§a§k|§cSpawner§a§k|§b - §a";
-
-    private LangHandler lang = DesireHCF.getLangHandler();
-    private FileHandler config = DesireHCF.getConfigHandler();
+    private static LangHandler lang = DesireHCF.getLangHandler();
+    private static FileHandler config = DesireHCF.getConfigHandler();
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e)
@@ -55,7 +50,7 @@ public class CrowbarHandler implements Listener
                 lang.sendString(player, "crowbar.wrong_block");
                 return;
             }
-            
+
             Faction target = FactionsUtils.getFaction(block.getLocation());
             Faction source = FactionsUtils.getFaction(player);
 
@@ -99,6 +94,7 @@ public class CrowbarHandler implements Listener
             if (getUses(item) <= 0)
             {
                 player.setItemInHand(new ItemStack(Material.AIR));
+                player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1L, 1L);
                 lang.sendString(player, "crowbar.out_of_uses");
             }
         }
@@ -120,9 +116,9 @@ public class CrowbarHandler implements Listener
         }
     }
 
-    public static boolean isCrowbar(ItemStack is)
+    private static boolean isCrowbar(ItemStack is)
     {
-        return is != null && is.getType() == Material.GOLD_HOE && is.getItemMeta().getDisplayName().equals(NAME) && is.getItemMeta().hasLore() && is.getItemMeta().getLore().size() >= 1 && is.getItemMeta().getLore().get(0).startsWith(PREFIX);
+        return is != null && is.getType() == Material.GOLD_HOE && is.getItemMeta().getDisplayName().equals(lang.renderMessageNoPrefix("crowbar.name")) && is.getItemMeta().hasLore() && is.getItemMeta().getLore().size() >= 1 && is.getItemMeta().getLore().get(0).startsWith(lang.renderMessageNoPrefix("crowbar.prefix"));
     }
 
     public static ItemStack getNewCrowbar()
@@ -141,12 +137,12 @@ public class CrowbarHandler implements Listener
 
     private static List<String> getStartingUses()
     {
-        return Arrays.asList(PREFIX + DesireHCF.getConfigHandler().getInteger("crowbar.uses"));
+        return Arrays.asList(lang.renderMessageNoPrefix("crowbar.prefix") + DesireHCF.getConfigHandler().getInteger("crowbar.uses"));
     }
 
     private static String getCrowbarName()
     {
-        return NAME;
+        return lang.renderMessageNoPrefix("crowbar.name");
     }
 
     public static int getUses(ItemStack is)
@@ -155,7 +151,7 @@ public class CrowbarHandler implements Listener
         {
             return -1;
         }
-        return Integer.parseInt(is.getItemMeta().getLore().get(0).replace(PREFIX, ""));
+        return Integer.parseInt(is.getItemMeta().getLore().get(0).replace(lang.renderMessageNoPrefix("crowbar.prefix"), ""));
     }
 
     public static ItemStack adjustUses(ItemStack is, int change)
@@ -168,7 +164,7 @@ public class CrowbarHandler implements Listener
                 throw new IllegalStateException("Can't have negative uses.");
             }
             List<String> lore = is.getItemMeta().getLore();
-            lore.set(0, PREFIX + uses);
+            lore.set(0, lang.renderMessageNoPrefix("crowbar.prefix") + uses);
 
             ItemMeta meta = is.getItemMeta();
             meta.setLore(lore);
@@ -181,21 +177,20 @@ public class CrowbarHandler implements Listener
     {
         ItemStack item = new ItemStack(Material.MOB_SPAWNER);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(SPAWNER + type.toString());
+        meta.setDisplayName(lang.renderMessageNoPrefix("crowbar.spawner") + type.toString());
         item.setItemMeta(meta);
         return item;
     }
 
     public static boolean isSpawner(ItemStack is)
     {
-        return is.getType() == Material.MOB_SPAWNER && is.hasItemMeta() && is.getItemMeta().hasDisplayName() && is.getItemMeta().getDisplayName().startsWith(SPAWNER);
+        return is.getType() == Material.MOB_SPAWNER && is.hasItemMeta() && is.getItemMeta().hasDisplayName() && is.getItemMeta().getDisplayName().startsWith(lang.renderMessageNoPrefix("crowbar.spawner"));
     }
 
-    @SuppressWarnings("deprecation")
     public static EntityType getSpawnerType(ItemStack is)
     {
         String name = is.getItemMeta().getDisplayName();
-        name = name.replace(SPAWNER, "");
+        name = name.replace(lang.renderMessageNoPrefix("crowbar.spawner"), "");
         return EntityType.fromName(name);
     }
 
