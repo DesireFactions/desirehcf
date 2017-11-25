@@ -1,6 +1,5 @@
 package com.desiremc.hcf.listener.classes;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -10,8 +9,8 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,8 +19,8 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.potion.PotionEffectType;
 
+import java.util.HashMap;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -29,9 +28,7 @@ public class ArcherListener implements DesireClass
 {
 
     private Cache<UUID, UUID> archerHit;
-    private Cache<UUID, Long> cooldown;
-
-    private int duration;
+    public static HashMap<UUID, Integer> energy;
 
     public ArcherListener()
     {
@@ -41,7 +38,7 @@ public class ArcherListener implements DesireClass
     @Override
     public void initialize()
     {
-        duration = DesireHCF.getConfigHandler().getInteger("classes.archer.duration") * 20;
+        energy = new HashMap<>();
 
         archerHit = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.hit-time"), TimeUnit.SECONDS,
                 new RemovalListener<UUID, UUID>()
@@ -61,41 +58,7 @@ public class ArcherListener implements DesireClass
                     }
                 }, DesireHCF.getInstance());
 
-        cooldown = new Cache<>(duration / 20, TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
-        {
-            @Override
-            public void onRemoval(RemovalNotification<UUID, Long> entry)
-            {
-                Player p = PlayerUtils.getPlayer(entry.getKey());
-                if (p != null)
-                {
-                    DesireHCF.getLangHandler().sendString(p, "classes.archer.effects-over");
-                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard-cooldown"));
-
-                    HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
-                    if (PVPClass.ARCHER.equals(session.getPvpClass()))
-                    {
-                        ClassListener.applyPermanentEffects(PVPClass.ARCHER, p);
-                    }
-                }
-            }
-        }, DesireHCF.getInstance());
-
-        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                for (UUID uuid : cooldown.keySet())
-                {
-                    Player p = PlayerUtils.getPlayer(uuid);
-                    if (p != null)
-                    {
-                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard-cooldown"), String.valueOf((duration / 20) - ((System.currentTimeMillis() - cooldown.get(uuid)) / 1000)));
-                    }
-                }
-            }
-        }, 0, 10);
+        ClassListener.energyRunnable(energy);
     }
 
     @EventHandler
@@ -204,25 +167,25 @@ public class ArcherListener implements DesireClass
             return;
         }
 
-        if (cooldown.get(p.getUniqueId()) != null)
+        ConfigurationSection section = DesireHCF.getConfigHandler().getConfigurationSection("classes.archer.effects");
+
+        if (section.get(item.getType().name() + ".click") == null)
         {
-            //cooldown message
             return;
         }
 
-        switch (item.getType())
+        section = DesireHCF.getConfigHandler().getConfigurationSection("classes.archer.effects." + item.getType().name() + ".click");
+        int energyNeeded = section.getInt("energy");
+
+        if (energy.get(p.getUniqueId()) < energyNeeded)
         {
-            case FEATHER:
-                p.removePotionEffect(PotionEffectType.JUMP);
-                ClassListener.applyEffectSelf(p, PotionEffectType.JUMP, "click", PVPClass.ARCHER, duration);
-                break;
-            case SUGAR:
-                p.removePotionEffect(PotionEffectType.SPEED);
-                ClassListener.applyEffectSelf(p, PotionEffectType.SPEED, "click", PVPClass.ARCHER, duration);
-                break;
+            DesireHCF.getLangHandler().sendRenderMessage(p, "classes.not-enough-energy");
+            return;
         }
 
-        cooldown.put(p.getUniqueId(), System.currentTimeMillis());
+        energy.replace(p.getUniqueId(), energy.get(p.getUniqueId()) - energyNeeded);
+
+        ClassListener.applyEffectSelf(p, item.getType(), "click", PVPClass.ARCHER);
     }
 
     @EventHandler
@@ -242,16 +205,19 @@ public class ArcherListener implements DesireClass
         {
             return;
         }
-        applyEffect(p, item);
-    }
 
-    private void applyEffect(Player p, ItemStack item)
-    {
-        switch (item.getType())
+        if (!ClassListener.isClassItem(item, PVPClass.ARCHER))
         {
-            case FEATHER:
-                ClassListener.applyEffectSelf(p, PotionEffectType.JUMP, "hold", PVPClass.ARCHER, duration);
-                break;
+            return;
         }
+
+        ConfigurationSection section = DesireHCF.getConfigHandler().getConfigurationSection("classes.archer.effects");
+
+        if (section.get(item.getType().name() + ".hold") == null)
+        {
+            return;
+        }
+
+        ClassListener.applyEffectSelf(p, item.getType(), "hold", PVPClass.ARCHER);
     }
 }

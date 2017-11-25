@@ -3,7 +3,6 @@ package com.desiremc.hcf.listener.classes;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
-
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,6 +15,7 @@ public class MinerListener implements DesireClass
     @Override
     public void initialize()
     {
+
     }
 
     @EventHandler(priority = EventPriority.MONITOR)

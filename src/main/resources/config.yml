@@ -228,43 +228,151 @@ classes:
     range: 10
     increase-percent: 1.20
     hit-time: 30
-    duration: 20
+    cooldown: 10
     effects:
-      SPEED:
-        item: SUGAR
-        click: 3
-        hold: -1
-      JUMP:
-        item: FEATHER
-        click: 7
-        hold: 3
+      SUGAR:
+        effect: SPEED
+        click:
+          amplifier: 3
+          duration: 7
+          energy: 20
+          self: true
+          faction: false
+          allies: false
+          other: false
+      FEATHER:
+        effect: JUMP
+        click:
+          amplifier: 6
+          duration: 8
+          energy: 20
+          self: true
+          faction: false
+          allies: false
+          other: false
+        hold:
+          amplifier: 1
+          duration: 7
+          self: true
+          faction: true
+          allies: false
+          other: false
   bard:
     range: 10
-    duration: 12
-    frequency: 5
-    instant-cooldown: 30
+    hold-duration: 7
     effects:
-      SPEED:
-        click: 2
-        hold: 1
-      STRENGTH:
-        click: 1
-        hold: 0
-      RESISTANCE:
-        click: 2
-        hold: 0
-      WITHER:
-        click: 0
-        hold: -1
-      REGEN:
-        click: 2
-        hold: 0
-      JUMP:
-        click: 6
-        hold: 3
-      FIRE_RESISTANCE:
-        click: 1
-        hold: 0
+      SUGAR:
+        effect: SPEED
+        click:
+          amplifier: 2
+          duration: 7
+          energy: 20
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 1
+          duration: 7
+          self: false
+          faction: true
+          allies: false
+          other: false
+      BLAZE_POWDER:
+        effect: STRENGTH
+        click:
+          amplifier: 1
+          duration: 7
+          energy: 45
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 0
+          duration: 7
+          self: false
+          faction: true
+          allies: false
+          other: false
+      IRON_INGOT:
+        effect: RESISTANCE
+        click:
+          amplifier: 1
+          duration: 5
+          energy: 40
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 0
+          duration: 6
+          self: false
+          faction: true
+          allies: false
+          other: false
+      SPIDER_EYE:
+        effect: WITHER
+        click:
+          amplifier: 0
+          duration: 6
+          energy: 45
+          self: true
+          faction: false
+          allies: false
+          other: true
+      GHAST_TEAR:
+        effect: REGENERATION
+        click:
+          amplifier: 1
+          duration: 3
+          energy: 40
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 0
+          duration: 5
+          self: false
+          faction: true
+          allies: false
+          other: true
+      FEATHER:
+        effect: JUMP
+        click:
+          amplifier: 6
+          duration: 8
+          energy: 30
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 3
+          duration: 7
+          self: true
+          faction: true
+          allies: false
+          other: true
+      MAGMA_CREAM:
+        effect: FIRE_RESISTANCE
+        click:
+          amplifier: 0
+          duration: 180
+          energy: 30
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 0
+          duration: 8
+          self: true
+          faction: true
+          allies: false
+          other: false
     rouge-finder:
       range: 80
       remainder: 30
@@ -274,18 +382,27 @@ classes:
     uninvis-range: 10
     uninvis-timer: 30
     effects:
-      SPEED:
-        item: SUGAR
-        click: 5
-        hold: -1
-      JUMP:
-        item: FEATHER
-        click: 6
-        hold: -1
-      RESISTANCE:
-        item: IRON_INGOT
-        click: 2
-        hold: -1
+      SUGAR:
+        effect: SPEED
+        click:
+          amplifier: 5
+          duration: 5
+          energy: 20
+          cooldown: 30
+      FEATHER:
+        effect: JUMP
+        click:
+          amplifier: 6
+          duration: 7
+          energy: 20
+          cooldown: 15
+      IRON_INGOT:
+        effect: RESISTANCE
+        click:
+          amplifier: 2
+          duration: 6
+          energy: 20
+          cooldown: 30
   miner:
     diamonds:
       100:

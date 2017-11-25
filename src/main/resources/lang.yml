@@ -79,10 +79,8 @@ classes:
   enable: "&bClasses: &l{class}&r&b --> &2Enabled!"
   disable: "&bClasses: &l{class}&r&b --> &cDisabled!"
   scoreboard: "&3Class"
-  scoreboard-cooldown: "&9Cooldown"
-  bard:
-    instant-cooldown-over: Your bard cooldown is over.
-    on-cooldown: Your bard effects are still on cooldown.
+  energy-scoreboard: "&9Energy"
+  not-enough-energy: "You don't have enough energy to do that."
   rogue:
     uninvis-over: You can now go invisible again.
     shown: You have been discovered. Your invisibility is gone.

@@ -134,7 +134,8 @@ public class FactionsUtils
         return inRange;
     }
 
-    public static List<Player> getNonFactionMembersInRange(Player player, int range)
+    //gets enemies and neutral players
+    public static List<Player> getEnemiesInRange(Player player, int range)
     {
         List<Player> inRange = new ArrayList<>();
 
@@ -150,6 +151,37 @@ public class FactionsUtils
                 {
                     continue;
                 }
+            }
+
+            if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
+            {
+                inRange.add(p);
+            }
+        }
+
+        return inRange;
+    }
+
+    //gets allies in range
+    public static List<Player> getAlliesInRange(Player player, int range)
+    {
+        List<Player> inRange = new ArrayList<>();
+
+        for (Player p : Bukkit.getOnlinePlayers())
+        {
+            if (p.getName().equalsIgnoreCase(player.getName()))
+            {
+                continue;
+            }
+
+            if (getFaction(p) == null || getFaction(player) == null)
+            {
+                continue;
+            }
+
+            if (getFaction(p).getRelationTo(getFaction(player)) != Relation.ALLY)
+            {
+                continue;
             }
 
             if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))

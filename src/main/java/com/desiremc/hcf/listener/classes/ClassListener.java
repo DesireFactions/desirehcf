@@ -3,6 +3,7 @@ package com.desiremc.hcf.listener.classes;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.event.ArmorEquipEvent;
@@ -24,7 +25,9 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 public class ClassListener implements Listener
 {
@@ -33,7 +36,6 @@ public class ClassListener implements Listener
 
     private static List<Material> archerItems;
     private static List<Material> bardItems;
-    private static List<Material> minerItems;
     private static List<Material> rogueItems;
 
     public ClassListener()
@@ -78,6 +80,7 @@ public class ClassListener implements Listener
 
             DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.disable", "{class}", StringUtils.capitalize(session.getPvpClass().name().toLowerCase()));
             EntryRegistry.getInstance().removeValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"));
+            EntryRegistry.getInstance().removeValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"));
         }
 
         if (item == null || item.getType().equals(Material.AIR))
@@ -106,6 +109,8 @@ public class ClassListener implements Listener
 
                     DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Archer");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Archer");
+                    ArcherListener.energy.put(player.getUniqueId(), 0);
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
                 }
                 break;
             case "GOLD":
@@ -116,6 +121,8 @@ public class ClassListener implements Listener
 
                     DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Bard");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Bard");
+                    BardListener.energy.put(player.getUniqueId(), 0);
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
                 }
                 break;
             case "CHAINMAIL":
@@ -126,6 +133,8 @@ public class ClassListener implements Listener
 
                     DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Rogue");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Rogue");
+                    RogueListener.energy.put(player.getUniqueId(), 0);
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
                 }
                 break;
             case "IRON":
@@ -228,38 +237,23 @@ public class ClassListener implements Listener
         switch (pvpClass)
         {
             case BARD:
-                player.removePotionEffect(PotionEffectType.SPEED);
-                player.removePotionEffect(PotionEffectType.REGENERATION);
-                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 1));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.REGENERATION, Integer.MAX_VALUE, 0));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
                 break;
             case MINER:
-                player.removePotionEffect(PotionEffectType.NIGHT_VISION);
-                player.removePotionEffect(PotionEffectType.FAST_DIGGING);
-                player.removePotionEffect(PotionEffectType.FIRE_RESISTANCE);
-
-                player.addPotionEffect(new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 1));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.NIGHT_VISION, Integer.MAX_VALUE, 0));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.FAST_DIGGING, Integer.MAX_VALUE, 1));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.FIRE_RESISTANCE, Integer.MAX_VALUE, 0));
                 break;
             case ROGUE:
-                player.removePotionEffect(PotionEffectType.JUMP);
-                player.removePotionEffect(PotionEffectType.SPEED);
-                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-
-                player.addPotionEffect(new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.JUMP, Integer.MAX_VALUE, 1));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 0));
                 break;
             case ARCHER:
-                player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
-                player.removePotionEffect(PotionEffectType.SPEED);
-
-                player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
-                player.addPotionEffect(new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, Integer.MAX_VALUE, 1));
+                applyPotionEffect(player, new PotionEffect(PotionEffectType.SPEED, Integer.MAX_VALUE, 2));
                 break;
         }
     }
@@ -292,21 +286,29 @@ public class ClassListener implements Listener
         }
     }
 
-    public static void applyEffect(Player player, PotionEffectType type, String effectType, PVPClass pvpClass, int duration, int range, boolean faction, boolean self)
+    public static void applyEffect(Player player, Material material, String effectType, PVPClass pvpClass, int duration, int range, boolean faction, boolean self, boolean allies, boolean other)
     {
-        String location = "classes." + pvpClass.name().toLowerCase() + ".effects." + type.getName() + "." + effectType;
+        String location = "classes." + pvpClass.name().toLowerCase() + ".effects." + material.name() + "." + effectType;
+        int amplifier = config.getInteger(location + ".amplifier");
 
-        PotionEffect effect = new PotionEffect(type, duration, config.getInteger(location));
+        PotionEffect effect = new PotionEffect(PotionEffectType.getByName(config.getString("classes." + pvpClass.name().toLowerCase() + ".effects." + material.name() + ".effect")),
+                duration * 20, amplifier);
 
-        List<Player> players;
+        List<Player> players = new ArrayList<>();
 
         if (faction)
         {
-            players = FactionsUtils.getFactionMembersInRange(player, range);
+            players.addAll(FactionsUtils.getFactionMembersInRange(player, range));
         }
-        else
+
+        if (allies)
         {
-            players = FactionsUtils.getNonFactionMembersInRange(player, range);
+            players.addAll(FactionsUtils.getAlliesInRange(player, range));
+        }
+
+        if (other)
+        {
+            players.addAll(FactionsUtils.getEnemiesInRange(player, range));
         }
 
         if (self)
@@ -316,19 +318,46 @@ public class ClassListener implements Listener
 
         for (Player target : players)
         {
-            target.removePotionEffect(effect.getType());
-            target.addPotionEffect(effect);
+            if (!target.hasPotionEffect(effect.getType()) || PlayerUtils.getEffect(target, effect.getType()).getAmplifier() <= amplifier)
+            {
+                target.removePotionEffect(effect.getType());
+                target.addPotionEffect(effect);
+            }
         }
+
+        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                applyPermanentEffects(pvpClass, player);
+            }
+        }, duration * 20);
     }
 
-    public static void applyEffectSelf(Player player, PotionEffectType type, String effectType, PVPClass pvpClass, int duration)
+    public static void applyEffectSelf(Player player, Material material, String effectType, PVPClass pvpClass)
     {
-        String location = "classes." + pvpClass.name().toLowerCase() + ".effects." + type.getName() + "." + effectType;
+        String location = "classes." + pvpClass.name().toLowerCase() + ".effects." + material.name() + "." + effectType;
+        int amplifier = config.getInteger(location + ".amplifier");
+        int duration = config.getInteger(location + ".duration");
 
-        PotionEffect effect = new PotionEffect(type, duration, config.getInteger(location));
+        PotionEffect effect = new PotionEffect(PotionEffectType.getByName(config.getString("classes." + pvpClass.name().toLowerCase() + ".effects." + material.name() + ".effect")),
+                duration * 20, amplifier);
 
-        player.removePotionEffect(effect.getType());
-        player.addPotionEffect(effect);
+        if (!player.hasPotionEffect(effect.getType()) || PlayerUtils.getEffect(player, effect.getType()).getAmplifier() <= amplifier)
+        {
+            player.removePotionEffect(effect.getType());
+            player.addPotionEffect(effect);
+        }
+
+        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                applyPermanentEffects(pvpClass, player);
+            }
+        }, duration * 20);
     }
 
     public static boolean isClassItem(ItemStack item, PVPClass pvpClass)
@@ -344,13 +373,25 @@ public class ClassListener implements Listener
                 return archerItems.contains(item.getType());
             case "BARD":
                 return bardItems.contains(item.getType());
-            case "MINER":
-                return minerItems.contains(item.getType());
             case "ROGUE":
                 return rogueItems.contains(item.getType());
             default:
                 return false;
         }
+    }
+
+    private static void applyPotionEffect(Player player, PotionEffect effect)
+    {
+        if (player.hasPotionEffect(effect.getType()))
+        {
+            if (effect.getAmplifier() <= PlayerUtils.getEffect(player, effect.getType()).getAmplifier())
+            {
+                return;
+            }
+        }
+
+        player.removePotionEffect(effect.getType());
+        player.addPotionEffect(effect);
     }
 
     @EventHandler
@@ -377,5 +418,34 @@ public class ClassListener implements Listener
                 applyPermanentEffects(session.getPvpClass(), player);
             }
         }, 5L);
+    }
+
+    public static void energyRunnable(HashMap<UUID, Integer> energy)
+    {
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+
+                for (UUID uuid : energy.keySet())
+                {
+                    Player p = PlayerUtils.getPlayer(uuid);
+                    if (p != null)
+                    {
+                        if (energy.get(uuid) == 100)
+                        {
+                            continue;
+                        }
+
+                        int newEnergy = energy.get(uuid) + 1;
+                        energy.replace(uuid, newEnergy);
+
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"),
+                                String.valueOf(newEnergy));
+                    }
+                }
+            }
+        }, 0, 20L);
     }
 }
