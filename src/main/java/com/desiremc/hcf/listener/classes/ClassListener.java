@@ -85,6 +85,7 @@ public class ClassListener implements Listener
 
         if (item == null || item.getType().equals(Material.AIR))
         {
+            removeEnergy(player.getUniqueId());
             session.setPvpClass(null);
             return;
         }
@@ -357,7 +358,7 @@ public class ClassListener implements Listener
             {
                 applyPermanentEffects(pvpClass, player);
             }
-        }, duration * 20);
+        }, (duration * 20) + 5);
     }
 
     public static boolean isClassItem(ItemStack item, PVPClass pvpClass)
@@ -447,5 +448,12 @@ public class ClassListener implements Listener
                 }
             }
         }, 0, 20L);
+    }
+
+    private static void removeEnergy(UUID uuid)
+    {
+        ArcherListener.energy.remove(uuid);
+        BardListener.energy.remove(uuid);
+        RogueListener.energy.remove(uuid);
     }
 }

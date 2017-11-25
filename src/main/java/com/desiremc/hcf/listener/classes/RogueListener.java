@@ -1,5 +1,6 @@
 package com.desiremc.hcf.listener.classes;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -225,6 +226,12 @@ public class RogueListener implements DesireClass
             DesireHCF.getLangHandler().sendRenderMessage(p, "classes.not-enough-energy");
             return;
         }
+
+        int newEnergy = energy.get(p.getUniqueId()) - energyNeeded;
+
+        energy.replace(p.getUniqueId(), newEnergy);
+        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"),
+                String.valueOf(newEnergy));
 
         ClassListener.applyEffectSelf(p, item.getType(), "click", PVPClass.ROGUE);
     }

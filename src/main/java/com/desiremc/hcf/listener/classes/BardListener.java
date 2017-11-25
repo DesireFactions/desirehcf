@@ -1,5 +1,6 @@
 package com.desiremc.hcf.listener.classes;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
@@ -79,7 +80,11 @@ public class BardListener implements DesireClass
             return;
         }
 
-        energy.replace(p.getUniqueId(), energy.get(p.getUniqueId()) - energyNeeded);
+        int newEnergy = energy.get(p.getUniqueId()) - energyNeeded;
+
+        energy.replace(p.getUniqueId(), newEnergy);
+        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"),
+                String.valueOf(newEnergy));
 
         ClassListener.applyEffect(p, item.getType(), "click", PVPClass.BARD, section.getInt("duration"), range,
                 section.getBoolean("faction"), section.getBoolean("self"),
