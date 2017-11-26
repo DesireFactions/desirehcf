@@ -80,7 +80,7 @@ classes:
   disable: "&bClasses: &l{class}&r&b --> &cDisabled!"
   scoreboard: "&3Class"
   energy-scoreboard: "&9Energy"
-  not-enough-energy: "You don't have enough energy to do that."
+  not-enough-energy: "You need {amount} energy to do that."
   rogue:
     uninvis-over: You can now go invisible again.
     shown: You have been discovered. Your invisibility is gone.

@@ -38,12 +38,10 @@ public class ArmorListener implements Listener
         this.blockedMaterials = blockedMaterials;
     }
 
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public final void onInventoryClick(final InventoryClickEvent e)
     {
         boolean shift = false, numberkey = false;
-        if (e.isCancelled())
-            return;
         if (e.getClick().equals(ClickType.SHIFT_LEFT) || e.getClick().equals(ClickType.SHIFT_RIGHT))
         {
             shift = true;

@@ -16,8 +16,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
@@ -38,14 +42,74 @@ public class ClassListener implements Listener
     private static List<Material> bardItems;
     private static List<Material> rogueItems;
 
+    private static HashMap<UUID, Long> holders;
+
+    private static HashMap<UUID, Integer> energy;
+
     public ClassListener()
     {
         config = DesireHCF.getConfigHandler();
+        energy = new HashMap<>();
 
         archerItems = Arrays.asList(Material.FEATHER, Material.SUGAR);
         bardItems = Arrays.asList(Material.EYE_OF_ENDER, Material.BLAZE_POWDER, Material.GHAST_TEAR, Material.MAGMA_CREAM, Material.SUGAR,
                 Material.IRON_AXE, Material.SPIDER_EYE, Material.FEATHER, Material.IRON_INGOT);
         rogueItems = Arrays.asList(Material.EYE_OF_ENDER, Material.FEATHER, Material.SUGAR, Material.IRON_INGOT);
+
+        holders = new HashMap<>();
+
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+
+                for (UUID uuid : energy.keySet())
+                {
+                    Player p = PlayerUtils.getPlayer(uuid);
+                    if (p != null)
+                    {
+                        if (energy.get(uuid) == 100)
+                        {
+                            continue;
+                        }
+
+                        int newEnergy = energy.get(uuid) + 1;
+                        energy.replace(uuid, newEnergy);
+
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"),
+                                String.valueOf(newEnergy));
+                    }
+                }
+            }
+        }, 0, 20L);
+
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (UUID uuid : holders.keySet())
+                {
+                    Player p = PlayerUtils.getPlayer(uuid);
+                    if (p == null)
+                    {
+                        return;
+                    }
+
+                    if (holders.get(uuid) <= System.currentTimeMillis())
+                    {
+                        holdEvent(p, p.getItemInHand());
+                    }
+                }
+            }
+        }, 0, 20L);
+    }
+
+    @EventHandler
+    public void onQuit(PlayerQuitEvent event)
+    {
+        holders.remove(event.getPlayer().getUniqueId());
     }
 
     @EventHandler
@@ -85,7 +149,7 @@ public class ClassListener implements Listener
 
         if (item == null || item.getType().equals(Material.AIR))
         {
-            removeEnergy(player.getUniqueId());
+            energy.remove(player.getUniqueId());
             session.setPvpClass(null);
             return;
         }
@@ -110,7 +174,7 @@ public class ClassListener implements Listener
 
                     DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Archer");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Archer");
-                    ArcherListener.energy.put(player.getUniqueId(), 0);
+                    energy.put(player.getUniqueId(), 0);
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
                 }
                 break;
@@ -122,7 +186,7 @@ public class ClassListener implements Listener
 
                     DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Bard");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Bard");
-                    BardListener.energy.put(player.getUniqueId(), 0);
+                    energy.put(player.getUniqueId(), 0);
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
                 }
                 break;
@@ -134,7 +198,7 @@ public class ClassListener implements Listener
 
                     DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Rogue");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Rogue");
-                    RogueListener.energy.put(player.getUniqueId(), 0);
+                    energy.put(player.getUniqueId(), 0);
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
                 }
                 break;
@@ -235,6 +299,11 @@ public class ClassListener implements Listener
 
     public static void applyPermanentEffects(PVPClass pvpClass, Player player)
     {
+        if (pvpClass == null)
+        {
+            return;
+        }
+
         switch (pvpClass)
         {
             case BARD:
@@ -331,16 +400,19 @@ public class ClassListener implements Listener
             @Override
             public void run()
             {
-                applyPermanentEffects(pvpClass, player);
+                for (Player target : players)
+                {
+                    HCFSession sesh = HCFSessionHandler.getHCFSession(target);
+                    applyPermanentEffects(sesh.getPvpClass(), target);
+                }
             }
-        }, duration * 20);
+        }, (duration * 20) + 1);
     }
 
-    public static void applyEffectSelf(Player player, Material material, String effectType, PVPClass pvpClass)
+    public static void applyEffectSelf(Player player, Material material, String effectType, PVPClass pvpClass, int duration)
     {
         String location = "classes." + pvpClass.name().toLowerCase() + ".effects." + material.name() + "." + effectType;
         int amplifier = config.getInteger(location + ".amplifier");
-        int duration = config.getInteger(location + ".duration");
 
         PotionEffect effect = new PotionEffect(PotionEffectType.getByName(config.getString("classes." + pvpClass.name().toLowerCase() + ".effects." + material.name() + ".effect")),
                 duration * 20, amplifier);
@@ -356,9 +428,13 @@ public class ClassListener implements Listener
             @Override
             public void run()
             {
-                applyPermanentEffects(pvpClass, player);
+                HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+                if (session.getPvpClass() != null && pvpClass == session.getPvpClass())
+                {
+                    applyPermanentEffects(pvpClass, player);
+                }
             }
-        }, (duration * 20) + 5);
+        }, (duration * 20) + 1);
     }
 
     public static boolean isClassItem(ItemStack item, PVPClass pvpClass)
@@ -421,39 +497,122 @@ public class ClassListener implements Listener
         }, 5L);
     }
 
-    public static void energyRunnable(HashMap<UUID, Integer> energy)
+    private static boolean isClassEvent(PVPClass pvpClass, HCFSession session, ItemStack item, String effectType)
     {
-        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
+        if (session.getPvpClass() == null || !pvpClass.equals(session.getPvpClass()))
         {
-            @Override
-            public void run()
-            {
+            return false;
+        }
 
-                for (UUID uuid : energy.keySet())
-                {
-                    Player p = PlayerUtils.getPlayer(uuid);
-                    if (p != null)
-                    {
-                        if (energy.get(uuid) == 100)
-                        {
-                            continue;
-                        }
+        if (item == null || item.getType().equals(Material.AIR))
+        {
+            return false;
+        }
 
-                        int newEnergy = energy.get(uuid) + 1;
-                        energy.replace(uuid, newEnergy);
+        if (!isClassItem(item, pvpClass))
+        {
+            return false;
+        }
 
-                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"),
-                                String.valueOf(newEnergy));
-                    }
-                }
-            }
-        }, 0, 20L);
+        ConfigurationSection section = DesireHCF.getConfigHandler().getConfigurationSection("classes." + pvpClass.name().toLowerCase() + ".effects");
+
+        return section.get(item.getType().name() + "." + effectType) != null;
     }
 
-    private static void removeEnergy(UUID uuid)
+    @EventHandler
+    public void onItemHoldEvent(PlayerItemHeldEvent event)
     {
-        ArcherListener.energy.remove(uuid);
-        BardListener.energy.remove(uuid);
-        RogueListener.energy.remove(uuid);
+        holdEvent(event.getPlayer(), event.getPlayer().getInventory().getItem(event.getNewSlot()));
+    }
+
+    private void holdEvent(Player player, ItemStack item)
+    {
+        HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+
+        if (session.getPvpClass() == null || !ClassListener.isClassEvent(session.getPvpClass(), session, item, "hold"))
+        {
+            ClassListener.holders.remove(player.getUniqueId());
+            return;
+        }
+
+        ConfigurationSection section = DesireHCF.getConfigHandler().getConfigurationSection("classes." +
+                session.getPvpClass().name().toLowerCase() + ".effects." + item.getType().name() + ".hold");
+
+        int duration = section.getInt("duration");
+        int range = DesireHCF.getConfigHandler().getInteger("classes.bard.range");
+
+        if (PVPClass.ROGUE.equals(session.getPvpClass()) || PVPClass.ARCHER.equals(session.getPvpClass()))
+        {
+            ClassListener.applyEffectSelf(player, item.getType(), "hold", session.getPvpClass(), duration);
+        }
+        else
+        {
+            ClassListener.applyEffect(player, item.getType(), "hold", session.getPvpClass(), duration, range,
+                    section.getBoolean("faction"), section.getBoolean("self"),
+                    section.getBoolean("allies"),
+                    section.getBoolean("other"));
+        }
+
+        ClassListener.holders.put(player.getUniqueId(), System.currentTimeMillis() + (duration * 1000) - 1000);
+    }
+
+    @EventHandler
+    public void onRightClickAbility(PlayerInteractEvent event)
+    {
+        Player player = event.getPlayer();
+
+        if (!event.getAction().equals(Action.RIGHT_CLICK_AIR) && !event.getAction().equals(Action.RIGHT_CLICK_BLOCK))
+        {
+            return;
+        }
+
+        ItemStack item = event.getItem();
+        HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+
+        if (!ClassListener.isClassEvent(session.getPvpClass(), session, item, "click"))
+        {
+            return;
+        }
+
+        ConfigurationSection section = DesireHCF.getConfigHandler().getConfigurationSection("classes." +
+                session.getPvpClass().name().toLowerCase() + ".effects." + item.getType().name() + ".click");
+
+        int energyNeeded = section.getInt("energy");
+        int duration = section.getInt("duration");
+        int range = DesireHCF.getConfigHandler().getInteger("classes.bard.range");
+
+        if (energy.get(player.getUniqueId()) < energyNeeded)
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(player, "classes.not-enough-energy", "{amount}", energyNeeded);
+            return;
+        }
+
+        int newEnergy = energy.get(player.getUniqueId()) - energyNeeded;
+
+        energy.replace(player.getUniqueId(), newEnergy);
+        EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"),
+                String.valueOf(newEnergy));
+
+        if (PVPClass.ROGUE.equals(session.getPvpClass()) || PVPClass.ARCHER.equals(session.getPvpClass()))
+        {
+            ClassListener.applyEffectSelf(player, item.getType(), "click", session.getPvpClass(), duration);
+        }
+        else
+        {
+            ClassListener.applyEffect(player, item.getType(), "click", session.getPvpClass(), duration, range,
+                    section.getBoolean("faction"), section.getBoolean("self"),
+                    section.getBoolean("allies"),
+                    section.getBoolean("other"));
+        }
+
+        if (item.getAmount() > 1)
+        {
+            item.setAmount(player.getItemInHand().getAmount() - 1);
+        }
+        else
+        {
+            player.getInventory().remove(item);
+        }
+        player.updateInventory();
     }
 }

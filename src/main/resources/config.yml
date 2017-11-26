@@ -296,7 +296,7 @@ classes:
           allies: false
           other: false
       IRON_INGOT:
-        effect: RESISTANCE
+        effect: DAMAGE_RESISTANCE
         click:
           amplifier: 1
           duration: 5
@@ -397,7 +397,7 @@ classes:
           energy: 20
           cooldown: 15
       IRON_INGOT:
-        effect: RESISTANCE
+        effect: DAMAGE_RESISTANCE
         click:
           amplifier: 2
           duration: 6

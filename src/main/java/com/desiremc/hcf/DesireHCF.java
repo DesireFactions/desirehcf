@@ -43,7 +43,6 @@ import com.desiremc.hcf.listener.MovementListener;
 import com.desiremc.hcf.listener.PickupListener;
 import com.desiremc.hcf.listener.classes.ArcherListener;
 import com.desiremc.hcf.listener.classes.ArmorListener;
-import com.desiremc.hcf.listener.classes.BardListener;
 import com.desiremc.hcf.listener.classes.ClassListener;
 import com.desiremc.hcf.listener.classes.MinerListener;
 import com.desiremc.hcf.listener.classes.RogueListener;
@@ -114,7 +113,6 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new ArmorListener(getConfigHandler().getStringList("blocked")), this);
         listenerManager.addListener(new ClassListener(), this);
         listenerManager.addListener(new ArcherListener(), this);
-        listenerManager.addListener(new BardListener(), this);
         listenerManager.addListener(new MinerListener(), this);
         listenerManager.addListener(new RogueListener(), this);
         listenerManager.addListener(new TablistHandler(), this);
