@@ -9,7 +9,10 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
+import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.Action;
@@ -18,7 +21,10 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
+import org.bukkit.util.Vector;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -26,6 +32,8 @@ public class RogueListener implements DesireClass
 {
 
     public static Cache<UUID, Long> invisCooldown;
+
+    public static List<UUID> hiddenPlayers;
 
     public RogueListener()
     {
@@ -48,6 +56,35 @@ public class RogueListener implements DesireClass
                 }
             }
         }, DesireHCF.getInstance());
+
+        hiddenPlayers = new ArrayList<>();
+
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (UUID uuid : hiddenPlayers)
+                {
+                    Player player = PlayerUtils.getPlayer(uuid);
+
+                    for (Player target : FactionsUtils.getEnemiesInRange(player, 10))
+                    {
+                        PacketPlayOutEntityEquipment handPacket = new PacketPlayOutEntityEquipment(player.getEntityId(), 0, null);
+                        PacketPlayOutEntityEquipment helmetPacket = new PacketPlayOutEntityEquipment(player.getEntityId(), 1, null);
+                        PacketPlayOutEntityEquipment chestPacket = new PacketPlayOutEntityEquipment(player.getEntityId(), 2, null);
+                        PacketPlayOutEntityEquipment legPacket = new PacketPlayOutEntityEquipment(player.getEntityId(), 3, null);
+                        PacketPlayOutEntityEquipment bootsPacket = new PacketPlayOutEntityEquipment(player.getEntityId(), 4, null);
+
+                        ((CraftPlayer) target).getHandle().playerConnection.sendPacket(handPacket);
+                        ((CraftPlayer) target).getHandle().playerConnection.sendPacket(helmetPacket);
+                        ((CraftPlayer) target).getHandle().playerConnection.sendPacket(chestPacket);
+                        ((CraftPlayer) target).getHandle().playerConnection.sendPacket(legPacket);
+                        ((CraftPlayer) target).getHandle().playerConnection.sendPacket(bootsPacket);
+                    }
+                }
+            }
+        }, 0, 20L);
     }
 
     @EventHandler
@@ -71,6 +108,7 @@ public class RogueListener implements DesireClass
         {
             invisCooldown.put(p.getUniqueId(), System.currentTimeMillis());
             DesireHCF.getLangHandler().sendString(p, "classes.rogue.shown");
+            p.removePotionEffect(PotionEffectType.INVISIBILITY);
         }
     }
 
@@ -89,9 +127,10 @@ public class RogueListener implements DesireClass
         Player target = (Player) event.getEntity();
         Player player = (Player) event.getDamager();
 
-        double degrees = player.getLocation().getDirection().angle(target.getLocation().getDirection()) / 180 * Math.PI;
+        Vector attackerDirection = player.getLocation().getDirection();
+        Vector victimDirection = target.getLocation().getDirection();
 
-        if (degrees < 225 || degrees > 315)
+        if (!(attackerDirection.dot(victimDirection) > 0))
         {
             return;
         }
@@ -99,7 +138,7 @@ public class RogueListener implements DesireClass
         HCFSession targetSession = HCFSessionHandler.getHCFSession(target.getUniqueId());
         HCFSession playerSession = HCFSessionHandler.getHCFSession(player.getUniqueId());
 
-        if (!playerSession.getPvpClass().equals(PVPClass.ROGUE))
+        if (playerSession.getPvpClass() == null || !playerSession.getPvpClass().equals(PVPClass.ROGUE))
         {
             return;
         }
@@ -109,25 +148,38 @@ public class RogueListener implements DesireClass
             return;
         }
 
+        if (targetSession.getPvpClass() == null)
+        {
+            return;
+        }
+
         switch (targetSession.getPvpClass())
         {
             case BARD:
-                event.setDamage(target.getMaxHealth() / 2);
+                event.setDamage(target.getMaxHealth() / 3);
                 break;
             case ROGUE:
-                event.setDamage(target.getMaxHealth() / 2);
+                event.setDamage(target.getMaxHealth() / 3);
                 break;
             case ARCHER:
-                event.setDamage(target.getMaxHealth() / 2);
+                event.setDamage(target.getMaxHealth() / 3);
                 break;
             case DIAMOND:
-                event.setDamage(target.getMaxHealth() / 4);
+                event.setDamage(target.getMaxHealth() / 5);
                 break;
             default:
                 return;
         }
 
-        player.getItemInHand().setType(Material.AIR);
+        if (player.getItemInHand().getAmount() > 1)
+        {
+            player.getItemInHand().setAmount(player.getItemInHand().getAmount() - 1);
+        }
+        else
+        {
+            player.getInventory().remove(player.getItemInHand());
+        }
+        player.updateInventory();
     }
 
     @EventHandler
@@ -169,7 +221,18 @@ public class RogueListener implements DesireClass
         else
         {
             p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, DesireHCF.getConfigHandler().getInteger
-                    ("classes.rogue.invisible-length"), 1));
+                    ("classes.rogue.invisible-length") * 20, 0));
+
+
+            if (event.getItem().getAmount() > 1)
+            {
+                event.getItem().setAmount(event.getItem().getAmount() - 1);
+            }
+            else
+            {
+                p.getInventory().remove(event.getItem());
+            }
+            p.updateInventory();
         }
     }
 }

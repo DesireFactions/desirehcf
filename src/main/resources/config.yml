@@ -225,7 +225,6 @@ blocked:
   - YELLOW_SHULKER_BOX
 classes:
   archer:
-    range: 10
     increase-percent: 1.20
     hit-time: 30
     cooldown: 10

@@ -9,6 +9,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
+import com.massivecraft.factions.struct.Relation;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -52,77 +53,57 @@ public class ArcherListener implements DesireClass
     @EventHandler
     public void onHit(EntityDamageByEntityEvent event)
     {
-        if (!(event.getDamager() instanceof Player))
-        {
-            return;
-        }
-
         if (!(event.getEntity() instanceof Player))
         {
             return;
         }
 
-        Player source = (Player) event.getDamager();
-        Player target = (Player) event.getEntity();
-
-        if (archerHit.get(target.getUniqueId()) == null)
+        if (event.getDamager() instanceof Arrow)
         {
-            return;
+            Arrow pj = (Arrow) event.getDamager();
+
+            if (!(pj.getShooter() instanceof Player))
+            {
+                return;
+            }
+
+            Player target = (Player) event.getEntity();
+            Player source = (Player) pj.getShooter();
+
+            HCFSession sourceSession = HCFSessionHandler.getHCFSession(source.getUniqueId());
+
+            if (!PVPClass.ARCHER.equals(sourceSession.getPvpClass()))
+            {
+                return;
+            }
+
+            if (archerHit.get(target.getUniqueId()) == null)
+            {
+                archerHit.put(target.getUniqueId(), source.getUniqueId());
+            }
+            else
+            {
+                archerHit.replace(target.getUniqueId(), source.getUniqueId());
+            }
         }
-
-        if (FactionsUtils.getFaction(source) == FactionsUtils.getFaction(archerHit.get(target.getUniqueId())))
+        else if (event.getDamager() instanceof Player)
         {
-            return;
-        }
+            Player source = (Player) event.getDamager();
+            Player target = (Player) event.getEntity();
 
-        event.setDamage(event.getDamage() * DesireHCF.getConfigHandler().getDouble("classes.archer.increase-percent"));
-    }
+            if (archerHit.get(target.getUniqueId()) == null)
+            {
+                return;
+            }
 
-    @EventHandler
-    public void onArrowHit(EntityDamageByEntityEvent event)
-    {
+            Relation rel = FactionsUtils.getFaction(source).getRelationTo(FactionsUtils.getFaction(target));
 
-        if (!(event.getEntity() instanceof Player))
-        {
-            return;
-        }
+            if (rel == Relation.ALLY || rel == Relation.TRUCE || rel == Relation.MEMBER)
+            {
+                return;
+            }
 
-        if (!(event.getDamager() instanceof Arrow))
-        {
-            return;
-        }
-
-        Arrow pj = (Arrow) event.getDamager();
-
-        if (!(pj.getShooter() instanceof Player))
-        {
-            return;
-        }
-
-        Player target = (Player) event.getEntity();
-        Player source = (Player) pj.getShooter();
-
-        HCFSession sourceSession = HCFSessionHandler.getHCFSession(source.getUniqueId());
-
-        if (!PVPClass.ARCHER.equals(sourceSession.getPvpClass()))
-        {
-            return;
-        }
-
-        int range = DesireHCF.getConfigHandler().getInteger("classes.archer.range");
-
-        if (source.getLocation().distanceSquared(target.getLocation()) < (range * range))
-        {
-            return;
-        }
-
-        if (archerHit.get(target.getUniqueId()) != null)
-        {
-            archerHit.put(target.getUniqueId(), source.getUniqueId());
-        }
-        else
-        {
-            archerHit.replace(target.getUniqueId(), source.getUniqueId());
+            event.setDamage(event.getDamage() * DesireHCF.getConfigHandler().getDouble("classes.archer.increase-percent"));
         }
     }
 }

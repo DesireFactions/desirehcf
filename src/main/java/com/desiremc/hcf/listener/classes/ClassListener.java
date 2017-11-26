@@ -348,6 +348,7 @@ public class ClassListener implements Listener
                 player.removePotionEffect(PotionEffectType.JUMP);
                 player.removePotionEffect(PotionEffectType.SPEED);
                 player.removePotionEffect(PotionEffectType.DAMAGE_RESISTANCE);
+                player.removePotionEffect(PotionEffectType.INVISIBILITY);
                 break;
             case ARCHER:
                 player.removePotionEffect(PotionEffectType.SPEED);
