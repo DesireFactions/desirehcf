@@ -187,6 +187,7 @@ public class CrowbarHandler implements Listener
         return is.getType() == Material.MOB_SPAWNER && is.hasItemMeta() && is.getItemMeta().hasDisplayName() && is.getItemMeta().getDisplayName().startsWith(lang.renderMessageNoPrefix("crowbar.spawner"));
     }
 
+    @SuppressWarnings("deprecation")
     public static EntityType getSpawnerType(ItemStack is)
     {
         String name = is.getItemMeta().getDisplayName();
