@@ -50,9 +50,9 @@ public class CombatLoggerHandler implements Listener
                     Player p = PlayerUtils.getPlayer(uuid);
                     if (p != null)
                     {
-                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("tag" +
-                                ".scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler
-                                .getTagTime(uuid)) / 1000)));
+                        EntryRegistry.getInstance().setValue(p,
+                                DesireHCF.getLangHandler().getStringNoPrefix("tag" + ".scoreboard"),
+                                String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
                     }
                 }
             }
@@ -70,7 +70,7 @@ public class CombatLoggerHandler implements Listener
 
         if (session.getRank().isManager())
         {
-            return;
+            // return;
         }
 
         UUID uuid = player.getUniqueId();
@@ -78,7 +78,8 @@ public class CombatLoggerHandler implements Listener
 
         if (time != null)
         {
-            npcRegistry.createHumanNPC(uuid, player.getName()).spawn(player.getLocation());
+            HumanNPC npc = npcRegistry.createHumanNPC(uuid, player.getName());
+            npc.spawn(player.getLocation());
         }
         else if (SafeLogoutTask.hasTask(player) && !SafeLogoutTask.isFinished(player))
         {

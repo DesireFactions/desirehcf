@@ -232,7 +232,7 @@ public class HCFSession
             System.out.println("addDeath() called with server " + server + " and killer " + (killer == null ? "null" : killer.toString()) + ".");
         }
 
-        deathBans.add(DeathBanHandler.createDeathBan(getPlayer()));
+        deathBans.add(DeathBanHandler.createDeathBan(getUniqueId()));
         save();
 
         if (killer != null)

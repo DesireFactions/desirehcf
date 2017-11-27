@@ -53,8 +53,7 @@ public class CombatListener implements Listener
                     .getDamager()).getShooter() instanceof Player)
             {
                 Player victim = (Player) e.getEntity();
-                Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager())
-                        .getShooter() : e.getDamager());
+                Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager()).getShooter() : e.getDamager());
 
                 if (!victim.getName().equalsIgnoreCase(damager.getName()))
                 {
@@ -68,12 +67,12 @@ public class CombatListener implements Listener
     public void onHit(EntityDamageByEntityEvent e)
     {
 
-        if(!(e.getEntity() instanceof Player))
+        if (!(e.getEntity() instanceof Player))
         {
             return;
         }
 
-        if(!(e.getDamager() instanceof Player))
+        if (!(e.getDamager() instanceof Player))
         {
             return;
         }
