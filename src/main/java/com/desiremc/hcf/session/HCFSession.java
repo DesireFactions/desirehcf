@@ -218,6 +218,7 @@ public class HCFSession
             if (tick.getUniqueId().equals(victim))
             {
                 tick.setCount(tick.getCount());
+                save();
                 return;
             }
         }

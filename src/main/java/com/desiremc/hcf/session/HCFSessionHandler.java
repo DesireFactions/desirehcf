@@ -21,7 +21,7 @@ import java.util.UUID;
 public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
 {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
     
     private static HCFSession console;
 

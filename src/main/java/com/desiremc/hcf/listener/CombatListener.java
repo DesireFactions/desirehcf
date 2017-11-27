@@ -141,7 +141,7 @@ public class CombatListener implements Listener
         event.setRespawnLocation(loc);
     }
 
-    @EventHandler()
+    @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event)
     {
         try
@@ -159,6 +159,7 @@ public class CombatListener implements Listener
                 killer.addKill(vPlayer.getUniqueId());
                 HCFSessionHandler.getInstance().save(killer);
             }
+            TagHandler.clearTag(victim.getUniqueId());
 
             UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
             victim.addDeath(killer);

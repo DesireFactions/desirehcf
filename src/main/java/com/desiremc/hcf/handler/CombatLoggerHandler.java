@@ -59,7 +59,7 @@ public class CombatLoggerHandler implements Listener
         }, 0, 10);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogout(PlayerQuitEvent event)
     {
         Player player = event.getPlayer();
