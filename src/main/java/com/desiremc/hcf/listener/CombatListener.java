@@ -146,28 +146,39 @@ public class CombatListener implements Listener
     {
         try
         {
+            // retrieve all variables we need
             Player vPlayer = event.getEntity();
             HCFSession victim = HCFSessionHandler.getHCFSession(vPlayer);
             DamageCause cause = vPlayer.getLastDamageCause().getCause();
-
             Tag tag = TagHandler.getTag(vPlayer.getUniqueId());
-            if (tag != null)
-            {
-                Player kPlayer = PlayerUtils.getPlayer(tag.getUniqueId());
-                HCFSession killer = HCFSessionHandler.getHCFSession(kPlayer);
-
-                killer.addKill(vPlayer.getUniqueId());
-                HCFSessionHandler.getInstance().save(killer);
-            }
             TagHandler.clearTag(victim.getUniqueId());
 
-            UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
-            victim.addDeath(killer);
-            victim.resetPVPTimer();
+            // get rid of the dead player
             BungeeUtils.sendToHub(vPlayer);
 
-            FancyMessage message = processMessage(victim, cause, tag);
+            // update the database
+            Bukkit.getScheduler().runTaskAsynchronously(DesireHCF.getInstance(), new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    final UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
+                    victim.addDeath(killer);
+                    victim.resetPVPTimer();
 
+                    if (tag != null)
+                    {
+                        Player kPlayer = PlayerUtils.getPlayer(tag.getUniqueId());
+                        HCFSession kSession = HCFSessionHandler.getHCFSession(kPlayer);
+
+                        kSession.addKill(vPlayer.getUniqueId());
+                        HCFSessionHandler.getInstance().save(kSession);
+                    }
+                }
+            });
+
+            // send the death message to everyone
+            FancyMessage message = processMessage(victim, cause, tag);
             for (Session s : SessionHandler.getInstance().getSessions())
             {
                 if (s.getSetting(SessionSetting.DEATH))
@@ -180,6 +191,8 @@ public class CombatListener implements Listener
         {
             ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
         }
+
+        // already sent a fancy message, cancel default
         event.setDeathMessage(null);
     }
 

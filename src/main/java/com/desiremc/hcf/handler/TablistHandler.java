@@ -2,6 +2,7 @@ package com.desiremc.hcf.handler;
 
 import java.util.Iterator;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -15,6 +16,7 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.tablistsix.TabAPI;
 import com.desiremc.core.tablistsix.TabList;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.massivecraft.factions.FPlayer;
 
@@ -86,62 +88,80 @@ public class TablistHandler implements Listener
         TabAPI.removePlayer(event.getPlayer());
     }
 
-    private TabList applyClassic(Player player, Player ignored)
+    private void applyClassic(Player player, Player ignored)
     {
-        FPlayer user = FactionsUtils.getFPlayer(player);
-        if (user == null)
+        Bukkit.getScheduler().runTaskAsynchronously(DesireHCF.getInstance(), new Runnable()
         {
-            return null;
-        }
-        int i = 0;
-        TabList list = getTabList(player);
-        if (!list.isOld())
-        {
-            return null;
-        }
-        list.clearAllSlots();
+            @Override
+            public void run()
+            {
+                // get or initialize the player's tab list
+                TabList list = getTabList(player);
 
-        for (FPlayer fp : FactionsUtils.getOnlineFPlayers())
-        {
-            if (fp.getPlayer() == ignored)
-            {
-                continue;
-            }
-            String prefix = null, name, suffix = "";
-            String str = (fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName();
+                // if the player is on 1.8, ignore them
+                if (!list.isOld())
+                {
+                    return;
+                }
 
-            if (str.length() <= 16)
-            {
-                name = str;
+                // get the faction's player store
+                FPlayer user = FactionsUtils.getFPlayer(player);
+                if (user == null)
+                {
+                    return;
+                }
+
+                // remove all existing player slots. This is annoying to do, but necessary for now.
+                list.clearAllSlots();
+
+                // used to count up the player slots
+                int i = 0;
+
+                // set all online players.
+                for (FPlayer fp : FactionsUtils.getOnlineFPlayers())
+                {
+                    if (fp.getPlayer() == ignored)
+                    {
+                        continue;
+                    }
+                    String prefix = null, name, suffix = "";
+                    String str = (fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName();
+
+                    if (str.length() <= 16)
+                    {
+                        name = str;
+                    }
+                    else if (str.length() > 16 && str.length() <= 32 && str.charAt(15) != '§')
+                    {
+                        prefix = str.substring(0, str.length() - 16);
+                        name = str.substring(str.length() - 16);
+                    }
+                    else
+                    {
+                        prefix = str.substring(0, 16);
+                        name = str.substring(16, 32);
+                        suffix = str.substring(32);
+                    }
+                    if (prefix != null)
+                    {
+                        list.setSlot(i, prefix, name, suffix);
+                    }
+                    else
+                    {
+                        list.setSlot(i, name);
+                    }
+                    i++;
+                }
+                
+                // update the player list
+                list.update();
             }
-            else if (str.length() > 16 && str.length() <= 32 && str.charAt(15) != '§')
-            {
-                prefix = str.substring(0, str.length() - 16);
-                name = str.substring(str.length() - 16);
-            }
-            else
-            {
-                prefix = str.substring(0, 16);
-                name = str.substring(16, 32);
-                suffix = str.substring(32);
-            }
-            if (prefix != null)
-            {
-                list.setSlot(i, prefix, name, suffix);
-            }
-            else
-            {
-                list.setSlot(i, name);
-            }
-            i++;
-        }
-        list.update();
-        return list;
+        });
     }
 
-    private TabList applyFactions(Player player, Player ignored)
+    private void applyFactions(Player player, Player ignored)
     {
-        return applyClassic(player, ignored);
+        applyClassic(player, ignored);
     }
 
     private static TabList getTabList(Player player)

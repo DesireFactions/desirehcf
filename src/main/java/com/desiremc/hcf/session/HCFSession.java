@@ -213,16 +213,25 @@ public class HCFSession
 
     public void addKill(UUID victim)
     {
-        for (Ticker tick : kills)
+        System.out.println("addKill(UUID) called with values " + victim);
+        Ticker tick = null;
+        for (Ticker t : kills)
         {
-            if (tick.getUniqueId().equals(victim))
+            System.out.println(t.getUniqueId() + " equals " + victim + ": " + t.equals(victim));
+            if (t.getUniqueId().equals(victim))
             {
-                tick.setCount(tick.getCount());
-                save();
-                return;
+                tick = t;
             }
         }
-        kills.add(new Ticker(victim));
+        if (tick == null)
+        {
+            tick = new Ticker(victim);
+            kills.add(tick);
+        }
+        else
+        {
+            tick.setCount(tick.getCount() + 1);
+        }
         save();
     }
 
@@ -433,11 +442,11 @@ public class HCFSession
         }
         return currentOre;
     }
-    
+
     public OreData getTotalOre()
     {
         OreData data = currentOre.copy();
-        for(OreData ore : oreHistory)
+        for (OreData ore : oreHistory)
         {
             data.addEmerald(ore.getEmeraldCount());
             data.addDiamond(ore.getDiamondCount());
