@@ -107,8 +107,7 @@ public class RogueListener implements DesireClass
             return;
         }
 
-        if (FactionsUtils.getEnemiesInRange(p, DesireHCF.getConfigHandler().getInteger("classes.rogue" +
-                ".uninvis-range")).size() > 0)
+        if (FactionsUtils.getEnemiesInRange(p, DesireHCF.getConfigHandler().getInteger("classes.rogue" + ".uninvis-range")).size() > 0)
         {
             invisCooldown.put(p.getUniqueId(), System.currentTimeMillis());
             DesireHCF.getLangHandler().sendString(p, "classes.rogue.shown");
