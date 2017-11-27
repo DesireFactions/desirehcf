@@ -95,7 +95,18 @@ public class ConnectionListener implements Listener
     @EventHandler
     public void onLogin(AsyncPlayerPreLoginEvent event)
     {
-        HCFSession s = HCFSessionHandler.initializeHCFSession(event.getUniqueId(), false);
+        HCFSession s;
+        try
+        {
+            s = HCFSessionHandler.initializeHCFSession(event.getUniqueId(), false);
+        }
+        catch (Exception ex)
+        {
+            // if the person trying to join has never connected before, this will error out.
+            // The try catch fixes that problem until I figure out if there is a nicer way
+            // to handle it.
+            return;
+        }
         DeathBan ban = s.getActiveDeathBan();
         if (ban != null)
         {
