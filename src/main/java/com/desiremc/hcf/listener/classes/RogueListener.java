@@ -6,6 +6,7 @@ import com.desiremc.core.utils.cache.Cache;
 import com.desiremc.core.utils.cache.RemovalListener;
 import com.desiremc.core.utils.cache.RemovalNotification;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.listener.MovementListener;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
@@ -43,8 +44,7 @@ public class RogueListener implements DesireClass
     @Override
     public void initialize()
     {
-        invisCooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.rogue.uninvis-timer"), TimeUnit
-                .SECONDS, new RemovalListener<UUID, Long>()
+        invisCooldown = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.rogue.uninvis-timer"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
@@ -90,6 +90,10 @@ public class RogueListener implements DesireClass
     @EventHandler
     public void onMove(PlayerMoveEvent event)
     {
+        if (!MovementListener.differentBlocks(event.getFrom(), event.getTo()))
+        {
+            return;
+        }
         Player p = event.getPlayer();
         HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
 
@@ -220,9 +224,7 @@ public class RogueListener implements DesireClass
         }
         else
         {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, DesireHCF.getConfigHandler().getInteger
-                    ("classes.rogue.invisible-length") * 20, 0));
-
+            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, DesireHCF.getConfigHandler().getInteger("classes.rogue.invisible-length") * 20, 0));
 
             if (event.getItem().getAmount() > 1)
             {
