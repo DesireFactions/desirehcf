@@ -33,9 +33,7 @@ public class FactionsUtils
 
     public static Faction getFaction(Player p)
     {
-        FPlayer fp = FPlayers.getInstance().getByPlayer(p);
-
-        return fp != null && fp.getFaction() != null ? fp.getFaction() : null;
+        return getFaction(p.getUniqueId());
     }
 
     public static Faction getFaction(UUID uuid)
@@ -52,12 +50,12 @@ public class FactionsUtils
 
     public static Faction getFaction(HCFSession s)
     {
-        return getFaction(s.getPlayer());
+        return getFaction(s.getUniqueId());
     }
 
     public static Faction getFaction(Session s)
     {
-        return getFaction(s.getPlayer());
+        return getFaction(s.getUniqueId());
     }
 
     public static boolean isWilderness(Faction f)
