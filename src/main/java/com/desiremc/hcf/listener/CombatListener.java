@@ -1,26 +1,7 @@
 package com.desiremc.hcf.listener;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.FileHandler;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.BungeeUtils;
-import com.desiremc.core.utils.ChatUtils;
-import com.desiremc.core.utils.ItemNames;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.barrier.TagHandler.Tag;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
-import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
-import com.desiremc.npc.NPCLib;
-import com.desiremc.npc.NPCRegistry;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -35,7 +16,26 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.FileHandler;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.BungeeUtils;
+import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.core.utils.ItemNames;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.barrier.TagHandler.Tag;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
+import com.desiremc.npc.NPCLib;
+import com.desiremc.npc.NPCRegistry;
 
 public class CombatListener implements Listener
 {
@@ -156,23 +156,30 @@ public class CombatListener implements Listener
             // get rid of the dead player
             BungeeUtils.sendToHub(vPlayer);
 
+            // get the killer uuid. Can be the victim, their tagger, the console, or no one
+            final UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
+
+            // add the death and give them a new pvp timer
+            victim.addDeath(killer);
+            victim.resetPVPTimer();
+
+            // if the killer was a player, give them their reward
+            HCFSession kSession = getKillerSession(tag);
+            if (kSession != null)
+            {
+                kSession.addKill(vPlayer.getUniqueId());
+            }
+
             // update the database
             Bukkit.getScheduler().runTaskAsynchronously(DesireHCF.getInstance(), new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    final UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
-                    victim.addDeath(killer);
-                    victim.resetPVPTimer();
-
-                    if (tag != null)
+                    victim.save();
+                    if (kSession != null)
                     {
-                        Player kPlayer = PlayerUtils.getPlayer(tag.getUniqueId());
-                        HCFSession kSession = HCFSessionHandler.getHCFSession(kPlayer);
-
-                        kSession.addKill(vPlayer.getUniqueId());
-                        HCFSessionHandler.getInstance().save(kSession);
+                        kSession.save();
                     }
                 }
             });
@@ -186,8 +193,13 @@ public class CombatListener implements Listener
                     message.send(s.getPlayer());
                 }
             }
+            
+            // console wants to know too
+            DesireHCF.getInstance().getLogger().info(message.toOldMessageFormat());
         }
-        catch (Exception ex)
+        catch (
+
+        Exception ex)
         {
             ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
         }
@@ -296,6 +308,15 @@ public class CombatListener implements Listener
             message.text(pieces[i].substring(1, pieces[i].length()));
         }
         return message;
+    }
+
+    private static HCFSession getKillerSession(Tag tag)
+    {
+        if (tag == null)
+        {
+            return null;
+        }
+        return HCFSessionHandler.getHCFSession(tag.getUniqueId());
     }
 
 }
