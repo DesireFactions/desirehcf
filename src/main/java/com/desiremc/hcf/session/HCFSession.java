@@ -213,11 +213,9 @@ public class HCFSession
 
     public void addKill(UUID victim)
     {
-        System.out.println("addKill(UUID) called with values " + victim);
         Ticker tick = null;
         for (Ticker t : kills)
         {
-            System.out.println(t.getUniqueId() + " equals " + victim + ": " + t.equals(victim));
             if (t.getUniqueId().equals(victim))
             {
                 tick = t;
@@ -232,7 +230,6 @@ public class HCFSession
         {
             tick.setCount(tick.getCount() + 1);
         }
-        save();
     }
 
     public void addDeath(UUID killer)
@@ -243,21 +240,27 @@ public class HCFSession
         }
 
         deathBans.add(DeathBanHandler.createDeathBan(getUniqueId()));
-        save();
 
         if (killer != null)
         {
-            for (Ticker tick : deaths)
+            Ticker tick = null;
+            for (Ticker t : deaths)
             {
-                if (tick.getUniqueId().equals(killer))
+                if (t.getUniqueId().equals(killer))
                 {
-                    tick.setCount(tick.getCount());
-                    save();
-                    return;
+                    tick = t;
                 }
             }
+            if (tick == null)
+            {
+                tick = new Ticker(killer);
+                deaths.add(tick);
+            }
+            else
+            {
+                tick.setCount(tick.getCount() + 1);
+            }
             deaths.add(new Ticker(killer));
-            save();
         }
     }
 
@@ -459,7 +462,7 @@ public class HCFSession
         return data;
     }
 
-    private void save()
+    public void save()
     {
         HCFSessionHandler.getInstance().save(this);
     }
