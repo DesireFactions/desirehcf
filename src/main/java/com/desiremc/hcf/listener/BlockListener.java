@@ -25,7 +25,7 @@ import com.desiremc.hcf.session.HCFSessionHandler;
 public class BlockListener implements Listener
 {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     private final static LinkedList<Material> ALWAYS = new LinkedList<>(Arrays.asList(Material.GOLD_ORE, Material.IRON_ORE));
     private final static LinkedList<Material> NON_SILK = new LinkedList<>(Arrays.asList(Material.EMERALD_ORE, Material.DIAMOND_ORE, Material.COAL_ORE));
