@@ -15,7 +15,7 @@ public class KitManagementEditCommand extends ValidCommand
 
     public KitManagementEditCommand()
     {
-        super("edit", "Edit the kit itself.", Rank.ADMIN, new String[] { "kit" });
+        super("edit", "Edit the kit itself.", Rank.JRMOD, new String[] { "kit" });
 
         addParser(new KitParser(), "kit");
 

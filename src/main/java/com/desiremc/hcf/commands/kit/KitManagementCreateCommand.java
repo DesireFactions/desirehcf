@@ -18,7 +18,7 @@ public class KitManagementCreateCommand extends ValidCommand
 
     public KitManagementCreateCommand()
     {
-        super("create", "Create a new kit.", Rank.ADMIN, ARITY_OPTIONAL, new String[] { "name", "cooldown", "rank" }, new String[] { "new" });
+        super("create", "Create a new kit.", Rank.JRMOD, ARITY_OPTIONAL, new String[] { "name", "cooldown", "rank" }, new String[] { "new" });
 
         addParser(new StringParser(), "name");
         addParser(new IntegerParser(), "cooldown");

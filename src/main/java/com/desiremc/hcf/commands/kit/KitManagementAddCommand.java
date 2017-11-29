@@ -16,7 +16,7 @@ public class KitManagementAddCommand extends ValidCommand
 
     public KitManagementAddCommand()
     {
-        super("add", "Add an item to a kit.", Rank.ADMIN, new String[] { "kit" });
+        super("add", "Add an item to a kit.", Rank.JRMOD, new String[] { "kit" });
 
         addParser(new KitParser(), "kit");
 
