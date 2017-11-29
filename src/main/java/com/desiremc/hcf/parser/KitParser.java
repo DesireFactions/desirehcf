@@ -17,7 +17,8 @@ public class KitParser implements ArgumentParser
         
         if (kit == null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "kit.not_found");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.not_found");
+            return null;
         }
         
         return kit;

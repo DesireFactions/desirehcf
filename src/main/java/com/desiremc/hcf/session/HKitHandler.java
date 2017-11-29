@@ -82,7 +82,7 @@ public class HKitHandler extends BasicDAO<HKit, Integer>
     {
         for (HKit kit : getInstance().kits.values())
         {
-            if (kit.getName().equals(kit.getName()))
+            if (kit.getName().equalsIgnoreCase(name))
             {
                 return kit;
             }

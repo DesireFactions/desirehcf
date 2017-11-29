@@ -116,3 +116,8 @@ kits:
   created: '&7Successfuly created kit &a{kit}&7.'
   used_kit: '&7Received kit &a{kit}&7.'
   add_item: '&7Added item to kit &a{kit}&7.'
+  delete_mode: '&7Click on item to delete.'
+  swap_mode: '&7Click on {state} item to swap.'
+  delete_item: '&7Deleted item &a{item}&7.'
+  swap_item: '&7Swapped items &a{item1}&7 and &a{item2}&7.'
+  different_swap: '&7You can''t swap an item with itself.'

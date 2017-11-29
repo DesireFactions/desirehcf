@@ -132,13 +132,11 @@ public class HKit
      */
     public void parseContents()
     {
-        System.out.println("parseContents() called.");
         parsedContents = new HashMap<>();
         for (Entry<Integer, String> entry : contents.entrySet())
         {
             parsedContents.put(entry.getKey(), ItemUtils.deserializeItem(entry.getValue()));
         }
-        System.out.println("parseContents() contents: " + contents.size() + "  parsedContents: " + parsedContents.size() + ".");
     }
 
     /**
@@ -149,7 +147,6 @@ public class HKit
      */
     private void check()
     {
-        System.out.println("check() contents: " + contents.size() + "  parsedContents: " + parsedContents.size() + ".");
         if (parsedContents == null || parsedContents.size() != contents.size())
         {
             parseContents();
@@ -182,26 +179,64 @@ public class HKit
         parsedContents.remove(id);
         contents.remove(id);
 
-        // decrement the index of each other kit item
-        Map<Integer, String> decrement = new HashMap<>();
-        Map<Integer, ItemStack> parsedDecrement = new HashMap<>();
-        Iterator<Entry<Integer, String>> it = contents.entrySet().iterator();
-        Iterator<Entry<Integer, ItemStack>> parsedIt = parsedContents.entrySet().iterator();
-        Entry<Integer, String> entry;
-        Entry<Integer, ItemStack> parsedEntry;
-        while (it.hasNext() && parsedIt.hasNext())
+        // if the old id is the same as the new size, then it was the last value and we do not need to update the rest of the records.
+        if (id != contents.size())
         {
-            entry = it.next();
-            parsedEntry = parsedIt.next();
-            if (entry.getKey() > id && parsedEntry.getKey() > id)
+            // decrement the index of each other kit item
+            Map<Integer, String> decrement = new HashMap<>();
+            Map<Integer, ItemStack> parsedDecrement = new HashMap<>();
+            Iterator<Entry<Integer, String>> it = contents.entrySet().iterator();
+            Iterator<Entry<Integer, ItemStack>> parsedIt = parsedContents.entrySet().iterator();
+            Entry<Integer, String> entry;
+            Entry<Integer, ItemStack> parsedEntry;
+            while (it.hasNext() && parsedIt.hasNext())
             {
-                decrement.put(entry.getKey() - 1, entry.getValue());
-                parsedDecrement.put(parsedEntry.getKey() - 1, parsedEntry.getValue());
+                entry = it.next();
+                parsedEntry = parsedIt.next();
+                if (entry.getKey() > id && parsedEntry.getKey() > id)
+                {
+                    decrement.put(entry.getKey() - 1, entry.getValue());
+                    parsedDecrement.put(parsedEntry.getKey() - 1, parsedEntry.getValue());
+                }
             }
+
+            // add all the updated contents
+            contents.putAll(decrement);
+            parsedContents.putAll(parsedDecrement);
+            
+            // remove the last value, it is a duplicate
+            int last = getOpenId() - 1;
+            contents.remove(last);
+            parsedContents.remove(last);
         }
 
-        contents.putAll(decrement);
-        parsedContents.putAll(parsedDecrement);
+        // save to the database
+        save();
+    }
+
+    /**
+     * Swaps the order of two items. This method swaps the parsed and unparsed maps as well as flushes to the database.
+     * 
+     * @param first the first id.
+     * @param second the second id.
+     */
+    public void swapItemOrder(int first, int second)
+    {
+        ItemStack firstItem = parsedContents.get(first);
+        ItemStack secondItem = parsedContents.get(second);
+        String firstString = contents.get(first);
+        String secondString = contents.get(second);
+
+        if (firstItem == null || secondItem == null || firstString == null || secondString == null)
+        {
+            return;
+        }
+
+        parsedContents.put(second, firstItem);
+        parsedContents.put(first, secondItem);
+        contents.put(second, firstString);
+        contents.put(first, secondString);
+        save();
     }
 
     /**
