@@ -84,10 +84,10 @@ public class EditKitMenu extends Menu
                                 return;
                             }
                             kit.swapItemOrder(getSlot(), swapItem);
-                            swapItem = -1;
                             DesireHCF.getLangHandler().sendRenderMessage(player, "kits.swap_item",
                                     "{item1}", ChatColor.stripColor(ItemNames.lookup(items[swapItem].getItemStack())),
                                     "{item2}", ChatColor.stripColor(ItemNames.lookup(getItemStack())));
+                            swapItem = -1;
                             state = null;
                         }
                         else
