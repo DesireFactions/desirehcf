@@ -65,7 +65,7 @@ public class HKit
      */
     protected void setId(int id)
     {
-        if (id != -1)
+        if (this.id != -1)
         {
             throw new IllegalStateException("Id should never be changed once it has been set.");
         }

@@ -29,15 +29,6 @@ public class HKitHandler extends BasicDAO<HKit, Integer>
         DesireCore.getInstance().getMongoWrapper().getMorphia().map(HKit.class);
 
         kits = new HashMap<>();
-        for (HKit kit : getInstance().createQuery().field("active").equal(true))
-        {
-            kit.parseContents();
-            kits.put(kit.getId(), kit);
-            if (lastId < kit.getId())
-            {
-                lastId = kit.getId();
-            }
-        }
     }
 
     /**
@@ -138,6 +129,16 @@ public class HKitHandler extends BasicDAO<HKit, Integer>
     public static void initialize()
     {
         instance = new HKitHandler();
+
+        for (HKit kit : instance.createQuery().field("active").equal(true))
+        {
+            kit.parseContents();
+            instance.kits.put(kit.getId(), kit);
+            if (instance.lastId < kit.getId())
+            {
+                instance.lastId = kit.getId();
+            }
+        }
     }
 
     /**
