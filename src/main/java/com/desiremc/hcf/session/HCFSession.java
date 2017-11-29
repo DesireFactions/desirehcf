@@ -1,14 +1,13 @@
 package com.desiremc.hcf.session;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.DeathBan;
-import com.desiremc.core.session.DeathBanHandler;
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.Ticker;
-import com.desiremc.core.utils.PlayerUtils;
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Embedded;
@@ -20,11 +19,15 @@ import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.DeathBan;
+import com.desiremc.core.session.DeathBanHandler;
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.Ticker;
+import com.desiremc.core.utils.PlayerUtils;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class HCFSession
@@ -61,8 +64,11 @@ public class HCFSession
     @Embedded
     private OreData currentOre;
 
-    @Embedded
-    private List<OreData> oreHistory;
+    @Reference(idOnly = true)
+    private Map<HKit, Integer> kitUses;
+
+    @Reference(idOnly = true)
+    private Map<HKit, Long> kitCooldowns;
 
     @Transient
     private Session session;
@@ -82,7 +88,7 @@ public class HCFSession
         kills = new LinkedList<>();
         deaths = new LinkedList<>();
         deathBans = new LinkedList<>();
-        oreHistory = new LinkedList<>();
+        kitUses = new HashMap<>();
     }
 
     protected void setId(int id)
@@ -446,25 +452,36 @@ public class HCFSession
         return currentOre;
     }
 
-    public OreData getTotalOre()
-    {
-        OreData data = currentOre.copy();
-        for (OreData ore : oreHistory)
-        {
-            data.addEmerald(ore.getEmeraldCount());
-            data.addDiamond(ore.getDiamondCount());
-            data.addGold(ore.getGoldCount());
-            data.addLapis(ore.getLapisCount());
-            data.addRedstone(ore.getRedstoneCount());
-            data.addIron(ore.getIronCount());
-            data.addCoal(ore.getCoalCount());
-        }
-        return data;
-    }
-
     public void save()
     {
         HCFSessionHandler.getInstance().save(this);
     }
 
+    public void useKit(HKit kit)
+    {
+        Integer val = kitUses.get(kit);
+        if (val == null)
+        {
+            val = 1;
+        }
+        kitUses.put(kit, val);
+        kitCooldowns.put(kit, System.currentTimeMillis());
+    }
+
+    public long getKitCooldown(HKit kit)
+    {
+        Long val = kitCooldowns.get(kit);
+
+        if (val == null)
+        {
+            return 0;
+        }
+
+        return Long.max(0, (kit.getCooldown() * 1000) - (System.currentTimeMillis() - val));
+    }
+
+    public boolean hasKitCooldown(HKit kit)
+    {
+        return getKitCooldown(kit) > 0;
+    }
 }

@@ -107,3 +107,11 @@ coords:
 - '&9Ender Portals:'
 - '&71000&e, &71000 &ein each direction.'
 - '&7&m-----------------------------'
+kits:
+  not_found: '&7No kit by that name exists.'
+  has_cooldown: '&7The kit &a{kit} &7still has a &b{time}&7 cooldown left.'
+  no_permission: '&7Only &c{rank} &7and up can use that kit.'
+  used_name: '&7That name is already used by a kit.'
+  created: '&7Successfuly created kit &a{kit}&7.'
+  used_kit: '&7Received kit &a{kit}&7.'
+  add_item: '&7Added item to kit &a{kit}&7.'

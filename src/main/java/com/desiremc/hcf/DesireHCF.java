@@ -17,6 +17,8 @@ import com.desiremc.hcf.commands.LogoutCommand;
 import com.desiremc.hcf.commands.OreCommand;
 import com.desiremc.hcf.commands.PVPCommand;
 import com.desiremc.hcf.commands.fstat.FStatCommand;
+import com.desiremc.hcf.commands.kit.KitCommand;
+import com.desiremc.hcf.commands.kit.KitManagementCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.lives.ReviveCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
@@ -49,6 +51,7 @@ import com.desiremc.hcf.listener.classes.RogueListener;
 import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
@@ -84,6 +87,7 @@ public class DesireHCF extends JavaPlugin
         CustomCommandHandler.initialize();
         DesireCore.getInstance().getMongoWrapper().getDatastore().ensureIndexes();
         BarrierTask.initialize();
+        HKitHandler.initialize();
 
         registerListeners();
         registerCommands();
@@ -146,9 +150,10 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new CoordsCommand(), this);
         customCommandHandler.registerCommand(new CobbleCommand(), this);
         customCommandHandler.registerCommand(new OreCommand(), this);
-
         customCommandHandler.registerCommand(new SetSpawnCommand(), this);
         customCommandHandler.registerCommand(new SpawnCommand(), this);
+        customCommandHandler.registerCommand(new KitCommand(), this);
+        customCommandHandler.registerCommand(new KitManagementCommand(), this);
     }
 
     public static WorldEditPlugin getWorldEdit()
