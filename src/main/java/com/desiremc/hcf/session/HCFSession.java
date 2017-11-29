@@ -64,11 +64,9 @@ public class HCFSession
     @Embedded
     private OreData currentOre;
 
-    @Reference(idOnly = true)
-    private Map<HKit, Integer> kitUses;
+    private Map<Integer, Integer> kitUses;
 
-    @Reference(idOnly = true)
-    private Map<HKit, Long> kitCooldowns;
+    private Map<Integer, Long> kitCooldowns;
 
     @Transient
     private Session session;
@@ -459,18 +457,18 @@ public class HCFSession
 
     public void useKit(HKit kit)
     {
-        Integer val = kitUses.get(kit);
+        Integer val = kitUses.get(kit.getId());
         if (val == null)
         {
             val = 1;
         }
-        kitUses.put(kit, val);
-        kitCooldowns.put(kit, System.currentTimeMillis());
+        kitUses.put(kit.getId(), val);
+        kitCooldowns.put(kit.getId(), System.currentTimeMillis());
     }
 
     public long getKitCooldown(HKit kit)
     {
-        Long val = kitCooldowns.get(kit);
+        Long val = kitCooldowns.get(kit.getId());
 
         if (val == null)
         {
