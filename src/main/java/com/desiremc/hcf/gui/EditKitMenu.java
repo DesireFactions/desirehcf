@@ -26,12 +26,10 @@ public class EditKitMenu extends Menu
         super("§6§lEdit Kit: §e" + kit.getName(), 5);
 
         this.kit = kit;
-
-        initialize();
     }
 
     @SuppressWarnings("deprecation")
-    private void initialize()
+    public void initialize()
     {
         removeAllItems();
         for (int i = 27; i <= 35; i++)

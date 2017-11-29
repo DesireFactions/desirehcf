@@ -9,10 +9,11 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.material.MaterialData;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.gui.Menu;
 import com.desiremc.core.gui.MenuItem;
 import com.desiremc.core.utils.DateUtils;
+import com.desiremc.core.utils.ItemUtils;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.HKit;
@@ -29,6 +30,9 @@ public class ViewKitsMenu extends Menu
         this.session = session;
     }
 
+    /**
+     * Adds all the menu items to the display. If this is called multiple times, it has the capability of breaking.
+     */
     public void initialize()
     {
         int i = 0;
@@ -59,21 +63,21 @@ public class ViewKitsMenu extends Menu
             boolean noPermission = session.getRank().getId() < kit.getId();
             if (noPermission)
             {
-                DesireCore.getLangHandler().sendRenderMessage(player, "kits.no_permission",
+                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.no_permission",
                         "{rank}", kit.getRequiredRank().getDisplayName());
             }
             else if (onCooldown)
             {
-                DesireCore.getLangHandler().sendRenderMessage(player, "kits.has_cooldown",
+                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.has_cooldown",
                         "{kit}", kit.getName(),
                         "{time}", DateUtils.formatDateDiff(session.getKitCooldown(kit) + System.currentTimeMillis()));
             }
             else
             {
-                DesireCore.getLangHandler().sendRenderMessage(player, "kits.used_kit",
+                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.used_kit",
                         "{kit}", kit.getName());
 
-                player.getInventory().addItem(kit.getContents().toArray(new ItemStack[0]));
+                player.getInventory().addItem(ItemUtils.toArray(kit.getContents()));
                 session.useKit(kit);
                 getMenu().closeMenu(player);
             }

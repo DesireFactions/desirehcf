@@ -5,23 +5,21 @@ import org.bukkit.entity.Player;
 
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.ItemInHandValidator;
 import com.desiremc.core.validators.PlayerValidator;
-import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.gui.EditKitMenu;
 import com.desiremc.hcf.parser.KitParser;
 import com.desiremc.hcf.session.HKit;
 
-public class KitManagementAddCommand extends ValidCommand
+public class KitManagementEditCommand extends ValidCommand
 {
 
-    public KitManagementAddCommand()
+    public KitManagementEditCommand()
     {
-        super("add", "Add an item to a kit.", Rank.ADMIN, new String[] { "kit" });
+        super("edit", "Edit the kit itself.", Rank.ADMIN, new String[] { "kit" });
 
         addParser(new KitParser(), "kit");
 
         addValidator(new PlayerValidator());
-        addValidator(new ItemInHandValidator());
     }
 
     @Override
@@ -29,12 +27,9 @@ public class KitManagementAddCommand extends ValidCommand
     {
         Player player = (Player) sender;
         HKit kit = (HKit) args[0];
-
-        kit.addItem(player.getItemInHand());
-        kit.save();
-        
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.add_item",
-                "{kit}", kit.getName());
+        EditKitMenu menu = new EditKitMenu(kit);
+        menu.initialize();
+        menu.openMenu(player);
     }
 
 }

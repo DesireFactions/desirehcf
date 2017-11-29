@@ -120,6 +120,7 @@ public class HKitHandler extends BasicDAO<HKit, Integer>
         kit.setCooldown(cooldown);
         kit.setRequiredRank(requiredRank);
         kit.save();
+        getInstance().kits.put(kit.getId(), kit);
         return kit;
     }
 

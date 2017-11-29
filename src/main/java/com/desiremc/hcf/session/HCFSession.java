@@ -28,6 +28,7 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.Ticker;
 import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.hcf.DesireHCF;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class HCFSession
@@ -87,6 +88,7 @@ public class HCFSession
         deaths = new LinkedList<>();
         deathBans = new LinkedList<>();
         kitUses = new HashMap<>();
+        kitCooldowns = new HashMap<>();
     }
 
     protected void setId(int id)
@@ -396,7 +398,7 @@ public class HCFSession
             lastRunTime = System.currentTimeMillis();
             if (safeTimer <= 0)
             {
-                EntryRegistry.getInstance().removeValue(getPlayer(), DesireCore.getLangHandler().getStringNoPrefix("pvp.scoreboard"));
+                EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().getStringNoPrefix("pvp.scoreboard"));
                 safeTimer = 0;
             }
             else
@@ -407,7 +409,7 @@ public class HCFSession
 
         public void setScoreboard()
         {
-            EntryRegistry.getInstance().setValue(getPlayer(), DesireCore.getLangHandler().getStringNoPrefix("pvp.scoreboard"), getTimeLeftFormatted());
+            EntryRegistry.getInstance().setValue(getPlayer(), DesireHCF.getLangHandler().getStringNoPrefix("pvp.scoreboard"), getTimeLeftFormatted());
         }
 
         public String getTimeLeftFormatted()

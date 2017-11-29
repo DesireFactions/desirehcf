@@ -9,9 +9,10 @@ public class KitManagementCommand extends ValidBaseCommand
     public KitManagementCommand()
     {
         super("kitmanagement", "Manage the kit system.", Rank.ADMIN, new String[] { "kitman", "kman" });
-        
+
         addSubCommand(new KitManagementCreateCommand());
         addSubCommand(new KitManagementAddCommand());
+        addSubCommand(new KitManagementEditCommand());
     }
 
 }

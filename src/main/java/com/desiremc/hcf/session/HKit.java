@@ -20,7 +20,7 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.utils.ItemUtils;
 import com.desiremc.hcf.DesireHCF;
 
-@Entity(noClassnameStored = false, value = "hkits")
+@Entity(noClassnameStored = true, value = "hkits")
 public class HKit
 {
 
@@ -46,6 +46,7 @@ public class HKit
     public HKit()
     {
         this.contents = new HashMap<>();
+        this.active = true;
     }
 
     /**
@@ -131,11 +132,13 @@ public class HKit
      */
     public void parseContents()
     {
+        System.out.println("parseContents() called.");
         parsedContents = new HashMap<>();
         for (Entry<Integer, String> entry : contents.entrySet())
         {
             parsedContents.put(entry.getKey(), ItemUtils.deserializeItem(entry.getValue()));
         }
+        System.out.println("parseContents() contents: " + contents.size() + "  parsedContents: " + parsedContents.size() + ".");
     }
 
     /**
@@ -146,7 +149,8 @@ public class HKit
      */
     private void check()
     {
-        if (parsedContents == null)
+        System.out.println("check() contents: " + contents.size() + "  parsedContents: " + parsedContents.size() + ".");
+        if (parsedContents == null || parsedContents.size() != contents.size())
         {
             parseContents();
         }
