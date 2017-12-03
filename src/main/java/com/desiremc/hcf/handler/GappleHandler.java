@@ -1,6 +1,9 @@
 package com.desiremc.hcf.handler;
 
 import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
 import com.desiremc.core.utils.cache.RemovalListener;
@@ -79,6 +82,12 @@ public class GappleHandler implements Listener
         if (time == null)
         {
             history.put(uuid, System.currentTimeMillis());
+
+            Session s = SessionHandler.getSession(event.getPlayer());
+            if (!s.hasAchievement(Achievement.FIRST_GAPPLE))
+            {
+                s.awardAchievement(Achievement.FIRST_GAPPLE, true);
+            }
         }
         else
         {

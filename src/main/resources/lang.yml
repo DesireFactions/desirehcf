@@ -76,6 +76,7 @@ no_deathban: '&7That player does not have an active deathban.'
 tagged: "You can not log out while in combat."
 set-spawn: "You have set the spawn to your location."
 spawn: "You have teleported to spawn."
+set-winner: "You have set the season winner to {faction}."
 classes:
   enable: "&bClasses: &l{class}&r&b --> &2Enabled!"
   disable: "&bClasses: &l{class}&r&b --> &cDisabled!"

@@ -278,7 +278,7 @@ classes:
           allies: false
           other: false
       BLAZE_POWDER:
-        effect: STRENGTH
+        effect: INCREASE_DAMAGE
         click:
           amplifier: 1
           duration: 7

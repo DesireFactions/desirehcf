@@ -2,6 +2,9 @@ package com.desiremc.hcf.handler;
 
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.massivecraft.factions.Faction;
@@ -96,6 +99,12 @@ public class CrowbarHandler implements Listener
                 player.setItemInHand(new ItemStack(Material.AIR));
                 player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1L, 1L);
                 lang.sendString(player, "crowbar.out_of_uses");
+            }
+
+            Session s = SessionHandler.getSession(player);
+            if (!s.hasAchievement(Achievement.FIRST_CROWBAR_USE))
+            {
+                s.awardAchievement(Achievement.FIRST_CROWBAR_USE, true);
             }
         }
 

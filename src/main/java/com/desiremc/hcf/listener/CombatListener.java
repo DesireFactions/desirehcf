@@ -1,24 +1,9 @@
 package com.desiremc.hcf.listener;
 
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
@@ -36,6 +21,24 @@ import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.util.UUID;
 
 public class CombatListener implements Listener
 {
@@ -59,6 +62,29 @@ public class CombatListener implements Listener
                 {
                     TagHandler.tagPlayer(victim, damager);
                 }
+            }
+        }
+    }
+
+    @EventHandler(ignoreCancelled = true)
+    public void onEntityDeath(EntityDeathEvent event)
+    {
+        Player player = event.getEntity().getKiller();
+
+        if (event.getEntity() instanceof Creeper)
+        {
+            Session s = SessionHandler.getSession(player);
+            if (!s.hasAchievement(Achievement.FIRST_CREEPER))
+            {
+                s.awardAchievement(Achievement.FIRST_CREEPER, true);
+            }
+        }
+        else if (event.getEntity() instanceof Enderman)
+        {
+            Session s = SessionHandler.getSession(player);
+            if (!s.hasAchievement(Achievement.FIRST_ENDERMAN))
+            {
+                s.awardAchievement(Achievement.FIRST_ENDERMAN, true);
             }
         }
     }
@@ -168,6 +194,12 @@ public class CombatListener implements Listener
             if (kSession != null)
             {
                 kSession.addKill(vPlayer.getUniqueId());
+
+                Session s = SessionHandler.getSession(event.getEntity().getKiller());
+                if (!s.hasAchievement(Achievement.FIRST_KILL))
+                {
+                    s.awardAchievement(Achievement.FIRST_KILL, true);
+                }
             }
 
             // update the database
