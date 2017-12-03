@@ -1,5 +1,6 @@
 package com.desiremc.hcf.handler;
 
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.DesireHCF;
@@ -69,7 +70,10 @@ public class PotionLimiterHandler implements Listener
     @EventHandler
     public void onConsumeEvent(PlayerItemConsumeEvent event)
     {
-        if (!event.getItem().getType().equals(Material.POTION)) return;
+        if (!event.getItem().getType().equals(Material.POTION))
+        {
+            return;
+        }
 
         Player p = event.getPlayer();
         Potion potion = Potion.fromItemStack(event.getItem());
@@ -81,8 +85,15 @@ public class PotionLimiterHandler implements Listener
                 if (!isPotionAllowed(potion, p, DesireHCF.getConfigHandler().getBoolean("potion-disabled")))
                 {
                     event.setCancelled(true);
+                    return;
                 }
             }
+        }
+
+        Session s = SessionHandler.getSession(p);
+        if (!s.hasAchievement(Achievement.FIRST_POTION_USE))
+        {
+            s.awardAchievement(Achievement.FIRST_POTION_USE, true);
         }
     }
 

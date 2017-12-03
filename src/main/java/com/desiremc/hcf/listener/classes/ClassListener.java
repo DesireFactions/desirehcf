@@ -2,7 +2,10 @@ package com.desiremc.hcf.listener.classes;
 
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
@@ -161,9 +164,6 @@ public class ClassListener implements Listener
                 {
                     session.setPvpClass(PVPClass.DIAMOND);
                     applyPermanentEffects(PVPClass.DIAMOND, player);
-
-                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Diamond");
-                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Diamond");
                 }
                 break;
             case "LEATHER":
@@ -176,6 +176,12 @@ public class ClassListener implements Listener
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Archer");
                     energy.put(player.getUniqueId(), 0);
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
+
+                    Session s = SessionHandler.getSession(player);
+                    if (!s.hasAchievement(Achievement.FIRST_ARCHER))
+                    {
+                        s.awardAchievement(Achievement.FIRST_ARCHER, true);
+                    }
                 }
                 break;
             case "GOLD":
@@ -188,6 +194,12 @@ public class ClassListener implements Listener
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Bard");
                     energy.put(player.getUniqueId(), 0);
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
+
+                    Session s = SessionHandler.getSession(player);
+                    if (!s.hasAchievement(Achievement.FIRST_BARD))
+                    {
+                        s.awardAchievement(Achievement.FIRST_BARD, true);
+                    }
                 }
                 break;
             case "CHAINMAIL":
@@ -200,6 +212,12 @@ public class ClassListener implements Listener
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Rogue");
                     energy.put(player.getUniqueId(), 0);
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
+
+                    Session s = SessionHandler.getSession(player);
+                    if (!s.hasAchievement(Achievement.FIRST_ROGUE))
+                    {
+                        s.awardAchievement(Achievement.FIRST_ROGUE, true);
+                    }
                 }
                 break;
             case "IRON":
@@ -210,6 +228,12 @@ public class ClassListener implements Listener
 
                     DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Miner");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Miner");
+
+                    Session s = SessionHandler.getSession(player);
+                    if (!s.hasAchievement(Achievement.FIRST_MINER))
+                    {
+                        s.awardAchievement(Achievement.FIRST_MINER, true);
+                    }
 
                     List<Integer> indexs = new ArrayList<>();
 

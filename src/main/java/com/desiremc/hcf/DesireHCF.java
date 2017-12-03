@@ -16,6 +16,7 @@ import com.desiremc.hcf.commands.HCFReloadCommand;
 import com.desiremc.hcf.commands.LogoutCommand;
 import com.desiremc.hcf.commands.OreCommand;
 import com.desiremc.hcf.commands.PVPCommand;
+import com.desiremc.hcf.commands.SetWinnerCommand;
 import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.kit.KitCommand;
 import com.desiremc.hcf.commands.kit.KitManagementCommand;
@@ -154,6 +155,7 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new SpawnCommand(), this);
         customCommandHandler.registerCommand(new KitCommand(), this);
         customCommandHandler.registerCommand(new KitManagementCommand(), this);
+        customCommandHandler.registerCommand(new SetWinnerCommand(), this);
     }
 
     public static WorldEditPlugin getWorldEdit()
