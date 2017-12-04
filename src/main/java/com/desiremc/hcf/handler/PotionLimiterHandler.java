@@ -2,30 +2,23 @@ package com.desiremc.hcf.handler;
 
 import java.util.ArrayList;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.ThrownPotion;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.BrewEvent;
-import org.bukkit.event.inventory.InventoryMoveItemEvent;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.BrewerInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.potion.Potion;
-import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
-import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.scheduler.BukkitRunnable;
 
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.DesireCore;
 import com.desiremc.hcf.DesireHCF;
 
 public class PotionLimiterHandler implements Listener
@@ -56,87 +49,64 @@ public class PotionLimiterHandler implements Listener
     }
 
     @EventHandler
-    public void onStartBrew(InventoryMoveItemEvent event)
+    public void onBrewComplete(BrewEvent event)
     {
-        if (event.getDestination().getType() != InventoryType.BREWING)
+        BrewerInventory inv = event.getContents();
+        ItemStack ingredient = inv.getIngredient();
+        Material ingredientType = ingredient.getType();
+        ItemStack potItem;
+        Potion pot;
+        if (ingredientType == Material.GHAST_TEAR || ingredientType == Material.BLAZE_POWDER)
         {
-            return;
+            cancel(event, inv);
         }
-        
-    }
-
-    @EventHandler
-    public void onPotionSplash(PotionSplashEvent event)
-    {
-        ThrownPotion potion = event.getPotion();
-
-        for (PotionEffect effect : potion.getEffects())
+        else if (ingredientType == Material.REDSTONE)
         {
-            if (containsPotion(effect))
+            for (int i = 0; i < 3; i++)
             {
-                if (!isPotionAllowed(Potion.fromItemStack(potion.getItem()), potion.getShooter()))
+                potItem = inv.getItem(i);
+                if (potItem != null && potItem.getType() == Material.POTION)
                 {
-                    event.setCancelled(true);
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onConsumeEvent(PlayerItemConsumeEvent event)
-    {
-        if (!event.getItem().getType().equals(Material.POTION))
-            return;
-
-        Player p = event.getPlayer();
-        Potion potion = Potion.fromItemStack(event.getItem());
-
-        for (PotionEffect effect : potion.getEffects())
-        {
-            if (containsPotion(effect))
-            {
-                if (!isPotionAllowed(potion, p, DesireHCF.getConfigHandler().getBoolean("send_potion_message")))
-                {
-                    event.setCancelled(true);
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPotionBrew(BrewEvent event)
-    {
-        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                ItemStack item;
-                Potion potion;
-                for (int i = 0; i < 3; i++)
-                {
-                    item = event.getContents().getContents()[i];
-                    if (item != null && item.getType() == Material.POTION)
+                    pot = Potion.fromItemStack(potItem);
+                    if (pot != null && pot.getType() == PotionType.INVISIBILITY)
                     {
-                        potion = Potion.fromItemStack(item);
-                        if (!isPotionAllowed(potion))
-                        {
-                            item.setType(Material.AIR);
-                        }
+                        cancel(event, inv);
                     }
                 }
             }
-        }, 1L);
-        BrewerInventory contents = event.getContents();
-        ItemStack[] array = new ItemStack[3];
-        for (int i = 0; i < 3; i++)
+        }
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event)
+    {
+        if (event.getPlayer().getItemInHand() == null || event.getPlayer().getItemInHand().getType() != Material.POTION)
         {
-            if (contents.getItem(i) != null)
+            return;
+        }
+        Potion pot = Potion.fromItemStack(event.getItem());
+        if (pot != null)
+        {
+            if (!isPotionAllowed(pot))
             {
-                array[i] = contents.getItem(i).clone();
+                cancel(event, null);
             }
         }
+    }
 
+    private static void cancel(Cancellable event, Inventory inv)
+    {
+        event.setCancelled(true);
+        if (inv != null)
+        {
+            for (HumanEntity e : inv.getViewers())
+            {
+                if (e instanceof Player)
+                {
+                    DesireCore.getLangHandler().sendRenderMessage((Player) e, "potion.blocked");
+                }
+            }
+        }
     }
 
     private AllowedPotion getAllowedPotion(PotionType type)

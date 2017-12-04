@@ -59,7 +59,8 @@ gapple:
   ended: '&7You may now use a &5Gapple&7.'
   message: '&7You can not use a &5Gapple&7 for &e{time} &7seconds.'
   scoreboard: '&6&lGapple Timer'
-potion-disabled: '&4&lPOTIONS&r&7 This potion effect is disabled!'
+potion:
+  blocked: '&7That potion is blocked'
 trophy_points: 'Trophy Points &e{points}'
 koth_wins: 'Trophy Points &e{koth}'
 faction: 'Faction &e{faction}'
