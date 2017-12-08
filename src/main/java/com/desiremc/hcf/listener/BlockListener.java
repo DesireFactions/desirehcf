@@ -67,7 +67,7 @@ public class BlockListener implements Listener
 
         Set<Block> vein = getVein(event.getBlock());
 
-        for (Session session : SessionHandler.getInstance().getStaff())
+        for (Session session : SessionHandler.getStaff())
         {
             if (session.getSetting(SessionSetting.FINDORE))
             {

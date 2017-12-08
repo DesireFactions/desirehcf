@@ -33,7 +33,7 @@ public class TablistHandler implements Listener
             System.out.println("TablistHandler.onJoin() called.");
         }
         Session iterSession;
-        for (Iterator<Session> it = SessionHandler.getInstance().getSessions().iterator(); it.hasNext();)
+        for (Iterator<Session> it = SessionHandler.getSessions().iterator(); it.hasNext();)
         {
             iterSession = it.next();
             if (DEBUG)
@@ -65,7 +65,7 @@ public class TablistHandler implements Listener
     public void onQuit(PlayerQuitEvent event)
     {
         Session iterSession;
-        for (Iterator<Session> it = SessionHandler.getInstance().getSessions().iterator(); it.hasNext();)
+        for (Iterator<Session> it = SessionHandler.getSessions().iterator(); it.hasNext();)
         {
             iterSession = it.next();
             if (iterSession.getPlayer() == null || !iterSession.getPlayer().isOnline())
