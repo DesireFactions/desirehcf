@@ -112,7 +112,7 @@ public class CombatListener implements Listener
                 Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager())
                         .getShooter() : e.getDamager());
 
-                if (StaffHandler.getInstance().isFrozen(damager))
+                if (StaffHandler.getInstance().isFrozen(damager) || StaffHandler.getInstance().isFrozen(victim))
                 {
                     e.setCancelled(true);
                 }
