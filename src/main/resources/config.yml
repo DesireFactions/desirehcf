@@ -72,83 +72,25 @@ enchantment-limiter:
   THORNS: 0
   WATER_WORKER: -1
 unrepairable-lore-line: "&cUnrepairable"
-#  Use -1 for no change
-#  Use 0 to disable potion
-#  Use other values to limit potion level
-#  Change extended to false to disable extended potions
-#  Disabled-potion-msg decides if a message is sent when a potion is used that is not allowed.
-disabled-potion-msg: true
-potion-limiter:
-  SPEED:
-    level: -1
-    extended: true
-  SLOW:
-    level: 1
-    extended: false
-  FAST_DIGGING:
-    level: -1
-    extended: true
-  SLOW_DIGGING:
-    level: -1
-    extended: true
-  INCREASE_DAMAGE:
-    level: 0
-    extended: true
+allowed_potions:
   HEAL:
-    level: -1
-    extended: true
-  HARM:
-    level: 0
-    extended: true
-  JUMP:
-    level: -1
-    extended: true
-  CONFUSION:
-    level: -1
-    extended: true
-  REGENERATION:
-    level: 0
-    extended: true
-  DAMAGE_RESISTANCE:
-    level: -1
-    extended: true
+    level: 2
+    extended: false
   FIRE_RESISTANCE:
-    level: -1
-    extended: true
-  WATER_BREATHING:
-    level: -1
+    level: 1
     extended: true
   INVISIBILITY:
-    level: 0
-    extended: true
-  BLINDNESS:
-    level: -1
-    extended: true
-  NIGHT_VISION:
-    level: -1
-    extended: true
-  HUNGER:
-    level: 0
-    extended: true
-  WEAKNESS:
-    level: 0
-    extended: true
-  POISON:
     level: 1
     extended: false
-  WITHER:
-    level: -1
+  POISON:
+    level: 2
     extended: true
-  HEALTH_BOOST:
-    level: -1
+  SPEED:
+    level: 2
     extended: true
-  ABSORPTION:
-    level: -1
+  SLOW:
+    level: 2
     extended: true
-  SATURATION:
-    level: -1
-    extended: true
-disabled-potion-msg: true
 findore:
   - 'diamond_ore'
   - 'emerald_ore'
