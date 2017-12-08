@@ -17,9 +17,9 @@ public class SetWinnerCommand extends ValidCommand
 {
     public SetWinnerCommand()
     {
-        super("setwinner", "Set this seasons winner.", Rank.ADMIN, new String[] {"faction"});
+        super("setwinner", "Set this seasons winner.", Rank.ADMIN, new String[] { "faction" });
 
-        addParser(new FactionSessionParser(), "target");
+        addParser(new FactionSessionParser(), "faction");
     }
 
     @Override
@@ -37,6 +37,6 @@ public class SetWinnerCommand extends ValidCommand
             }
         }
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "set-winner", "{faction}", session.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "set_winner", "{faction}", session.getName());
     }
 }
