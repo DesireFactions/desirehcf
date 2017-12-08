@@ -78,6 +78,7 @@ tagged: "You can not log out while in combat."
 set-spawn: "You have set the spawn to your location."
 spawn: "You have teleported to spawn."
 set_winner: '&7You have set the season winner to &e{faction}&7.'
+faction_null: 'That faction doesn''t exist.'
 classes:
   enable: "&bClasses: &l{class}&r&b --> &2Enabled!"
   disable: "&bClasses: &l{class}&r&b --> &cDisabled!"
