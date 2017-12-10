@@ -4,6 +4,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
 import com.desiremc.core.api.command.CustomCommandHandler;
+import com.desiremc.core.api.newcommands.CommandHandler;
 import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.staff.StaffHandler;
 import com.desiremc.hcf.barrier.BarrierTask;
@@ -151,11 +152,13 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new CoordsCommand(), this);
         customCommandHandler.registerCommand(new CobbleCommand(), this);
         customCommandHandler.registerCommand(new OreCommand(), this);
-        customCommandHandler.registerCommand(new SetSpawnCommand(), this);
-        customCommandHandler.registerCommand(new SpawnCommand(), this);
         customCommandHandler.registerCommand(new KitCommand(), this);
         customCommandHandler.registerCommand(new KitManagementCommand(), this);
         customCommandHandler.registerCommand(new SetWinnerCommand(), this);
+
+        CommandHandler commandHandler = CommandHandler.getInstance();
+        commandHandler.registerCommand(new SetSpawnCommand(), this);
+        commandHandler.registerCommand(new SpawnCommand(), this);
     }
 
     public static WorldEditPlugin getWorldEdit()
