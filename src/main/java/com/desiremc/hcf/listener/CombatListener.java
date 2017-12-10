@@ -225,13 +225,12 @@ public class CombatListener implements Listener
                     message.send(s.getPlayer());
                 }
             }
-            
+
             // console wants to know too
             DesireHCF.getInstance().getLogger().info(message.toOldMessageFormat());
-        }
-        catch (
+        } catch (
 
-        Exception ex)
+                Exception ex)
         {
             ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
         }
