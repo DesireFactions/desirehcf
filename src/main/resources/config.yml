@@ -364,8 +364,20 @@ classes:
         - FAST_DIGGING-3
 spawn:
   x: 0
-  y: 0
+  y: 100
   z: 0
   yaw: 0
   pitch: 0
   world: world
+factions:
+  stuck:
+    time: 3600
+  claim_wand:
+    name: '§6§lClaim Wand'
+    lore:
+      - '§eLeft-Click for point one.'
+      - '§eRight-Click for point two.'
+  claims:
+    cost:
+      block: 0.25
+      existing_scale: 500

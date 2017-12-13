@@ -50,11 +50,11 @@ import com.desiremc.hcf.listener.classes.ArmorListener;
 import com.desiremc.hcf.listener.classes.ClassListener;
 import com.desiremc.hcf.listener.classes.MinerListener;
 import com.desiremc.hcf.listener.classes.RogueListener;
-import com.desiremc.hcf.session.FactionSessionHandler;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.session.RegionHandler;
+import com.desiremc.hcf.session.faction.FactionHandler;
 import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
 import org.bukkit.Bukkit;
@@ -82,7 +82,7 @@ public class DesireHCF extends JavaPlugin
         config = new FileHandler(new File(getDataFolder(), "config.yml"), this);
 
         HCFSessionHandler.initialize();
-        FactionSessionHandler.initialize();
+        FactionHandler.initialize();
         RegionHandler.initialize();
         TagHandler.initialize();
         StaffHandler.initialize();
@@ -99,7 +99,7 @@ public class DesireHCF extends JavaPlugin
             @Override
             public void run()
             {
-                for (HCFSession session : HCFSessionHandler.getSessions())
+                for (HCFSession session : HCFSessionHandler.getHCFSessions())
                 {
                     HCFSessionHandler.getInstance().save(session);
                 }
@@ -141,7 +141,6 @@ public class DesireHCF extends JavaPlugin
         CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
         customCommandHandler.registerCommand(new CrowbarCommand(), this);
         customCommandHandler.registerCommand(new EnderChestCommand(), this);
-        customCommandHandler.registerCommand(new FStatCommand(), this);
         customCommandHandler.registerCommand(new HCFReloadCommand(), this);
         customCommandHandler.registerCommand(new LivesCommand(), this);
         customCommandHandler.registerCommand(new PVPCommand(), this);
@@ -154,11 +153,12 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new OreCommand(), this);
         customCommandHandler.registerCommand(new KitCommand(), this);
         customCommandHandler.registerCommand(new KitManagementCommand(), this);
-        customCommandHandler.registerCommand(new SetWinnerCommand(), this);
 
         CommandHandler commandHandler = CommandHandler.getInstance();
         commandHandler.registerCommand(new SetSpawnCommand(), this);
         commandHandler.registerCommand(new SpawnCommand(), this);
+        commandHandler.registerCommand(new FStatCommand(), this);
+        commandHandler.registerCommand(new SetWinnerCommand(), this);
     }
 
     public static WorldEditPlugin getWorldEdit()

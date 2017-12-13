@@ -1,5 +1,13 @@
 package com.desiremc.hcf.listener.classes;
 
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -8,15 +16,8 @@ import com.desiremc.core.utils.cache.RemovalNotification;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.faction.FactionRelationship;
 import com.desiremc.hcf.util.FactionsUtils;
-import com.massivecraft.factions.struct.Relation;
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class ArcherListener implements DesireClass
 {
@@ -96,9 +97,9 @@ public class ArcherListener implements DesireClass
                 return;
             }
 
-            Relation rel = FactionsUtils.getFaction(source).getRelationTo(FactionsUtils.getFaction(target));
+            FactionRelationship rel = FactionsUtils.getFaction(source).getRelationshipTo(FactionsUtils.getFaction(target));
 
-            if (rel == Relation.ALLY || rel == Relation.TRUCE || rel == Relation.MEMBER)
+            if (rel == FactionRelationship.ALLY || rel == FactionRelationship.MEMBER)
             {
                 return;
             }

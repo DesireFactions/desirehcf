@@ -1,18 +1,11 @@
 package com.desiremc.hcf.listener.classes;
 
-import com.desiremc.core.api.FileHandler;
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.StringUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.event.ArmorEquipEvent;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -30,11 +23,19 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
+import com.desiremc.core.api.FileHandler;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.StringUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.events.ArmorEquipEvent;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
 
 public class ClassListener implements Listener
 {

@@ -14,14 +14,14 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.util.FactionsUtils;
-import com.massivecraft.factions.Faction;
 
 public class ChatListener implements Listener
 {
 
     private static final boolean DEBUG = false;
-    
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChat(AsyncPlayerChatEvent event)
     {

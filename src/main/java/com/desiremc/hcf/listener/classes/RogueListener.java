@@ -1,16 +1,10 @@
 package com.desiremc.hcf.listener.classes;
 
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.cache.Cache;
-import com.desiremc.core.utils.cache.RemovalListener;
-import com.desiremc.core.utils.cache.RemovalNotification;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.listener.MovementListener;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
-import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
@@ -24,10 +18,18 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.listener.MovementListener;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
+
+import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
 
 public class RogueListener implements DesireClass
 {

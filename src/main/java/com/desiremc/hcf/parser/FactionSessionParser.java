@@ -2,8 +2,9 @@ package com.desiremc.hcf.parser;
 
 import com.desiremc.core.api.command.ArgumentParser;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.FactionSession;
-import com.desiremc.hcf.session.FactionSessionHandler;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionHandler;
+
 import org.bukkit.command.CommandSender;
 
 public class FactionSessionParser implements ArgumentParser
@@ -12,13 +13,13 @@ public class FactionSessionParser implements ArgumentParser
     @Override
     public Object parseArgument(CommandSender sender, String label, String arg)
     {
-        FactionSession session = FactionSessionHandler.getFactionSession(arg);
+        Faction session = FactionHandler.getFaction(arg);
 
         if (session == null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "faction_null");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.not_found");
             return null;
         }
-        return FactionSessionHandler.getFactionSession(arg);
+        return FactionHandler.getFaction(arg);
     }
 }

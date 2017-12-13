@@ -22,7 +22,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
 {
 
     private static final boolean DEBUG = false;
-    
+
     private static HCFSession console;
 
     private static HCFSessionHandler instance;
@@ -55,21 +55,36 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
         instance = new HCFSessionHandler();
     }
 
-    public static Collection<HCFSession> getSessions()
+    /**
+     * Gets a collection of all currently connected {@link HCFSession}. This collection is immutable, so do not edit it
+     * or the operations will throw {@link UnsupportedOperationException UnsupportedOperationExceptions}
+     * 
+     * @return
+     */
+    public static Collection<HCFSession> getHCFSessions()
     {
         return Collections.unmodifiableCollection(getInstance().sessions.values());
     }
 
+    /**
+     * Gets the {@link HCFSession} of a user referenced by their {@link UUID} for the current server. This will not save
+     * them to the online player list.
+     * 
+     * @param uuid the {@link UUID} of the player.
+     * @return the {@link HCFSession} if found.
+     */
     public static HCFSession getHCFSession(UUID uuid)
     {
         return getHCFSession(uuid, DesireCore.getCurrentServer());
     }
 
     /**
-     * Gets the session of a user and initializes it if it does not yet exist.
+     * Gets the {@link HCFSession} of a user referenced by their {@link UUID} for the given server. This will not save
+     * them to the online player list.
      * 
-     * @param o
-     * @return
+     * @param uuid the {@link UUID} of the player.
+     * @param server the server to search for.
+     * @return the {@link HCFSession} if found.
      */
     public static HCFSession getHCFSession(UUID uuid, String server)
     {
@@ -208,7 +223,7 @@ public class HCFSessionHandler extends BasicDAO<HCFSession, Integer>
     private static HCFSession createHCFSession(UUID uuid, String server)
     {
         HCFSession session = new HCFSession();
-        session.assignDefault(uuid, server);
+        session.assignDefaults(uuid, server);
         getInstance().save(session);
 
         ConnectionListener.firstJoin.add(uuid);

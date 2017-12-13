@@ -1,42 +1,43 @@
 package com.desiremc.hcf.commands;
 
-import com.desiremc.core.api.command.ValidCommand;
+import java.util.List;
+
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.parser.FactionSessionParser;
-import com.desiremc.hcf.session.FactionSession;
-import com.desiremc.hcf.util.FactionsUtils;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.Faction;
-import org.bukkit.command.CommandSender;
+import com.desiremc.hcf.api.commands.FactionValidCommand;
+import com.desiremc.hcf.newparsers.FactionParser;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.faction.Faction;
 
-public class SetWinnerCommand extends ValidCommand
+public class SetWinnerCommand extends FactionValidCommand
 {
     public SetWinnerCommand()
     {
         super("setwinner", "Set this seasons winner.", Rank.ADMIN, new String[] { "faction" });
 
-        addParser(new FactionSessionParser(), "faction");
+        addArgument(CommandArgumentBuilder.createBuilder(Faction.class)
+                .setName("faction")
+                .setParser(new FactionParser())
+                .build());
+
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validFactionRun(HCFSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        FactionSession session = (FactionSession) args[0];
-        Faction faction = FactionsUtils.getFaction(session.getName());
+        Faction faction = (Faction) arguments.get(0).getValue();
 
-        for (FPlayer player : faction.getFPlayers())
+        for (HCFSession player : faction.getMembers())
         {
-            Session s = SessionHandler.getSession(player.getPlayer());
-            if (!s.hasAchievement(Achievement.FIRST_SEASON_WIN))
+            if (!player.hasAchievement(Achievement.FIRST_SEASON_WIN))
             {
-                s.awardAchievement(Achievement.FIRST_SEASON_WIN, true);
+                player.awardAchievement(Achievement.FIRST_SEASON_WIN, true);
             }
         }
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "set_winner", "{faction}", session.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "set_winner", "{faction}", faction.getName());
     }
 }

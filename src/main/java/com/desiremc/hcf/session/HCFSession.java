@@ -21,6 +21,7 @@ import org.mongodb.morphia.annotations.Transient;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.DeathBan;
 import com.desiremc.core.session.DeathBanHandler;
 import com.desiremc.core.session.PVPClass;
@@ -29,6 +30,11 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.Ticker;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.faction.ClaimSession;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionRank;
+import com.desiremc.hcf.session.faction.FactionSetting;
+import com.desiremc.hcf.util.FactionsUtils;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class HCFSession
@@ -53,6 +59,8 @@ public class HCFSession
 
     private double balance;
 
+    private long lastSeen;
+
     @Reference(ignoreMissing = true)
     private List<DeathBan> deathBans;
 
@@ -68,6 +76,17 @@ public class HCFSession
     private Map<Integer, Integer> kitUses;
 
     private Map<Integer, Long> kitCooldowns;
+
+    @Transient
+    private Faction parsedFaction;
+    private int factionId = -1;
+
+    private FactionRank factionRank;
+
+    private List<FactionSetting> factionSettings;
+
+    @Transient
+    private ClaimSession claimSession;
 
     @Transient
     private Session session;
@@ -91,6 +110,14 @@ public class HCFSession
         kitCooldowns = new HashMap<>();
     }
 
+    protected void assignDefaults(UUID uuid, String server)
+    {
+        this.id = HCFSessionHandler.getNextId();
+        this.uuid = uuid;
+        this.server = server;
+        this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
+    }
+
     protected void setId(int id)
     {
         this.id = id;
@@ -100,28 +127,6 @@ public class HCFSession
     protected int getId()
     {
         return id;
-    }
-
-    protected void assignDefault(UUID uuid, String server)
-    {
-        this.id = HCFSessionHandler.getNextId();
-        this.uuid = uuid;
-        this.server = server;
-        this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
-    }
-
-    public Rank getRank()
-    {
-        return session.getRank();
-    }
-
-    public Player getPlayer()
-    {
-        if (player == null)
-        {
-            player = PlayerUtils.getPlayer(uuid);
-        }
-        return player;
     }
 
     @IdGetter
@@ -135,20 +140,37 @@ public class HCFSession
         this.uuid = uuid;
     }
 
-    public String getName()
+    /**
+     * A single player can play on multiple instances of the factions servers. This is the literal string name of the
+     * server. In the future this may be converted to an enum or other more reliable design pattern, so use with
+     * caution.
+     * 
+     * @return the server this HCFSession is for.
+     */
+    public String getServer()
     {
-        return session.getName();
+        return server;
     }
 
+    /**
+     * Returns the amount of time, in milliseconds, that is left on the player's safe timer. This is used to keep track
+     * of whether or not they are allowed to partake in pvp.
+     * 
+     * @return the amount of safe time left.
+     */
     public long getSafeTimeLeft()
     {
         return safeTimer;
     }
 
+    /**
+     * Sets the amount of time left on a player's safe timer.
+     * 
+     * @param safeTimer the new amount of safe time left.
+     */
     public void setSafeTimeLeft(int safeTimer)
     {
         this.safeTimer = safeTimer;
-        save();
     }
 
     public int getLives()
@@ -197,24 +219,79 @@ public class HCFSession
         save();
     }
 
-    public int getTotalKills()
+    /**
+     * @return the last time a player was seen on the server in the form of a unix time stamp.
+     */
+    public long getLastSeen()
     {
-        int count = 0;
-        for (Ticker ticker : kills)
-        {
-            count += ticker.getCount();
-        }
-        return count;
+        return lastSeen;
     }
 
-    public int getTotalDeaths()
+    /**
+     * Sets the last time a player was seen. This is saved both when the player connects to the server as well as when
+     * they disconnect from the server.
+     * 
+     * @param lastSeen the last time the player was seen.
+     */
+    public void setLastSeen(long lastSeen)
     {
-        int count = 0;
-        for (Ticker ticker : deaths)
+        this.lastSeen = lastSeen;
+    }
+
+    public boolean hasDeathBan()
+    {
+        return getActiveDeathBan() != null;
+    }
+
+    public long getDeathBanEnd()
+    {
+        DeathBan ban = getActiveDeathBan();
+        return ban != null ? ban.getStartTime() : -1;
+    }
+
+    public DeathBan getActiveDeathBan()
+    {
+        if (DEBUG)
         {
-            count += ticker.getCount();
+            System.out.println("getActiveDeathBan() called.");
+            System.out.println("getActiveDeathBan() rank time = " + session.getRank().getDeathBanTime());
         }
-        return count;
+        for (DeathBan ban : deathBans)
+        {
+            if (DEBUG)
+            {
+                System.out.println("getActiveDeathBan() loop with values " + ban.getStartTime() + " and " + ban.isRevived());
+                System.out.println("getActiveDeathBan() times = " + (ban.getStartTime() + session.getRank().getDeathBanTime()) + " vs " + System.currentTimeMillis());
+            }
+            if (!ban.wasStaffRevived() && !ban.isRevived() && ban.getStartTime() + session.getRank().getDeathBanTime() > System.currentTimeMillis())
+            {
+                if (DEBUG)
+                {
+                    System.out.println("getActiveDeathBan() returned ban.");
+                }
+                return ban;
+            }
+        }
+        if (DEBUG)
+        {
+            System.out.println("getActiveDeathBan() returned null.");
+        }
+        return null;
+    }
+
+    public void revive(String reson, boolean staffRevived, UUID reviver)
+    {
+        DeathBan ban = getActiveDeathBan();
+        if (ban == null)
+        {
+            throw new IllegalStateException("Player does not have a deathban.");
+        }
+        ban.setRevived(true);
+        ban.setStaffRevive(staffRevived);
+        ban.setReviveReason(reson);
+        ban.setReviver(reviver);
+        ban.save();
+        save();
     }
 
     public void addKill(UUID victim)
@@ -236,6 +313,16 @@ public class HCFSession
         {
             tick.setCount(tick.getCount() + 1);
         }
+    }
+
+    public int getTotalKills()
+    {
+        int count = 0;
+        for (Ticker ticker : kills)
+        {
+            count += ticker.getCount();
+        }
+        return count;
     }
 
     public void addDeath(UUID killer)
@@ -270,14 +357,188 @@ public class HCFSession
         }
     }
 
-    public int getTokens()
+    public int getTotalDeaths()
     {
-        return session.getTokens();
+        int count = 0;
+        for (Ticker ticker : deaths)
+        {
+            count += ticker.getCount();
+        }
+        return count;
     }
 
-    public void sendMessage(String message)
+    public OreData getCurrentOre()
     {
-        getPlayer().sendMessage(message);
+        if (currentOre == null)
+        {
+            currentOre = new OreData();
+        }
+        return currentOre;
+    }
+
+    public void useKit(HKit kit)
+    {
+        Integer val = kitUses.get(kit.getId());
+        if (val == null)
+        {
+            val = 1;
+        }
+        kitUses.put(kit.getId(), val);
+        kitCooldowns.put(kit.getId(), System.currentTimeMillis());
+    }
+
+    public long getKitCooldown(HKit kit)
+    {
+        Long val = kitCooldowns.get(kit.getId());
+
+        if (val == null)
+        {
+            return 0;
+        }
+
+        return Long.max(0, (kit.getCooldown() * 1000) - (System.currentTimeMillis() - val));
+    }
+
+    public boolean hasKitCooldown(HKit kit)
+    {
+        return getKitCooldown(kit) > 0;
+    }
+
+    /**
+     * If {@link #parsedFaction} is null, it means it has not been properly initialized. This ensures the faction is
+     * loaded properly already.
+     */
+    private void checkFaction()
+    {
+        if (parsedFaction == null)
+        {
+            parsedFaction = FactionsUtils.getFaction(factionId);
+        }
+    }
+
+    /**
+     * @return {@code true} if this player is in a faction.<br>
+     *         {@code false} if this player is not in a faction.
+     */
+    public boolean hasFaction()
+    {
+        checkFaction();
+        return !parsedFaction.isWilderness();
+    }
+
+    /**
+     * Returns this player's faction. If they are not in a faction this will return null.
+     * 
+     * @return this player's faction.
+     */
+    public Faction getFaction()
+    {
+        checkFaction();
+        return parsedFaction;
+    }
+
+    /**
+     * Sets this palyer's {@link Faction} to the given value. This does nothing more than updating a value.
+     * 
+     * @param faction the new {@link Faction}.
+     */
+    public void setFaction(Faction faction)
+    {
+        this.factionId = faction.getId();
+        this.parsedFaction = faction;
+    }
+
+    /**
+     * @return the player's active {@link ClaimSession}.
+     */
+    public ClaimSession getClaimSession()
+    {
+        return claimSession;
+    }
+
+    /**
+     * @return {@code true} if the player has a {@link ClaimSession}.
+     */
+    public boolean hasClaimSession()
+    {
+        return claimSession != null;
+    }
+
+    /**
+     * Clears out the player's current active {@link ClaimSession}.
+     */
+    public void clearClaimSession()
+    {
+        claimSession = null;
+    }
+
+    /**
+     * Returns the rank that this player holds in their faction. If they are not in a faction this will return null.
+     * 
+     * @return the rank a player holds in their faction.
+     */
+    public FactionRank getFactionRank()
+    {
+        return factionRank;
+    }
+
+    /**
+     * Sets this player's faction rank to the given value. This does nothing more than updating a value.
+     * 
+     * @param factionRank
+     */
+    public void setFactionRank(FactionRank factionRank)
+    {
+        this.factionRank = factionRank;
+    }
+
+    /**
+     * @param setting the setting to check if it's enabled.
+     * @return {@code true} if the settings contains the parameter.<br>
+     *         {@code false} if the settings does not contain the parameter.
+     */
+    public boolean hasSetting(FactionSetting setting)
+    {
+        if (factionSettings.contains(setting))
+        {
+            return true;
+        }
+        return false;
+    }
+
+    /**
+     * @param setting the setting to add.
+     */
+    public void addSetting(FactionSetting setting)
+    {
+        factionSettings.add(setting);
+    }
+
+    /**
+     * @param setting the setting to remove.
+     */
+    public void removeSetting(FactionSetting setting)
+    {
+        factionSettings.remove(setting);
+    }
+
+    /**
+     * @return a player's session.
+     */
+    public Session getSession()
+    {
+        return session;
+    }
+
+    /**
+     * Set a player's session. This should only be done when the HCFSession is loaded, which why it is protected rather
+     * than public.
+     * 
+     * @param session the corresponding Session.
+     */
+    protected void setSession(Session session)
+    {
+        this.session = session;
     }
 
     public PVPTimer getSafeTimer()
@@ -285,71 +546,10 @@ public class HCFSession
         return pvpTimer;
     }
 
-    public boolean hasDeathBan()
-    {
-        return getActiveDeathBan() != null;
-    }
-
-    public long getDeathBanEnd()
-    {
-        DeathBan ban = getActiveDeathBan();
-        return ban != null ? ban.getStartTime() : -1;
-    }
-
-    public void revive(String reson, boolean staffRevived, UUID reviver)
-    {
-        DeathBan ban = getActiveDeathBan();
-        if (ban == null)
-        {
-            throw new IllegalStateException("Player does not have a deathban.");
-        }
-        ban.setRevived(true);
-        ban.setStaffRevive(staffRevived);
-        ban.setReviveReason(reson);
-        ban.setReviver(reviver);
-        ban.save();
-        save();
-    }
-
     public void resetPVPTimer()
     {
         pvpTimer = new PVPTimer();
         safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
-    }
-
-    public DeathBan getActiveDeathBan()
-    {
-        if (DEBUG)
-        {
-            System.out.println("getActiveDeathBan() called.");
-            System.out.println("getActiveDeathBan() rank time = " + session.getRank().getDeathBanTime());
-        }
-        for (DeathBan ban : deathBans)
-        {
-            if (DEBUG)
-            {
-                System.out.println("getActiveDeathBan() loop with values " + ban.getStartTime() + " and " + ban.isRevived());
-                System.out.println("getActiveDeathBan() times = " + (ban.getStartTime() + session.getRank().getDeathBanTime()) + " vs " + System.currentTimeMillis());
-            }
-            if (!ban.wasStaffRevived() && !ban.isRevived() && ban.getStartTime() + session.getRank().getDeathBanTime() > System.currentTimeMillis())
-            {
-                if (DEBUG)
-                {
-                    System.out.println("getActiveDeathBan() returned ban.");
-                }
-                return ban;
-            }
-        }
-        if (DEBUG)
-        {
-            System.out.println("getActiveDeathBan() returned null.");
-        }
-        return null;
-    }
-
-    public void setSession(Session session)
-    {
-        this.session = session;
     }
 
     @Override
@@ -373,6 +573,98 @@ public class HCFSession
         }
         return array;
     }
+
+    // ========================================================
+    // | The following methods are all convenience methods    |
+    // | to easily access things from Session without having  |
+    // | to manually call getSession()                        |
+    // ========================================================
+
+    /**
+     * A convenience method for {@link Session#getRank()}.
+     * 
+     * @return the player's rank.
+     */
+    public Rank getRank()
+    {
+        return session.getRank();
+    }
+
+    /**
+     * A convenience method for {@link Session#getPlayer()}.
+     * 
+     * @return the Bukkit player instance.
+     */
+    public Player getPlayer()
+    {
+        return session.getPlayer();
+    }
+
+    /**
+     * A convenience method for {@link Session#isOnline()}.
+     * 
+     * @return {@code true} if the player is online. {@code false} otherwise.
+     */
+    public boolean isOnline()
+    {
+        return session.isOnline();
+    }
+
+    /**
+     * A convenience method for {@link Session#getName()}.
+     * 
+     * @return the player's name.
+     */
+    public String getName()
+    {
+        return session.getName();
+    }
+
+    /**
+     * A convenience method for {@link Session#getTokens()}.
+     * 
+     * @return the tokens
+     */
+    public int getTokens()
+    {
+        return session.getTokens();
+    }
+
+    /**
+     * A convenience method for {@link Session#sendMessage()}.
+     * 
+     * @param message
+     */
+    public void sendMessage(String message)
+    {
+        session.sendMessage(message);
+    }
+
+    /**
+     * A convenience method for {@link Session#hasAchievement(Achievement)}.
+     * 
+     * @param achievement
+     * @return {@code true} if the player has the achievement.
+     */
+    public boolean hasAchievement(Achievement achievement)
+    {
+        return session.hasAchievement(achievement);
+    }
+
+    /**
+     * A convenience method for {@link Session#awardAchievement(Achievement, boolean)}.
+     * 
+     * @param achievement the achievement.
+     * @param inform whether to inform the player.
+     */
+    public void awardAchievement(Achievement achievement, boolean inform)
+    {
+        session.awardAchievement(achievement, inform);
+    }
+
+    // ========================================================
+    // | End of convenience methods                           |
+    // ========================================================
 
     private static final DecimalFormat df = new DecimalFormat("00");
 
@@ -443,45 +735,8 @@ public class HCFSession
         save();
     }
 
-    public OreData getCurrentOre()
-    {
-        if (currentOre == null)
-        {
-            currentOre = new OreData();
-        }
-        return currentOre;
-    }
-
     public void save()
     {
         HCFSessionHandler.getInstance().save(this);
-    }
-
-    public void useKit(HKit kit)
-    {
-        Integer val = kitUses.get(kit.getId());
-        if (val == null)
-        {
-            val = 1;
-        }
-        kitUses.put(kit.getId(), val);
-        kitCooldowns.put(kit.getId(), System.currentTimeMillis());
-    }
-
-    public long getKitCooldown(HKit kit)
-    {
-        Long val = kitCooldowns.get(kit.getId());
-
-        if (val == null)
-        {
-            return 0;
-        }
-
-        return Long.max(0, (kit.getCooldown() * 1000) - (System.currentTimeMillis() - val));
-    }
-
-    public boolean hasKitCooldown(HKit kit)
-    {
-        return getKitCooldown(kit) > 0;
     }
 }

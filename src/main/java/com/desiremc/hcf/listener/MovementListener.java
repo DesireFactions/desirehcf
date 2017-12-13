@@ -1,6 +1,6 @@
 package com.desiremc.hcf.listener;
 
-import com.desiremc.core.utils.Utils;
+import com.desiremc.core.utils.BukkitUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.HCFSession;
@@ -78,11 +78,11 @@ public class MovementListener implements Listener
         }
         if (e.getTo().getWorld().getEnvironment() == Environment.THE_END && e.getFrom().getWorld().getEnvironment() != Environment.THE_END)
         {
-            e.setTo(Utils.toLocation(DesireHCF.getConfigHandler().getString("set_end.spawn")));
+            e.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("set_end.spawn")));
         }
         else if (e.getTo().getWorld().getEnvironment() != Environment.THE_END && e.getFrom().getWorld().getEnvironment() == Environment.THE_END)
         {
-            e.setTo(Utils.toLocation(DesireHCF.getConfigHandler().getString("set_end.exit")));
+            e.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("set_end.exit")));
         }
     }
 

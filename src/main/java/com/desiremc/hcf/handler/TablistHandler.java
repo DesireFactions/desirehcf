@@ -17,8 +17,9 @@ import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.tablist.TabAPI;
 import com.desiremc.core.tablist.TabList;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
-import com.massivecraft.factions.FPlayer;
 
 public class TablistHandler implements Listener
 {
@@ -105,7 +106,7 @@ public class TablistHandler implements Listener
                 }
 
                 // get the faction's player store
-                FPlayer user = FactionsUtils.getFPlayer(player);
+                HCFSession user = HCFSessionHandler.getHCFSession(player.getUniqueId());
                 if (user == null)
                 {
                     return;
@@ -118,14 +119,23 @@ public class TablistHandler implements Listener
                 int i = 0;
 
                 // set all online players.
-                for (FPlayer fp : FactionsUtils.getOnlineFPlayers())
+                for (HCFSession session : FactionsUtils.getOnlineHCFSessions())
                 {
-                    if (fp.getPlayer() == ignored)
+                    if (session.getPlayer() == ignored)
                     {
                         continue;
                     }
                     String prefix = null, name, suffix = "";
-                    String str = (fp.getFaction().isNormal() ? FactionsUtils.getRelationshipColor(user.getRelationTo(fp)) : ChatColor.YELLOW) + fp.getPlayer().getName();
+                    ChatColor color;
+                    if (!session.hasFaction() || !user.hasFaction())
+                    {
+                        color = ChatColor.YELLOW;
+                    }
+                    else
+                    {
+                        color = FactionsUtils.getRelationshipColor(session.getFaction().getRelationshipTo(user.getFaction()));
+                    }
+                    String str = color + session.getName();
 
                     if (str.length() <= 16)
                     {
@@ -152,7 +162,7 @@ public class TablistHandler implements Listener
                     }
                     i++;
                 }
-                
+
                 // update the player list
                 list.update();
             }

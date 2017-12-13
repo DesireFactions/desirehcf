@@ -1,71 +1,167 @@
 package com.desiremc.hcf.util;
 
-import com.desiremc.core.session.Session;
-import com.desiremc.hcf.session.FactionSession;
-import com.desiremc.hcf.session.FactionSessionHandler;
-import com.desiremc.hcf.session.HCFSession;
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
-import com.massivecraft.factions.struct.Relation;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import com.desiremc.core.session.Session;
+import com.desiremc.core.utils.BlockColumn;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionHandler;
+import com.desiremc.hcf.session.faction.FactionRelationship;
+import com.desiremc.hcf.session.faction.FactionType;
+
 public class FactionsUtils
 {
 
+    /**
+     * Gets the {@link Faction} by the given id, if one exists.
+     * 
+     * @param id the id to check.
+     * @return the {@link Faction} if found.
+     */
+    public static Faction getFaction(int id)
+    {
+        Faction faction = FactionHandler.getFaction(id);
+        return faction;
+    }
+
+    /**
+     * Get the {@link Faction} by the given name, if one exists.
+     * 
+     * @param name the name to check.
+     * @return the {@link Faction} if found.
+     */
     public static Faction getFaction(String name)
     {
-        Faction f = Factions.getInstance().getByTag(name);
+        Faction f = FactionHandler.getFaction(name);
         return f;
     }
 
-    public static Faction getFaction(Player p)
-    {
-        return getFaction(p.getUniqueId());
-    }
-
-    public static Faction getFaction(UUID uuid)
-    {
-        FPlayer fp = FPlayers.getInstance().getById(uuid.toString());
-
-        return fp != null && fp.getFaction() != null ? fp.getFaction() : null;
-    }
-
+    /**
+     * Get the faction that has claimed the land at the given location.
+     * 
+     * @param loc the location to check.
+     * @return the faction if one exists.
+     */
     public static Faction getFaction(Location loc)
     {
-        return Board.getInstance().getFactionAt(new FLocation(loc));
+        return FactionHandler.getFaction(loc);
     }
 
-    public static Faction getFaction(HCFSession s)
+    /**
+     * Get the faction that has claimed the land at the given block column.
+     * 
+     * @param blockColumn the block column.
+     * @return the faction if one exists.
+     */
+    public static Faction getFaction(BlockColumn blockColumn)
     {
-        return getFaction(s.getUniqueId());
+        return FactionHandler.getFaction(blockColumn);
     }
 
-    public static Faction getFaction(Session s)
+    /**
+     * Get the faction of the given {@link Player}.
+     * 
+     * @param player the {@link Player} to check.
+     * @return the {@link Faction} if the {@link Player} has one.
+     */
+    public static Faction getFaction(Player player)
     {
-        return getFaction(s.getUniqueId());
+        return getFaction(player.getUniqueId());
     }
 
+    /**
+     * Get the faction of the given {@link Session}.
+     * 
+     * @param session the {@link Session} to check.
+     * @return the {@link Faction} if the {@link Session} has one.
+     */
+    public static Faction getFaction(Session session)
+    {
+        return getFaction(session.getUniqueId());
+    }
+
+    /**
+     * Get the faction of the player referenced by their UUID. If the player is not found, returns null rather than the
+     * Wilderness faction.
+     * 
+     * @param uuid the uuid of the player to search for.
+     * @return
+     */
+    public static Faction getFaction(UUID uuid)
+    {
+        HCFSession hcfSession = HCFSessionHandler.getHCFSession(uuid);
+
+        return hcfSession != null && hcfSession.getFaction() != null ? hcfSession.getFaction() : null;
+    }
+
+    /**
+     * Get the faction of the given {@link HCFSession}.
+     * 
+     * @param hcfSession the {@link HCFSession} to check.
+     * @return the {@link Faction} if the {@link HCFSession} has one.
+     */
+    public static Faction getFaction(HCFSession hcfSession)
+    {
+        return hcfSession.getFaction();
+    }
+
+    /**
+     * @return an immutable view of all the factions.
+     */
+    public static Collection<Faction> getFactions()
+    {
+        return Collections.unmodifiableCollection(FactionHandler.getFactions());
+    }
+
+    /**
+     * @return a mutable collection of all factions' names.
+     */
+    public static Collection<String> getFactionNames()
+    {
+        List<String> names = new LinkedList<>();
+        for (Faction faction : FactionHandler.getFactions())
+        {
+            names.add(faction.getName());
+        }
+        return names;
+    }
+
+    /**
+     * Checks if the given {@link Faction} is the Wilderness.
+     * 
+     * @param f the faction to check.
+     * @return {@code true} if the given faction is the Wilderness.
+     */
     public static boolean isWilderness(Faction f)
     {
         return isNone(f);
     }
 
+    /**
+     * Checks if the given {@link Faction} is nothing. In the current Faction system, this is the same as checking if
+     * the faction {@link #isWilderness(Faction)}.
+     * 
+     * @param f the faction to check.
+     * @return {@code true} if the given faction is the Wilderness.
+     */
     public static boolean isNone(Faction f)
     {
-        return f == Factions.getInstance().getNone();
+        if (f == null)
+        {
+            return false;
+        }
+        return f.isWilderness();
     }
 
     public static String[] getMouseoverDetails(Faction f)
@@ -79,15 +175,13 @@ public class FactionsUtils
         }
         else
         {
-            FactionSession fSession = FactionSessionHandler.getFactionSession(f.getTag());
+            Faction fSession = FactionHandler.getFaction(f.getName());
 
             return new String[] {
                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
-                    ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getTag() : "NONE"),
-                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() :
-                            "NONE"),
-                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ?
-                            fSession.getTrophies() : "---")
+                    ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getName() : "NONE"),
+                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getMemberSize() : "NONE"),
+                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "---")
             };
         }
     }
@@ -102,111 +196,111 @@ public class FactionsUtils
         return getMouseoverDetails(getFaction(s));
     }
 
+    /**
+     * Get a list of faction members that are within the given range of the given player.
+     * 
+     * @param player the player
+     * @param range the range
+     * @return a list of faction members within range.
+     */
     public static List<Player> getFactionMembersInRange(Player player, int range)
     {
         List<Player> inRange = new ArrayList<>();
 
-        for (Player p : Bukkit.getOnlinePlayers())
+        Faction faction = getFaction(player);
+        if (faction == null || faction.isWilderness())
         {
-            if (p.getName().equalsIgnoreCase(player.getName()))
-            {
-                continue;
-            }
+            return inRange;
+        }
 
-            if (getFaction(p) == null || getFaction(player) == null)
+        for (HCFSession member : faction.getOnlineMembers())
+        {
+            if (member.getPlayer() != player)
             {
-                continue;
-            }
-
-            if (!getFaction(p).equals(getFaction(player)))
-            {
-                continue;
-            }
-
-            if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
-            {
-                inRange.add(p);
+                inRange.add(member.getPlayer());
             }
         }
 
         return inRange;
     }
 
-    //gets enemies and neutral players
+    /**
+     * Get a list of all non-allies that are within the given range of the given player.
+     * 
+     * @param player the player
+     * @param range the range
+     * @return a list of non-allies within range.
+     */
     public static List<Player> getEnemiesInRange(Player player, int range)
     {
         List<Player> inRange = new ArrayList<>();
 
-        for (Player p : Bukkit.getOnlinePlayers())
+        Faction faction = getFaction(player);
+        if (faction == null || faction.isWilderness())
         {
-            if (p.getName().equalsIgnoreCase(player.getName()))
-            {
-                continue;
-            }
-            if (getFaction(player) != null && getFaction(p) != null)
-            {
-                if (getFaction(p).equals(getFaction(player)))
-                {
-                    continue;
-                }
-            }
+            return inRange;
+        }
 
-            if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
+        for (HCFSession session : HCFSessionHandler.getHCFSessions())
+        {
+            if (session.getFaction().getRelationshipTo(faction).canDamage())
             {
-                inRange.add(p);
+                inRange.add(session.getPlayer());
             }
         }
 
         return inRange;
     }
 
-    //gets allies in range
+    /**
+     * Gets a list of all allies and faction members within the given range of the given player.
+     * 
+     * @param player the player
+     * @param range the range
+     * @return a list of allies and faction members.
+     */
     public static List<Player> getAlliesInRange(Player player, int range)
     {
         List<Player> inRange = new ArrayList<>();
 
-        for (Player p : Bukkit.getOnlinePlayers())
+        Faction faction = getFaction(player);
+        if (faction == null || faction.isWilderness())
         {
-            if (p.getName().equalsIgnoreCase(player.getName()))
-            {
-                continue;
-            }
+            return inRange;
+        }
 
-            if (getFaction(p) == null || getFaction(player) == null)
+        for (Faction ally : faction.getAllies())
+        {
+            for (HCFSession hcfSession : ally.getOnlineMembers())
             {
-                continue;
+                if (hcfSession.getPlayer().getLocation().distanceSquared(player.getLocation()) <= (range * range))
+                {
+                    inRange.add(hcfSession.getPlayer());
+                }
             }
+        }
 
-            if (getFaction(p).getRelationTo(getFaction(player)) != Relation.ALLY)
+        for (HCFSession member : faction.getOnlineMembers())
+        {
+            if (member.getPlayer() != player && member.getPlayer().getLocation().distanceSquared(player.getLocation()) <= (range * range))
             {
-                continue;
-            }
-
-            if (player.getLocation().distanceSquared(p.getLocation()) <= (range * range))
-            {
-                inRange.add(p);
+                inRange.add(member.getPlayer());
             }
         }
 
         return inRange;
     }
 
-    public static Collection<FPlayer> getOnlineFPlayers()
+    public static Collection<HCFSession> getOnlineHCFSessions()
     {
-        LinkedList<FPlayer> online = new LinkedList<>();
-        for (Player p : Bukkit.getOnlinePlayers())
-        {
-            online.add(getFPlayer(p));
-        }
+        LinkedList<HCFSession> online = new LinkedList<>(HCFSessionHandler.getHCFSessions());
+
+        online.removeIf(check -> !check.isOnline());
+
         return online;
     }
 
-    public static FPlayer getFPlayer(Player p)
-    {
-        return FPlayers.getInstance().getByPlayer(p);
-    }
-
-    public static ChatColor getRelationshipColor(Relation r)
+    public static ChatColor getRelationshipColor(FactionRelationship r)
     {
         switch (r)
         {
@@ -227,7 +321,7 @@ public class FactionsUtils
     {
         Faction faction = getFaction(player.getLocation());
 
-        return faction.isSafeZone();
+        return faction.getType() == FactionType.SAFEZONE;
     }
 
 }

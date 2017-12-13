@@ -26,11 +26,12 @@ public class PVPCommand extends ValidCommand
     @Override
     public void validRun(CommandSender sender, String label, Object... args)
     {
-        HCFSession s = HCFSessionHandler.getHCFSession(((Player) sender).getUniqueId());
+        HCFSession session = HCFSessionHandler.getHCFSession(((Player) sender).getUniqueId());
 
-        s.setSafeTimeLeft(0);
+        session.setSafeTimeLeft(0);
+        session.save();
         DesireHCF.getLangHandler().sendString(sender, "pvp.disabled");
-        EntryRegistry.getInstance().removeValue(s.getPlayer(), DesireHCF.getLangHandler().getStringNoPrefix("pvp.scoreboard"));
+        EntryRegistry.getInstance().removeValue(session.getPlayer(), DesireHCF.getLangHandler().getStringNoPrefix("pvp.scoreboard"));
     }
 
 }
