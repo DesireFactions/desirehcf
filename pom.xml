@@ -40,12 +40,7 @@
 			<artifactId>worldedit-bukkit</artifactId>
 			<version>6.1.5</version>
 		</dependency>
-		<!-- Factions API -->
-		<dependency>
-			<groupId>com.massivecraft</groupId>
-			<artifactId>HCFactions</artifactId>
-			<version>0.0.8</version>
-		</dependency>
+		<!-- WorldGuard API -->
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
             <artifactId>worldguard</artifactId>
