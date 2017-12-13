@@ -29,9 +29,9 @@ public class MovementListener implements Listener
         if (TagHandler.isTagged(e.getPlayer()))
         {
             boolean valid = true;
-            for (Region r : RegionHandler.getInstance().getRegions())
+            for (Region region : RegionHandler.getRegions())
             {
-                if (r.getWorld().equalsIgnoreCase(e.getTo().getWorld().getName()) && r.getRegion().isWithin(e.getTo()))
+                if (region.getWorld() == e.getTo().getWorld() && region.getRegionBlocks().isWithin(e.getTo()))
                 {
                     if (TagHandler.hasLastValidLocation(e.getPlayer().getUniqueId()))
                     {
@@ -49,20 +49,20 @@ public class MovementListener implements Listener
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
             }
         }
-        HCFSession s = HCFSessionHandler.getHCFSession(e.getPlayer().getUniqueId());
-        if (s.getSafeTimeLeft() > 0)
+        HCFSession hcfSession = HCFSessionHandler.getHCFSession(e.getPlayer().getUniqueId());
+        if (hcfSession.getSafeTimeLeft() > 0)
         {
-            for (Region r : RegionHandler.getInstance().getRegions())
+            for (Region region : RegionHandler.getRegions())
             {
-                if (r.getWorld().equalsIgnoreCase(e.getTo().getWorld().getName()))
+                if (region.getWorld() == e.getTo().getWorld())
                 {
-                    if (r.getRegion().isWithin(e.getTo()))
+                    if (region.getRegionBlocks().isWithin(e.getTo()))
                     {
-                        s.getSafeTimer().pause();
+                        hcfSession.getSafeTimer().pause();
                     }
-                    else if (r.getRegion().isWithin(e.getFrom()))
+                    else if (region.getRegionBlocks().isWithin(e.getFrom()))
                     {
-                        s.getSafeTimer().resume();
+                        hcfSession.getSafeTimer().resume();
                     }
                 }
             }
@@ -90,7 +90,6 @@ public class MovementListener implements Listener
     {
         return l1.getBlockX() != l2.getBlockX() || l1.getBlockY() != l2.getBlockY() || l1.getBlockZ() != l2.getBlockZ();
     }
-
 
     private boolean isOnGround(Player player)
     {

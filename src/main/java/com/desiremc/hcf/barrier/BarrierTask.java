@@ -45,15 +45,15 @@ public class BarrierTask implements Runnable
                 localCache = new HashSet<>();
             }
 
-            for (Region r : RegionHandler.getInstance().getRegions())
+            for (Region region : RegionHandler.getRegions())
             {
-                for (Block b : r.getRegion().getWallBlocks(Bukkit.getWorld(r.getWorld())))
+                for (Block b : region.getRegionBlocks().getWallBlocks(region.getWorld()))
                 {
                     if (b.getType() == Material.AIR)
                     {
-                        if (b.getLocation().distanceSquared(p.getLocation()) <= r.getViewDistance() * r.getViewDistance())
+                        if (b.getLocation().distanceSquared(p.getLocation()) <= region.getViewDistance() * region.getViewDistance())
                         {
-                            p.sendBlockChange(b.getLocation(), r.getBarrierMaterial(), (byte) r.getBarrierMaterialData());
+                            p.sendBlockChange(b.getLocation(), region.getBarrierMaterial(), (byte) region.getBarrierMaterialData());
                             localCache.add(b);
                         }
                         else if (localCache.contains(b))

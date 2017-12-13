@@ -8,12 +8,6 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
-	<repositories>
-		<repository>
-			<id>sk89q-repo</id>
-			<url>http://maven.sk89q.com/repo/</url>
-		</repository>
-	</repositories>
 	<dependencies>
 		<!-- Spigot API -->
 		<dependency>
@@ -33,12 +27,6 @@
 			<groupId>com.desiremc.npc</groupId>
 			<artifactId>DesireNPC</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
-		<!-- WorldEdit API -->
-		<dependency>
-			<groupId>com.sk89q.worldedit</groupId>
-			<artifactId>worldedit-bukkit</artifactId>
-			<version>6.1.5</version>
 		</dependency>
 		<!-- WorldGuard API -->
         <dependency>

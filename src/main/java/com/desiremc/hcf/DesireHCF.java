@@ -1,5 +1,11 @@
 package com.desiremc.hcf;
 
+import java.io.File;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -55,13 +61,7 @@ import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.FactionHandler;
-import com.sk89q.worldedit.bukkit.WorldEditPlugin;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
@@ -144,7 +144,6 @@ public class DesireHCF extends JavaPlugin
         customCommandHandler.registerCommand(new HCFReloadCommand(), this);
         customCommandHandler.registerCommand(new LivesCommand(), this);
         customCommandHandler.registerCommand(new PVPCommand(), this);
-        customCommandHandler.registerCommand(new RegionCommand(), this);
         customCommandHandler.registerCommand(new SetEndCommand(), this);
         customCommandHandler.registerCommand(new LogoutCommand(), this);
         customCommandHandler.registerCommand(new ReviveCommand(), this);
@@ -159,17 +158,7 @@ public class DesireHCF extends JavaPlugin
         commandHandler.registerCommand(new SpawnCommand(), this);
         commandHandler.registerCommand(new FStatCommand(), this);
         commandHandler.registerCommand(new SetWinnerCommand(), this);
-    }
-
-    public static WorldEditPlugin getWorldEdit()
-    {
-        Plugin p = Bukkit.getPluginManager().getPlugin("WorldEdit");
-        if (p == null)
-        {
-            System.out.println("This could would crash if that were to happen.");
-            return null;
-        }
-        return (WorldEditPlugin) p;
+        commandHandler.registerCommand(new RegionCommand(), this);
     }
 
     public static WorldGuardPlugin getWorldGuard()

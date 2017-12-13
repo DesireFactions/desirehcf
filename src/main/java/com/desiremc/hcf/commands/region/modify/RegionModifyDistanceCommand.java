@@ -1,41 +1,51 @@
 package com.desiremc.hcf.commands.region.modify;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.IntegerParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newparsers.PositiveIntegerParser;
+import com.desiremc.core.newvalidators.NumberSizeValidator;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.IntegerSizeValidator;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.parser.RegionParser;
+import com.desiremc.hcf.newparsers.RegionParser;
 import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
 
 public class RegionModifyDistanceCommand extends ValidCommand
 {
 
     public RegionModifyDistanceCommand()
     {
-        super("distance", "Change the view distance of a region.", Rank.ADMIN, new String[] { "region", "distance" });
+        super("distance", "Change the view distance of a region.", Rank.ADMIN);
 
-        addParser(new RegionParser(), "region");
-        addParser(new IntegerParser(), "distance");
+        addArgument(CommandArgumentBuilder.createBuilder(Region.class)
+                .setName("region")
+                .setParser(new RegionParser())
+                .build());
 
-        addValidator(new IntegerSizeValidator(1, DesireHCF.getConfigHandler().getInteger("barrier.max-distance")), "distance");
+        addArgument(CommandArgumentBuilder.createBuilder(Integer.class)
+                .setName("distnace")
+                .setParser(new PositiveIntegerParser())
+                .addValidator(new NumberSizeValidator<Integer>(1, DesireHCF.getConfigHandler().getInteger("barrier.max-distance")))
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        Region r = (Region) args[0];
-        int distance = (Integer) args[1];
-        int oldDistance = r.getViewDistance();
-        r.setViewDistance(distance);
-        RegionHandler.getInstance().save(r);
+        Region region = (Region) arguments.get(0).getValue();
+        int distance = (Integer) arguments.get(1).getValue();
+
+        int oldDistance = region.getViewDistance();
+
+        region.setViewDistance(distance);
+        region.save();
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "region.change",
                 "{change}", "distance",
-                "{region}", r.getName(),
+                "{region}", region.getName(),
                 "{old}", oldDistance,
                 "{new}", distance);
 

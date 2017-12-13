@@ -1,5 +1,24 @@
 package com.desiremc.hcf.listener;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.fanciful.FancyMessage;
@@ -21,24 +40,6 @@ import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCRegistry;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-
-import java.util.UUID;
 
 public class CombatListener implements Listener
 {
@@ -119,15 +120,15 @@ public class CombatListener implements Listener
 
                 // 0 = valid, 1 = damager in region, 2 = victim in region
                 int state = 0;
-                for (Region r : RegionHandler.getInstance().getRegions())
+                for (Region region : RegionHandler.getRegions())
                 {
-                    if (r.getRegion().isWithin(damager.getLocation()))
+                    if (region.getRegionBlocks().isWithin(damager.getLocation()))
                     {
                         DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.damager_safe");
                         state = 1;
                         break;
                     }
-                    else if (r.getRegion().isWithin(victim.getLocation()))
+                    else if (region.getRegionBlocks().isWithin(victim.getLocation()))
                     {
                         DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.victim_zone");
                         state = 2;
@@ -228,9 +229,10 @@ public class CombatListener implements Listener
 
             // console wants to know too
             DesireHCF.getInstance().getLogger().info(message.toOldMessageFormat());
-        } catch (
+        }
+        catch (
 
-                Exception ex)
+        Exception ex)
         {
             ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
         }

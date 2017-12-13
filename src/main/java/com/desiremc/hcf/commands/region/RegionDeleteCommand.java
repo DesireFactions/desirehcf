@@ -1,11 +1,14 @@
 package com.desiremc.hcf.commands.region;
 
-import org.bukkit.command.CommandSender;
+import java.util.List;
 
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.parser.RegionParser;
+import com.desiremc.hcf.newparsers.RegionParser;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 
@@ -14,18 +17,21 @@ public class RegionDeleteCommand extends ValidCommand
 
     public RegionDeleteCommand()
     {
-        super("delete", "Delete a protected region.", Rank.ADMIN, new String[] { "name" }, "remove");
+        super("delete", "Delete a protected region.", Rank.ADMIN, new String[] { "remove" });
 
-        addParser(new RegionParser(), "name");
+        addArgument(CommandArgumentBuilder.createBuilder(Region.class)
+                .setName("region")
+                .setParser(new RegionParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        Region r = (Region) args[0];
-        RegionHandler.getInstance().delete(r);
+        Region region = (Region) arguments.get(0).getValue();
+        RegionHandler.getInstance().delete(region);
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.delete", "{name}", r.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.delete", "{name}", region.getName());
     }
 
 }

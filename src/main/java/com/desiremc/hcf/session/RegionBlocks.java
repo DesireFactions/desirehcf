@@ -19,7 +19,7 @@ public class RegionBlocks
     private int maxY;
     private int maxZ;
 
-    private double longestDistance;
+    private double longestDistance = -1;
 
     public RegionBlocks(int minX, int minY, int minZ, int maxX, int maxY, int maxZ)
     {
@@ -55,6 +55,10 @@ public class RegionBlocks
 
     public double getLongestDistance()
     {
+        if (longestDistance == -1)
+        {
+            calculate();
+        }
         return longestDistance;
     }
 

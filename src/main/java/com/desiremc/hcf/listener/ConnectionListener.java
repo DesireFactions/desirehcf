@@ -1,5 +1,20 @@
 package com.desiremc.hcf.listener;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
+import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.session.Achievement;
@@ -13,20 +28,6 @@ import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
-import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
 
 public class ConnectionListener implements Listener
 {
@@ -48,9 +49,9 @@ public class ConnectionListener implements Listener
         Player p = e.getPlayer();
         HCFSession session = HCFSessionHandler.initializeHCFSession(e.getPlayer().getUniqueId(), true);
         boolean safe = false;
-        for (Region r : RegionHandler.getInstance().getRegions())
+        for (Region region : RegionHandler.getRegions())
         {
-            if (r.getWorld().equalsIgnoreCase(p.getLocation().getWorld().getName()) && r.getRegion().isWithin(p.getLocation()))
+            if (region.getWorld() == p.getLocation().getWorld() && region.getRegionBlocks().isWithin(p.getLocation()))
             {
                 safe = true;
             }

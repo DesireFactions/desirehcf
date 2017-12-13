@@ -381,3 +381,7 @@ factions:
     cost:
       block: 0.25
       existing_scale: 500
+  names:
+    length:
+      min: 5
+      max: 16

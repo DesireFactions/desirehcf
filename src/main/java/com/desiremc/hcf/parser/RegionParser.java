@@ -16,7 +16,7 @@ public class RegionParser implements ArgumentParser
     @Override
     public Object parseArgument(CommandSender sender, String label, String arg)
     {
-        Region r = RegionHandler.getInstance().getRegion(arg);
+        Region r = RegionHandler.getRegion(arg);
         if (r == null)
         {
             LANG.sendString(sender, "region.not_found");
