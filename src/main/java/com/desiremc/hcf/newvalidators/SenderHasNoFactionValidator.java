@@ -10,7 +10,7 @@ public class SenderHasNoFactionValidator extends FactionSenderValidator
     @Override
     public boolean factionsValidate(HCFSession sender)
     {
-        if (sender.hasFaction())
+        if (!sender.hasFaction())
         {
             return true;
         }
