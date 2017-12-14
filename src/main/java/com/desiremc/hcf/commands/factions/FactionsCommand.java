@@ -5,11 +5,16 @@ import com.desiremc.core.api.newcommands.ValidBaseCommand;
 public class FactionsCommand extends ValidBaseCommand
 {
 
-    protected FactionsCommand()
+    public FactionsCommand()
     {
         super("factions", "All factions commands.", new String[] { "f", "faction", "fact" });
-        
-        
+
+        addSubCommand(new FactionAnnounceCommand());
+        addSubCommand(new FactionBypassCommand());
+        addSubCommand(new FactionClaimCommand());
+        addSubCommand(new FactionCreateCommand());
+        addSubCommand(new FactionLeaderCommand());
+        //addSubCommand( new Faction_Command());
     }
 
 }
