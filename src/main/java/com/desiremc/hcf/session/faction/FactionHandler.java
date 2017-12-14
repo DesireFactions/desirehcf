@@ -94,7 +94,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         // populate the faction map
         factionsByName = new HashMap<>();
         factionsById = new HashMap<>();
-        for (Faction faction : find(createQuery().field("state").equal(FactionState.ACTIVE)))
+        for (Faction faction : find(createQuery().field("factionState").equal(FactionState.ACTIVE)))
         {
             // if the faction is the wilderness, set it as such
             if (faction.getId() == -1)

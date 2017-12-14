@@ -99,6 +99,8 @@ public class ConnectionListener implements Listener
     {
         HCFSession session = HCFSessionHandler.getHCFSession(e.getPlayer().getUniqueId());
 
+        session.getSafeTimer().pause();
+        
         HCFSessionHandler.getInstance().save(session);
     }
 
