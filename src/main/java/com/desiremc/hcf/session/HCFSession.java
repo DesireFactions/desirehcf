@@ -469,7 +469,19 @@ public class HCFSession
      */
     public void clearClaimSession()
     {
+        // TODO clean up their old claim session.
         claimSession = null;
+    }
+
+    /**
+     * Set the player's claimSession to the given variable.
+     * 
+     * @param claimSession the new claim session.
+     */
+    public void setClaimSession(ClaimSession claimSession)
+    {
+        // TODO clean up their old claim session.
+        this.claimSession = claimSession;
     }
 
     /**

@@ -40,7 +40,7 @@ public class ConnectionListener implements Listener
                             "{player}", session.getName());
                 }
             }
-            
+
             // have a delay before sending the player's announcements so they are sure to see them.
             Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
             {
@@ -80,6 +80,9 @@ public class ConnectionListener implements Listener
             // if they are stuck, let them know that the next time they get on.
             session.getFaction().addAnnouncement(session, DesireHCF.getLangHandler().renderMessage("factions.stuck.cancelled.quit"));
         }
+
+        // take their claim wand if they have one
+        FactionHandler.takeClaimWand(event.getPlayer());
 
         // if they are in a faction, do some clean up
         if (session.hasFaction())

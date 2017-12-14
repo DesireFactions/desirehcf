@@ -103,7 +103,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             }
 
             // add all factions to the faction map.
-            factionsByName.put(faction.getName().toLowerCase(), faction);
+            factionsByName.put(faction.getStub(), faction);
             factionsById.put(faction.getId(), faction);
 
             // set the greatest id value
@@ -191,9 +191,9 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
                 }
             }
         }
-        return null;
+        return wilderness;
     }
-    
+
     /**
      * Get a faction that has claimed the land at the given block column.
      * 
@@ -202,7 +202,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     public static Faction getFaction(BlockColumn blockColumn)
     {
-        for(Faction f : getFactions())
+        for (Faction f : getFactions())
         {
             for (BoundedArea area : f.getClaims())
             {
@@ -212,7 +212,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
                 }
             }
         }
-        return null;
+        return wilderness;
     }
 
     /**
@@ -241,8 +241,51 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             session.setFaction(null);
             session.setFactionRank(null);
         }
+        factionsById.remove(faction.getId());
+        factionsByName.remove(faction.getStub());
         faction.setState(FactionState.DELETED);
         faction.save();
+    }
+
+    /**
+     * Creates a new {@link FactionType#PLAYER} faction. This will set the id as well as save it to the database.
+     * 
+     * @param hcfSession the player creating the faction.
+     * @param name the name of the faction.
+     * @return the newly created faction.
+     */
+    public static Faction createFaction(HCFSession hcfSession, String name)
+    {
+        return createFaction(hcfSession, name, FactionType.PLAYER);
+    }
+
+    /**
+     * Creates a new faction of the given type. This will set the id as well as save it to the database. Also, it will
+     * add the given creator to the faction and set their {@link FactionRank} to {@link FactionRank#LEADER}.
+     * 
+     * @param hcfSession the player creating the faction.
+     * @param name the name of the faction.
+     * @param type the type of faction.
+     * @return the newly created faction.
+     */
+    public static Faction createFaction(HCFSession hcfSession, String name, FactionType type)
+    {
+        check();
+        Faction faction = new Faction();
+        faction.setId(getNextId());
+        faction.setName(name);
+        faction.setFounded(System.currentTimeMillis());
+        faction.setState(FactionState.ACTIVE);
+        faction.setType(type);
+        faction.save();
+
+        hcfSession.setFactionRank(FactionRank.LEADER);
+        hcfSession.setFaction(faction);
+
+        factionsByName.put(faction.getStub(), faction);
+        factionsById.put(faction.getId(), faction);
+
+        return faction;
     }
 
     // TODO potentially convert these three methods to being stored in the HCFSession instead.

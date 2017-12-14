@@ -7,6 +7,7 @@ import com.desiremc.core.newvalidators.SenderHasFreeSlotValidator;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.newvalidators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.faction.ClaimSession;
 import com.desiremc.hcf.session.faction.FactionHandler;
 
 public class FactionClaimCommand extends FactionValidCommand
@@ -24,6 +25,12 @@ public class FactionClaimCommand extends FactionValidCommand
     public void validFactionRun(HCFSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         sender.getPlayer().getInventory().addItem(FactionHandler.getClaimWand());
+
+        ClaimSession claimSession = new ClaimSession(sender);
+
+        sender.setClaimSession(claimSession);
+
+        claimSession.run();
     }
 
 }

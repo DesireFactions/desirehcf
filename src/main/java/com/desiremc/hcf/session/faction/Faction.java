@@ -105,6 +105,14 @@ public class Faction
     }
 
     /**
+     * @return the lower case name of the faction.
+     */
+    public String getStub()
+    {
+        return name.toLowerCase();
+    }
+
+    /**
      * @param name the new name of the faction. This can be set and changed by the faction leader at any time.
      */
     public void setName(String name)
@@ -126,6 +134,24 @@ public class Faction
     public void setDescription(String description)
     {
         this.description = description;
+    }
+
+    /**
+     * @return the unix timestamp of when the faction was created.
+     */
+    public long getFounded()
+    {
+        return founded;
+    }
+
+    /**
+     * Sets the founded date. This should only be run once when the faction is first created.
+     * 
+     * @param founded the founded date.
+     */
+    protected void setFounded(long founded)
+    {
+        this.founded = founded;
     }
 
     /**

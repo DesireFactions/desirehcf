@@ -138,6 +138,7 @@ factions:
   new_leader: '&e{old}&7 has promoted &e{new}&7 to be the new faction leader.'
   member_disconnect: '&e{player} &7has left.'
   member_connect: '&e{player} &7has joined.'
+  create: '&e{player} has created the faction &e{faction}&7.'
   bypass:
     enable: '&7You have enabled admin bypass mode. You are now able to interact with the world freely.'
     disable: '&7You have disabled admin bypass mode.'
