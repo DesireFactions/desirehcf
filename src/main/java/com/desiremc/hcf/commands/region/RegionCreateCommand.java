@@ -1,10 +1,5 @@
 package com.desiremc.hcf.commands.region;
 
-import java.util.List;
-
-import org.bukkit.entity.Player;
-import org.bukkit.material.MaterialData;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -22,6 +17,10 @@ import com.desiremc.hcf.newvalidators.regions.UnusedRegionNameValidator;
 import com.desiremc.hcf.session.RegionBlocks;
 import com.desiremc.hcf.session.RegionHandler;
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
+
+import java.util.List;
 
 public class RegionCreateCommand extends ValidCommand
 {

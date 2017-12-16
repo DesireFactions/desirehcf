@@ -1,13 +1,7 @@
 package com.desiremc.hcf.listener.classes;
 
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.bukkit.entity.Arrow;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.PVPClass;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -18,11 +12,20 @@ import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.faction.FactionRelationship;
 import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Arrow;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class ArcherListener implements DesireClass
 {
 
-    private Cache<UUID, UUID> archerHit;
+    private Cache<UUID, Long> archerHit;
+    private int duration;
 
     public ArcherListener()
     {
@@ -32,11 +35,12 @@ public class ArcherListener implements DesireClass
     @Override
     public void initialize()
     {
-        archerHit = new Cache<>(DesireHCF.getConfigHandler().getInteger("classes.archer.hit-time"), TimeUnit.SECONDS,
-                new RemovalListener<UUID, UUID>()
+        duration = DesireHCF.getConfigHandler().getInteger("classes.archer.hit-time");
+        archerHit = new Cache<>(duration, TimeUnit.SECONDS,
+                new RemovalListener<UUID, Long>()
                 {
                     @Override
-                    public void onRemoval(RemovalNotification<UUID, UUID> entry)
+                    public void onRemoval(RemovalNotification<UUID, Long> entry)
                     {
                         if (entry.getCause() != RemovalNotification.Cause.EXPIRE)
                         {
@@ -45,10 +49,23 @@ public class ArcherListener implements DesireClass
                         Player p = PlayerUtils.getPlayer(entry.getKey());
                         if (p != null)
                         {
-                            DesireHCF.getLangHandler().sendString(p, "classes.archer.hit-off");
+                            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.archer.scoreboard"));
                         }
                     }
                 }, DesireHCF.getInstance());
+
+        Bukkit.getScheduler().runTaskTimer(DesireCore.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                for (UUID uuid : archerHit.keySet())
+                {
+                    Player p = Bukkit.getPlayer(uuid);
+                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.archer.scoreboard"), String.valueOf((duration - System.currentTimeMillis()) / 1000));
+                }
+            }
+        }, 20, 20);
     }
 
     @EventHandler
@@ -80,11 +97,11 @@ public class ArcherListener implements DesireClass
 
             if (archerHit.get(target.getUniqueId()) == null)
             {
-                archerHit.put(target.getUniqueId(), source.getUniqueId());
+                archerHit.put(target.getUniqueId(), System.currentTimeMillis());
             }
             else
             {
-                archerHit.replace(target.getUniqueId(), source.getUniqueId());
+                archerHit.replace(target.getUniqueId(), System.currentTimeMillis());
             }
         }
         else if (event.getDamager() instanceof Player)
