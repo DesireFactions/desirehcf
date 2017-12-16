@@ -356,6 +356,8 @@ public class Faction
      */
     public boolean isWilderness()
     {
+        System.out.println(getName());
+        System.out.println(FactionHandler.getWilderness().getName());
         return FactionHandler.getWilderness() == this;
     }
 

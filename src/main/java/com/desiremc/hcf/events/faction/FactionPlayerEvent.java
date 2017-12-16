@@ -3,7 +3,7 @@ package com.desiremc.hcf.events.faction;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.faction.Faction;
 
-public class FactionPlayerEvent extends FactionEvent
+public abstract class FactionPlayerEvent extends FactionEvent
 {
 
     /**

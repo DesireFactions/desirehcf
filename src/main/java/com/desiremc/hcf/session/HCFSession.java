@@ -412,6 +412,7 @@ public class HCFSession
     {
         if (parsedFaction == null)
         {
+            System.out.println(factionId);
             parsedFaction = FactionsUtils.getFaction(factionId);
         }
     }
