@@ -20,7 +20,7 @@ public class KitManagementCreateCommand extends ValidCommand
 
     public KitManagementCreateCommand()
     {
-        super("create", "Create a new kit.", Rank.HELPER, true, new String[] {"add", "new"});
+        super("create", "Create a new kit.", Rank.HELPER, true, new String[] { "new" });
 
         addArgument(CommandArgumentBuilder.createBuilder(String.class)
                 .setName("name")
@@ -36,6 +36,7 @@ public class KitManagementCreateCommand extends ValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(Rank.class)
                 .setName("rank")
                 .setParser(new RankParser())
+                .setOptional()
                 .build());
     }
 
@@ -46,7 +47,7 @@ public class KitManagementCreateCommand extends ValidCommand
         int cooldown = Integer.parseInt((String) args.get(1).getValue());
 
         HKit kit;
-        if (args.size() == 2)
+        if (!args.get(2).hasValue())
         {
             kit = HKitHandler.createKit(name, cooldown);
         }
