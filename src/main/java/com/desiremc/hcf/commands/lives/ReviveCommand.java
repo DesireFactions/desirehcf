@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.lives;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
@@ -10,13 +8,14 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parser.PlayerHCFSessionParser;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.validator.PlayerHasDeathbanValidator;
+import org.bukkit.command.CommandSender;
 
 public class ReviveCommand extends ValidCommand
 {
 
     public ReviveCommand()
     {
-        super("revive", "Revive a player before their ban.", Rank.JRMOD, ARITY_REQUIRED_VARIADIC, new String[] { "target", "reason" });
+        super("revive", "Revive a player before their ban.", Rank.HELPER, ARITY_REQUIRED_VARIADIC, new String[] {"target", "reason"});
 
         addParser(new PlayerHCFSessionParser(), "target");
         addParser(new StringParser(), "reason");

@@ -1,24 +1,5 @@
 package com.desiremc.hcf.session;
 
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.IdGetter;
-import org.mongodb.morphia.annotations.Indexed;
-import org.mongodb.morphia.annotations.Property;
-import org.mongodb.morphia.annotations.Reference;
-import org.mongodb.morphia.annotations.Transient;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Achievement;
@@ -35,6 +16,24 @@ import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionRank;
 import com.desiremc.hcf.session.faction.FactionSetting;
 import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.IdGetter;
+import org.mongodb.morphia.annotations.Indexed;
+import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Reference;
+import org.mongodb.morphia.annotations.Transient;
+
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class HCFSession
@@ -690,6 +689,11 @@ public class HCFSession
         @Override
         public void run()
         {
+            if (player == null || !player.isOnline())
+            {
+                return;
+            }
+
             if (!paused && safeTimer > 0)
             {
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);

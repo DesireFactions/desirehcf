@@ -22,7 +22,7 @@ public class FocusCommand extends ValidCommand
 {
     public FocusCommand()
     {
-        super("focus", "Focus your faction on a player", Rank.GUEST, new String[] {"target"});
+        super("focus", "Focus your faction on a player", Rank.GUEST);
 
         addSenderValidator(new SenderHasFactionValidator());
         addArgument(CommandArgumentBuilder.createBuilder(Session.class)
@@ -35,12 +35,12 @@ public class FocusCommand extends ValidCommand
     public void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments)
     {
         Session target = (Session) arguments.get(0).getValue();
-        Faction faction = FactionsUtils.getFaction(target);
+        Faction faction = FactionsUtils.getFaction(sender);
 
         EntityPlayer entityPlayer = ((CraftPlayer) target.getPlayer()).getHandle();
         entityPlayer.displayName = ChatColor.RED + "newName";
 
-        for (HCFSession session : faction.getOnlineMembers())
+        for (HCFSession session : faction.getMembers())
         {
             DesireHCF.getLangHandler().sendRenderMessage(session.getPlayer(), "region.delete", "{target}", target.getName());
 

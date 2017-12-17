@@ -31,8 +31,6 @@ public class CombatLoggerHandler implements Listener
 {
     private long TIMER = DesireHCF.getConfigHandler().getInteger("tag.time");
 
-    private NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
-
     public CombatLoggerHandler()
     {
         Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
@@ -62,6 +60,8 @@ public class CombatLoggerHandler implements Listener
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogout(PlayerQuitEvent event)
     {
+        NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+
         Player player = event.getPlayer();
 
         NPCPlayerHelper.removePlayerList(player);
@@ -105,6 +105,8 @@ public class CombatLoggerHandler implements Listener
     @EventHandler(priority = EventPriority.MONITOR)
     public void despawnNPC(PlayerJoinEvent event)
     {
+        NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+
         Player player = event.getPlayer();
 
         NPCPlayerHelper.createPlayerList(player);
@@ -119,13 +121,15 @@ public class CombatLoggerHandler implements Listener
     @EventHandler
     public void despawnNPC(PlayerDeathEvent event)
     {
+        NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+
         Player player = event.getEntity();
         if (!npcRegistry.isNPC(player))
         {
             return;
         }
 
-        final NPC npc = npcRegistry.getByUUID(player.getUniqueId());
+        NPC npc = npcRegistry.getByUUID(player.getUniqueId());
 
         if (npc == null)
         {
@@ -147,6 +151,8 @@ public class CombatLoggerHandler implements Listener
     @EventHandler(priority = EventPriority.HIGHEST)
     public void syncOffline(PlayerDeathEvent event)
     {
+        NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+
         // Do nothing if player is not a NPC
         final Player player = event.getEntity();
         if (!npcRegistry.isNPC(player))
@@ -171,6 +177,8 @@ public class CombatLoggerHandler implements Listener
     @EventHandler
     public void syncOffline(AsyncPlayerPreLoginEvent event)
     {
+        NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+
         if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
         {
             return;

@@ -5,7 +5,7 @@ prefix:
 tag:
   active: '&c&lYou are now combat tagged and can not enter spawn.'
   expire: '&c&lYou are no longer combat tagged.'
-  scoreboard: '&6&lCombat Tag'
+  scoreboard: '&6&lCombat Tag&7: '
 enderchest:
   disabled: '&7enderchest disabled!'
   enabled: '&7enderchest enabled!'
@@ -23,7 +23,7 @@ region:
 enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
-  scoreboard: '&5&lEnderpearl'
+  scoreboard: '&5&lEnderpearl&7: '
 lives:
   add: '&7You have added &a{amount} &7lives to &c{player}&7.'
   send: '&7You have sent &a{amount} &7lives to &c{player}&7.'
@@ -45,7 +45,7 @@ pvp:
   victim_safe: '&7That player is in a safe zone.'
   disabled: '&7You have disabled your pvp protection timer.'
   already-disabled: '&7You do not have an active PVP timer.'
-  scoreboard: '&c&lPVP Timer'
+  scoreboard: '&c&lPVP Timer&7: '
 crowbar:
   new_crowbar: '&7You have recieved a crowbar.'
   not_yours: '&7You can''t break blocks in someone else''s faction.'
@@ -58,7 +58,7 @@ crowbar:
 gapple:
   ended: '&7You may now use a &5Gapple&7.'
   message: '&7You can not use a &5Gapple&7 for &e{time} &7seconds.'
-  scoreboard: '&6&lGapple Timer'
+  scoreboard: '&6&lGapple Timer&7: '
 potion:
   blocked: '&7That potion is blocked'
 trophy_points: 'Trophy Points &e{points}'
@@ -70,7 +70,7 @@ logout:
   pending: '&cYour safe logout is pending for {seconds}s.'
   exists: '&cYou have already started to safely logout.'
   started: '&cYou have started to safely logout.'
-  scoreboard: '&bLogout Timer'
+  scoreboard: '&bLogout Timer&7: '
 no_faction: 'You are not a part of a faction!'
 no_deathban: '&7That player does not have an active deathban.'
 tagged: 'You can not log out while in combat.'
@@ -83,8 +83,8 @@ set_winner: '&7You have set the season winner to &e{faction}&7.'
 classes:
   enable: '&bClasses: &l{class}&r&b --> &2Enabled!'
   disable: '&bClasses: &l{class}&r&b --> &cDisabled!'
-  scoreboard: '&3Class:'
-  energy-scoreboard: '&9Energy:'
+  scoreboard: '&3Class&7: '
+  energy-scoreboard: '&9Energy&7: '
   not-enough-energy: 'You need {amount} energy to do that.'
   rogue:
     uninvis-over: 'You can now go invisible again.'
@@ -93,7 +93,7 @@ classes:
     effect-cd: 'Your effects are on cooldown.'
     effect-over: 'You can now use your effects again.'
   archer:
-    scoreboard: '&bArcher Tag:'
+    scoreboard: '&bArcher Tag&7: '
 cobble:
   enable: '&7Picking up cobblestone enabled.'
   disable: '&7Picking up cobblestone disabled.'

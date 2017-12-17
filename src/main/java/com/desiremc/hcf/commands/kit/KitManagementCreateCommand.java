@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.kit;
 
-import org.bukkit.command.CommandSender;
-
 import com.desiremc.core.api.command.ValidCommand;
 import com.desiremc.core.parsers.IntegerParser;
 import com.desiremc.core.parsers.RankParser;
@@ -12,13 +10,14 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HKit;
 import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.validator.UnusedKitNameValidator;
+import org.bukkit.command.CommandSender;
 
 public class KitManagementCreateCommand extends ValidCommand
 {
 
     public KitManagementCreateCommand()
     {
-        super("create", "Create a new kit.", Rank.JRMOD, ARITY_OPTIONAL, new String[] { "name", "cooldown", "rank" }, new String[] { "new" });
+        super("create", "Create a new kit.", Rank.HELPER, ARITY_OPTIONAL, new String[] {"name", "cooldown", "rank"}, new String[] {"new"});
 
         addParser(new StringParser(), "name");
         addParser(new IntegerParser(), "cooldown");
