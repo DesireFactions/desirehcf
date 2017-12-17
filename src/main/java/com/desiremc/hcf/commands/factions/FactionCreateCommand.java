@@ -63,7 +63,7 @@ public class FactionCreateCommand extends FactionValidCommand
             String broadcast = DesireHCF.getLangHandler().renderString("factions.create",
                     "{player}", sender.getName(),
                     "{faction}", faction.getName());
-            
+
             Bukkit.broadcastMessage(broadcast);
         }
     }

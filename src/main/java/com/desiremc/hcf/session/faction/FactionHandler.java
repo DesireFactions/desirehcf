@@ -112,6 +112,8 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
                 lastId = faction.getId();
             }
         }
+        
+        System.out.println("Faction Map Sizes: " + factionsByName.size() + " " + factionsById.size());
 
         // if the default faction is not in the database, we need to add it to the database
         if (wilderness == null)

@@ -1,12 +1,15 @@
 package com.desiremc.hcf.events.faction;
 
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.HandlerList;
 
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.faction.Faction;
 
 public class FactionCreateEvent extends FactionPlayerEvent implements Cancellable
 {
+
+    private static HandlerList handerList;
 
     protected boolean cancelled;
 
@@ -41,6 +44,17 @@ public class FactionCreateEvent extends FactionPlayerEvent implements Cancellabl
     public void setCancelled(boolean cancelled)
     {
         this.cancelled = cancelled;
+    }
+
+    @Override
+    public HandlerList getHandlers()
+    {
+        return handerList;
+    }
+
+    public static HandlerList getHandlerList()
+    {
+        return handerList;
     }
 
 }
