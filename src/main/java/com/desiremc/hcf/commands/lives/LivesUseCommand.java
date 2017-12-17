@@ -37,6 +37,7 @@ public class LivesUseCommand extends ValidCommand
 
         target.revive(session.getUniqueId() + " used a life.", false, session.getUniqueId());
         session.takeLives(1);
+        session.save();
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.use", "{target}", target.getName());
     }

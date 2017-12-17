@@ -99,6 +99,9 @@ public class HCFSession
     @Transient
     private PVPClass pvpClass;
 
+    @Transient
+    private Faction lastLocation;
+
     public HCFSession()
     {
         pvpTimer = new PVPTimer();
@@ -172,50 +175,68 @@ public class HCFSession
         this.safeTimer = safeTimer;
     }
 
+    /**
+     * @return the amount of lives a player has.
+     */
     public int getLives()
     {
         return lives;
     }
 
+    /**
+     * @param lives the amount of lives to set for the player.
+     */
     public void setLives(int lives)
     {
         this.lives = lives;
-        save();
     }
 
+    /**
+     * @param lives the amount of lives to remove from a player.
+     */
     public void takeLives(int lives)
     {
         this.lives -= lives;
-        save();
     }
 
+    /**
+     * @param lives the amount of lives to add to a player.
+     */
     public void addLives(int lives)
     {
         this.lives += lives;
-        save();
     }
 
+    /**
+     * @return a player's financial balance.
+     */
     public double getBalance()
     {
         return balance;
     }
 
+    /**
+     * @param balance a player's new financial balance.
+     */
     public void setBalance(double balance)
     {
         this.balance = balance;
-        save();
     }
 
+    /**
+     * @param amount the amount to add to the player's balance.
+     */
     public void depositBalance(double amount)
     {
         this.balance += amount;
-        save();
     }
 
+    /**
+     * @param amount the amount to remove from a player's balance.
+     */
     public void withdrawBalance(double amount)
     {
         this.balance -= amount;
-        save();
     }
 
     /**
@@ -584,6 +605,22 @@ public class HCFSession
             array[i] = PlayerUtils.getName(tick.getUniqueId()) + " x" + tick.getCount();
         }
         return array;
+    }
+
+    /**
+     * @return the last faction whose claim this player was last seen at.
+     */
+    public Faction getLastFactionLocation()
+    {
+        return lastLocation;
+    }
+
+    /**
+     * @param lastLocation the last faction whose claim this player was last seen at.
+     */
+    public void setLastLocation(Faction lastLocation)
+    {
+        this.lastLocation = lastLocation;
     }
 
     // ========================================================

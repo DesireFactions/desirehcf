@@ -40,6 +40,7 @@ public class LivesRemoveCommand extends ValidCommand
 
         HCFSession session = HCFSessionHandler.getHCFSession(target.getUniqueId());
         session.takeLives(amount);
+        session.save();
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.remove", "{amount}", String.valueOf(amount), "{player}", target.getName());
     }

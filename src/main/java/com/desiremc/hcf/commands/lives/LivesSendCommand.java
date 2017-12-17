@@ -43,6 +43,8 @@ public class LivesSendCommand extends ValidCommand
         HCFSession source = HCFSessionHandler.getHCFSession(sender.getUniqueId());
         source.takeLives(amount);
         target.addLives(amount);
+        source.save();
+        target.save();
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.send", "{amount}", String.valueOf(amount), "{player}", target.getName());
         DesireHCF.getLangHandler().sendRenderMessage(player, "lives.send_target", "{amount}", String.valueOf(amount), "{player}", sender.getName());
