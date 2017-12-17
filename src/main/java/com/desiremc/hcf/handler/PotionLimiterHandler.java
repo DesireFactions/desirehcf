@@ -1,7 +1,10 @@
 package com.desiremc.hcf.handler;
 
-import java.util.ArrayList;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.hcf.DesireHCF;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
@@ -11,6 +14,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.BrewEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.BrewerInventory;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -18,8 +22,7 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.hcf.DesireHCF;
+import java.util.ArrayList;
 
 public class PotionLimiterHandler implements Listener
 {
@@ -84,12 +87,28 @@ public class PotionLimiterHandler implements Listener
         {
             return;
         }
+
         Potion pot = Potion.fromItemStack(event.getItem());
         if (pot != null)
         {
             if (!isPotionAllowed(pot))
             {
                 cancel(event, null);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDrink(PlayerItemConsumeEvent event)
+    {
+        Potion pot = Potion.fromItemStack(event.getItem());
+        if (pot != null)
+        {
+            Session session = SessionHandler.getSession(event.getPlayer().getUniqueId());
+
+            if (!session.hasAchievement(Achievement.FIRST_POTION_USE))
+            {
+                session.awardAchievement(Achievement.FIRST_POTION_USE, true);
             }
         }
     }

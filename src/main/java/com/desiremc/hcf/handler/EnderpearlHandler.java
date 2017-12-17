@@ -70,7 +70,6 @@ public class EnderpearlHandler implements Listener
             else
             {
                 e.setCancelled(true);
-                DesireHCF.getLangHandler().sendRenderMessage(p, "enderpearl.message", "{time}", String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
             }
         }
     }
