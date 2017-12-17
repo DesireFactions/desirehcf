@@ -1,13 +1,13 @@
 package com.desiremc.hcf.commands.fstat;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
-import com.desiremc.hcf.newvalidators.SenderHasFactionValidator;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.validators.SenderHasFactionValidator;
+
+import java.util.List;
 
 public class FStatShowCommand extends FactionValidCommand
 {

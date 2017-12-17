@@ -3,7 +3,6 @@ package com.desiremc.hcf;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.api.command.CustomCommandHandler;
 import com.desiremc.core.api.newcommands.CommandHandler;
 import com.desiremc.core.listeners.ListenerManager;
 import com.desiremc.core.staff.StaffHandler;
@@ -87,7 +86,6 @@ public class DesireHCF extends JavaPlugin
         RegionHandler.initialize();
         TagHandler.initialize();
         StaffHandler.initialize();
-        CustomCommandHandler.initialize();
         DesireCore.getInstance().getMongoWrapper().getDatastore().ensureIndexes();
         BarrierTask.initialize();
         HKitHandler.initialize();
@@ -139,21 +137,6 @@ public class DesireHCF extends JavaPlugin
 
     private void registerCommands()
     {
-        CustomCommandHandler customCommandHandler = CustomCommandHandler.getInstance();
-        customCommandHandler.registerCommand(new CrowbarCommand(), this);
-        customCommandHandler.registerCommand(new EnderChestCommand(), this);
-        customCommandHandler.registerCommand(new HCFReloadCommand(), this);
-        customCommandHandler.registerCommand(new LivesCommand(), this);
-        customCommandHandler.registerCommand(new PVPCommand(), this);
-        customCommandHandler.registerCommand(new SetEndCommand(), this);
-        customCommandHandler.registerCommand(new LogoutCommand(), this);
-        customCommandHandler.registerCommand(new ReviveCommand(), this);
-        customCommandHandler.registerCommand(new CoordsCommand(), this);
-        customCommandHandler.registerCommand(new CobbleCommand(), this);
-        customCommandHandler.registerCommand(new OreCommand(), this);
-        customCommandHandler.registerCommand(new KitCommand(), this);
-        customCommandHandler.registerCommand(new KitManagementCommand(), this);
-
         CommandHandler commandHandler = CommandHandler.getInstance();
         commandHandler.registerCommand(new SetSpawnCommand(), this);
         commandHandler.registerCommand(new SpawnCommand(), this);
@@ -161,7 +144,21 @@ public class DesireHCF extends JavaPlugin
         commandHandler.registerCommand(new SetWinnerCommand(), this);
         commandHandler.registerCommand(new RegionCommand(), this);
         commandHandler.registerCommand(new FactionsCommand(), this);
+        //untested below this point
         commandHandler.registerCommand(new FocusCommand(), this);
+        commandHandler.registerCommand(new KitManagementCommand(), this);
+        commandHandler.registerCommand(new OreCommand(), this);
+        commandHandler.registerCommand(new CobbleCommand(), this);
+        commandHandler.registerCommand(new ReviveCommand(), this);
+        commandHandler.registerCommand(new LogoutCommand(), this);
+        commandHandler.registerCommand(new PVPCommand(), this);
+        commandHandler.registerCommand(new EnderChestCommand(), this);
+        commandHandler.registerCommand(new HCFReloadCommand(), this);
+        commandHandler.registerCommand(new SetEndCommand(), this);
+        commandHandler.registerCommand(new LivesCommand(), this);
+        commandHandler.registerCommand(new KitCommand(), this);
+        commandHandler.registerCommand(new CrowbarCommand(), this);
+        commandHandler.registerCommand(new CoordsCommand(), this);
     }
 
     public static WorldGuardPlugin getWorldGuard()

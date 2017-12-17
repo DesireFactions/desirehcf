@@ -1,35 +1,44 @@
 package com.desiremc.hcf.commands.lives;
 
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.StringParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newparsers.StringParser;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.parser.PlayerHCFSessionParser;
+import com.desiremc.hcf.parsers.HCFSessionParser;
 import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.validator.PlayerHasDeathbanValidator;
-import org.bukkit.command.CommandSender;
+import com.desiremc.hcf.validators.PlayerHasDeathbanValidator;
+
+import java.util.List;
 
 public class ReviveCommand extends ValidCommand
 {
 
     public ReviveCommand()
     {
-        super("revive", "Revive a player before their ban.", Rank.HELPER, ARITY_REQUIRED_VARIADIC, new String[] {"target", "reason"});
+        super("revive", "Revive a player before their ban.", Rank.HELPER, true, new String[] {"target", "reason"});
 
-        addParser(new PlayerHCFSessionParser(), "target");
-        addParser(new StringParser(), "reason");
+        addArgument(CommandArgumentBuilder.createBuilder(HCFSession.class)
+                .setName("target")
+                .setParser(new HCFSessionParser())
+                .addValidator(new PlayerHasDeathbanValidator())
+                .build());
 
-        addValidator(new PlayerHasDeathbanValidator(), "target");
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("reason")
+                .setParser(new StringParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        HCFSession target = (HCFSession) args[0];
-        String reason = (String) args[1];
+        HCFSession target = (HCFSession) args.get(0).getValue();
+        String reason = (String) args.get(1).getValue();
 
-        target.revive(reason, true, PlayerUtils.getUUIDFromSender(sender));
+        target.revive(reason, true, sender.getUniqueId());
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.revive", "{target}", target.getName());
 

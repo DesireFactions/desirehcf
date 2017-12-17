@@ -1,5 +1,17 @@
 package com.desiremc.hcf.listener.factions;
 
+import com.desiremc.core.events.PlayerBlockMoveEvent;
+import com.desiremc.core.utils.BlockColumn;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.faction.ClaimSession;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
+import com.desiremc.hcf.validators.SenderClaimHasPointOneValidator;
+import com.desiremc.hcf.validators.SenderClaimingValidator;
+import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
+import com.desiremc.hcf.validators.SenderHasFactionValidator;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -7,19 +19,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
-
-import com.desiremc.core.events.PlayerBlockMoveEvent;
-import com.desiremc.core.utils.BlockColumn;
-import com.desiremc.hcf.newvalidators.SenderClaimHasPointOneValidator;
-import com.desiremc.hcf.newvalidators.SenderClaimingValidator;
-import com.desiremc.hcf.newvalidators.SenderFactionOfficerValidator;
-import com.desiremc.hcf.newvalidators.SenderHasFactionValidator;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
-import com.desiremc.hcf.session.faction.ClaimSession;
-import com.desiremc.hcf.session.faction.Faction;
-import com.desiremc.hcf.session.faction.FactionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
 
 /**
  * The listener in charge for ensuring that factions behave the way they are supposed to. It prevents players from going

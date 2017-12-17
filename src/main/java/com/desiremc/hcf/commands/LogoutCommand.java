@@ -1,30 +1,31 @@
 package com.desiremc.hcf.commands;
 
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.npc.SafeLogoutTask;
 import com.desiremc.hcf.util.FactionsUtils;
-import com.desiremc.hcf.validator.PlayerIsNotTaggedValidator;
-import org.bukkit.command.CommandSender;
+import com.desiremc.hcf.validators.PlayerIsNotTaggedValidator;
 import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class LogoutCommand extends ValidCommand
 {
 
     public LogoutCommand()
     {
-        super("logout", "Start to safely logout", Rank.GUEST, new String[]{});
+        super("logout", "Start to safely logout", Rank.GUEST, true, new String[] {});
 
-        addValidator(new PlayerValidator());
-        addValidator(new PlayerIsNotTaggedValidator());
+        addSenderValidator(new PlayerIsNotTaggedValidator());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Player player = (Player) sender;
+        Player player = sender.getPlayer();
 
         if (SafeLogoutTask.hasTask(player))
         {
@@ -33,7 +34,7 @@ public class LogoutCommand extends ValidCommand
         }
         else
         {
-            if(FactionsUtils.isInSafeZone(player))
+            if (FactionsUtils.isInSafeZone(player))
             {
                 player.kickPlayer(DesireHCF.getLangHandler().renderMessageNoPrefix("logout.success"));
             }

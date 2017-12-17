@@ -1,49 +1,61 @@
 package com.desiremc.hcf.commands.kit;
 
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.IntegerParser;
-import com.desiremc.core.parsers.RankParser;
-import com.desiremc.core.parsers.StringParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newparsers.PositiveIntegerParser;
+import com.desiremc.core.newparsers.RankParser;
+import com.desiremc.core.newparsers.StringParser;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.IntegerSizeValidator;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HKit;
 import com.desiremc.hcf.session.HKitHandler;
-import com.desiremc.hcf.validator.UnusedKitNameValidator;
-import org.bukkit.command.CommandSender;
+import com.desiremc.hcf.validators.UnusedKitNameValidator;
+
+import java.util.List;
 
 public class KitManagementCreateCommand extends ValidCommand
 {
 
     public KitManagementCreateCommand()
     {
-        super("create", "Create a new kit.", Rank.HELPER, ARITY_OPTIONAL, new String[] {"name", "cooldown", "rank"}, new String[] {"new"});
+        super("create", "Create a new kit.", Rank.HELPER, true, new String[] {"add", "new"});
 
-        addParser(new StringParser(), "name");
-        addParser(new IntegerParser(), "cooldown");
-        addParser(new RankParser(), "rank");
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
+                .setName("name")
+                .setParser(new StringParser())
+                .addValidator(new UnusedKitNameValidator())
+                .build());
 
-        addValidator(new UnusedKitNameValidator(), "name");
-        addValidator(new IntegerSizeValidator(0, 2_592_000), "cooldown");
+        addArgument(CommandArgumentBuilder.createBuilder(Integer.class)
+                .setName("cooldown")
+                .setParser(new PositiveIntegerParser())
+                .build());
+
+        addArgument(CommandArgumentBuilder.createBuilder(Rank.class)
+                .setName("rank")
+                .setParser(new RankParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        String name = (String) args[0];
-        int cooldown = (int) args[1];
+        String name = (String) args.get(0).getValue();
+        int cooldown = Integer.parseInt((String) args.get(1).getValue());
 
         HKit kit;
-        if (args.length == 2)
+        if (args.size() == 2)
         {
             kit = HKitHandler.createKit(name, cooldown);
         }
         else
         {
-            kit = HKitHandler.createKit(name, cooldown, (Rank) args[2]);
+            kit = HKitHandler.createKit(name, cooldown, (Rank) args.get(2).getValue());
         }
-        
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.created", 
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.created",
                 "{kit}", kit.getName());
     }
 

@@ -1,37 +1,39 @@
 package com.desiremc.hcf.commands.kit;
 
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newvalidators.ItemInHandValidator;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.ItemInHandValidator;
-import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.parser.KitParser;
+import com.desiremc.hcf.parsers.KitParser;
 import com.desiremc.hcf.session.HKit;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class KitManagementAddCommand extends ValidCommand
 {
 
     public KitManagementAddCommand()
     {
-        super("add", "Add an item to a kit.", Rank.HELPER, new String[] {"kit"});
+        super("add", "Add an item to a kit.", Rank.HELPER, true);
 
-        addParser(new KitParser(), "kit");
-
-        addValidator(new PlayerValidator());
-        addValidator(new ItemInHandValidator());
+        addArgument(CommandArgumentBuilder.createBuilder(HKit.class)
+                .setName("kit")
+                .setParser(new KitParser())
+                .addSenderValidator(new ItemInHandValidator())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Player player = (Player) sender;
-        HKit kit = (HKit) args[0];
+        HKit kit = (HKit) args.get(0).getValue();
 
-        kit.addItem(player.getItemInHand());
+        kit.addItem(sender.getPlayer().getItemInHand());
         kit.save();
-        
+
         DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.add_item",
                 "{kit}", kit.getName());
     }

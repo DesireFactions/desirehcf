@@ -1,6 +1,6 @@
 package com.desiremc.hcf.commands.kit;
 
-import com.desiremc.core.api.command.ValidBaseCommand;
+import com.desiremc.core.api.newcommands.ValidBaseCommand;
 import com.desiremc.core.session.Rank;
 
 public class KitManagementCommand extends ValidBaseCommand

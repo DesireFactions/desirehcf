@@ -1,16 +1,16 @@
 package com.desiremc.hcf.commands;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Rank;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
-import com.desiremc.hcf.newparsers.FactionParser;
+import com.desiremc.hcf.parsers.FactionParser;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.faction.Faction;
+
+import java.util.List;
 
 public class SetWinnerCommand extends FactionValidCommand
 {

@@ -1,36 +1,35 @@
 package com.desiremc.hcf.commands;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
-import com.desiremc.hcf.validator.PlayerHasSafeTimeLeft;
+import com.desiremc.hcf.validators.PlayerHasSafeTimeLeft;
+
+import java.util.List;
 
 public class PVPCommand extends ValidCommand
 {
 
     public PVPCommand()
     {
-        super("pvp", "Disable your PVP timer.", Rank.GUEST, new String[] {});
+        super("pvp", "Disable your PVP timer.", Rank.GUEST, true, new String[] {});
 
-        addValidator(new PlayerValidator());
-        addValidator(new PlayerHasSafeTimeLeft());
+        addSenderValidator(new PlayerHasSafeTimeLeft());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        HCFSession session = HCFSessionHandler.getHCFSession(((Player) sender).getUniqueId());
+        HCFSession session = HCFSessionHandler.getHCFSession(sender.getUniqueId());
 
         session.setSafeTimeLeft(0);
         session.save();
-        DesireHCF.getLangHandler().sendString(sender, "pvp.disabled");
+        DesireHCF.getLangHandler().sendString(sender.getPlayer(), "pvp.disabled");
         EntryRegistry.getInstance().removeValue(session.getPlayer(), DesireHCF.getLangHandler().getStringNoPrefix("pvp.scoreboard"));
     }
 

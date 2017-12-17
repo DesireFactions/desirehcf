@@ -1,15 +1,15 @@
 package com.desiremc.hcf.commands.region;
 
-import java.util.Iterator;
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.newvalidators.regions.RegionsExistValidator;
 import com.desiremc.hcf.session.RegionHandler;
+import com.desiremc.hcf.validators.regions.RegionsExistValidator;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class RegionListCommand extends ValidCommand
 {

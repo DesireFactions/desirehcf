@@ -1,31 +1,42 @@
 package com.desiremc.hcf.commands.lives;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.IntegerParser;
-import com.desiremc.core.parsers.PlayerParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.newparsers.PlayerParser;
+import com.desiremc.core.newparsers.PositiveIntegerParser;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
+import org.bukkit.entity.Player;
+
+import java.util.List;
 
 public class LivesAddCommand extends ValidCommand
 {
 
     public LivesAddCommand()
     {
-        super("add", "add lives", Rank.MODERATOR, new String[] { "target", "amount" }, "give");
-        addParser(new PlayerParser(), "target");
-        addParser(new IntegerParser(), "amount");
+        super("add", "add lives", Rank.MODERATOR, false, new String[] {"give"});
+
+        addArgument(CommandArgumentBuilder.createBuilder(Player.class)
+                .setName("target")
+                .setParser(new PlayerParser())
+                .build());
+
+        addArgument(CommandArgumentBuilder.createBuilder(Integer.class)
+                .setName("amount")
+                .setParser(new PositiveIntegerParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Player target = (Player) args[0];
-        int amount = (Integer) args[1];
+        Player target = (Player) args.get(0).getValue();
+        int amount = (Integer) args.get(1).getValue();
 
         HCFSession session = HCFSessionHandler.getHCFSession(target.getUniqueId());
         session.addLives(amount);

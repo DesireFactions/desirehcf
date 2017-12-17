@@ -1,19 +1,18 @@
-package com.desiremc.hcf.validator;
+package com.desiremc.hcf.validators;
 
-import org.bukkit.command.CommandSender;
-
-import com.desiremc.core.api.command.CommandValidator;
+import com.desiremc.core.api.newcommands.SenderValidator;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 
-public class PlayerHasLivesValidator extends CommandValidator
+public class PlayerHasLivesValidator implements SenderValidator
 {
 
     @Override
-    public boolean validateArgument(CommandSender sender, String label, Object arg)
+    public final boolean validate(Session sender)
     {
-        HCFSession session = HCFSessionHandler.getHCFSession(sender);
+        HCFSession session = HCFSessionHandler.getHCFSession(sender.getUniqueId());
         if (session.getLives() <= 0 && !session.getRank().isManager())
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.no_lives");

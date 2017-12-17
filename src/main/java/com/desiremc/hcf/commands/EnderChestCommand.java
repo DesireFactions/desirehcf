@@ -1,21 +1,24 @@
 package com.desiremc.hcf.commands;
 
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.handler.EnderchestHandler;
-import org.bukkit.command.CommandSender;
+
+import java.util.List;
 
 public class EnderChestCommand extends ValidCommand
 {
 
     public EnderChestCommand()
     {
-        super("enderchest", "Toggle the ender chest.", Rank.ADMIN, new String[] {}, "chest", "ender");
+        super("enderchest", "Toggle the ender chest.", Rank.ADMIN, true, new String[] {"chest", "ender"});
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         if (EnderchestHandler.getEnderChestStatus())
         {

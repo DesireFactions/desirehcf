@@ -1,16 +1,16 @@
 package com.desiremc.hcf.commands.region;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.newparsers.RegionParser;
+import com.desiremc.hcf.parsers.RegionParser;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
+
+import java.util.List;
 
 public class RegionDeleteCommand extends ValidCommand
 {

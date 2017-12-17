@@ -1,45 +1,47 @@
 package com.desiremc.hcf.commands.kit;
 
-import java.util.Collection;
-
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ItemUtils;
-import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.gui.ViewKitsMenu;
-import com.desiremc.hcf.parser.KitParser;
+import com.desiremc.hcf.parsers.KitParser;
 import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.HKit;
-import com.desiremc.hcf.validator.PlayerKitOffCooldownValidator;
-import com.desiremc.hcf.validator.PlayerKitRequiredRankValidator;
+import com.desiremc.hcf.validators.PlayerKitOffCooldownValidator;
+import com.desiremc.hcf.validators.PlayerKitRequiredRankValidator;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.Collection;
+import java.util.List;
 
 public class KitCommand extends ValidCommand
 {
 
     public KitCommand()
     {
-        super("kit", "View or use kits.", Rank.GUEST, ARITY_OPTIONAL, new String[] { "kit" }, new String[] { "kits" });
+        super("kit", "View or use kits.", Rank.GUEST, true, new String[] {"kits"});
 
-        addParser(new KitParser(), "kit");
-
-        addValidator(new PlayerValidator());
-
-        addOptionalExistsValidator(new PlayerKitOffCooldownValidator(), "kit");
-        addOptionalExistsValidator(new PlayerKitRequiredRankValidator(), "kit");
+        addArgument(CommandArgumentBuilder.createBuilder(HKit.class)
+                .setName("kit")
+                .setParser(new KitParser())
+                .setOptional()
+                .addValidator(new PlayerKitOffCooldownValidator())
+                .addValidator(new PlayerKitRequiredRankValidator())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         Player player = (Player) sender;
         HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
-        if (args.length == 0)
+        if (args.size() == 0)
         {
             ViewKitsMenu menu = new ViewKitsMenu(session);
             menu.initialize();
@@ -47,7 +49,7 @@ public class KitCommand extends ValidCommand
         }
         else
         {
-            HKit kit = (HKit) args[0];
+            HKit kit = (HKit) args.get(0).getValue();
             Collection<ItemStack> itemColl = kit.getContents();
             ItemStack[] items = ItemUtils.toArray(itemColl);
 

@@ -1,10 +1,12 @@
 package com.desiremc.hcf.commands;
 
-import org.bukkit.command.CommandSender;
-
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
+
+import java.util.List;
 
 public class HCFReloadCommand extends ValidCommand
 {
@@ -15,11 +17,11 @@ public class HCFReloadCommand extends ValidCommand
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         DesireHCF.getLangHandler().reload();
         DesireHCF.getConfigHandler().reload();
-        DesireHCF.getLangHandler().sendString(sender, "hcfreload");
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "hcfreload");
     }
 
 }

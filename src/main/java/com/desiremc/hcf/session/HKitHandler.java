@@ -1,13 +1,14 @@
 package com.desiremc.hcf.session;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
-
-import org.mongodb.morphia.dao.BasicDAO;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Rank;
+import org.mongodb.morphia.dao.BasicDAO;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class HKitHandler extends BasicDAO<HKit, Integer>
 {
@@ -70,6 +71,23 @@ public class HKitHandler extends BasicDAO<HKit, Integer>
     public static Collection<HKit> getKits()
     {
         return getInstance().kits.values();
+    }
+
+    /**
+     * Returns a collection view of the kit names.
+     *
+     * @return a view of all kit names.
+     */
+    public static Collection<String> getKitNames()
+    {
+        List<String> names = new ArrayList<>();
+
+        for (HKit kit : getKits())
+        {
+            names.add(kit.getName());
+        }
+
+        return names;
     }
 
     /**

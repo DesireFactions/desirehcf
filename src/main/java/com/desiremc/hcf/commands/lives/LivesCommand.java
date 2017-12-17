@@ -1,6 +1,6 @@
 package com.desiremc.hcf.commands.lives;
 
-import com.desiremc.core.api.command.ValidBaseCommand;
+import com.desiremc.core.api.newcommands.ValidBaseCommand;
 import com.desiremc.core.session.Rank;
 
 public class LivesCommand extends ValidBaseCommand

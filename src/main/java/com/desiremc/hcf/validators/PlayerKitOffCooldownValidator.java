@@ -1,0 +1,31 @@
+package com.desiremc.hcf.validators;
+
+import com.desiremc.core.api.newcommands.Validator;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.HKit;
+
+public class PlayerKitOffCooldownValidator implements Validator<HKit>
+{
+
+    @Override
+    public boolean validateArgument(Session sender, String[] label, HKit kit)
+    {
+        HCFSession session = HCFSessionHandler.getHCFSession(sender.getUniqueId());
+        long cooldown = session.getKitCooldown(kit);
+
+        if (session.hasKitCooldown(kit))
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.has_cooldown",
+                    "{kit}", kit.getName(),
+                    "{time}", DateUtils.formatDateDiff(System.currentTimeMillis() + cooldown));
+            return false;
+        }
+
+        return true;
+    }
+
+}
