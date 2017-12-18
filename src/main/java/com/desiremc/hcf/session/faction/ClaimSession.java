@@ -8,6 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.block.Block;
 
 import com.desiremc.core.utils.BlockColumn;
+import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 
@@ -113,6 +114,16 @@ public class ClaimSession implements Runnable
     }
 
     /**
+     * Gets the current area of the claim session. If the
+     * 
+     * @return the current area.
+     */
+    public int getArea()
+    {
+        return (int) new BoundedArea(pointOne, pointTwo).area();
+    }
+
+    /**
      * @return the cost to claim the current selection. -1 if both points aren't set.
      */
     public double getCost()
@@ -127,6 +138,22 @@ public class ClaimSession implements Runnable
                 * (DesireHCF.getConfigHandler().getDouble("factions.claims.cost.block")); // get the scale per block
 
         return claimScale + blockScale;
+    }
+
+    /**
+     * @return the x difference.
+     */
+    public int getLength()
+    {
+        return Math.max(pointOne.getX(), pointTwo.getX()) - Math.min(pointOne.getX(), pointTwo.getX());
+    }
+
+    /**
+     * @return the y difference.
+     */
+    public int getWidth()
+    {
+        return Math.max(pointOne.getZ(), pointTwo.getZ()) - Math.min(pointOne.getZ(), pointTwo.getZ());
     }
 
     @SuppressWarnings("deprecation")

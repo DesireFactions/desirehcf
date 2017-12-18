@@ -146,6 +146,17 @@ factions:
   claims:
     not_claiming: '&7Use /faction claim to start claiming land.'
     need_point_one: '&7You must select the first point first.'
+    must_touch: '&7Your faction claims must touch.'
+    too_close: '&7That point is too close to another claim.'
+    too_small: '&7Claim size must be at least {size}x{size}.'
+    cost_help: '&7Claim size: &c{x}&7x&c{z}&7. &7Claim cost: $&a{cost}'
+    confirm_help: '&7Crouch and left click with the claim wand to confirm.'
+    overlap:
+      self: '&7Your claims can''t overlap.'
+      other: '&7Your claim can''t be within another faction''s claim.'
+    set:
+      first: '&7Set point one.'
+      second: '&7Set point two.'
   protection:
     use_blocks: '&cYou aren''t allowed to use that.'
     use_items: '&cYou aren''t allowed to use that here.'

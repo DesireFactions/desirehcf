@@ -6,7 +6,6 @@ import java.util.Set;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
@@ -19,6 +18,8 @@ import org.bukkit.inventory.ItemStack;
 
 import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.utils.BlockColumn;
+import com.desiremc.core.utils.BoundedArea;
+import com.desiremc.core.utils.GeometryUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.commands.spawn.SpawnCommand;
 import com.desiremc.hcf.session.HCFSession;
@@ -33,6 +34,7 @@ import com.desiremc.hcf.validators.SenderClaimHasPointOneValidator;
 import com.desiremc.hcf.validators.SenderClaimingValidator;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
+import com.github.davidmoten.rtree.Entry;
 
 /**
  * The listener in charge for ensuring that factions behave the way they are supposed to. It prevents players from going
@@ -115,7 +117,7 @@ public class PlayerListener implements Listener
     {
         event.setRespawnLocation(SpawnCommand.spawnLocation);
     }
-    
+
     @EventHandler
     public void onBucketEmpty(PlayerBucketEmptyEvent event)
     {
@@ -139,7 +141,7 @@ public class PlayerListener implements Listener
             event.setCancelled(true);
         }
     }
-    
+
     /**
      * Processes the claim attempt being done by the player. The logic was moved out of the {@link EventHandler} to make
      * it from getting bloated.
@@ -160,19 +162,94 @@ public class PlayerListener implements Listener
         Faction faction = session.getFaction();
         ClaimSession claim = session.getClaimSession();
         Block block = event.getClickedBlock();
+        BlockColumn blockColumn = new BlockColumn(block);
+
+        // all nearby claims
+        Iterable<Entry<Faction, BoundedArea>> nearby = FactionHandler.getNearbyFactions(blockColumn, DesireHCF.getConfigHandler().getInteger("factions.claims.buffer"));
+        boolean valid = faction.getClaims().size() == 0;
+        for (Entry<Faction, BoundedArea> entry : nearby)
+        {
+            if (entry.value() != faction)
+            {
+                if (entry.geometry().intersects(blockColumn))
+                {
+                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.overlap.other");
+                }
+                else
+                {
+                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_close");
+                }
+                return;
+            }
+            else
+            {
+                if (entry.geometry().intersects(blockColumn))
+                {
+                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "faction.claims.overlap.self");
+                }
+                else if (entry.geometry().distance(blockColumn) > 1)
+                {
+                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "faction.claims.must_touch");
+                }
+                else
+                {
+                    valid = true;
+                }
+            }
+        }
+
+        if (!valid)
+        {
+            return;
+        }
+
+        // the minimum size of the claim.
+        int minSize = DesireHCF.getConfigHandler().getInteger("factions.claims.min_size");
 
         // if they left click a block with the wand
         if (event.getAction() == Action.LEFT_CLICK_BLOCK)
         {
-            claim.setPointOne(new BlockColumn(block.getLocation().getBlockX(), block.getLocation().getBlockZ(), block.getLocation().getWorld()));
+            if (claim.hasPointTwo())
+            {
+                if (GeometryUtils.getArea(blockColumn, claim.getPointTwo()) < minSize * minSize)
+                {
+                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_small",
+                            "{size}", minSize);
+                    return;
+                }
+                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.cost_help",
+                        "{x}", claim.getLength(),
+                        "{z}", claim.getWidth(),
+                        "{cost}", claim.getCost());
+                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.confirm_help");
+            }
+            else
+            {
+                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.set.point_one");
+            }
+            claim.setPointOne(blockColumn);
         }
         // if they right click a block with the wand
         else if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
         {
-            if (new SenderClaimHasPointOneValidator().factionsValidate(session))
+            if (!new SenderClaimHasPointOneValidator().factionsValidate(session))
             {
-                claim.setPointTwo(new BlockColumn(block.getLocation().getBlockX(), block.getLocation().getBlockZ(), block.getLocation().getWorld()));
+                return;
             }
+
+            if (claim.getArea() < minSize * minSize)
+            {
+                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_small",
+                        "{size}", minSize);
+                return;
+            }
+
+            DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.cost_help",
+                    "{x}", claim.getLength(),
+                    "{z}", claim.getWidth(),
+                    "{cost}", claim.getCost());
+            DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.confirm_help");
+            claim.setPointTwo(blockColumn);
         }
         // if they left click the air while sneaking
         else if (event.getAction() == Action.LEFT_CLICK_AIR && session.getPlayer().isSneaking())

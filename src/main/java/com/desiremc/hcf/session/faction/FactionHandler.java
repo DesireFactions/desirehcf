@@ -26,7 +26,6 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
-import com.github.davidmoten.rtree.geometry.Geometry;
 import com.google.common.collect.Iterables;
 
 /**
@@ -42,7 +41,10 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     private static FactionHandler instance;
 
-    private static RTree<Faction, Geometry> claims;
+    /**
+     * All faction claims on the server.
+     */
+    private static RTree<Faction, BoundedArea> claims;
 
     /**
      * A map of factions referenced by the faction's name stub.
@@ -197,7 +199,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     public static Faction getFaction(Location location)
     {
-        Iterable<Entry<Faction, Geometry>> search = claims.search(new BlockColumn(location.getBlockX(), location.getBlockZ(), location.getWorld())).toBlocking().latest();
+        Iterable<Entry<Faction, BoundedArea>> search = claims.search(new BlockColumn(location.getBlockX(), location.getBlockZ(), location.getWorld())).toBlocking().latest();
         int size = Iterables.size(search);
         if (size == 0)
         {
@@ -221,7 +223,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     public static Faction getFaction(BlockColumn blockColumn)
     {
-        Iterable<Entry<Faction, Geometry>> search = claims.search(blockColumn).toBlocking().latest();
+        Iterable<Entry<Faction, BoundedArea>> search = claims.search(blockColumn).toBlocking().latest();
         int size = Iterables.size(search);
         if (size == 0)
         {
@@ -442,6 +444,18 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
                 player.getInventory().clear(i);
             }
         }
+    }
+
+    /**
+     * Get all factions within a particular range of the given block column.
+     * 
+     * @param blockColumn the block column.
+     * @param range the range.
+     * @return all nearby factions.
+     */
+    public static Iterable<Entry<Faction, BoundedArea>> getNearbyFactions(BlockColumn blockColumn, int range)
+    {
+        return claims.search(blockColumn, range).toBlocking().next();
     }
 
     private static void check()

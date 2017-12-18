@@ -381,6 +381,8 @@ factions:
     cost:
       block: 0.25
       existing_scale: 500
+    buffer: 5
+    min_size: 5
   names:
     length:
       min: 5
