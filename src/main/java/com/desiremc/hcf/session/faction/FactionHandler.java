@@ -24,6 +24,10 @@ import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HCFSession;
+import com.github.davidmoten.rtree.Entry;
+import com.github.davidmoten.rtree.RTree;
+import com.github.davidmoten.rtree.geometry.Geometry;
+import com.google.common.collect.Iterables;
 
 /**
  * Used to manage all the factions and base faction systems such as stuck players and admin bypass mode.
@@ -37,6 +41,8 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * Singleton instance of the handler.
      */
     private static FactionHandler instance;
+
+    private static RTree<Faction, Geometry> claims;
 
     /**
      * A map of factions referenced by the faction's name stub.
@@ -91,6 +97,9 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         // map the class so it is created in the database
         DesireCore.getInstance().getMongoWrapper().getMorphia().map(Faction.class);
 
+        // start up the r tree
+        claims = RTree.create();
+
         // populate the faction map
         factionsByName = new HashMap<>();
         factionsById = new HashMap<>();
@@ -106,13 +115,18 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             factionsByName.put(faction.getStub(), faction);
             factionsById.put(faction.getId(), faction);
 
+            for (BoundedArea claim : faction.getClaims())
+            {
+                claims = claims.add(faction, claim);
+            }
+
             // set the greatest id value
             if (faction.getId() > lastId)
             {
                 lastId = faction.getId();
             }
         }
-        
+
         System.out.println("Faction Map Sizes: " + factionsByName.size() + " " + factionsById.size());
 
         // if the default faction is not in the database, we need to add it to the database
@@ -183,17 +197,20 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     public static Faction getFaction(Location location)
     {
-        for (Faction f : getFactions())
+        Iterable<Entry<Faction, Geometry>> search = claims.search(new BlockColumn(location.getBlockX(), location.getBlockZ(), location.getWorld())).toBlocking().latest();
+        int size = Iterables.size(search);
+        if (size == 0)
         {
-            for (BoundedArea area : f.getClaims())
-            {
-                if (area.contains(location))
-                {
-                    return f;
-                }
-            }
+            return wilderness;
         }
-        return wilderness;
+        else if (size == 0)
+        {
+            return search.iterator().next().value();
+        }
+        else
+        {
+            throw new IllegalStateException("Multiple factions at a single point.");
+        }
     }
 
     /**
@@ -204,17 +221,20 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     public static Faction getFaction(BlockColumn blockColumn)
     {
-        for (Faction f : getFactions())
+        Iterable<Entry<Faction, Geometry>> search = claims.search(blockColumn).toBlocking().latest();
+        int size = Iterables.size(search);
+        if (size == 0)
         {
-            for (BoundedArea area : f.getClaims())
-            {
-                if (area.contains(blockColumn))
-                {
-                    return f;
-                }
-            }
+            return wilderness;
         }
-        return wilderness;
+        else if (size == 0)
+        {
+            return search.iterator().next().value();
+        }
+        else
+        {
+            throw new IllegalStateException("Multiple factions at a single point.");
+        }
     }
 
     /**
