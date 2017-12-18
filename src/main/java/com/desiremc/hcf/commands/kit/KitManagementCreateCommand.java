@@ -20,7 +20,7 @@ public class KitManagementCreateCommand extends ValidCommand
 
     public KitManagementCreateCommand()
     {
-        super("create", "Create a new kit.", Rank.HELPER, true, new String[] { "new" });
+        super("create", "Create a new kit.", Rank.ADMIN, true, new String[] {"new"});
 
         addArgument(CommandArgumentBuilder.createBuilder(String.class)
                 .setName("name")

@@ -16,7 +16,7 @@ public class KitManagementEditCommand extends ValidCommand
 
     public KitManagementEditCommand()
     {
-        super("edit", "Edit the kit itself.", Rank.HELPER, true, new String[] { "kit" });
+        super("edit", "Edit the kit itself.", Rank.ADMIN, true, new String[] {"kit"});
 
         addArgument(CommandArgumentBuilder.createBuilder(HKit.class)
                 .setName("kit")

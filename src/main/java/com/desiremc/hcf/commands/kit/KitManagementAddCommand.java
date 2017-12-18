@@ -17,7 +17,7 @@ public class KitManagementAddCommand extends ValidCommand
 
     public KitManagementAddCommand()
     {
-        super("add", "Add an item to a kit.", Rank.HELPER, true);
+        super("add", "Add an item to a kit.", Rank.ADMIN, true);
 
         addArgument(CommandArgumentBuilder.createBuilder(HKit.class)
                 .setName("kit")

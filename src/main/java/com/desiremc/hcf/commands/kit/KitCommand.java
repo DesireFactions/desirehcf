@@ -2,15 +2,13 @@ package com.desiremc.hcf.commands.kit;
 
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
-import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ItemUtils;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.gui.ViewKitsMenu;
 import com.desiremc.hcf.parsers.KitParser;
 import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.HKit;
 import com.desiremc.hcf.validators.PlayerKitOffCooldownValidator;
 import com.desiremc.hcf.validators.PlayerKitRequiredRankValidator;
@@ -20,7 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.Collection;
 import java.util.List;
 
-public class KitCommand extends ValidCommand
+public class KitCommand extends FactionValidCommand
 {
 
     public KitCommand()
@@ -37,13 +35,12 @@ public class KitCommand extends ValidCommand
     }
 
     @Override
-    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
+    public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> args)
     {
-        Player player = (Player) sender;
-        FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
+        Player player = sender.getPlayer();
         if (!args.get(0).hasValue())
         {
-            ViewKitsMenu menu = new ViewKitsMenu(session);
+            ViewKitsMenu menu = new ViewKitsMenu(sender);
             menu.initialize();
             menu.openMenu(player);
         }
@@ -60,7 +57,7 @@ public class KitCommand extends ValidCommand
             }
 
             player.getInventory().addItem(ItemUtils.toArray(kit.getContents()));
-            session.useKit(kit);
+            sender.useKit(kit);
 
             DesireHCF.getLangHandler().sendRenderMessage(player, "kits.used_kit",
                     "{kit}", kit.getName());
