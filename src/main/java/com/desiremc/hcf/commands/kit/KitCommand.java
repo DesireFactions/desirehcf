@@ -41,7 +41,7 @@ public class KitCommand extends ValidCommand
     {
         Player player = (Player) sender;
         HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
-        if (args.size() == 0)
+        if (!args.get(0).hasValue())
         {
             ViewKitsMenu menu = new ViewKitsMenu(session);
             menu.initialize();
