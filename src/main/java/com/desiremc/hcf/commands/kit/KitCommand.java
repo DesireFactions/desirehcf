@@ -40,7 +40,7 @@ public class KitCommand extends ValidCommand
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         Player player = (Player) sender;
-        FSession session = FSessionHandler.getFSession(player.getUniqueId());
+        FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
         if (!args.get(0).hasValue())
         {
             ViewKitsMenu menu = new ViewKitsMenu(session);

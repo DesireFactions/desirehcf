@@ -12,7 +12,7 @@ public class PlayerHasLivesValidator implements SenderValidator
     @Override
     public final boolean validate(Session sender)
     {
-        FSession session = FSessionHandler.getFSession(sender.getUniqueId());
+        FSession session = FSessionHandler.getGeneralFSession(sender.getUniqueId());
         if (session.getLives() <= 0 && !session.getRank().isManager())
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.no_lives");

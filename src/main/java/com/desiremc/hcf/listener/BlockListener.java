@@ -52,7 +52,7 @@ public class BlockListener implements Listener
             }
             try
             {
-                FSessionHandler.getFSession(p.getUniqueId()).getCurrentOre().add(type, 1);
+                FSessionHandler.getOnlineFSession(p.getUniqueId()).getCurrentOre().add(type, 1);
             }
             catch (Exception ex)
             {

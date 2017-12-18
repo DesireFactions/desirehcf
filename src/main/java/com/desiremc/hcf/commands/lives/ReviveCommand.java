@@ -18,7 +18,7 @@ public class ReviveCommand extends ValidCommand
 
     public ReviveCommand()
     {
-        super("revive", "Revive a player before their ban.", Rank.HELPER, true, new String[] {"target", "reason"});
+        super("revive", "Revive a player before their ban.", Rank.HELPER, true, new String[] { "target", "reason" });
 
         addArgument(CommandArgumentBuilder.createBuilder(FSession.class)
                 .setName("target")
@@ -39,6 +39,7 @@ public class ReviveCommand extends ValidCommand
         String reason = (String) args.get(1).getValue();
 
         target.revive(reason, true, sender.getUniqueId());
+        target.save();
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.revive", "{target}", target.getName());
 

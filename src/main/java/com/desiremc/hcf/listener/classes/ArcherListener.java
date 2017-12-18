@@ -88,7 +88,7 @@ public class ArcherListener implements DesireClass
             Player target = (Player) event.getEntity();
             Player source = (Player) pj.getShooter();
 
-            FSession sourceSession = FSessionHandler.getFSession(source.getUniqueId());
+            FSession sourceSession = FSessionHandler.getOnlineFSession(source.getUniqueId());
 
             if (!PVPClass.ARCHER.equals(sourceSession.getPvpClass()))
             {

@@ -49,7 +49,7 @@ public class MovementListener implements Listener
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
             }
         }
-        FSession hcfSession = FSessionHandler.getFSession(e.getPlayer().getUniqueId());
+        FSession hcfSession = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
         if (hcfSession.getSafeTimeLeft() > 0)
         {
             for (Region region : RegionHandler.getRegions())

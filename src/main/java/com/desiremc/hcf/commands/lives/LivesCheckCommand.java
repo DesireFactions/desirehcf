@@ -1,18 +1,16 @@
 package com.desiremc.hcf.commands.lives;
 
-import com.desiremc.core.api.newcommands.CommandArgument;
-import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
-import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.parsers.FSessionParser;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-
 import java.util.List;
 
-public class LivesCheckCommand extends ValidCommand
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.session.Rank;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.api.commands.FactionValidCommand;
+import com.desiremc.hcf.parsers.FSessionParser;
+import com.desiremc.hcf.session.FSession;
+
+public class LivesCheckCommand extends FactionValidCommand
 {
 
     public LivesCheckCommand()
@@ -22,26 +20,25 @@ public class LivesCheckCommand extends ValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(FSession.class)
                 .setName("target")
                 .setParser(new FSessionParser())
+                .setRequiredRank(Rank.HELPER)
                 .setOptional()
                 .build());
     }
 
     @Override
-    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
+    public void validFactionRun(FSession fSession, String label[], List<CommandArgument<?>> args)
     {
-        FSession session;
-        if (args.size() == 0)
+        if (!args.get(0).hasValue())
         {
-            session = FSessionHandler.getFSession((sender.getUniqueId()));
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.check.self",
-                    "{lives}", session.getLives());
+            DesireHCF.getLangHandler().sendRenderMessage(fSession.getSender(), "lives.check.self",
+                    "{lives}", fSession.getLives());
         }
         else
         {
-            session = (FSession) args.get(0).getValue();
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.check.others",
-                    "{lives}", session.getLives(),
-                    "{target}", session.getName());
+            FSession target = (FSession) args.get(0).getValue();
+            DesireHCF.getLangHandler().sendRenderMessage(fSession.getSender(), "lives.check.others",
+                    "{lives}", target.getLives(),
+                    "{target}", target.getName());
         }
 
     }

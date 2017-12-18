@@ -141,8 +141,8 @@ public class CombatListener implements Listener
                     return;
                 }
 
-                FSession vs = FSessionHandler.getFSession(victim.getUniqueId());
-                FSession ds = FSessionHandler.getFSession(damager.getUniqueId());
+                FSession vs = FSessionHandler.getOnlineFSession(victim.getUniqueId());
+                FSession ds = FSessionHandler.getOnlineFSession(damager.getUniqueId());
 
                 if (ds.getSafeTimeLeft() > 0)
                 {
@@ -264,7 +264,7 @@ public class CombatListener implements Listener
 
         if (tag != null)
         {
-            FSession killer = FSessionHandler.getFSession(tag.getUniqueId());
+            FSession killer = FSessionHandler.getOnlineFSession(tag.getUniqueId());
             message.then(killer.getName())
                     .tooltip(FactionsUtils.getMouseoverDetails(killer))
                     .color(killer.getRank().getMain())
@@ -349,7 +349,7 @@ public class CombatListener implements Listener
         {
             return null;
         }
-        return FSessionHandler.getFSession(tag.getUniqueId());
+        return FSessionHandler.getOnlineFSession(tag.getUniqueId());
     }
 
 }

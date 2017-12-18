@@ -11,7 +11,7 @@ public class PlayerHasEnoughLivesValidator implements Validator<Integer>
     @Override
     public boolean validateArgument(Session sender, String[] label, Integer arg)
     {
-        FSession session = FSessionHandler.getFSession(sender.getUniqueId());
+        FSession session = FSessionHandler.getGeneralFSession(sender.getUniqueId());
         if (session.getLives() < arg && !session.getRank().isManager())
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.not_enough");

@@ -11,7 +11,7 @@ public abstract class FactionValidator<T> implements Validator<T>
     @Override
     public final boolean validateArgument(Session sender, String[] label, T arg)
     {
-        FSession hcfSession = FSessionHandler.getFSession(sender.getUniqueId());
+        FSession hcfSession = FSessionHandler.getOnlineFSession(sender.getUniqueId());
 
         return factionsValidateArgument(hcfSession, label, arg);
     }

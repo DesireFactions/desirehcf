@@ -99,7 +99,7 @@ public class FactionsUtils
      */
     public static Faction getFaction(UUID uuid)
     {
-        FSession hcfSession = FSessionHandler.getFSession(uuid);
+        FSession hcfSession = FSessionHandler.getGeneralFSession(uuid);
 
         return hcfSession != null && hcfSession.getFaction() != null ? hcfSession.getFaction() : null;
     }

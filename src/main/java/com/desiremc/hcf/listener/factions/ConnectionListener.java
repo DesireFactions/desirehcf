@@ -23,7 +23,7 @@ public class ConnectionListener implements Listener
     public void onJoin(PlayerJoinEvent event)
     {
         // grab their session
-        FSession session = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
+        FSession session = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
 
         // check if they have a faction before proceeding
         if (session.hasFaction())
@@ -72,7 +72,7 @@ public class ConnectionListener implements Listener
     public void onQuit(PlayerQuitEvent event)
     {
         // grab their session
-        FSession session = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
+        FSession session = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
 
         // check if the quitting player is stuck
         if (FactionHandler.isStuck(session))

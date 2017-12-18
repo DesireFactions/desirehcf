@@ -14,7 +14,7 @@ public class PlayerHasSafeTimeLeft implements SenderValidator
     public final boolean validate(Session sender)
     {
         Player p = sender.getPlayer();
-        FSession session = FSessionHandler.getFSession(p.getUniqueId());
+        FSession session = FSessionHandler.getGeneralFSession(p.getUniqueId());
 
         if (session.getSafeTimeLeft() <= 0)
         {

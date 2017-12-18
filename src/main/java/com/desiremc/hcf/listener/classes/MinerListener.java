@@ -26,8 +26,8 @@ public class MinerListener implements DesireClass
         {
             return;
         }
-        Player p = event.getPlayer();
-        FSession session = FSessionHandler.getFSession(p.getUniqueId());
+        Player player = event.getPlayer();
+        FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
 
         if (!PVPClass.MINER.equals(session.getPvpClass()))
         {

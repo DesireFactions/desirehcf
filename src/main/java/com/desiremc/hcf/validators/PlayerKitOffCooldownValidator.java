@@ -14,7 +14,7 @@ public class PlayerKitOffCooldownValidator implements Validator<HKit>
     @Override
     public boolean validateArgument(Session sender, String[] label, HKit kit)
     {
-        FSession session = FSessionHandler.getFSession(sender.getUniqueId());
+        FSession session = FSessionHandler.getGeneralFSession(sender.getUniqueId());
         long cooldown = session.getKitCooldown(kit);
 
         if (session.hasKitCooldown(kit))

@@ -48,7 +48,7 @@ public class PlayerListener implements Listener
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockMove(PlayerBlockMoveEvent event)
     {
-        FSession hcfSession = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
+        FSession hcfSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
         Faction factionTo = FactionsUtils.getFaction(event.getTo());
 
         hcfSession.setLastLocation(factionTo);
@@ -57,7 +57,7 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onInteract(PlayerInteractEvent event)
     {
-        FSession hcfSession = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
+        FSession hcfSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
 
         // handle everything to do with claiming.
         if (event.hasItem())
@@ -122,7 +122,7 @@ public class PlayerListener implements Listener
     public void onBucketEmpty(PlayerBucketEmptyEvent event)
     {
         Block block = event.getBlockClicked();
-        FSession hcfSession = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
+        FSession hcfSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
 
         if (!playerCanUseItem(hcfSession, block.getLocation(), event.getBucket()))
         {
@@ -134,7 +134,7 @@ public class PlayerListener implements Listener
     public void onBucketFill(PlayerBucketFillEvent event)
     {
         Block block = event.getBlockClicked();
-        FSession hcfSession = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
+        FSession hcfSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
 
         if (!playerCanUseItem(hcfSession, block.getLocation(), event.getBucket()))
         {

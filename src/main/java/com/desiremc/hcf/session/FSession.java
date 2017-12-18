@@ -314,7 +314,6 @@ public class FSession
         ban.setReviveReason(reson);
         ban.setReviver(reviver);
         ban.save();
-        save();
     }
 
     public void addKill(UUID victim)

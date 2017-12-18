@@ -86,7 +86,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
      * @param server the server to search for.
      * @return the {@link FSession} if found.
      */
-    public static FSession getFSession(UUID uuid)
+    public static FSession getGeneralFSession(UUID uuid)
     {
         if (uuid == null)
         {
@@ -104,11 +104,20 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
 
     }
 
+    public static FSession getOnlineFSession(UUID uuid)
+    {
+        if (uuid == null)
+        {
+            return null;
+        }
+        return onlineSessions.get(uuid);
+    }
+
     public static FSession getFSession(CommandSender sender)
     {
         if (sender instanceof Player)
         {
-            return getFSession(((Player) sender).getUniqueId());
+            return getOnlineFSession(((Player) sender).getUniqueId());
         }
         else if (sender instanceof ConsoleCommandSender)
         {

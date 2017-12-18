@@ -97,7 +97,7 @@ public class ConnectionListener implements Listener
     @EventHandler
     public void onLeave(PlayerQuitEvent e)
     {
-        FSession session = FSessionHandler.getFSession(e.getPlayer().getUniqueId());
+        FSession session = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
 
         session.getSafeTimer().pause();
 
@@ -110,7 +110,7 @@ public class ConnectionListener implements Listener
         FSession s;
         try
         {
-            s = FSessionHandler.getFSession(event.getUniqueId());
+            s = FSessionHandler.getOnlineFSession(event.getUniqueId());
         }
         catch (Exception ex)
         {

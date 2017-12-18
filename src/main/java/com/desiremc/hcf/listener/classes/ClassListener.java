@@ -138,7 +138,7 @@ public class ClassListener implements Listener
 
     public static void updateClass(Player player, ItemStack item)
     {
-        FSession session = FSessionHandler.getFSession(player.getUniqueId());
+        FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
 
         PlayerInventory inv = player.getInventory();
 
@@ -454,7 +454,7 @@ public class ClassListener implements Listener
             @Override
             public void run()
             {
-                FSession session = FSessionHandler.getFSession(player.getUniqueId());
+                FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
                 if (session.getPvpClass() != null && pvpClass == session.getPvpClass())
                 {
                     applyPermanentEffects(pvpClass, player);
@@ -506,7 +506,7 @@ public class ClassListener implements Listener
         }
 
         Player player = event.getPlayer();
-        FSession session = FSessionHandler.getFSession(player.getUniqueId());
+        FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
 
         if (session.getPvpClass() == null)
         {
@@ -553,7 +553,7 @@ public class ClassListener implements Listener
 
     private void holdEvent(Player player, ItemStack item)
     {
-        FSession session = FSessionHandler.getFSession(player.getUniqueId());
+        FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
 
         if (session.getPvpClass() == null || !ClassListener.isClassEvent(session.getPvpClass(), session, item, "hold"))
         {
@@ -593,7 +593,7 @@ public class ClassListener implements Listener
         }
 
         ItemStack item = event.getItem();
-        FSession session = FSessionHandler.getFSession(player.getUniqueId());
+        FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
 
         if (!ClassListener.isClassEvent(session.getPvpClass(), session, item, "click"))
         {

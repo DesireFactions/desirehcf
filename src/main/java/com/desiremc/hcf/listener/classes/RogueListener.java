@@ -97,7 +97,7 @@ public class RogueListener implements DesireClass
             return;
         }
         Player p = event.getPlayer();
-        FSession session = FSessionHandler.getFSession(p.getUniqueId());
+        FSession session = FSessionHandler.getOnlineFSession(p.getUniqueId());
 
         if (!PVPClass.ROGUE.equals(session.getPvpClass()))
         {
@@ -140,8 +140,8 @@ public class RogueListener implements DesireClass
             return;
         }
 
-        FSession targetSession = FSessionHandler.getFSession(target.getUniqueId());
-        FSession playerSession = FSessionHandler.getFSession(player.getUniqueId());
+        FSession targetSession = FSessionHandler.getOnlineFSession(target.getUniqueId());
+        FSession playerSession = FSessionHandler.getOnlineFSession(player.getUniqueId());
 
         if (playerSession.getPvpClass() == null || !playerSession.getPvpClass().equals(PVPClass.ROGUE))
         {
@@ -205,27 +205,27 @@ public class RogueListener implements DesireClass
             return;
         }
 
-        Player p = event.getPlayer();
-        FSession session = FSessionHandler.getFSession(p.getUniqueId());
+        Player player = event.getPlayer();
+        FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
 
         if (!PVPClass.ROGUE.equals(session.getPvpClass()))
         {
             return;
         }
 
-        if (invisCooldown.get(p.getUniqueId()) != null)
+        if (invisCooldown.get(player.getUniqueId()) != null)
         {
-            DesireHCF.getLangHandler().sendString(p, "classes.rogue.on-cooldown");
+            DesireHCF.getLangHandler().sendString(player, "classes.rogue.on-cooldown");
             return;
         }
 
-        if (p.hasPotionEffect(PotionEffectType.INVISIBILITY))
+        if (player.hasPotionEffect(PotionEffectType.INVISIBILITY))
         {
-            p.removePotionEffect(PotionEffectType.INVISIBILITY);
+            player.removePotionEffect(PotionEffectType.INVISIBILITY);
         }
         else
         {
-            p.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, DesireHCF.getConfigHandler().getInteger("classes.rogue.invisible-length") * 20, 0));
+            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, DesireHCF.getConfigHandler().getInteger("classes.rogue.invisible-length") * 20, 0));
 
             if (event.getItem().getAmount() > 1)
             {
@@ -233,9 +233,9 @@ public class RogueListener implements DesireClass
             }
             else
             {
-                p.getInventory().remove(event.getItem());
+                player.getInventory().remove(event.getItem());
             }
-            p.updateInventory();
+            player.updateInventory();
         }
     }
 }

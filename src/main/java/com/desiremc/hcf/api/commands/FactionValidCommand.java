@@ -122,7 +122,7 @@ public abstract class FactionValidCommand extends ValidCommand
     @Override
     public final void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        FSession hcfSender = FSessionHandler.getFSession(sender.getUniqueId());
+        FSession hcfSender = FSessionHandler.getOnlineFSession(sender.getUniqueId());
 
         this.validFactionRun(hcfSender, label, arguments);
     }

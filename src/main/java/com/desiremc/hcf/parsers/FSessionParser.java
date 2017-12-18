@@ -29,7 +29,7 @@ public class FSessionParser implements Parser<FSession>
         // if they are online, just grab their session from the handler
         else
         {
-            arg = FSessionHandler.getFSession(p.getUniqueId());
+            arg = FSessionHandler.getGeneralFSession(p.getUniqueId());
         }
 
         // if they were not found, send the error message and return null.

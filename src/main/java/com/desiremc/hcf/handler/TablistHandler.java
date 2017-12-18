@@ -106,7 +106,7 @@ public class TablistHandler implements Listener
                 }
 
                 // get the faction's player store
-                FSession user = FSessionHandler.getFSession(player.getUniqueId());
+                FSession user = FSessionHandler.getOnlineFSession(player.getUniqueId());
                 if (user == null)
                 {
                     return;

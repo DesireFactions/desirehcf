@@ -58,7 +58,7 @@ public class ViewKitsMenu extends Menu
         @Override
         public void onClick(Player player)
         {
-            FSession session = FSessionHandler.getFSession(player.getUniqueId());
+            FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
             boolean onCooldown = session.hasKitCooldown(kit);
             boolean noPermission = session.getRank().getId() < kit.getId();
             if (noPermission)

@@ -1,27 +1,26 @@
 package com.desiremc.hcf.commands;
 
-import com.desiremc.core.api.newcommands.CommandArgument;
-import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.gui.Menu;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.hcf.gui.OreMenu;
-import com.desiremc.hcf.session.FSessionHandler;
-
 import java.util.List;
 
-public class OreCommand extends ValidCommand
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.gui.Menu;
+import com.desiremc.core.session.Rank;
+import com.desiremc.hcf.api.commands.FactionValidCommand;
+import com.desiremc.hcf.gui.OreMenu;
+import com.desiremc.hcf.session.FSession;
+
+public class OreCommand extends FactionValidCommand
 {
 
     public OreCommand()
     {
-        super("ore", "View the ore you have mined.", Rank.GUEST, true, new String[] {"ores"});
+        super("ore", "View the ore you have mined.", Rank.GUEST, true, new String[] { "ores" });
     }
 
     @Override
-    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
+    public void validFactionRun(FSession sender, String label[], List<CommandArgument<?>> args)
     {
-        Menu menu = OreMenu.getOreMenu(FSessionHandler.getFSession(sender.getUniqueId()));
+        Menu menu = OreMenu.getOreMenu(sender);
         menu.openMenu(sender.getPlayer());
     }
 
