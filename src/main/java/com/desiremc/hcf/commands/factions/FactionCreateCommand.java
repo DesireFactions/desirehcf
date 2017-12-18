@@ -9,7 +9,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.events.faction.FactionCreateEvent;
 import com.desiremc.hcf.parsers.FactionTypeParser;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionType;
@@ -42,7 +42,7 @@ public class FactionCreateCommand extends FactionValidCommand
     }
 
     @Override
-    public void validFactionRun(HCFSession sender, String[] label, List<CommandArgument<?>> arguments)
+    public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         String name = (String) arguments.get(0).getValue();
         FactionType type = arguments.get(1).hasValue() ? (FactionType) arguments.get(1).getValue() : FactionType.PLAYER;

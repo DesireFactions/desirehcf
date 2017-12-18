@@ -3,21 +3,21 @@ package com.desiremc.hcf.events.faction;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 
 public class FactionCreateEvent extends FactionPlayerEvent implements Cancellable
 {
 
-    private static HandlerList handerList;
+    private static HandlerList handerList = new HandlerList();
 
     protected boolean cancelled;
 
     /**
      * @param faction the {@link Faction} involved with the event.
-     * @param hcfSession the {@link HCFSession} involved with the event.
+     * @param hcfSession the {@link FSession} involved with the event.
      */
-    public FactionCreateEvent(Faction faction, HCFSession hcfSession)
+    public FactionCreateEvent(Faction faction, FSession hcfSession)
     {
         super(faction, hcfSession);
     }

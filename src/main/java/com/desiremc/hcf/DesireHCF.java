@@ -51,8 +51,8 @@ import com.desiremc.hcf.listener.classes.ArmorListener;
 import com.desiremc.hcf.listener.classes.ClassListener;
 import com.desiremc.hcf.listener.classes.MinerListener;
 import com.desiremc.hcf.listener.classes.RogueListener;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.FactionHandler;
@@ -81,7 +81,7 @@ public class DesireHCF extends JavaPlugin
         lang = new LangHandler(new File(getDataFolder(), "lang.yml"), this);
         config = new FileHandler(new File(getDataFolder(), "config.yml"), this);
 
-        HCFSessionHandler.initialize();
+        FSessionHandler.initialize();
         FactionHandler.initialize();
         RegionHandler.initialize();
         TagHandler.initialize();
@@ -98,9 +98,9 @@ public class DesireHCF extends JavaPlugin
             @Override
             public void run()
             {
-                for (HCFSession session : HCFSessionHandler.getHCFSessions())
+                for (FSession session : FSessionHandler.getFSessions())
                 {
-                    HCFSessionHandler.getInstance().save(session);
+                    FSessionHandler.getInstance().save(session);
                 }
             }
         }, 10, 600);

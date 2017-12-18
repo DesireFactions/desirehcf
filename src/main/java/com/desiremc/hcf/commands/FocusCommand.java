@@ -7,7 +7,7 @@ import com.desiremc.core.newparsers.SessionParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
@@ -40,7 +40,7 @@ public class FocusCommand extends ValidCommand
         EntityPlayer entityPlayer = ((CraftPlayer) target.getPlayer()).getHandle();
         entityPlayer.displayName = ChatColor.RED + "newName";
 
-        for (HCFSession session : faction.getMembers())
+        for (FSession session : faction.getMembers())
         {
             DesireHCF.getLangHandler().sendRenderMessage(session.getPlayer(), "region.delete", "{target}", target.getName());
 

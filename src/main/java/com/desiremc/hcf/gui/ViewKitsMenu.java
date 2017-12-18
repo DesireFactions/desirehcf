@@ -14,17 +14,17 @@ import com.desiremc.core.gui.MenuItem;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.core.utils.ItemUtils;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.HKit;
 import com.desiremc.hcf.session.HKitHandler;
 
 public class ViewKitsMenu extends Menu
 {
 
-    private HCFSession session;
+    private FSession session;
 
-    public ViewKitsMenu(HCFSession session)
+    public ViewKitsMenu(FSession session)
     {
         super("§6§lKits", Math.max(1, (HKitHandler.getKitMap().size() + 8) / 9));
         this.session = session;
@@ -49,7 +49,7 @@ public class ViewKitsMenu extends Menu
 
         private HKit kit;
 
-        public KitMenuItem(ItemStack item, HCFSession session, HKit kit)
+        public KitMenuItem(ItemStack item, FSession session, HKit kit)
         {
             super(item);
             this.kit = kit;
@@ -58,7 +58,7 @@ public class ViewKitsMenu extends Menu
         @Override
         public void onClick(Player player)
         {
-            HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+            FSession session = FSessionHandler.getFSession(player.getUniqueId());
             boolean onCooldown = session.hasKitCooldown(kit);
             boolean noPermission = session.getRank().getId() < kit.getId();
             if (noPermission)
@@ -84,7 +84,7 @@ public class ViewKitsMenu extends Menu
         }
 
         @SuppressWarnings("deprecation")
-        public static KitMenuItem getKitItem(HCFSession session, HKit kit)
+        public static KitMenuItem getKitItem(FSession session, HKit kit)
         {
             ItemStack item;
             boolean onCooldown = session.hasKitCooldown(kit);

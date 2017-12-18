@@ -6,9 +6,9 @@ import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.parsers.HCFSessionParser;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.parsers.FSessionParser;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 
 import java.util.List;
 
@@ -19,9 +19,9 @@ public class LivesCheckCommand extends ValidCommand
     {
         super("check", "Check how many lives you have.", Rank.GUEST, new String[] {"target"});
 
-        addArgument(CommandArgumentBuilder.createBuilder(HCFSession.class)
+        addArgument(CommandArgumentBuilder.createBuilder(FSession.class)
                 .setName("target")
-                .setParser(new HCFSessionParser())
+                .setParser(new FSessionParser())
                 .setOptional()
                 .build());
     }
@@ -29,16 +29,16 @@ public class LivesCheckCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        HCFSession session;
+        FSession session;
         if (args.size() == 0)
         {
-            session = HCFSessionHandler.getHCFSession((sender.getUniqueId()));
+            session = FSessionHandler.getFSession((sender.getUniqueId()));
             DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.check.self",
                     "{lives}", session.getLives());
         }
         else
         {
-            session = (HCFSession) args.get(0).getValue();
+            session = (FSession) args.get(0).getValue();
             DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.check.others",
                     "{lives}", session.getLives(),
                     "{target}", session.getName());

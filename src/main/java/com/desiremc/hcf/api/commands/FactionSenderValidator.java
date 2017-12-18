@@ -2,8 +2,8 @@ package com.desiremc.hcf.api.commands;
 
 import com.desiremc.core.api.newcommands.SenderValidator;
 import com.desiremc.core.session.Session;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 
 public abstract class FactionSenderValidator implements SenderValidator
 {
@@ -11,11 +11,11 @@ public abstract class FactionSenderValidator implements SenderValidator
     @Override
     public final boolean validate(Session sender)
     {
-        HCFSession hcfSession = HCFSessionHandler.getHCFSession(sender.getUniqueId());
+        FSession hcfSession = FSessionHandler.getFSession(sender.getUniqueId());
         
         return factionsValidate(hcfSession);
     }
     
-    public abstract boolean factionsValidate(HCFSession sender);
+    public abstract boolean factionsValidate(FSession sender);
     
 }

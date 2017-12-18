@@ -33,8 +33,8 @@ import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.events.ArmorEquipEvent;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 
 public class ClassListener implements Listener
@@ -138,7 +138,7 @@ public class ClassListener implements Listener
 
     public static void updateClass(Player player, ItemStack item)
     {
-        HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+        FSession session = FSessionHandler.getFSession(player.getUniqueId());
 
         PlayerInventory inv = player.getInventory();
 
@@ -428,7 +428,7 @@ public class ClassListener implements Listener
             {
                 for (Player target : players)
                 {
-                    HCFSession sesh = HCFSessionHandler.getHCFSession(target);
+                    FSession sesh = FSessionHandler.getFSession(target);
                     applyPermanentEffects(sesh.getPvpClass(), target);
                 }
             }
@@ -454,7 +454,7 @@ public class ClassListener implements Listener
             @Override
             public void run()
             {
-                HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+                FSession session = FSessionHandler.getFSession(player.getUniqueId());
                 if (session.getPvpClass() != null && pvpClass == session.getPvpClass())
                 {
                     applyPermanentEffects(pvpClass, player);
@@ -506,7 +506,7 @@ public class ClassListener implements Listener
         }
 
         Player player = event.getPlayer();
-        HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+        FSession session = FSessionHandler.getFSession(player.getUniqueId());
 
         if (session.getPvpClass() == null)
         {
@@ -523,7 +523,7 @@ public class ClassListener implements Listener
         }, 5L);
     }
 
-    private static boolean isClassEvent(PVPClass pvpClass, HCFSession session, ItemStack item, String effectType)
+    private static boolean isClassEvent(PVPClass pvpClass, FSession session, ItemStack item, String effectType)
     {
         if (session.getPvpClass() == null || !pvpClass.equals(session.getPvpClass()))
         {
@@ -553,7 +553,7 @@ public class ClassListener implements Listener
 
     private void holdEvent(Player player, ItemStack item)
     {
-        HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+        FSession session = FSessionHandler.getFSession(player.getUniqueId());
 
         if (session.getPvpClass() == null || !ClassListener.isClassEvent(session.getPvpClass(), session, item, "hold"))
         {
@@ -593,7 +593,7 @@ public class ClassListener implements Listener
         }
 
         ItemStack item = event.getItem();
-        HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+        FSession session = FSessionHandler.getFSession(player.getUniqueId());
 
         if (!ClassListener.isClassEvent(session.getPvpClass(), session, item, "click"))
         {

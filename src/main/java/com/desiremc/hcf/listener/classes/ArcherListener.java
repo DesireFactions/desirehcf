@@ -8,8 +8,8 @@ import com.desiremc.core.utils.cache.Cache;
 import com.desiremc.core.utils.cache.RemovalListener;
 import com.desiremc.core.utils.cache.RemovalNotification;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.FactionRelationship;
 import com.desiremc.hcf.util.FactionsUtils;
 import org.bukkit.Bukkit;
@@ -88,7 +88,7 @@ public class ArcherListener implements DesireClass
             Player target = (Player) event.getEntity();
             Player source = (Player) pj.getShooter();
 
-            HCFSession sourceSession = HCFSessionHandler.getHCFSession(source.getUniqueId());
+            FSession sourceSession = FSessionHandler.getFSession(source.getUniqueId());
 
             if (!PVPClass.ARCHER.equals(sourceSession.getPvpClass()))
             {

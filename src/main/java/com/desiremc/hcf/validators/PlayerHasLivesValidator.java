@@ -3,8 +3,8 @@ package com.desiremc.hcf.validators;
 import com.desiremc.core.api.newcommands.SenderValidator;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 
 public class PlayerHasLivesValidator implements SenderValidator
 {
@@ -12,7 +12,7 @@ public class PlayerHasLivesValidator implements SenderValidator
     @Override
     public final boolean validate(Session sender)
     {
-        HCFSession session = HCFSessionHandler.getHCFSession(sender.getUniqueId());
+        FSession session = FSessionHandler.getFSession(sender.getUniqueId());
         if (session.getLives() <= 0 && !session.getRank().isManager())
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.no_lives");

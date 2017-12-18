@@ -24,8 +24,8 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 
@@ -47,7 +47,7 @@ public class ConnectionListener implements Listener
             System.out.println("ConnectionListener.onJoin() event fired.");
         }
         Player p = e.getPlayer();
-        HCFSession session = HCFSessionHandler.initializeHCFSession(e.getPlayer().getUniqueId(), true);
+        FSession session = FSessionHandler.initializeFSession(e.getPlayer().getUniqueId());
         boolean safe = false;
         for (Region region : RegionHandler.getRegions())
         {
@@ -97,20 +97,20 @@ public class ConnectionListener implements Listener
     @EventHandler
     public void onLeave(PlayerQuitEvent e)
     {
-        HCFSession session = HCFSessionHandler.getHCFSession(e.getPlayer().getUniqueId());
+        FSession session = FSessionHandler.getFSession(e.getPlayer().getUniqueId());
 
         session.getSafeTimer().pause();
-        
-        HCFSessionHandler.getInstance().save(session);
+
+        FSessionHandler.getInstance().save(session);
     }
 
     @EventHandler
     public void onLogin(AsyncPlayerPreLoginEvent event)
     {
-        HCFSession s;
+        FSession s;
         try
         {
-            s = HCFSessionHandler.initializeHCFSession(event.getUniqueId(), false);
+            s = FSessionHandler.getFSession(event.getUniqueId());
         }
         catch (Exception ex)
         {

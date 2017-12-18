@@ -33,8 +33,8 @@ import com.desiremc.core.utils.ItemNames;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.barrier.TagHandler.Tag;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
@@ -141,8 +141,8 @@ public class CombatListener implements Listener
                     return;
                 }
 
-                HCFSession vs = HCFSessionHandler.getHCFSession(victim.getUniqueId());
-                HCFSession ds = HCFSessionHandler.getHCFSession(damager.getUniqueId());
+                FSession vs = FSessionHandler.getFSession(victim.getUniqueId());
+                FSession ds = FSessionHandler.getFSession(damager.getUniqueId());
 
                 if (ds.getSafeTimeLeft() > 0)
                 {
@@ -175,7 +175,7 @@ public class CombatListener implements Listener
         {
             // retrieve all variables we need
             Player vPlayer = event.getEntity();
-            HCFSession victim = HCFSessionHandler.getHCFSession(vPlayer);
+            FSession victim = FSessionHandler.getFSession(vPlayer);
             DamageCause cause = vPlayer.getLastDamageCause().getCause();
             Tag tag = TagHandler.getTag(vPlayer.getUniqueId());
             TagHandler.clearTag(victim.getUniqueId());
@@ -191,7 +191,7 @@ public class CombatListener implements Listener
             victim.resetPVPTimer();
 
             // if the killer was a player, give them their reward
-            HCFSession kSession = getKillerSession(tag);
+            FSession kSession = getKillerSession(tag);
             if (kSession != null)
             {
                 kSession.addKill(vPlayer.getUniqueId());
@@ -241,7 +241,7 @@ public class CombatListener implements Listener
         event.setDeathMessage(null);
     }
 
-    private FancyMessage processMessage(HCFSession session, DamageCause cause, Tag tag)
+    private FancyMessage processMessage(FSession session, DamageCause cause, Tag tag)
     {
         FancyMessage message = new FancyMessage(session.getName())
                 .color(session.getRank().getMain())
@@ -264,7 +264,7 @@ public class CombatListener implements Listener
 
         if (tag != null)
         {
-            HCFSession killer = HCFSessionHandler.getHCFSession(tag.getUniqueId());
+            FSession killer = FSessionHandler.getFSession(tag.getUniqueId());
             message.then(killer.getName())
                     .tooltip(FactionsUtils.getMouseoverDetails(killer))
                     .color(killer.getRank().getMain())
@@ -343,13 +343,13 @@ public class CombatListener implements Listener
         return message;
     }
 
-    private static HCFSession getKillerSession(Tag tag)
+    private static FSession getKillerSession(Tag tag)
     {
         if (tag == null)
         {
             return null;
         }
-        return HCFSessionHandler.getHCFSession(tag.getUniqueId());
+        return FSessionHandler.getFSession(tag.getUniqueId());
     }
 
 }

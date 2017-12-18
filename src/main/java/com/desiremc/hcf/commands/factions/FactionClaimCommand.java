@@ -3,7 +3,7 @@ package com.desiremc.hcf.commands.factions;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.newvalidators.SenderHasFreeSlotValidator;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.ClaimSession;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
@@ -22,7 +22,7 @@ public class FactionClaimCommand extends FactionValidCommand
     }
 
     @Override
-    public void validFactionRun(HCFSession sender, String[] label, List<CommandArgument<?>> arguments)
+    public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         sender.getPlayer().getInventory().addItem(FactionHandler.getClaimWand());
 

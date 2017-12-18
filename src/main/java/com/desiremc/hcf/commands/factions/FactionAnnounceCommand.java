@@ -5,7 +5,7 @@ import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.newparsers.StringParser;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
@@ -29,7 +29,7 @@ public class FactionAnnounceCommand extends FactionValidCommand
     }
 
     @Override
-    public void validFactionRun(HCFSession sender, String[] label, List<CommandArgument<?>> arguments)
+    public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         Faction faction = sender.getFaction();
         String message = DesireHCF.getLangHandler().renderMessageNoPrefix("factions.announce",
@@ -37,11 +37,11 @@ public class FactionAnnounceCommand extends FactionValidCommand
                 "{message}", arguments.get(0),
                 "{sender}", sender.getName());
 
-        for (HCFSession online : faction.getOnlineMembers())
+        for (FSession online : faction.getOnlineMembers())
         {
             online.sendMessage(message);
         }
-        for (HCFSession offline : faction.getOfflineMembers())
+        for (FSession offline : faction.getOfflineMembers())
         {
             faction.addAnnouncement(offline, message);
         }

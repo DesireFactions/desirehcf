@@ -7,8 +7,8 @@ import com.desiremc.core.newparsers.StringParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.parsers.HCFSessionParser;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.parsers.FSessionParser;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.validators.PlayerHasDeathbanValidator;
 
 import java.util.List;
@@ -20,9 +20,9 @@ public class ReviveCommand extends ValidCommand
     {
         super("revive", "Revive a player before their ban.", Rank.HELPER, true, new String[] {"target", "reason"});
 
-        addArgument(CommandArgumentBuilder.createBuilder(HCFSession.class)
+        addArgument(CommandArgumentBuilder.createBuilder(FSession.class)
                 .setName("target")
-                .setParser(new HCFSessionParser())
+                .setParser(new FSessionParser())
                 .addValidator(new PlayerHasDeathbanValidator())
                 .build());
 
@@ -35,7 +35,7 @@ public class ReviveCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        HCFSession target = (HCFSession) args.get(0).getValue();
+        FSession target = (FSession) args.get(0).getValue();
         String reason = (String) args.get(1).getValue();
 
         target.revive(reason, true, sender.getUniqueId());

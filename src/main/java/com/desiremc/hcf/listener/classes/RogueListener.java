@@ -25,8 +25,8 @@ import com.desiremc.core.utils.cache.RemovalListener;
 import com.desiremc.core.utils.cache.RemovalNotification;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.listener.MovementListener;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 
 import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
@@ -97,7 +97,7 @@ public class RogueListener implements DesireClass
             return;
         }
         Player p = event.getPlayer();
-        HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+        FSession session = FSessionHandler.getFSession(p.getUniqueId());
 
         if (!PVPClass.ROGUE.equals(session.getPvpClass()))
         {
@@ -140,8 +140,8 @@ public class RogueListener implements DesireClass
             return;
         }
 
-        HCFSession targetSession = HCFSessionHandler.getHCFSession(target.getUniqueId());
-        HCFSession playerSession = HCFSessionHandler.getHCFSession(player.getUniqueId());
+        FSession targetSession = FSessionHandler.getFSession(target.getUniqueId());
+        FSession playerSession = FSessionHandler.getFSession(player.getUniqueId());
 
         if (playerSession.getPvpClass() == null || !playerSession.getPvpClass().equals(PVPClass.ROGUE))
         {
@@ -206,7 +206,7 @@ public class RogueListener implements DesireClass
         }
 
         Player p = event.getPlayer();
-        HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+        FSession session = FSessionHandler.getFSession(p.getUniqueId());
 
         if (!PVPClass.ROGUE.equals(session.getPvpClass()))
         {

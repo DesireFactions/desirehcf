@@ -3,7 +3,7 @@ package com.desiremc.hcf.commands.fstat;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 
@@ -20,7 +20,7 @@ public class FStatShowCommand extends FactionValidCommand
     }
 
     @Override
-    public void validFactionRun(HCFSession sender, String[] label, List<CommandArgument<?>> arguments)
+    public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         Faction faction = sender.getFaction();
         

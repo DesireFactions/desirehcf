@@ -38,7 +38,7 @@ import com.desiremc.hcf.session.faction.FactionSetting;
 import com.desiremc.hcf.util.FactionsUtils;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
-public class HCFSession
+public class FSession
 {
 
     @Transient
@@ -60,6 +60,7 @@ public class HCFSession
 
     private double balance;
 
+    @Property("last_seen")
     private long lastSeen;
 
     @Reference(ignoreMissing = true)
@@ -104,7 +105,7 @@ public class HCFSession
     @Transient
     private Faction lastLocation;
 
-    public HCFSession()
+    public FSession()
     {
         pvpTimer = new PVPTimer();
         kills = new LinkedList<>();
@@ -116,7 +117,7 @@ public class HCFSession
 
     protected void assignDefaults(UUID uuid, String server)
     {
-        this.id = HCFSessionHandler.getNextId();
+        this.id = FSessionHandler.getNextId();
         this.uuid = uuid;
         this.server = server;
         this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
@@ -434,7 +435,6 @@ public class HCFSession
     {
         if (parsedFaction == null)
         {
-            System.out.println(factionId);
             parsedFaction = FactionsUtils.getFaction(factionId);
         }
     }
@@ -590,11 +590,11 @@ public class HCFSession
     @Override
     public boolean equals(Object o)
     {
-        if (!(o instanceof HCFSession))
+        if (!(o instanceof FSession))
         {
             return false;
         }
-        return ((HCFSession) o).getUniqueId().equals(uuid);
+        return ((FSession) o).getUniqueId().equals(uuid);
     }
 
     public String[] getKillDisplay()
@@ -842,7 +842,7 @@ public class HCFSession
             @Override
             public void run()
             {
-                HCFSessionHandler.getInstance().save(HCFSession.this);
+                FSessionHandler.getInstance().save(FSession.this);
             }
         });
     }

@@ -8,8 +8,8 @@ import com.desiremc.core.newparsers.PositiveIntegerParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.validators.PlayerHasEnoughLivesValidator;
 import org.bukkit.entity.Player;
 
@@ -39,8 +39,8 @@ public class LivesSendCommand extends ValidCommand
         Player player = (Player) args.get(0).getValue();
         int amount = (Integer) args.get(1).getValue();
 
-        HCFSession target = HCFSessionHandler.getHCFSession(player.getUniqueId());
-        HCFSession source = HCFSessionHandler.getHCFSession(sender.getUniqueId());
+        FSession target = FSessionHandler.getFSession(player.getUniqueId());
+        FSession source = FSessionHandler.getFSession(sender.getUniqueId());
         source.takeLives(amount);
         target.addLives(amount);
         source.save();

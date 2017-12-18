@@ -7,8 +7,8 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 
 import com.desiremc.core.session.PVPClass;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 
 public class MinerListener implements DesireClass
 {
@@ -27,7 +27,7 @@ public class MinerListener implements DesireClass
             return;
         }
         Player p = event.getPlayer();
-        HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+        FSession session = FSessionHandler.getFSession(p.getUniqueId());
 
         if (!PVPClass.MINER.equals(session.getPvpClass()))
         {

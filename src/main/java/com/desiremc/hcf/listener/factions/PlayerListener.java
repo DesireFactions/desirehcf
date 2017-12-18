@@ -22,8 +22,8 @@ import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.core.utils.GeometryUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.commands.spawn.SpawnCommand;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.ClaimSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
@@ -48,7 +48,7 @@ public class PlayerListener implements Listener
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockMove(PlayerBlockMoveEvent event)
     {
-        HCFSession hcfSession = HCFSessionHandler.getHCFSession(event.getPlayer().getUniqueId());
+        FSession hcfSession = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
         Faction factionTo = FactionsUtils.getFaction(event.getTo());
 
         hcfSession.setLastLocation(factionTo);
@@ -57,7 +57,7 @@ public class PlayerListener implements Listener
     @EventHandler
     public void onInteract(PlayerInteractEvent event)
     {
-        HCFSession hcfSession = HCFSessionHandler.getHCFSession(event.getPlayer().getUniqueId());
+        FSession hcfSession = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
 
         // handle everything to do with claiming.
         if (event.hasItem())
@@ -122,7 +122,7 @@ public class PlayerListener implements Listener
     public void onBucketEmpty(PlayerBucketEmptyEvent event)
     {
         Block block = event.getBlockClicked();
-        HCFSession hcfSession = HCFSessionHandler.getHCFSession(event.getPlayer().getUniqueId());
+        FSession hcfSession = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
 
         if (!playerCanUseItem(hcfSession, block.getLocation(), event.getBucket()))
         {
@@ -134,7 +134,7 @@ public class PlayerListener implements Listener
     public void onBucketFill(PlayerBucketFillEvent event)
     {
         Block block = event.getBlockClicked();
-        HCFSession hcfSession = HCFSessionHandler.getHCFSession(event.getPlayer().getUniqueId());
+        FSession hcfSession = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
 
         if (!playerCanUseItem(hcfSession, block.getLocation(), event.getBucket()))
         {
@@ -149,7 +149,7 @@ public class PlayerListener implements Listener
      * @param session the person claiming land.
      * @param event the event that was fired.
      */
-    private void processClaim(HCFSession session, PlayerInteractEvent event)
+    private void processClaim(FSession session, PlayerInteractEvent event)
     {
         if (!new SenderHasFactionValidator().factionsValidate(session) // check that they're in a faction
                 || !new SenderFactionOfficerValidator().factionsValidate(session) // check that they are a faction officer
@@ -301,7 +301,7 @@ public class PlayerListener implements Listener
             Material.POWERED_MINECART,
             Material.CAULDRON);
 
-    public static boolean playerCanUseBlock(HCFSession hcfSession, Block block)
+    public static boolean playerCanUseBlock(FSession hcfSession, Block block)
     {
         // if the player is in bypass mode, they can do anything.
         if (FactionHandler.isBypassing(hcfSession))
@@ -353,7 +353,7 @@ public class PlayerListener implements Listener
             Material.WATER_BUCKET,
             Material.LAVA_BUCKET);
 
-    public static boolean playerCanUseItem(HCFSession hcfSession, Location location, Material material)
+    public static boolean playerCanUseItem(FSession hcfSession, Location location, Material material)
     {
         // if the player is in bypass mode, they can do anything.
         if (FactionHandler.isBypassing(hcfSession))

@@ -16,7 +16,7 @@ import org.mongodb.morphia.annotations.IdGetter;
 
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.util.FactionsUtils;
 
 /**
@@ -49,7 +49,7 @@ public class Faction
 
     private int kothWins;
 
-    private List<HCFSession> members;
+    private List<FSession> members;
 
     private Map<UUID, List<String>> announcements;
 
@@ -237,7 +237,7 @@ public class Faction
      * 
      * @return
      */
-    public List<HCFSession> getMembers()
+    public List<FSession> getMembers()
     {
         return Collections.unmodifiableList(members);
     }
@@ -249,9 +249,9 @@ public class Faction
      * 
      * @return the online members.
      */
-    public List<HCFSession> getOnlineMembers()
+    public List<FSession> getOnlineMembers()
     {
-        List<HCFSession> online = new LinkedList<>(members);
+        List<FSession> online = new LinkedList<>(members);
         online.removeIf(member -> !member.isOnline());
         return online;
     }
@@ -262,9 +262,9 @@ public class Faction
      * 
      * @return the offline members.
      */
-    public List<HCFSession> getOfflineMembers()
+    public List<FSession> getOfflineMembers()
     {
-        List<HCFSession> offline = new LinkedList<>(members);
+        List<FSession> offline = new LinkedList<>(members);
         offline.removeIf(member -> member.isOnline());
         return offline;
     }
@@ -284,7 +284,7 @@ public class Faction
      * @param session the player's announcements to retrieve
      * @return a player's cached announcements.
      */
-    public List<String> getAnnouncements(HCFSession session)
+    public List<String> getAnnouncements(FSession session)
     {
         return announcements.get(session.getUniqueId());
     }
@@ -296,7 +296,7 @@ public class Faction
      * @param session the player to receive the announcement.
      * @param announcement the announcement.
      */
-    public void addAnnouncement(HCFSession session, String announcement)
+    public void addAnnouncement(FSession session, String announcement)
     {
         // get the pending announcements the player already has.
         List<String> pending = announcements.get(session.getUniqueId());
@@ -320,7 +320,7 @@ public class Faction
      * 
      * @param session the player's to clear.
      */
-    public void clearAnnouncements(HCFSession session)
+    public void clearAnnouncements(FSession session)
     {
         announcements.remove(session.getUniqueId());
     }

@@ -20,7 +20,7 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSessionHandler;
 
 public class BlockListener implements Listener
 {
@@ -52,7 +52,7 @@ public class BlockListener implements Listener
             }
             try
             {
-                HCFSessionHandler.getHCFSession(p.getUniqueId()).getCurrentOre().add(type, 1);
+                FSessionHandler.getFSession(p.getUniqueId()).getCurrentOre().add(type, 1);
             }
             catch (Exception ex)
             {

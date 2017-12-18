@@ -4,8 +4,8 @@ import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
-import com.desiremc.hcf.parsers.HCFSessionParser;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.parsers.FSessionParser;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.FactionRank;
 import com.desiremc.hcf.validators.SenderFactionLeaderValidator;
 import com.desiremc.hcf.validators.SenderFactionSizeValidator;
@@ -22,9 +22,9 @@ public class FactionLeaderCommand extends FactionValidCommand
     {
         super("leader", "Sets a player as the new leader a faction.", true);
 
-        addArgument(CommandArgumentBuilder.createBuilder(HCFSession.class)
+        addArgument(CommandArgumentBuilder.createBuilder(FSession.class)
                 .setName("target")
-                .setParser(new HCFSessionParser())
+                .setParser(new FSessionParser())
                 .addSenderValidator(new SenderHasFactionValidator())
                 .addSenderValidator(new SenderFactionLeaderValidator())
                 .addSenderValidator(new SenderFactionSizeValidator(2))
@@ -35,9 +35,9 @@ public class FactionLeaderCommand extends FactionValidCommand
     }
 
     @Override
-    public void validFactionRun(HCFSession sender, String[] label, List<CommandArgument<?>> arguments)
+    public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        HCFSession target = (HCFSession) arguments.get(0).getValue();
+        FSession target = (FSession) arguments.get(0).getValue();
 
         target.setFactionRank(FactionRank.LEADER);
         sender.setFactionRank(FactionRank.OFFICER);
@@ -49,7 +49,7 @@ public class FactionLeaderCommand extends FactionValidCommand
                 "{old}", sender.getName(),
                 "{new}", target.getName());
         
-        for (HCFSession member : sender.getFaction().getMembers())
+        for (FSession member : sender.getFaction().getMembers())
         {
             member.sendMessage(message);
         }

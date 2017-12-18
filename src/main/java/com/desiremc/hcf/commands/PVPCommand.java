@@ -6,8 +6,8 @@ import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.validators.PlayerHasSafeTimeLeft;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class PVPCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        HCFSession session = HCFSessionHandler.getHCFSession(sender.getUniqueId());
+        FSession session = FSessionHandler.getFSession(sender.getUniqueId());
 
         session.setSafeTimeLeft(0);
         session.save();

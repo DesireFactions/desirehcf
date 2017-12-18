@@ -104,7 +104,7 @@ public class PotionLimiterHandler implements Listener
         Potion pot = Potion.fromItemStack(event.getItem());
         if (pot != null)
         {
-            Session session = SessionHandler.getSession(event.getPlayer().getUniqueId());
+            Session session = SessionHandler.getOnlineSession(event.getPlayer().getUniqueId());
 
             if (!session.hasAchievement(Achievement.FIRST_POTION_USE))
             {

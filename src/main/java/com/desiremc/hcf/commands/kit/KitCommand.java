@@ -9,8 +9,8 @@ import com.desiremc.core.utils.ItemUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.gui.ViewKitsMenu;
 import com.desiremc.hcf.parsers.KitParser;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.HKit;
 import com.desiremc.hcf.validators.PlayerKitOffCooldownValidator;
 import com.desiremc.hcf.validators.PlayerKitRequiredRankValidator;
@@ -40,7 +40,7 @@ public class KitCommand extends ValidCommand
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         Player player = (Player) sender;
-        HCFSession session = HCFSessionHandler.getHCFSession(player.getUniqueId());
+        FSession session = FSessionHandler.getFSession(player.getUniqueId());
         if (!args.get(0).hasValue())
         {
             ViewKitsMenu menu = new ViewKitsMenu(session);

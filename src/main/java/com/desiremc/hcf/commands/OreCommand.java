@@ -6,7 +6,7 @@ import com.desiremc.core.gui.Menu;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.gui.OreMenu;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSessionHandler;
 
 import java.util.List;
 
@@ -21,7 +21,7 @@ public class OreCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Menu menu = OreMenu.getOreMenu(HCFSessionHandler.getHCFSession(sender.getUniqueId()));
+        Menu menu = OreMenu.getOreMenu(FSessionHandler.getFSession(sender.getUniqueId()));
         menu.openMenu(sender.getPlayer());
     }
 

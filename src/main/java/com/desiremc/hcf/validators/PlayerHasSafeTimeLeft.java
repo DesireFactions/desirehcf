@@ -3,8 +3,8 @@ package com.desiremc.hcf.validators;
 import com.desiremc.core.api.newcommands.SenderValidator;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import org.bukkit.entity.Player;
 
 public class PlayerHasSafeTimeLeft implements SenderValidator
@@ -14,7 +14,7 @@ public class PlayerHasSafeTimeLeft implements SenderValidator
     public final boolean validate(Session sender)
     {
         Player p = sender.getPlayer();
-        HCFSession session = HCFSessionHandler.getHCFSession(p.getUniqueId());
+        FSession session = FSessionHandler.getFSession(p.getUniqueId());
 
         if (session.getSafeTimeLeft() <= 0)
         {

@@ -1,30 +1,30 @@
 package com.desiremc.hcf.events.faction;
 
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 
 public abstract class FactionPlayerEvent extends FactionEvent
 {
 
     /**
-     * The {@link HCFSession} involved with the event.
+     * The {@link FSession} involved with the event.
      */
-    protected HCFSession hcfSession;
+    protected FSession hcfSession;
 
     /**
      * @param faction the {@link Faction} involved with the event.
-     * @param hcfSession the {@link HCFSession} involved with the event.
+     * @param hcfSession the {@link FSession} involved with the event.
      */
-    public FactionPlayerEvent(Faction faction, HCFSession hcfSession)
+    public FactionPlayerEvent(Faction faction, FSession hcfSession)
     {
         super(faction);
         this.hcfSession = hcfSession;
     }
 
     /**
-     * @return the {@link HCFSession} involved with the event.
+     * @return the {@link FSession} involved with the event.
      */
-    public HCFSession getHCFSession()
+    public FSession getHCFSession()
     {
         return hcfSession;
     }

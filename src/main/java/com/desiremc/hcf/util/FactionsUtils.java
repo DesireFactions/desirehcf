@@ -13,8 +13,8 @@ import org.bukkit.entity.Player;
 
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.BlockColumn;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionType;
@@ -99,18 +99,18 @@ public class FactionsUtils
      */
     public static Faction getFaction(UUID uuid)
     {
-        HCFSession hcfSession = HCFSessionHandler.getHCFSession(uuid);
+        FSession hcfSession = FSessionHandler.getFSession(uuid);
 
         return hcfSession != null && hcfSession.getFaction() != null ? hcfSession.getFaction() : null;
     }
 
     /**
-     * Get the faction of the given {@link HCFSession}.
+     * Get the faction of the given {@link FSession}.
      * 
-     * @param hcfSession the {@link HCFSession} to check.
-     * @return the {@link Faction} if the {@link HCFSession} has one.
+     * @param hcfSession the {@link FSession} to check.
+     * @return the {@link Faction} if the {@link FSession} has one.
      */
-    public static Faction getFaction(HCFSession hcfSession)
+    public static Faction getFaction(FSession hcfSession)
     {
         return hcfSession.getFaction();
     }
@@ -174,13 +174,11 @@ public class FactionsUtils
         }
         else
         {
-            Faction fSession = FactionHandler.getFaction(f.getName());
-
             return new String[] {
                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
-                    ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getName() : "NONE"),
-                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getMemberSize() : "NONE"),
-                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "---")
+                    ChatColor.GRAY + "Name: " + ChatColor.YELLOW + f.getName(),
+                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + f.getMemberSize(),
+                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + f.getTrophies()
             };
         }
     }
@@ -190,7 +188,7 @@ public class FactionsUtils
         return getMouseoverDetails(getFaction(s));
     }
 
-    public static String[] getMouseoverDetails(HCFSession s)
+    public static String[] getMouseoverDetails(FSession s)
     {
         return getMouseoverDetails(getFaction(s));
     }
@@ -212,7 +210,7 @@ public class FactionsUtils
             return inRange;
         }
 
-        for (HCFSession member : faction.getOnlineMembers())
+        for (FSession member : faction.getOnlineMembers())
         {
             if (member.getPlayer() != player)
             {
@@ -240,7 +238,7 @@ public class FactionsUtils
             return inRange;
         }
 
-        for (HCFSession session : HCFSessionHandler.getHCFSessions())
+        for (FSession session : FSessionHandler.getFSessions())
         {
             if (session.getFaction().getRelationshipTo(faction).canAttack())
             {
@@ -270,7 +268,7 @@ public class FactionsUtils
 
         for (Faction ally : faction.getAllies())
         {
-            for (HCFSession hcfSession : ally.getOnlineMembers())
+            for (FSession hcfSession : ally.getOnlineMembers())
             {
                 if (hcfSession.getPlayer().getLocation().distanceSquared(player.getLocation()) <= (range * range))
                 {
@@ -279,7 +277,7 @@ public class FactionsUtils
             }
         }
 
-        for (HCFSession member : faction.getOnlineMembers())
+        for (FSession member : faction.getOnlineMembers())
         {
             if (member.getPlayer() != player && member.getPlayer().getLocation().distanceSquared(player.getLocation()) <= (range * range))
             {
@@ -290,9 +288,9 @@ public class FactionsUtils
         return inRange;
     }
 
-    public static Collection<HCFSession> getOnlineHCFSessions()
+    public static Collection<FSession> getOnlineHCFSessions()
     {
-        LinkedList<HCFSession> online = new LinkedList<>(HCFSessionHandler.getHCFSessions());
+        LinkedList<FSession> online = new LinkedList<>(FSessionHandler.getFSessions());
 
         online.removeIf(check -> !check.isOnline());
 

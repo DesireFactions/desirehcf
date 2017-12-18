@@ -8,7 +8,7 @@ import com.desiremc.core.newparsers.BooleanParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.FactionHandler;
 
 public class FactionBypassCommand extends FactionValidCommand
@@ -26,7 +26,7 @@ public class FactionBypassCommand extends FactionValidCommand
     }
 
     @Override
-    public void validFactionRun(HCFSession sender, String[] label, List<CommandArgument<?>> arguments)
+    public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.bypass." + (FactionHandler.toggleBypassing(sender) ? "enable" : "disable"));
     }

@@ -23,7 +23,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
 import com.google.common.collect.Iterables;
@@ -260,7 +260,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     public static void deleteFaction(Faction faction)
     {
         check();
-        for (HCFSession session : faction.getMembers())
+        for (FSession session : faction.getMembers())
         {
             session.setFaction(null);
             session.setFactionRank(null);
@@ -278,7 +278,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * @param name the name of the faction.
      * @return the newly created faction.
      */
-    public static Faction createFaction(HCFSession hcfSession, String name)
+    public static Faction createFaction(FSession hcfSession, String name)
     {
         return createFaction(hcfSession, name, FactionType.PLAYER);
     }
@@ -292,7 +292,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * @param type the type of faction.
      * @return the newly created faction.
      */
-    public static Faction createFaction(HCFSession hcfSession, String name, FactionType type)
+    public static Faction createFaction(FSession hcfSession, String name, FactionType type)
     {
         check();
         Faction faction = new Faction();
@@ -332,7 +332,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * @return {@code true} if the player is bypassing. {@code false} otherwise.
      * @see #getBypassing()
      */
-    public static boolean isBypassing(HCFSession session)
+    public static boolean isBypassing(FSession session)
     {
         return bypassing.contains(session.getUniqueId());
     }
@@ -346,7 +346,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      *         {@code false} if the player is no longer bypassing.
      * @see #getBypassing()
      */
-    public static boolean toggleBypassing(HCFSession session)
+    public static boolean toggleBypassing(FSession session)
     {
         if (bypassing.contains(session.getUniqueId()))
         {
@@ -379,7 +379,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * @return {@code true} if the player is bypassing. {@code false} otherwise.
      * @see #getStuck()
      */
-    public static boolean isStuck(HCFSession session)
+    public static boolean isStuck(FSession session)
     {
         return stuck.containsKey(session.getUniqueId());
     }
@@ -393,7 +393,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      *         {@code false} if the player is already in the stuck list.
      * @see #getStuck()
      */
-    public static boolean setStuck(HCFSession session)
+    public static boolean setStuck(FSession session)
     {
         if (stuck.containsKey(session.getUniqueId()))
         {

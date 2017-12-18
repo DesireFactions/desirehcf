@@ -6,8 +6,8 @@ import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 
 public abstract class FactionValidCommand extends ValidCommand
 {
@@ -122,7 +122,7 @@ public abstract class FactionValidCommand extends ValidCommand
     @Override
     public final void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        HCFSession hcfSender = HCFSessionHandler.getHCFSession(sender.getUniqueId());
+        FSession hcfSender = FSessionHandler.getFSession(sender.getUniqueId());
 
         this.validFactionRun(hcfSender, label, arguments);
     }
@@ -135,6 +135,6 @@ public abstract class FactionValidCommand extends ValidCommand
      * @param label the command label used.
      * @param arguments the arguments of the command.
      */
-    public abstract void validFactionRun(HCFSession sender, String[] label, List<CommandArgument<?>> arguments);
+    public abstract void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments);
 
 }

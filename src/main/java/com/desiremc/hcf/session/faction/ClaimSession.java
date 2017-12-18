@@ -10,7 +10,7 @@ import org.bukkit.block.Block;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 
 public class ClaimSession implements Runnable
 {
@@ -21,14 +21,14 @@ public class ClaimSession implements Runnable
 
     private boolean deleted;
 
-    private HCFSession hcfSession;
+    private FSession hcfSession;
 
     /**
      * @param uuid
      * @param pointOne
      * @param pointTwo
      */
-    public ClaimSession(HCFSession hcfSession)
+    public ClaimSession(FSession hcfSession)
     {
         this.hcfSession = hcfSession;
     }
@@ -36,7 +36,7 @@ public class ClaimSession implements Runnable
     /**
      * @return the hcfSession
      */
-    public HCFSession getHcfSession()
+    public FSession getHcfSession()
     {
         return hcfSession;
     }
@@ -44,7 +44,7 @@ public class ClaimSession implements Runnable
     /**
      * @param hcfSession the hcfSession to set
      */
-    public void setHcfSession(HCFSession hcfSession)
+    public void setHcfSession(FSession hcfSession)
     {
         this.hcfSession = hcfSession;
     }

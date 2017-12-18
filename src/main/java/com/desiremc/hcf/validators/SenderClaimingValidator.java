@@ -2,13 +2,13 @@ package com.desiremc.hcf.validators;
 
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionSenderValidator;
-import com.desiremc.hcf.session.HCFSession;
+import com.desiremc.hcf.session.FSession;
 
 public class SenderClaimingValidator extends FactionSenderValidator
 {
 
     @Override
-    public boolean factionsValidate(HCFSession sender)
+    public boolean factionsValidate(FSession sender)
     {
         if (!sender.hasClaimSession())
         {

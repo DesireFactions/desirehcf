@@ -3,20 +3,20 @@ package com.desiremc.hcf.parsers;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.List;
 
-public class HCFSessionParser implements Parser<HCFSession>
+public class FSessionParser implements Parser<FSession>
 {
 
     @Override
-    public HCFSession parseArgument(Session sender, String[] label, String rawArgument)
+    public FSession parseArgument(Session sender, String[] label, String rawArgument)
     {
-        HCFSession arg = null;
+        FSession arg = null;
 
         // try to find an online player by name
         Player p = Bukkit.getPlayerExact(rawArgument);
@@ -24,12 +24,12 @@ public class HCFSessionParser implements Parser<HCFSession>
         // if the player is not online, try to search the database by name
         if (p == null)
         {
-            arg = HCFSessionHandler.findOfflinePlayerByName(rawArgument);
+            arg = FSessionHandler.getFSessionByName(rawArgument);
         }
         // if they are online, just grab their session from the handler
         else
         {
-            arg = HCFSessionHandler.getHCFSession(p.getUniqueId());
+            arg = FSessionHandler.getFSession(p.getUniqueId());
         }
 
         // if they were not found, send the error message and return null.

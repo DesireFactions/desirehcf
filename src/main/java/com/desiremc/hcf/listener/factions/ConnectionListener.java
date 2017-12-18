@@ -10,8 +10,8 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionSetting;
@@ -23,7 +23,7 @@ public class ConnectionListener implements Listener
     public void onJoin(PlayerJoinEvent event)
     {
         // grab their session
-        HCFSession session = HCFSessionHandler.getHCFSession(event.getPlayer().getUniqueId());
+        FSession session = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
 
         // check if they have a faction before proceeding
         if (session.hasFaction())
@@ -32,7 +32,7 @@ public class ConnectionListener implements Listener
             Faction faction = session.getFaction();
 
             // go through all online players and let them know one of their members connected if they have the setting enabled
-            for (HCFSession online : faction.getOnlineMembers())
+            for (FSession online : faction.getOnlineMembers())
             {
                 if (online != session && online.hasSetting(FactionSetting.CONNECTION_MESSAGES))
                 {
@@ -72,7 +72,7 @@ public class ConnectionListener implements Listener
     public void onQuit(PlayerQuitEvent event)
     {
         // grab their session
-        HCFSession session = HCFSessionHandler.getHCFSession(event.getPlayer().getUniqueId());
+        FSession session = FSessionHandler.getFSession(event.getPlayer().getUniqueId());
 
         // check if the quitting player is stuck
         if (FactionHandler.isStuck(session))
@@ -93,7 +93,7 @@ public class ConnectionListener implements Listener
             faction.setLastLogOff(System.currentTimeMillis());
 
             // go through all online players and let them know one of their members disconnected if they have the setting enabled
-            for (HCFSession online : faction.getOnlineMembers())
+            for (FSession online : faction.getOnlineMembers())
             {
                 if (online.hasSetting(FactionSetting.CONNECTION_MESSAGES))
                 {

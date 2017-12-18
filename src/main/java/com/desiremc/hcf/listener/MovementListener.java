@@ -3,8 +3,8 @@ package com.desiremc.hcf.listener;
 import com.desiremc.core.utils.BukkitUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.session.HCFSession;
-import com.desiremc.hcf.session.HCFSessionHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 import org.bukkit.Location;
@@ -49,7 +49,7 @@ public class MovementListener implements Listener
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
             }
         }
-        HCFSession hcfSession = HCFSessionHandler.getHCFSession(e.getPlayer().getUniqueId());
+        FSession hcfSession = FSessionHandler.getFSession(e.getPlayer().getUniqueId());
         if (hcfSession.getSafeTimeLeft() > 0)
         {
             for (Region region : RegionHandler.getRegions())
