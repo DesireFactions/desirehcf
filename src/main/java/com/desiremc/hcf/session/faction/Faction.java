@@ -43,6 +43,8 @@ public class Faction
 
     private double balance;
 
+    private double dtr;
+
     private int trophies;
 
     private int kothWins;
@@ -169,6 +171,31 @@ public class Faction
     public void setLastLogOff(long lastLogOff)
     {
         this.lastLogOff = lastLogOff;
+    }
+
+    /**
+     * @return the amount of "deaths til raidable"
+     */
+    public double getDTR()
+    {
+        return dtr;
+    }
+
+    /**
+     * @param dtr the new dtr value.
+     */
+    public void setDTR(double dtr)
+    {
+        this.dtr = dtr;
+    }
+
+    /**
+     * @return {@code true} if the faction's "deaths til raidable" is less than 0.
+     * @see #getDTR()
+     */
+    public boolean isRaidable()
+    {
+        return dtr < 0;
     }
 
     /**
@@ -351,14 +378,19 @@ public class Faction
     }
 
     /**
-     * @return {@code true} if this is the wilderness faction.<br>
-     *         {@code false} if this is not the wilderness faction.
+     * @return {@code true} if this is the wilderness faction.
      */
     public boolean isWilderness()
     {
-        System.out.println(getName());
-        System.out.println(FactionHandler.getWilderness().getName());
         return FactionHandler.getWilderness() == this;
+    }
+
+    /**
+     * @return {@code true} if the {@link #getType()} is {@link FactionType#PLAYER}.
+     */
+    public boolean isNormal()
+    {
+        return getType() == FactionType.PLAYER;
     }
 
     /**
@@ -459,6 +491,12 @@ public class Faction
         return getAllies().contains(faction);
     }
 
+    /**
+     * Check the relationship between this faction and the passed faction.
+     * 
+     * @param faction the faction to check.
+     * @return the relationship of the two factions.
+     */
     public FactionRelationship getRelationshipTo(Faction faction)
     {
         if (getAllies().contains(faction))

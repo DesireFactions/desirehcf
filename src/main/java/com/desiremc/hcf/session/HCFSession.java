@@ -1,5 +1,25 @@
 package com.desiremc.hcf.session;
 
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.IdGetter;
+import org.mongodb.morphia.annotations.Indexed;
+import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Reference;
+import org.mongodb.morphia.annotations.Transient;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Achievement;
@@ -16,24 +36,6 @@ import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionRank;
 import com.desiremc.hcf.session.faction.FactionSetting;
 import com.desiremc.hcf.util.FactionsUtils;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.IdGetter;
-import org.mongodb.morphia.annotations.Indexed;
-import org.mongodb.morphia.annotations.Property;
-import org.mongodb.morphia.annotations.Reference;
-import org.mongodb.morphia.annotations.Transient;
-
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class HCFSession
@@ -616,11 +618,19 @@ public class HCFSession
     }
 
     /**
+     * This method does several things. First it will alert the player that they have changed faction locations unless
+     * the {@link Faction} reference stored in lastLocation is null, meaning the player only just connected to the
+     * server.
+     * 
      * @param lastLocation the last faction whose claim this player was last seen at.
      */
     public void setLastLocation(Faction lastLocation)
     {
-        this.lastLocation = lastLocation;
+        if (this.lastLocation != lastLocation)
+        {
+            sendFactionLocationMessage(lastLocation);
+            this.lastLocation = lastLocation;
+        }
     }
 
     // ========================================================
@@ -711,6 +721,39 @@ public class HCFSession
         session.awardAchievement(achievement, inform);
     }
 
+    /**
+     * A convenience method for {@link Session#getSender()}.
+     * 
+     * @return the {@link CommandSender} of this session.
+     */
+    public CommandSender getSender()
+    {
+        return getSession().getSender();
+    }
+
+    // ========================================================
+    // | The following methods are all convenience methods    |
+    // | that are things that are done to HCFSessions a lot,  |
+    // | that would be nice to have a standard system for.    |
+    // ========================================================
+
+    /**
+     * Send a message to the player alerting them that the new location they have moved to is owned by a different
+     * faction than the one they were in before.
+     * 
+     * @param factionTo the faction the player is moving to.
+     */
+    public void sendFactionLocationMessage(Faction factionTo)
+    {
+        DesireHCF.getLangHandler().sendRenderMessage(getSender(), "factions.moved_location",
+                "{fromColor}", getFaction().getRelationshipTo(getLastFactionLocation()).getChatColor(),
+                "{fromName}", getLastFactionLocation().getName(),
+                "{fromType}", getLastFactionLocation().getType().toString(),
+                "{toColor}", getFaction().getRelationshipTo(factionTo).getChatColor(),
+                "{toName}", factionTo.getName(),
+                "{toType}", factionTo.getType().toString());
+    }
+
     // ========================================================
     // | End of convenience methods                           |
     // ========================================================
@@ -789,8 +832,18 @@ public class HCFSession
         save();
     }
 
+    /**
+     * Save this HCFSession asynchronously.
+     */
     public void save()
     {
-        HCFSessionHandler.getInstance().save(this);
+        Bukkit.getScheduler().runTaskAsynchronously(DesireHCF.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                HCFSessionHandler.getInstance().save(HCFSession.this);
+            }
+        });
     }
 }

@@ -63,7 +63,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     private static Map<UUID, BukkitTask> stuck;
 
     /**
-     * 
+     * The claim wand template. Should be cloned when actually used.
      */
     private static final ItemStack CLAIM_WAND;
 
@@ -123,7 +123,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             wilderness.setName("Wilderness");
             wilderness.setDescription("Land of the factionless.");
             wilderness.setState(FactionState.ACTIVE);
-            wilderness.setType(FactionType.WARZONE);
+            wilderness.setType(FactionType.WILDERNESS);
             wilderness.save();
         }
 

@@ -17,7 +17,6 @@ import com.desiremc.hcf.session.HCFSession;
 import com.desiremc.hcf.session.HCFSessionHandler;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
-import com.desiremc.hcf.session.faction.FactionRelationship;
 import com.desiremc.hcf.session.faction.FactionType;
 
 public class FactionsUtils
@@ -243,7 +242,7 @@ public class FactionsUtils
 
         for (HCFSession session : HCFSessionHandler.getHCFSessions())
         {
-            if (session.getFaction().getRelationshipTo(faction).canDamage())
+            if (session.getFaction().getRelationshipTo(faction).canAttack())
             {
                 inRange.add(session.getPlayer());
             }
@@ -298,23 +297,6 @@ public class FactionsUtils
         online.removeIf(check -> !check.isOnline());
 
         return online;
-    }
-
-    public static ChatColor getRelationshipColor(FactionRelationship r)
-    {
-        switch (r)
-        {
-            case ALLY:
-                return ChatColor.LIGHT_PURPLE;
-            case NEUTRAL:
-                return ChatColor.YELLOW;
-            case ENEMY:
-                return ChatColor.RED;
-            case MEMBER:
-                return ChatColor.GREEN;
-            default:
-                return ChatColor.WHITE;
-        }
     }
 
     public static boolean isInSafeZone(Player player)

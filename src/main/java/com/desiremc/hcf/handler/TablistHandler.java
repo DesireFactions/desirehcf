@@ -133,7 +133,7 @@ public class TablistHandler implements Listener
                     }
                     else
                     {
-                        color = FactionsUtils.getRelationshipColor(session.getFaction().getRelationshipTo(user.getFaction()));
+                        color = session.getFaction().getRelationshipTo(user.getFaction()).getChatColor();
                     }
                     String str = color + session.getName();
 

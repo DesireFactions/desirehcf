@@ -1,9 +1,12 @@
 package com.desiremc.hcf.session.faction;
 
+import com.desiremc.core.utils.StringUtils;
+
 public enum FactionType
 {
     PLAYER,
     WARZONE,
+    WILDERNESS,
     SAFEZONE;
 
     /**
@@ -12,5 +15,11 @@ public enum FactionType
     public boolean isSystem()
     {
         return this != PLAYER;
+    }
+
+    @Override
+    public String toString()
+    {
+        return StringUtils.capitalize(name().toLowerCase());
     }
 }

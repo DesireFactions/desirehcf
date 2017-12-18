@@ -123,6 +123,7 @@ kits:
   swap_item: '&7Swapped items &a{item1}&7 and &a{item2}&7.'
   different_swap: '&7You can''t swap an item with itself.'
 factions:
+  moved_location: '§6Leaving {fromColor}{fromName}§6({fromType}§6). Entering {toColor}{toName}§6({fromType}§6).'
   not_found: '&7That faction doesn''t exist.'
   no_faction: '&7You are not part of a faction.'
   already_member: '&7You already have a faction.'
@@ -145,3 +146,8 @@ factions:
   claims:
     not_claiming: '&7Use /faction claim to start claiming land.'
     need_point_one: '&7You must select the first point first.'
+  protection:
+    use_blocks: '&cYou aren''t allowed to use that.'
+    use_items: '&cYou aren''t allowed to use that here.'
+    use_chests: '&cYou aren''t allowed to open that.'
+    build: '&cYou aren''t allowed to build here.'

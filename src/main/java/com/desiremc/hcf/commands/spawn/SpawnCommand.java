@@ -18,7 +18,7 @@ import com.desiremc.hcf.DesireHCF;
 public class SpawnCommand extends ValidCommand
 {
 
-    protected static Location spawnLocation;
+    public static Location spawnLocation;
 
     public SpawnCommand()
     {
