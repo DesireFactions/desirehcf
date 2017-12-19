@@ -1,24 +1,43 @@
 package com.desiremc.hcf.commands;
 
-import org.bukkit.command.CommandSender;
-
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.handler.SOTWHandler;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class StartOfTheWorldCommand extends ValidCommand
 {
 
+    private List<UUID> counter;
+
     public StartOfTheWorldCommand()
     {
-        super("startitup", "Triggers the start of the world.", Rank.DEVELOPER, new String[] { "confirm" }, new String[] { "siu" });
-        // TODO Auto-generated constructor stub
+        super("startitup", "Triggers the start of the world.", Rank.DEVELOPER, true, new String[] {"sotw"});
+
+        counter = new ArrayList<>();
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        // TODO Auto-generated method stub
+        if (counter.contains(sender.getUniqueId()))
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "sotw.confirmed");
+            SOTWHandler.setSOTW(true);
 
+            counter.remove(sender.getUniqueId());
+        }
+        else
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "sotw.first");
+            counter.add(sender.getUniqueId());
+        }
     }
 
 }

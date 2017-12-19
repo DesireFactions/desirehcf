@@ -1,15 +1,5 @@
 package com.desiremc.hcf.barrier;
 
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
@@ -17,7 +7,16 @@ import com.desiremc.core.utils.cache.RemovalListener;
 import com.desiremc.core.utils.cache.RemovalNotification;
 import com.desiremc.core.utils.cache.RemovalNotification.Cause;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.npc.SafeLogoutTask;
+import com.desiremc.hcf.tasks.SafeLogoutTask;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class TagHandler
 {

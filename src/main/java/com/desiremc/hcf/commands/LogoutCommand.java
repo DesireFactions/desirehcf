@@ -5,7 +5,7 @@ import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.npc.SafeLogoutTask;
+import com.desiremc.hcf.tasks.SafeLogoutTask;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.hcf.validators.PlayerIsNotTaggedValidator;
 import org.bukkit.entity.Player;

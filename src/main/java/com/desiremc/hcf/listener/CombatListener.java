@@ -1,7 +1,27 @@
 package com.desiremc.hcf.listener;
 
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.api.FileHandler;
+import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.staff.StaffHandler;
+import com.desiremc.core.utils.BungeeUtils;
+import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.core.utils.ItemNames;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.barrier.TagHandler.Tag;
+import com.desiremc.hcf.handler.SOTWHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
+import com.desiremc.npc.NPCLib;
+import com.desiremc.npc.NPCRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -19,27 +39,7 @@ import org.bukkit.event.entity.EntityDeathEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.FileHandler;
-import com.desiremc.core.fanciful.FancyMessage;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.staff.StaffHandler;
-import com.desiremc.core.utils.BungeeUtils;
-import com.desiremc.core.utils.ChatUtils;
-import com.desiremc.core.utils.ItemNames;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.barrier.TagHandler.Tag;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
-import com.desiremc.npc.NPCLib;
-import com.desiremc.npc.NPCRegistry;
+import java.util.UUID;
 
 public class CombatListener implements Listener
 {
@@ -93,7 +93,6 @@ public class CombatListener implements Listener
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
     public void onHit(EntityDamageByEntityEvent e)
     {
-
         if (!(e.getEntity() instanceof Player))
         {
             return;
@@ -104,15 +103,22 @@ public class CombatListener implements Listener
             return;
         }
 
+        Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager())
+                .getShooter() : e.getDamager());
+
+        if (SOTWHandler.getSOTW())
+        {
+            e.setCancelled(true);
+            DesireHCF.getLangHandler().sendRenderMessage(damager, "sotw.pvp");
+            return;
+        }
+
         Player victim = (Player) e.getEntity();
 
-        if (e.getEntity() instanceof Player && !npcRegistry.isNPC(victim))
+        if (!npcRegistry.isNPC(victim))
         {
             if (e.getDamager() instanceof Player || e.getDamager() instanceof Projectile && !(e.getDamager() instanceof EnderPearl) && ((Projectile) e.getDamager()).getShooter() instanceof Player)
             {
-                Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager())
-                        .getShooter() : e.getDamager());
-
                 if (StaffHandler.getInstance().isFrozen(damager) || StaffHandler.getInstance().isFrozen(victim))
                 {
                     e.setCancelled(true);
@@ -229,10 +235,9 @@ public class CombatListener implements Listener
 
             // console wants to know too
             DesireHCF.getInstance().getLogger().info(message.toOldMessageFormat());
-        }
-        catch (
+        } catch (
 
-        Exception ex)
+                Exception ex)
         {
             ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
         }

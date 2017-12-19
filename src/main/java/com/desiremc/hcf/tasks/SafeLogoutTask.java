@@ -1,4 +1,4 @@
-package com.desiremc.hcf.npc;
+package com.desiremc.hcf.tasks;
 
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.SessionHandler;
@@ -73,7 +73,8 @@ public class SafeLogoutTask extends BukkitRunnable
             finished = true;
             TagHandler.clearTag(playerId);
 
-            player.kickPlayer(DesireHCF.getLangHandler().renderMessageNoPrefix("logout.success"));            cancel();
+            player.kickPlayer(DesireHCF.getLangHandler().renderMessageNoPrefix("logout.success"));
+            cancel();
             return;
         }
 

@@ -6,7 +6,7 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.npc.SafeLogoutTask;
+import com.desiremc.hcf.tasks.SafeLogoutTask;
 import com.desiremc.npc.HumanNPC;
 import com.desiremc.npc.NPC;
 import com.desiremc.npc.NPCLib;

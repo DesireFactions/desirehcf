@@ -165,3 +165,9 @@ factions:
     use_items: '&cYou aren''t allowed to use that here.'
     use_chests: '&cYou aren''t allowed to open that.'
     build: '&cYou aren''t allowed to build here.'
+sotw:
+  first: "Please run the command again to confirm SOTW."
+  confirmed: "Confirmed. Let SOTW commence."
+  pvp: "&cYou can't PVP during SOTW."
+  scoreboard: "&9SOTW: "
+  over: "&7SOTW PvP timer is now over!"
