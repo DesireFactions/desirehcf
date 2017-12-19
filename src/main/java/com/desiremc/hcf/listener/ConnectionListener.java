@@ -47,7 +47,8 @@ public class ConnectionListener implements Listener
             System.out.println("ConnectionListener.onJoin() event fired.");
         }
         Player p = e.getPlayer();
-        FSession session = FSessionHandler.initializeFSession(e.getPlayer().getUniqueId());
+        FSessionHandler.initializeFSession(e.getPlayer().getUniqueId());
+        FSession session = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
         boolean safe = false;
         for (Region region : RegionHandler.getRegions())
         {
@@ -107,10 +108,10 @@ public class ConnectionListener implements Listener
     @EventHandler
     public void onLogin(AsyncPlayerPreLoginEvent event)
     {
-        FSession s;
+        FSession fSession;
         try
         {
-            s = FSessionHandler.getOnlineFSession(event.getUniqueId());
+            fSession = FSessionHandler.getGeneralFSession(event.getUniqueId());
         }
         catch (Exception ex)
         {
@@ -119,11 +120,11 @@ public class ConnectionListener implements Listener
             // to handle it.
             return;
         }
-        DeathBan ban = s.getActiveDeathBan();
+        DeathBan ban = fSession.getActiveDeathBan();
         if (ban != null)
         {
-            String reason = DesireCore.getLangHandler().getPrefix() + "\nYou have an active death ban on this server. It ends in " + DateUtils.formatDateDiff(ban.getStartTime() + s.getRank().getDeathBanTime());
-            if (ban.getStartTime() + s.getRank().getDeathBanTime() - System.currentTimeMillis() > 3_600_00)
+            String reason = DesireCore.getLangHandler().getPrefix() + "\nYou have an active death ban on this server. It ends in " + DateUtils.formatDateDiff(ban.getStartTime() + fSession.getRank().getDeathBanTime());
+            if (ban.getStartTime() + fSession.getRank().getDeathBanTime() - System.currentTimeMillis() > 3_600_00)
             {
                 reason = reason.replaceAll(" ([0-9]{1,2}) (seconds|second)", "");
             }
