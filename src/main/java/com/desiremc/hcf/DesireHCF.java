@@ -12,7 +12,6 @@ import com.desiremc.hcf.commands.CobbleCommand;
 import com.desiremc.hcf.commands.CoordsCommand;
 import com.desiremc.hcf.commands.CrowbarCommand;
 import com.desiremc.hcf.commands.EnderChestCommand;
-import com.desiremc.hcf.commands.FocusCommand;
 import com.desiremc.hcf.commands.HCFReloadCommand;
 import com.desiremc.hcf.commands.LogoutCommand;
 import com.desiremc.hcf.commands.OreCommand;
