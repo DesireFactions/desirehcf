@@ -74,11 +74,6 @@ logout:
 no_faction: 'You are not a part of a faction!'
 no_deathban: '&7That player does not have an active deathban.'
 tagged: 'You can not log out while in combat.'
-spawn:
-  target: '&7Teleported {player} to spawn.'
-  force: '&7You have been teleported to spawn by a staff member.'
-  confirm: '&7You have teleported to spawn.'
-  set: '&7You have set the spawn to your location.'
 set_winner: '&7You have set the season winner to &e{faction}&7.'
 classes:
   enable: '&bClasses: &l{class}&r&b --> &2Enabled!'

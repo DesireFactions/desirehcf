@@ -1,27 +1,10 @@
 package com.desiremc.hcf.listener.factions;
 
-import java.util.EnumSet;
-import java.util.Set;
-
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-import org.bukkit.inventory.ItemStack;
-
 import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.core.utils.GeometryUtils;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.commands.spawn.SpawnCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.ClaimSession;
@@ -35,6 +18,20 @@ import com.desiremc.hcf.validators.SenderClaimingValidator;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 import com.github.davidmoten.rtree.Entry;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * The listener in charge for ensuring that factions behave the way they are supposed to. It prevents players from going
@@ -110,12 +107,6 @@ public class PlayerListener implements Listener
             event.setCancelled(true);
             return;
         }
-    }
-
-    @EventHandler
-    public void onRespawn(PlayerRespawnEvent event)
-    {
-        event.setRespawnLocation(SpawnCommand.spawnLocation);
     }
 
     @EventHandler

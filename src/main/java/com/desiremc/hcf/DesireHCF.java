@@ -26,8 +26,6 @@ import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.lives.ReviveCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
-import com.desiremc.hcf.commands.spawn.SetSpawnCommand;
-import com.desiremc.hcf.commands.spawn.SpawnCommand;
 import com.desiremc.hcf.handler.BrewingSpeedHandler;
 import com.desiremc.hcf.handler.CombatLoggerHandler;
 import com.desiremc.hcf.handler.CrowbarHandler;
@@ -149,8 +147,6 @@ public class DesireHCF extends JavaPlugin
     private void registerCommands()
     {
         CommandHandler commandHandler = CommandHandler.getInstance();
-        commandHandler.registerCommand(new SetSpawnCommand(), this);
-        commandHandler.registerCommand(new SpawnCommand(), this);
         commandHandler.registerCommand(new FStatCommand(), this);
         commandHandler.registerCommand(new SetWinnerCommand(), this);
         commandHandler.registerCommand(new RegionCommand(), this);
