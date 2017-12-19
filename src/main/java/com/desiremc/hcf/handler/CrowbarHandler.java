@@ -128,7 +128,14 @@ public class CrowbarHandler implements Listener
 
     private static boolean isCrowbar(ItemStack is)
     {
-        return is != null && is.getType() == Material.GOLD_HOE && is.getItemMeta().getDisplayName().equals(lang.renderMessageNoPrefix("crowbar.name")) && is.getItemMeta().hasLore() && is.getItemMeta().getLore().size() >= 1 && is.getItemMeta().getLore().get(0).startsWith(lang.renderMessageNoPrefix("crowbar.prefix"));
+        return is != null
+                && is.getType() == Material.GOLD_HOE
+                && is.hasItemMeta()
+                && is.getItemMeta().hasDisplayName()
+                && is.getItemMeta().getDisplayName().equals(lang.renderMessageNoPrefix("crowbar.name"))
+                && is.getItemMeta().hasLore()
+                && is.getItemMeta().getLore().size() >= 1
+                && is.getItemMeta().getLore().get(0).startsWith(lang.renderMessageNoPrefix("crowbar.prefix"));
     }
 
     public static ItemStack getNewCrowbar()
