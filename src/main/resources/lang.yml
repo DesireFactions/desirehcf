@@ -52,9 +52,9 @@ crowbar:
   wrong_block: '&7Only usable on ender portal frames and mob spawners.'
   not_enough_charges: '&7Your crowbar does not have enough charges for that.'
   out_of_uses: '&7Your crowbar ran out of uses.'
-  prefix: '§aUses: §b'
-  name: '§a§k|§cCrowbar§a§k|'
-  spawner: '§a§k|§cSpawner§a§k|§b - §a'
+  prefix: '&aUses: &b'
+  name: '&a&k|&cCrowbar&a&k|'
+  spawner: '&a&k|&cSpawner&a&k|&b - &a'
 gapple:
   ended: '&7You may now use a &5Gapple&7.'
   message: '&7You can not use a &5Gapple&7 for &e{time} &7seconds.'
@@ -123,7 +123,7 @@ kits:
   swap_item: '&7Swapped items &a{item1}&7 and &a{item2}&7.'
   different_swap: '&7You can''t swap an item with itself.'
 factions:
-  moved_location: '§6Leaving {fromColor}{fromName}§6({fromType}§6). Entering {toColor}{toName}§6({fromType}§6).'
+  moved_location: '&6Leaving {fromColor}{fromName}&6({fromType}&6). Entering {toColor}{toName}&6({fromType}&6).'
   not_found: '&7That faction doesn''t exist.'
   no_faction: '&7You are not part of a faction.'
   already_member: '&7You already have a faction.'
@@ -144,6 +144,8 @@ factions:
     cancelled:
       quit: '&7The last time you were online you left while stuck.'
   claims:
+    start: '&7You have been given a claim wand.'
+    usage: '&7Left-click and right-click to select the two points.'
     not_claiming: '&7Use /faction claim to start claiming land.'
     need_point_one: '&7You must select the first point first.'
     must_touch: '&7Your faction claims must touch.'

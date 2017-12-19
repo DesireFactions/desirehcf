@@ -86,6 +86,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         ItemMeta meta = CLAIM_WAND.getItemMeta();
         meta.setDisplayName(DesireHCF.getConfigHandler().getString("factions.claim_wand.name"));
         meta.setLore(DesireHCF.getConfigHandler().getStringList("factions.claim_wand.lore"));
+        CLAIM_WAND.setItemMeta(meta);
     }
 
     /**

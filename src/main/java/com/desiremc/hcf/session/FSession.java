@@ -123,6 +123,23 @@ public class FSession
         this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
     }
 
+    public void applyValues(FSession fSession)
+    {
+        safeTimer = fSession.safeTimer;
+        lives = fSession.lives;
+        balance = fSession.balance;
+        lastSeen = fSession.lastSeen;
+
+        kills = fSession.kills;
+        deaths = fSession.deaths;
+        currentOre = fSession.currentOre;
+        kitUses = fSession.kitUses;
+        kitCooldowns = fSession.kitCooldowns;
+        factionId = fSession.factionId;
+        factionRank = fSession.factionRank;
+        factionSettings = fSession.factionSettings;
+    }
+
     protected void setId(int id)
     {
         this.id = id;
@@ -274,30 +291,12 @@ public class FSession
 
     public DeathBan getActiveDeathBan()
     {
-        if (DEBUG)
-        {
-            System.out.println("getActiveDeathBan() called.");
-            System.out.println("getActiveDeathBan() rank time = " + session.getRank().getDeathBanTime());
-        }
         for (DeathBan ban : deathBans)
         {
-            if (DEBUG)
-            {
-                System.out.println("getActiveDeathBan() loop with values " + ban.getStartTime() + " and " + ban.isRevived());
-                System.out.println("getActiveDeathBan() times = " + (ban.getStartTime() + session.getRank().getDeathBanTime()) + " vs " + System.currentTimeMillis());
-            }
             if (!ban.wasStaffRevived() && !ban.isRevived() && ban.getStartTime() + session.getRank().getDeathBanTime() > System.currentTimeMillis())
             {
-                if (DEBUG)
-                {
-                    System.out.println("getActiveDeathBan() returned ban.");
-                }
                 return ban;
             }
-        }
-        if (DEBUG)
-        {
-            System.out.println("getActiveDeathBan() returned null.");
         }
         return null;
     }

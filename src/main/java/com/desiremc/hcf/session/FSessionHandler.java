@@ -3,12 +3,12 @@ package com.desiremc.hcf.session;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
-import org.mongodb.morphia.Key;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
@@ -44,16 +44,21 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
                 onlineSessions.put(fSession.getUniqueId(), fSession);
             }
         }
+        
+        System.out.println("FSessions size: " + sessions.size());
+        for (Entry<UUID, FSession> entry : sessions.entrySet())
+        {
+            System.out.println(entry.getKey());
+            System.out.println(entry.getValue().getSession() == null);
+            System.out.println("---");
+        }
+        System.out.println("==========");
+            
 
         console = new FSession();
         if (count() > 0)
         {
             nextId = findOne(createQuery().order("-_id")).getId() + 1;
-        }
-
-        for (FSession fSession : find())
-        {
-            sessions.put(fSession.getUniqueId(), fSession);
         }
     }
 
@@ -92,16 +97,15 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         {
             return null;
         }
-        FSession session = sessions.get(uuid);
-        if (session != null)
+        FSession fSession = sessions.get(uuid);
+        if (fSession != null)
         {
-            return session;
+            return fSession;
         }
         else
         {
-            return initializeFSession(uuid);
+            return createFSession(uuid);
         }
-
     }
 
     public static FSession getOnlineFSession(UUID uuid)
@@ -138,15 +142,18 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         return null;
     }
 
-    public static FSession initializeFSession(UUID uuid)
+    public static void initializeFSession(UUID uuid)
     {
-        FSession session = sessions.get(uuid);
-        if (session == null)
+        FSession fSession = sessions.get(uuid);
+        if (fSession == null)
         {
-            session = createFSession(uuid);
+            fSession = createFSession(uuid);
         }
-        onlineSessions.put(session.getUniqueId(), session);
-        return session;
+        else
+        {
+            fSession.applyValues(instance.findOne(instance.createQuery().field("_id").equal(fSession.getId())));
+        }
+        onlineSessions.put(fSession.getUniqueId(), fSession);
     }
 
     public static boolean endSession(FSession fSession)
@@ -160,13 +167,13 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
 
     private static FSession createFSession(UUID uuid)
     {
-        FSession session = new FSession();
-        session.assignDefaults(uuid, DesireCore.getCurrentServer());
-        session.save();
+        FSession fSession = new FSession();
+        fSession.assignDefaults(uuid, DesireCore.getCurrentServer());
+        fSession.save();
 
         ConnectionListener.firstJoin.add(uuid);
 
-        return session;
+        return fSession;
     }
 
     public static FSessionHandler getInstance()
@@ -177,11 +184,4 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         }
         return instance;
     }
-
-    @Override
-    public Key<FSession> save(FSession entity)
-    {
-        return super.save(entity);
-    }
-
 }

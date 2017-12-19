@@ -16,13 +16,12 @@ public class SetWinnerCommand extends FactionValidCommand
 {
     public SetWinnerCommand()
     {
-        super("setwinner", "Set this seasons winner.", Rank.ADMIN, new String[] { "faction" });
+        super("setwinner", "Set this seasons winner.", Rank.ADMIN);
 
         addArgument(CommandArgumentBuilder.createBuilder(Faction.class)
                 .setName("faction")
                 .setParser(new FactionParser())
                 .build());
-
     }
 
     @Override
