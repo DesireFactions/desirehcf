@@ -626,7 +626,10 @@ public class FSession
     {
         if (this.lastLocation != lastLocation)
         {
-            sendFactionLocationMessage(lastLocation);
+            if (this.lastLocation != null)
+            {
+                sendFactionLocationMessage(lastLocation);
+            }
             this.lastLocation = lastLocation;
         }
     }

@@ -1,6 +1,8 @@
 package com.desiremc.hcf.listener.factions;
 
-public class FactionListener
+import org.bukkit.event.Listener;
+
+public class FactionListener implements Listener
 {
 
 }

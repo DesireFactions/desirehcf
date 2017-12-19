@@ -32,8 +32,6 @@ import com.desiremc.hcf.session.RegionHandler;
 public class ConnectionListener implements Listener
 {
 
-    private static final boolean DEBUG = false;
-
     public static List<UUID> firstJoin = new ArrayList<>();
 
     private FileHandler config = DesireHCF.getConfigHandler();
@@ -42,10 +40,6 @@ public class ConnectionListener implements Listener
     @EventHandler(priority = EventPriority.LOW)
     public void onJoin(PlayerJoinEvent e)
     {
-        if (DEBUG)
-        {
-            System.out.println("ConnectionListener.onJoin() event fired.");
-        }
         Player p = e.getPlayer();
         FSessionHandler.initializeFSession(e.getPlayer().getUniqueId());
         FSession session = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
@@ -65,10 +59,6 @@ public class ConnectionListener implements Listener
 
         if (session.getSafeTimeLeft() > 0)
         {
-            if (DEBUG)
-            {
-                System.out.println("ConnectionListener.onJoin() safe time > 0.");
-            }
             if (safe)
             {
                 session.getSafeTimer().setScoreboard();
@@ -98,11 +88,12 @@ public class ConnectionListener implements Listener
     @EventHandler
     public void onLeave(PlayerQuitEvent e)
     {
-        FSession session = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
+        FSession fSession = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
 
-        session.getSafeTimer().pause();
+        fSession.getSafeTimer().pause();
+        fSession.save();
 
-        FSessionHandler.getInstance().save(session);
+        FSessionHandler.endSession(fSession);
     }
 
     @EventHandler

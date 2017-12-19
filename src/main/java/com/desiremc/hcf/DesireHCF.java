@@ -1,5 +1,11 @@
 package com.desiremc.hcf;
 
+import java.io.File;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -51,17 +57,14 @@ import com.desiremc.hcf.listener.classes.ArmorListener;
 import com.desiremc.hcf.listener.classes.ClassListener;
 import com.desiremc.hcf.listener.classes.MinerListener;
 import com.desiremc.hcf.listener.classes.RogueListener;
+import com.desiremc.hcf.listener.factions.FactionListener;
+import com.desiremc.hcf.listener.factions.PlayerListener;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
@@ -124,6 +127,12 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new PickupListener(), this);
         listenerManager.addListener(new FurnaceSpeedHandler(), this);
         listenerManager.addListener(new BlockListener(), this);
+
+        // faction listeners
+        listenerManager.addListener(new com.desiremc.hcf.listener.factions.ConnectionListener(), this);
+        listenerManager.addListener(new FactionListener(), this);
+        listenerManager.addListener(new PlayerListener(), this);
+
         // EVERYTHING BELOW HERE IS UNTESTED
         listenerManager.addListener(new EnderpearlHandler(), this);
         listenerManager.addListener(new GappleHandler(), this);
