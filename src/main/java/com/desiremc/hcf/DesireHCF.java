@@ -1,11 +1,5 @@
 package com.desiremc.hcf;
 
-import java.io.File;
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -44,6 +38,7 @@ import com.desiremc.hcf.handler.FurnaceSpeedHandler;
 import com.desiremc.hcf.handler.GappleHandler;
 import com.desiremc.hcf.handler.LootingBuffHandler;
 import com.desiremc.hcf.handler.PotionLimiterHandler;
+import com.desiremc.hcf.handler.SOTWHandler;
 import com.desiremc.hcf.handler.TablistHandler;
 import com.desiremc.hcf.listener.BlockListener;
 import com.desiremc.hcf.listener.ChatListener;
@@ -65,6 +60,11 @@ import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
@@ -92,6 +92,8 @@ public class DesireHCF extends JavaPlugin
         DesireCore.getInstance().getMongoWrapper().getDatastore().ensureIndexes();
         BarrierTask.initialize();
         HKitHandler.initialize();
+
+        new SOTWHandler();
 
         registerListeners();
         registerCommands();

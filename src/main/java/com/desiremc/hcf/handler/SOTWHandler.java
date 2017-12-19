@@ -31,6 +31,7 @@ public class SOTWHandler
 
     public void startSOTWTimer()
     {
+        SOTWHandler.setSOTW(true);
         new SOTWTask();
     }
 }

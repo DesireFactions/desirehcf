@@ -26,11 +26,16 @@ public class StartOfTheWorldCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
+        if (SOTWHandler.getSOTW())
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "sotw.already");
+            return;
+        }
+
         if (counter.contains(sender.getUniqueId()))
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "sotw.confirmed");
-            SOTWHandler.setSOTW(true);
-
+            SOTWHandler.getInstance().startSOTWTimer();
             counter.remove(sender.getUniqueId());
         }
         else

@@ -1,13 +1,22 @@
 package com.desiremc.hcf.session;
 
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.DeathBan;
+import com.desiremc.core.session.DeathBanHandler;
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.Ticker;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.handler.SOTWHandler;
+import com.desiremc.hcf.session.faction.ClaimSession;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionRank;
+import com.desiremc.hcf.session.faction.FactionSetting;
+import com.desiremc.hcf.util.FactionsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -20,22 +29,13 @@ import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.DeathBan;
-import com.desiremc.core.session.DeathBanHandler;
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.Ticker;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.faction.ClaimSession;
-import com.desiremc.hcf.session.faction.Faction;
-import com.desiremc.hcf.session.faction.FactionRank;
-import com.desiremc.hcf.session.faction.FactionSetting;
-import com.desiremc.hcf.util.FactionsUtils;
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class FSession
@@ -771,7 +771,7 @@ public class FSession
         @Override
         public void run()
         {
-            if (player == null || !player.isOnline())
+            if (player == null || !player.isOnline() || SOTWHandler.getSOTW())
             {
                 return;
             }

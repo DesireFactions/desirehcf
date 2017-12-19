@@ -173,3 +173,4 @@ sotw:
   pvp: "&cYou can't PVP during SOTW."
   scoreboard: "&9SOTW: "
   over: "&7SOTW PvP timer is now over!"
+  already: "&7A SOTW timer is already running."

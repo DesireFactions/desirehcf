@@ -7,7 +7,6 @@ import com.desiremc.hcf.handler.SOTWHandler;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
-import org.bukkit.util.NumberConversions;
 
 public class SOTWTask extends BukkitRunnable
 {
@@ -18,6 +17,8 @@ public class SOTWTask extends BukkitRunnable
     {
         TIMER = DesireHCF.getConfigHandler().getInteger("sotw.time");
         start = System.currentTimeMillis();
+
+        run();
     }
 
     @Override
@@ -25,25 +26,25 @@ public class SOTWTask extends BukkitRunnable
     {
         for (Player p : Bukkit.getOnlinePlayers())
         {
-            EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("sotw.scoreboard"), DateUtils.formatDateDiff(((start + (TIMER * 1000)) - System.currentTimeMillis()) / 1000));
+            EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("sotw.scoreboard"), DateUtils.formatDateDiff((TIMER * 1000) + start));
         }
 
         if (getRemainingSeconds() <= 0)
         {
             cancel();
+            return;
         }
+
+        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), this, 20L);
     }
 
     private int getRemainingSeconds()
     {
-        long currentTime = System.currentTimeMillis();
-        return (start + (TIMER * 1000)) > currentTime ? NumberConversions.ceil(((start + (TIMER * 1000)) - currentTime) / 1000D) : 0;
+        return (int) (((TIMER * 1000) + start) - System.currentTimeMillis());
     }
 
     public void cancel()
     {
-        super.cancel();
-
         SOTWHandler.setSOTW(false);
         Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("sotw.over"));
 
