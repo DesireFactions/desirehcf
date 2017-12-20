@@ -1,10 +1,27 @@
 package com.desiremc.hcf.listener.factions;
 
+import java.util.EnumSet;
+import java.util.Set;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
+
 import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.core.utils.GeometryUtils;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.commands.factions.FactionHomeCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.ClaimSession;
@@ -18,20 +35,6 @@ import com.desiremc.hcf.validators.SenderClaimingValidator;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 import com.github.davidmoten.rtree.Entry;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-
-import java.util.EnumSet;
-import java.util.Set;
 
 /**
  * The listener in charge for ensuring that factions behave the way they are supposed to. It prevents players from going
@@ -45,10 +48,18 @@ public class PlayerListener implements Listener
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onBlockMove(PlayerBlockMoveEvent event)
     {
-        FSession hcfSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
+        FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
         Faction factionTo = FactionsUtils.getFaction(event.getTo());
 
-        hcfSession.setLastLocation(factionTo);
+        fSession.setLastLocation(factionTo);
+
+        // cancel the home task if one exists
+        BukkitTask task = FactionHomeCommand.getTeleportTask(fSession.getUniqueId());
+        if (task != null)
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(event.getPlayer(), "factions.home.cancelled");
+            task.cancel();
+        }
     }
 
     @EventHandler

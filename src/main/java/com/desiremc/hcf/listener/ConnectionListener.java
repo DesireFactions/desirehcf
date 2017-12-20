@@ -22,7 +22,6 @@ import com.desiremc.core.session.DeathBan;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
-import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
@@ -34,58 +33,61 @@ public class ConnectionListener implements Listener
 
     public static List<UUID> firstJoin = new ArrayList<>();
 
-    private FileHandler config = DesireHCF.getConfigHandler();
-
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOW)
     public void onJoin(PlayerJoinEvent e)
     {
-        Player p = e.getPlayer();
+        Player player = e.getPlayer();
         FSessionHandler.initializeFSession(e.getPlayer().getUniqueId());
-        FSession session = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
+        FSession fSession = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
         boolean safe = false;
         for (Region region : RegionHandler.getRegions())
         {
-            if (region.getWorld() == p.getLocation().getWorld() && region.getRegionBlocks().isWithin(p.getLocation()))
+            if (region.getWorld() == player.getLocation().getWorld() && region.getRegionBlocks().isWithin(player.getLocation()))
             {
                 safe = true;
             }
         }
         // TODO Look into a better solution for isOnGround.
-        if (safe && p.isOnGround())
+        if (safe && player.isOnGround())
         {
-            TagHandler.setLastValidLocation(p.getUniqueId(), p.getLocation());
+            TagHandler.setLastValidLocation(player.getUniqueId(), player.getLocation());
         }
 
-        if (session.getSafeTimeLeft() > 0)
+        if (fSession.getSafeTimeLeft() > 0)
         {
             if (safe)
             {
-                session.getSafeTimer().setScoreboard();
+                fSession.getSafeTimer().setScoreboard();
             }
             else
             {
-                session.getSafeTimer().resume();
+                fSession.getSafeTimer().resume();
             }
         }
 
-        if (firstJoin.contains(p.getUniqueId()))
+        if (firstJoin.contains(player.getUniqueId()))
         {
-            Location loc = new Location(Bukkit.getWorld(config.getString("spawn.world")), config.getDouble("spawn.x"), config.getDouble("spawn.y"),
-                    config.getDouble("spawn.z"), (float) config.getDouble("spawn.yaw").doubleValue(), (float) config.getDouble("spawn.pitch").doubleValue());
+            FileHandler config = DesireCore.getConfigHandler();
+            Location loc = new Location(Bukkit.getWorld(config.getString("spawn.world")),
+                    config.getDouble("spawn.x"),
+                    config.getDouble("spawn.y"),
+                    config.getDouble("spawn.z"),
+                    (float) config.getDouble("spawn.yaw").doubleValue(),
+                    (float) config.getDouble("spawn.pitch").doubleValue());
 
-            p.teleport(loc);
-            firstJoin.remove(p.getUniqueId());
+            player.teleport(loc);
+            firstJoin.remove(player.getUniqueId());
         }
 
-        Session s = SessionHandler.getSession(session.getPlayer());
+        Session s = SessionHandler.getSession(fSession.getPlayer());
         if (!s.hasAchievement(Achievement.FIRST_LOGIN))
         {
             s.awardAchievement(Achievement.FIRST_LOGIN, true);
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onLeave(PlayerQuitEvent e)
     {
         FSession fSession = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());

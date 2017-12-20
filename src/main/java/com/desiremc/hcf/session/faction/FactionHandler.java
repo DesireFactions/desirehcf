@@ -23,6 +23,8 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.events.faction.FactionDisbandEvent;
+import com.desiremc.hcf.events.faction.FactionLeaveEvent;
 import com.desiremc.hcf.session.FSession;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
@@ -106,7 +108,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         // populate the faction map
         factionsByName = new HashMap<>();
         factionsById = new HashMap<>();
-        for (Faction faction : find(createQuery().field("factionState").equal(FactionState.ACTIVE)))
+        for (Faction faction : find(createQuery().field("faction_state").equal(FactionState.ACTIVE)))
         {
             // if the faction is the wilderness, set it as such
             if (faction.getId() == -1)
@@ -261,10 +263,20 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     public static void deleteFaction(Faction faction)
     {
         check();
-        for (FSession session : faction.getMembers())
+        FactionDisbandEvent disbandEvent = new FactionDisbandEvent(faction);
+        Bukkit.getPluginManager().callEvent(disbandEvent);
+        if (disbandEvent.isCancelled())
         {
-            session.setFaction(null);
-            session.setFactionRank(null);
+            System.out.println("It got cancelled somehow");
+            return;
+        }
+
+        for (FSession fSession : faction.getMembers())
+        {
+            fSession.setFaction(null);
+            fSession.setFactionRank(null);
+            Bukkit.getPluginManager().callEvent(new FactionLeaveEvent(faction, fSession));
+            fSession.save();
         }
         factionsById.remove(faction.getId());
         factionsByName.remove(faction.getStub());

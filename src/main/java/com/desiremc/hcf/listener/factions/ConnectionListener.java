@@ -8,8 +8,10 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitTask;
 
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.commands.factions.FactionHomeCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.Faction;
@@ -83,6 +85,14 @@ public class ConnectionListener implements Listener
 
         // take their claim wand if they have one
         FactionHandler.takeClaimWand(event.getPlayer());
+
+        // cancel the home task if they have one
+        BukkitTask task = FactionHomeCommand.getTeleportTask(event.getPlayer().getUniqueId());
+        if (task != null)
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(event.getPlayer(), "factions.home.cancelled");
+            task.cancel();
+        }
 
         // if they are in a faction, do some clean up
         if (session.hasFaction())

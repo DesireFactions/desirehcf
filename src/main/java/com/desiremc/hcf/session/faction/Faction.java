@@ -13,6 +13,7 @@ import org.bukkit.Location;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.IdGetter;
+import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
 import com.desiremc.core.utils.BoundedArea;
@@ -37,8 +38,8 @@ public class Faction
 
     private String description;
 
-    @Transient
     private String home;
+    @Transient
     private Location parsedHome;
 
     private long founded;
@@ -59,14 +60,18 @@ public class Faction
 
     private List<BoundedArea> claims;
 
+    @Property("faction_state")
     private FactionState factionState;
 
+    @Property("faction_type")
     private FactionType factionType;
 
     private List<Integer> enemies;
+    @Transient
     private List<Faction> parsedEnemies;
 
     private List<Integer> allies;
+    @Transient
     private List<Faction> parsedAllies;
 
     public Faction()
@@ -478,6 +483,14 @@ public class Faction
     /**
      * @return {@code true} if the {@link #getType()} is {@link FactionType#PLAYER}.
      */
+    public boolean isSafeZone()
+    {
+        return getType() == FactionType.SAFEZONE;
+    }
+
+    /**
+     * @return {@code true} if the {@link #getType()} is {@link FactionType#PLAYER}.
+     */
     public boolean isNormal()
     {
         return getType() == FactionType.PLAYER;
@@ -596,6 +609,10 @@ public class Faction
         else if (getEnemies().contains(faction))
         {
             return FactionRelationship.ENEMY;
+        }
+        else if (isWilderness())
+        {
+            return FactionRelationship.NEUTRAL;
         }
         else if (faction == this)
         {

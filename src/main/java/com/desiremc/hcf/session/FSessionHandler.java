@@ -3,7 +3,6 @@ package com.desiremc.hcf.session;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
@@ -12,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.listener.ConnectionListener;
 
@@ -44,16 +44,6 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
                 onlineSessions.put(fSession.getUniqueId(), fSession);
             }
         }
-        
-        System.out.println("FSessions size: " + sessions.size());
-        for (Entry<UUID, FSession> entry : sessions.entrySet())
-        {
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue().getSession() == null);
-            System.out.println("---");
-        }
-        System.out.println("==========");
-            
 
         console = new FSession();
         if (count() > 0)
@@ -170,6 +160,11 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         FSession fSession = new FSession();
         fSession.assignDefaults(uuid, DesireCore.getCurrentServer());
         fSession.save();
+
+        Session session = SessionHandler.getGeneralSession(uuid);
+        fSession.setSession(session);
+
+        sessions.put(uuid, fSession);
 
         ConnectionListener.firstJoin.add(uuid);
 
