@@ -12,6 +12,7 @@ import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.listener.ConnectionListener;
 
@@ -103,7 +104,6 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         }
         else
         {
-            System.out.println("Point A");
             return createFSession(uuid);
         }
     }
@@ -147,7 +147,6 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         FSession fSession = sessions.get(uuid);
         if (fSession == null)
         {
-            System.out.println("Point B");
             fSession = createFSession(uuid);
         }
         else
@@ -172,6 +171,9 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         fSession.assignDefaults(uuid, DesireCore.getCurrentServer());
         fSession.save();
 
+        Session session = SessionHandler.getOnlineSession(uuid);
+        fSession.setSession(session);
+        
         sessions.put(uuid, fSession);
 
         ConnectionListener.firstJoin.add(uuid);
