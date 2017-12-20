@@ -10,6 +10,7 @@ import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
+import com.desiremc.hcf.validators.SenderHasFactionValidator;
 
 public class FactionSethomeCommand extends FactionValidCommand
 {
@@ -18,6 +19,7 @@ public class FactionSethomeCommand extends FactionValidCommand
     {
         super("sethome", "Sets the faction home.", true);
 
+        addSenderValidator(new SenderHasFactionValidator());
         addSenderValidator(new SenderFactionOfficerValidator());
     }
 

@@ -18,7 +18,7 @@ public class FactionDisbandCommand extends FactionValidCommand
 
     private Cache<UUID, Long> disbanding;
 
-    public FactionDisbandCommand(String name, String description)
+    public FactionDisbandCommand()
     {
         super("disband", "Disbands your faction.");
         disbanding = new Cache<>(100, DesireHCF.getInstance());

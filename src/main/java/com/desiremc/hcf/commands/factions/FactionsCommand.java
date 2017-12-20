@@ -7,16 +7,21 @@ public class FactionsCommand extends ValidBaseCommand
 
     public FactionsCommand()
     {
-        super("factions", "All factions commands.", new String[] {"f", "faction", "fact"});
+        super("factions", "All factions commands.", new String[] { "f", "faction", "fact" });
 
         addSubCommand(new FactionAnnounceCommand());
         addSubCommand(new FactionBypassCommand());
         addSubCommand(new FactionClaimCommand());
+        addSubCommand(new FactionConfigCommand());
         addSubCommand(new FactionCreateCommand());
+        addSubCommand(new FactionDescriptionCommand());
+        addSubCommand(new FactionDisbandCommand());
+        addSubCommand(new FactionDTRCommand());
+        addSubCommand(new FactionFocusCommand());
+        addSubCommand(new FactionHomeCommand());
         addSubCommand(new FactionLeaderCommand());
         addSubCommand(new FactionLocationCommand());
-        addSubCommand(new FactionFocusCommand());
-        //addSubCommand( new Faction_Command());
+        addSubCommand(new FactionSethomeCommand());
     }
 
 }
