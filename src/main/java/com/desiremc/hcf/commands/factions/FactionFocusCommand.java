@@ -20,7 +20,7 @@ public class FactionFocusCommand extends FactionValidCommand
 {
     public FactionFocusCommand()
     {
-        super("focus", "Focus your faction on a player", Rank.GUEST, true, new String[] {"foc", "target"});
+        super("focus", "Focus your faction on a player", Rank.GUEST, true, new String[] {});
 
         addSenderValidator(new SenderHasFactionValidator());
 
