@@ -90,6 +90,7 @@ public class ConnectionListener implements Listener
         BukkitTask task = FactionHomeCommand.getTeleportTask(event.getPlayer().getUniqueId());
         if (task != null)
         {
+            DesireHCF.getLangHandler().sendRenderMessage(event.getPlayer(), "factions.home.cancelled");
             task.cancel();
         }
 

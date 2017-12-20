@@ -52,11 +52,12 @@ public class PlayerListener implements Listener
         Faction factionTo = FactionsUtils.getFaction(event.getTo());
 
         fSession.setLastLocation(factionTo);
-        
+
         // cancel the home task if one exists
         BukkitTask task = FactionHomeCommand.getTeleportTask(fSession.getUniqueId());
         if (task != null)
         {
+            DesireHCF.getLangHandler().sendRenderMessage(event.getPlayer(), "factions.home.cancelled");
             task.cancel();
         }
     }

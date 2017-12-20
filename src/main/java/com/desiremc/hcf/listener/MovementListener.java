@@ -70,19 +70,19 @@ public class MovementListener implements Listener
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onTeleportMonitor(PlayerTeleportEvent e)
+    public void onTeleportMonitor(PlayerTeleportEvent event)
     {
-        if (!e.isCancelled() && TagHandler.isTagged(e.getPlayer()))
+        if (!event.isCancelled() && TagHandler.isTagged(event.getPlayer()))
         {
-            TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getTo());
+            TagHandler.setLastValidLocation(event.getPlayer().getUniqueId(), event.getTo());
         }
-        if (e.getTo().getWorld().getEnvironment() == Environment.THE_END && e.getFrom().getWorld().getEnvironment() != Environment.THE_END)
+        if (event.getTo().getWorld().getEnvironment() == Environment.THE_END && event.getFrom().getWorld().getEnvironment() != Environment.THE_END)
         {
-            e.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("set_end.spawn")));
+            event.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("set_end.spawn")));
         }
-        else if (e.getTo().getWorld().getEnvironment() != Environment.THE_END && e.getFrom().getWorld().getEnvironment() == Environment.THE_END)
+        else if (event.getTo().getWorld().getEnvironment() != Environment.THE_END && event.getFrom().getWorld().getEnvironment() == Environment.THE_END)
         {
-            e.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("set_end.exit")));
+            event.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("set_end.exit")));
         }
     }
 

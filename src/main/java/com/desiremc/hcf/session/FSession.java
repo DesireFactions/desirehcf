@@ -467,6 +467,11 @@ public class FSession
      */
     public void setFaction(Faction faction)
     {
+        if (faction == null)
+        {
+            this.factionId = -1;
+            this.parsedFaction = null;
+        }
         this.factionId = faction.getId();
         this.parsedFaction = faction;
     }

@@ -44,7 +44,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
                 onlineSessions.put(fSession.getUniqueId(), fSession);
             }
         }
-        
+
         System.out.println("FSessions size: " + sessions.size());
         for (Entry<UUID, FSession> entry : sessions.entrySet())
         {
@@ -53,7 +53,6 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
             System.out.println("---");
         }
         System.out.println("==========");
-            
 
         console = new FSession();
         if (count() > 0)
@@ -104,6 +103,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         }
         else
         {
+            System.out.println("Point A");
             return createFSession(uuid);
         }
     }
@@ -147,6 +147,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         FSession fSession = sessions.get(uuid);
         if (fSession == null)
         {
+            System.out.println("Point B");
             fSession = createFSession(uuid);
         }
         else
@@ -170,6 +171,8 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         FSession fSession = new FSession();
         fSession.assignDefaults(uuid, DesireCore.getCurrentServer());
         fSession.save();
+
+        sessions.put(uuid, fSession);
 
         ConnectionListener.firstJoin.add(uuid);
 

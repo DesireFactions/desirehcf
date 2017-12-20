@@ -24,6 +24,7 @@ import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionRelationship;
 import com.desiremc.hcf.util.FactionsUtils;
+import com.desiremc.hcf.validators.SenderHasFactionHomeValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 
 public class FactionHomeCommand extends FactionValidCommand
@@ -36,6 +37,7 @@ public class FactionHomeCommand extends FactionValidCommand
         super("home", "Teleport to the faction home.", true);
 
         addSenderValidator(new SenderHasFactionValidator());
+        addSenderValidator(new SenderHasFactionHomeValidator());
     }
 
     @Override
@@ -77,7 +79,7 @@ public class FactionHomeCommand extends FactionValidCommand
             }
         }
 
-        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
+        teleporting.put(sender.getUniqueId(), Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
@@ -85,9 +87,14 @@ public class FactionHomeCommand extends FactionValidCommand
                 if (sender.isOnline())
                 {
                     sender.getPlayer().teleport(sender.getFaction().getHomeLocation());
+                    DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.teleported");
                 }
+                teleporting.remove(sender.getUniqueId());
             }
-        }, time * 20);
+        }, time * 20));
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.confirm",
+                "{time}", time);
     }
 
     /**
