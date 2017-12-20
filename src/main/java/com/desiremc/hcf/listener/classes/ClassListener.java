@@ -1,11 +1,18 @@
 package com.desiremc.hcf.listener.classes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
+import com.desiremc.core.api.FileHandler;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.StringUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.events.ArmorEquipEvent;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
@@ -23,19 +30,11 @@ import org.bukkit.inventory.PlayerInventory;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
-import com.desiremc.core.api.FileHandler;
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.StringUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.events.ArmorEquipEvent;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
 
 public class ClassListener implements Listener
 {
@@ -145,24 +144,19 @@ public class ClassListener implements Listener
         if (session.getPvpClass() != null)
         {
             removePermanentEffects(session.getPvpClass(), player);
-
             DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.disable", "{class}", StringUtils.capitalize(session.getPvpClass().name().toLowerCase()));
             EntryRegistry.getInstance().removeValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"));
             EntryRegistry.getInstance().removeValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"));
         }
 
-        if (item == null || item.getType().equals(Material.AIR))
-        {
-            energy.remove(player.getUniqueId());
-            session.setPvpClass(null);
-            return;
-        }
+        boolean set = false;
 
         switch (item.getType().name().split("_")[0])
         {
             case "DIAMOND":
                 if (isDiamond(inv.getArmorContents()))
                 {
+                    set = true;
                     session.setPvpClass(PVPClass.DIAMOND);
                     applyPermanentEffects(PVPClass.DIAMOND, player);
                 }
@@ -170,6 +164,7 @@ public class ClassListener implements Listener
             case "LEATHER":
                 if (isArcher(inv.getArmorContents()))
                 {
+                    set = true;
                     session.setPvpClass(PVPClass.ARCHER);
                     applyPermanentEffects(PVPClass.ARCHER, player);
 
@@ -188,6 +183,7 @@ public class ClassListener implements Listener
             case "GOLD":
                 if (isBard(inv.getArmorContents()))
                 {
+                    set = true;
                     session.setPvpClass(PVPClass.BARD);
                     applyPermanentEffects(PVPClass.BARD, player);
 
@@ -206,6 +202,7 @@ public class ClassListener implements Listener
             case "CHAINMAIL":
                 if (isRogue(inv.getArmorContents()))
                 {
+                    set = true;
                     session.setPvpClass(PVPClass.ROGUE);
                     applyPermanentEffects(PVPClass.ROGUE, player);
 
@@ -224,6 +221,7 @@ public class ClassListener implements Listener
             case "IRON":
                 if (isMiner(inv.getArmorContents()))
                 {
+                    set = true;
                     session.setPvpClass(PVPClass.MINER);
                     applyPermanentEffects(PVPClass.MINER, player);
 
@@ -258,6 +256,12 @@ public class ClassListener implements Listener
                     }
                 }
                 break;
+        }
+
+        if (!set)
+        {
+            energy.remove(player.getUniqueId());
+            session.setPvpClass(null);
         }
 
     }

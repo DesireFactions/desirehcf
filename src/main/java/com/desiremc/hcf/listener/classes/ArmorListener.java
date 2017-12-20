@@ -1,7 +1,7 @@
 package com.desiremc.hcf.listener.classes;
 
-import java.util.List;
-
+import com.desiremc.hcf.events.ArmorEquipEvent;
+import com.desiremc.hcf.util.ArmorType;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -20,8 +20,7 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemBreakEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.hcf.events.ArmorEquipEvent;
-import com.desiremc.hcf.util.ArmorType;
+import java.util.List;
 
 /**
  * @Author Borlea
@@ -42,6 +41,7 @@ public class ArmorListener implements Listener
     @EventHandler(ignoreCancelled = true)
     public final void onInventoryClick(final InventoryClickEvent e)
     {
+        Player player = (Player) e.getWhoClicked();
         boolean shift = false, numberkey = false;
         if (e.getClick().equals(ClickType.SHIFT_LEFT) || e.getClick().equals(ClickType.SHIFT_RIGHT))
         {
@@ -80,7 +80,7 @@ public class ArmorListener implements Listener
                 }
                 if (newArmorType.equals(ArmorType.HELMET) && (equipping ? e.getWhoClicked().getInventory().getHelmet() == null : e.getWhoClicked().getInventory().getHelmet() != null) || newArmorType.equals(ArmorType.CHESTPLATE) && (equipping ? e.getWhoClicked().getInventory().getChestplate() == null : e.getWhoClicked().getInventory().getChestplate() != null)
                         || newArmorType.equals(ArmorType.LEGGINGS) && (equipping ? e.getWhoClicked().getInventory()
-                                .getLeggings() == null : e.getWhoClicked().getInventory().getLeggings() != null)
+                        .getLeggings() == null : e.getWhoClicked().getInventory().getLeggings() != null)
                         ||
                         newArmorType.equals(ArmorType.BOOTS) && (equipping ? e.getWhoClicked().getInventory()
                                 .getBoots() == null : e.getWhoClicked().getInventory().getBoots() != null))
@@ -102,15 +102,16 @@ public class ArmorListener implements Listener
             ItemStack oldArmorPiece = e.getCurrentItem();
             if (numberkey)
             {
-                if (e.getInventory().getType().equals(InventoryType.PLAYER))
+                if (e.getInventory().getType().equals(InventoryType.PLAYER) || e.getInventory().getType().equals(InventoryType.CRAFTING))
                 {// Prevents shit in the 2by2 crafting
-                 // e.getClickedInventory() == The players inventory
-                 // e.getHotBarButton() == key people are pressing to equip or
-                 // unequip the item to or from.
-                 // e.getRawSlot() == The slot the item is going to.
-                 // e.getSlot() == Armor slot, can't use e.getRawSlot() as that
-                 // gives a hotbar slot ;-;
-                    ItemStack hotbarItem = e.getInventory().getItem(e.getHotbarButton());
+                    // e.getClickedInventory() == The players inventory
+                    // e.getHotBarButton() == key people are pressing to equip or
+                    // unequip the item to or from.
+                    // e.getRawSlot() == The slot the item is going to.
+                    // e.getSlot() == Armor slot, can't use e.getRawSlot() as that
+                    // gives a hotbar slot ;-;
+                    ItemStack hotbarItem = player.getInventory().getItem(e.getHotbarButton());
+
                     if (hotbarItem != null)
                     {// Equipping
                         newArmorType = ArmorType.matchType(hotbarItem);
@@ -134,7 +135,7 @@ public class ArmorListener implements Listener
                 ArmorEquipEvent.EquipMethod method = ArmorEquipEvent.EquipMethod.PICK_DROP;
                 if (e.getAction().equals(InventoryAction.HOTBAR_SWAP) || numberkey)
                     method = ArmorEquipEvent.EquipMethod.HOTBAR_SWAP;
-                ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent((Player) e.getWhoClicked(), method,
+                ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(player, method,
                         newArmorType, oldArmorPiece, newArmorPiece);
                 Bukkit.getServer().getPluginManager().callEvent(armorEquipEvent);
                 if (armorEquipEvent.isCancelled())
@@ -155,9 +156,9 @@ public class ArmorListener implements Listener
             final Player player = e.getPlayer();
             if (e.getClickedBlock() != null && e.getAction() == Action.RIGHT_CLICK_BLOCK)
             {// Having both of these checks is useless, might as well do it
-             // though.
-             // Some blocks have actions when you right click them which stops
-             // the client from equipping the armor in hand.
+                // though.
+                // Some blocks have actions when you right click them which stops
+                // the client from equipping the armor in hand.
                 Material mat = e.getClickedBlock().getType();
                 for (String s : blockedMaterials)
                 {
@@ -170,7 +171,7 @@ public class ArmorListener implements Listener
             {
                 if (newArmorType.equals(ArmorType.HELMET) && e.getPlayer().getInventory().getHelmet() == null ||
                         newArmorType.equals(ArmorType.CHESTPLATE) && e.getPlayer().getInventory().getChestplate() == null || newArmorType.equals(ArmorType.LEGGINGS) && e.getPlayer().getInventory()
-                                .getLeggings() == null
+                        .getLeggings() == null
                         || newArmorType.equals(ArmorType.BOOTS) && e.getPlayer().getInventory().getBoots() == null)
                 {
                     ArmorEquipEvent armorEquipEvent = new ArmorEquipEvent(e.getPlayer(), ArmorEquipEvent.EquipMethod.HOTBAR, ArmorType.matchType(e.getItem()), null, e.getItem());
