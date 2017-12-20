@@ -3,7 +3,6 @@ package com.desiremc.hcf.session;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.Map.Entry;
 import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
@@ -45,15 +44,6 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
                 onlineSessions.put(fSession.getUniqueId(), fSession);
             }
         }
-
-        System.out.println("FSessions size: " + sessions.size());
-        for (Entry<UUID, FSession> entry : sessions.entrySet())
-        {
-            System.out.println(entry.getKey());
-            System.out.println(entry.getValue().getSession() == null);
-            System.out.println("---");
-        }
-        System.out.println("==========");
 
         console = new FSession();
         if (count() > 0)
@@ -171,9 +161,9 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         fSession.assignDefaults(uuid, DesireCore.getCurrentServer());
         fSession.save();
 
-        Session session = SessionHandler.getOnlineSession(uuid);
+        Session session = SessionHandler.getGeneralSession(uuid);
         fSession.setSession(session);
-        
+
         sessions.put(uuid, fSession);
 
         ConnectionListener.firstJoin.add(uuid);
