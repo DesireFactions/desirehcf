@@ -149,6 +149,13 @@ public class ClassListener implements Listener
             EntryRegistry.getInstance().removeValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"));
         }
 
+        if (item == null || item.getType().equals(Material.AIR))
+        {
+            energy.remove(player.getUniqueId());
+            session.setPvpClass(null);
+            return;
+        }
+
         boolean set = false;
 
         switch (item.getType().name().split("_")[0])
