@@ -478,6 +478,14 @@ public class Faction
     /**
      * @return {@code true} if the {@link #getType()} is {@link FactionType#PLAYER}.
      */
+    public boolean isSafeZone()
+    {
+        return getType() == FactionType.SAFEZONE;
+    }
+
+    /**
+     * @return {@code true} if the {@link #getType()} is {@link FactionType#PLAYER}.
+     */
     public boolean isNormal()
     {
         return getType() == FactionType.PLAYER;
@@ -596,6 +604,10 @@ public class Faction
         else if (getEnemies().contains(faction))
         {
             return FactionRelationship.ENEMY;
+        }
+        else if (isWilderness())
+        {
+            return FactionRelationship.NEUTRAL;
         }
         else if (faction == this)
         {

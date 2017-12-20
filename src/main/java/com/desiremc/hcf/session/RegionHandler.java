@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.material.MaterialData;
 import org.mongodb.morphia.dao.BasicDAO;
@@ -113,6 +114,24 @@ public class RegionHandler extends BasicDAO<Region, Integer>
         nextId++;
 
         return region;
+    }
+
+    /**
+     * Get the region that the location is in. If it is not within a region, it returns null.
+     * 
+     * @param location the location to check.
+     * @return the region if one is found.
+     */
+    public static Region getRegion(Location location)
+    {
+        for (Region region : regions.values())
+        {
+            if (region.getWorld() == location.getWorld() && region.getRegionBlocks().isWithin(location))
+            {
+                return region;
+            }
+        }
+        return null;
     }
 
     /**

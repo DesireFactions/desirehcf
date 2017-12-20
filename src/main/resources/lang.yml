@@ -137,6 +137,7 @@ factions:
   focus: '&7Your faction is now focusing on &3{player}&7.'
   description: '&7Set your faction''s description to &e{description}'
   dtr: '&7Set the dtr for &e{faction}&7 to &e{dtr}&7.'
+  set_home: '&e{player} set faction home to &e{x}&7, &e{y}&7, &e{z}&7.'
   bypass:
     enable: '&7You have enabled admin bypass mode. You are now able to interact with the world freely.'
     disable: '&7You have disabled admin bypass mode.'

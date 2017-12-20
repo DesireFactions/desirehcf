@@ -1,12 +1,5 @@
 package com.desiremc.hcf.listener;
 
-import com.desiremc.core.utils.BukkitUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World.Environment;
@@ -16,6 +9,14 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
+
+import com.desiremc.core.utils.BukkitUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
 
 public class MovementListener implements Listener
 {
@@ -29,21 +30,20 @@ public class MovementListener implements Listener
         if (TagHandler.isTagged(e.getPlayer()))
         {
             boolean valid = true;
-            for (Region region : RegionHandler.getRegions())
+            Region region = RegionHandler.getRegion(e.getTo());
+            if (region != null)
             {
-                if (region.getWorld() == e.getTo().getWorld() && region.getRegionBlocks().isWithin(e.getTo()))
+                if (TagHandler.hasLastValidLocation(e.getPlayer().getUniqueId()))
                 {
-                    if (TagHandler.hasLastValidLocation(e.getPlayer().getUniqueId()))
-                    {
-                        e.setTo(TagHandler.getLastValidLocation(e.getPlayer().getUniqueId()));
-                    }
-                    else
-                    {
-                        e.setCancelled(true);
-                    }
-                    valid = false;
+                    e.setTo(TagHandler.getLastValidLocation(e.getPlayer().getUniqueId()));
                 }
+                else
+                {
+                    e.setCancelled(true);
+                }
+                valid = false;
             }
+
             if (valid && !e.isCancelled() && isOnGround(e.getPlayer()))
             {
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());

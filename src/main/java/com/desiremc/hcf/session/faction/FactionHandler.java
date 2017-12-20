@@ -23,6 +23,7 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.events.faction.FactionDisbandEvent;
 import com.desiremc.hcf.session.FSession;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
@@ -261,6 +262,13 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     public static void deleteFaction(Faction faction)
     {
         check();
+        FactionDisbandEvent disbandEvent = new FactionDisbandEvent(faction);
+        Bukkit.getPluginManager().callEvent(disbandEvent);
+        if (disbandEvent.isCancelled())
+        {
+            return;
+        }
+
         for (FSession session : faction.getMembers())
         {
             session.setFaction(null);

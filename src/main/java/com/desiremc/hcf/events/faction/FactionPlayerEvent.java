@@ -9,24 +9,24 @@ public abstract class FactionPlayerEvent extends FactionEvent
     /**
      * The {@link FSession} involved with the event.
      */
-    protected FSession hcfSession;
+    protected FSession fSession;
 
     /**
      * @param faction the {@link Faction} involved with the event.
-     * @param hcfSession the {@link FSession} involved with the event.
+     * @param fSession the {@link FSession} involved with the event.
      */
-    public FactionPlayerEvent(Faction faction, FSession hcfSession)
+    public FactionPlayerEvent(Faction faction, FSession fSession)
     {
         super(faction);
-        this.hcfSession = hcfSession;
+        this.fSession = fSession;
     }
 
     /**
      * @return the {@link FSession} involved with the event.
      */
-    public FSession getHCFSession()
+    public FSession getFSession()
     {
-        return hcfSession;
+        return fSession;
     }
 
 }
