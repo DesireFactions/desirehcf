@@ -51,7 +51,7 @@ public class ConnectionListener implements Listener
                     List<String> announcements = faction.getAnnouncements(session);
 
                     // if they have no announcements, don't bother looping and saving.
-                    if (announcements.size() > 0)
+                    if (announcements != null && announcements.size() > 0)
                     {
                         // loop through any pending faction announcements this player has and send it to them.
                         for (String announcement : announcements)

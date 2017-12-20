@@ -13,8 +13,10 @@ import org.bukkit.Location;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.IdGetter;
+import org.mongodb.morphia.annotations.Transient;
 
 import com.desiremc.core.utils.BoundedArea;
+import com.desiremc.core.utils.BukkitUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.util.FactionsUtils;
@@ -35,7 +37,9 @@ public class Faction
 
     private String description;
 
-    private Location home;
+    @Transient
+    private String home;
+    private Location parsedHome;
 
     private long founded;
 
@@ -139,6 +143,36 @@ public class Faction
     }
 
     /**
+     * Returns the home location of the faction. This can be null if the home location has not been set.
+     * 
+     * @return the home location of the faction.
+     */
+    public Location getHomeLocation()
+    {
+        if (home == null)
+        {
+            return null;
+        }
+        else if (parsedHome == null)
+        {
+            parsedHome = BukkitUtils.toLocation(home);
+        }
+
+        return parsedHome;
+    }
+
+    /**
+     * Sets the new home location.
+     * 
+     * @param home the new home.
+     */
+    public void setHomeLocation(Location home)
+    {
+        this.parsedHome = home;
+        this.home = BukkitUtils.toString(home);
+    }
+
+    /**
      * @return the unix timestamp of when the faction was created.
      */
     public long getFounded()
@@ -174,6 +208,38 @@ public class Faction
     }
 
     /**
+     * @return a player's financial balance.
+     */
+    public double getBalance()
+    {
+        return balance;
+    }
+
+    /**
+     * @param balance a player's new financial balance.
+     */
+    public void setBalance(double balance)
+    {
+        this.balance = balance;
+    }
+
+    /**
+     * @param amount the amount to add to the player's balance.
+     */
+    public void depositBalance(double amount)
+    {
+        this.balance += amount;
+    }
+
+    /**
+     * @param amount the amount to remove from a player's balance.
+     */
+    public void withdrawBalance(double amount)
+    {
+        this.balance -= amount;
+    }
+
+    /**
      * @return the amount of "deaths til raidable"
      */
     public double getDTR()
@@ -187,6 +253,30 @@ public class Faction
     public void setDTR(double dtr)
     {
         this.dtr = dtr;
+    }
+
+    public double getMaxDTR()
+    {
+        switch (getMemberSize())
+        {
+            case 1:
+                return 1.01;
+            case 2:
+                return 1.80;
+            case 3:
+                return 2.90;
+            case 4:
+                return 3.60;
+            case 5:
+            default:
+                return 4.30;
+
+        }
+    }
+
+    public double getMinDTR()
+    {
+        return -getMaxDTR();
     }
 
     /**

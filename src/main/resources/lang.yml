@@ -135,6 +135,8 @@ factions:
   create: '&e{player} has created the faction &e{faction}&7.'
   location: '&e{player} &7is located at &3{x}&7,&3{y}&7,&3{z}&7 in &3{world}&7.'
   focus: '&7Your faction is now focusing on &3{player}&7.'
+  description: '&7Set your faction''s description to &e{description}'
+  dtr: '&7Set the dtr for &e{faction}&7 to &e{dtr}&7.'
   bypass:
     enable: '&7You have enabled admin bypass mode. You are now able to interact with the world freely.'
     disable: '&7You have disabled admin bypass mode.'
@@ -162,6 +164,9 @@ factions:
     use_items: '&cYou aren''t allowed to use that here.'
     use_chests: '&cYou aren''t allowed to open that.'
     build: '&cYou aren''t allowed to build here.'
+  config:
+    header: '&7&m------------------------------'
+    list: '&7{setting} &e- &7{description}'
 sotw:
   first: 'Please run the command again to confirm SOTW.'
   confirmed: 'Confirmed. Let SOTW commence.'
