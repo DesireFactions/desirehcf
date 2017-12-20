@@ -26,7 +26,7 @@ public class SOTWHandler
 
     public static void setSOTW(boolean sotw)
     {
-        getInstance().sotw = sotw;
+        SOTWHandler.sotw = sotw;
     }
 
     public void startSOTWTimer()
