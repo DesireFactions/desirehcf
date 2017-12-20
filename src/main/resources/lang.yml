@@ -137,6 +137,16 @@ factions:
   focus: '&7Your faction is now focusing on &3{player}&7.'
   description: '&7Set your faction''s description to &e{description}'
   dtr: '&7Set the dtr for &e{faction}&7 to &e{dtr}&7.'
+  who:
+    - '&7&m-----------------------------------------'
+    - '&5{faction} &d[&e{online}&d/&e{max}&d]'
+    - '    &dDescription: &e{description}'
+    - '    &dLeader: &e{leader}&d[&c{leader_kills}&d]'
+    - '    &dTotal Kills: &e{kills}'
+    - '    &dBalance: &e${balance}'
+    - '    &dDTR: &e{dtr}'
+    - '    &dMembers: &e{members}'
+    - '&7&m-----------------------------------------'
   disband:
     confirm: '&7Run command again to confirm disbanding.'
     broadcast: '`&e{faction} &7has been disbanded.'
@@ -166,8 +176,7 @@ factions:
       self: '&7Your claims can''t overlap.'
       other: '&7Your claim can''t be within another faction''s claim.'
     set:
-      first: '&7Set point one.'
-      second: '&7Set point two.'
+      point_one: '&7Set point one.'
   protection:
     use_blocks: '&cYou aren''t allowed to use that.'
     use_items: '&cYou aren''t allowed to use that here.'

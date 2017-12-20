@@ -132,8 +132,6 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             }
         }
 
-        System.out.println("Faction Map Sizes: " + factionsByName.size() + " " + factionsById.size());
-
         // if the default faction is not in the database, we need to add it to the database
         if (wilderness == null)
         {
@@ -144,6 +142,9 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             wilderness.setState(FactionState.ACTIVE);
             wilderness.setType(FactionType.WILDERNESS);
             wilderness.save();
+
+            factionsByName.put(wilderness.getName(), wilderness);
+            factionsById.put(wilderness.getId(), wilderness);
         }
 
         // initialize all the lists
@@ -265,22 +266,20 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         check();
         FactionDisbandEvent disbandEvent = new FactionDisbandEvent(faction);
         Bukkit.getPluginManager().callEvent(disbandEvent);
-        if (disbandEvent.isCancelled())
-        {
-            System.out.println("It got cancelled somehow");
-            return;
-        }
+
+        factionsById.remove(faction.getId());
+        factionsByName.remove(faction.getStub());
 
         for (FSession fSession : faction.getMembers())
         {
-            fSession.setFaction(null);
+            fSession.setFaction(wilderness);
             fSession.setFactionRank(null);
             Bukkit.getPluginManager().callEvent(new FactionLeaveEvent(faction, fSession));
             fSession.save();
         }
-        factionsById.remove(faction.getId());
-        factionsByName.remove(faction.getStub());
+
         faction.setState(FactionState.DELETED);
+        faction.removeAllMembers();
         faction.save();
     }
 
@@ -300,12 +299,12 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * Creates a new faction of the given type. This will set the id as well as save it to the database. Also, it will
      * add the given creator to the faction and set their {@link FactionRank} to {@link FactionRank#LEADER}.
      * 
-     * @param hcfSession the player creating the faction.
+     * @param fSession the player creating the faction.
      * @param name the name of the faction.
      * @param type the type of faction.
      * @return the newly created faction.
      */
-    public static Faction createFaction(FSession hcfSession, String name, FactionType type)
+    public static Faction createFaction(FSession fSession, String name, FactionType type)
     {
         check();
         Faction faction = new Faction();
@@ -316,8 +315,11 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         faction.setType(type);
         faction.save();
 
-        hcfSession.setFactionRank(FactionRank.LEADER);
-        hcfSession.setFaction(faction);
+        fSession.setFactionRank(FactionRank.LEADER);
+        fSession.setFaction(faction);
+        fSession.save();
+
+        faction.addMember(fSession);
 
         factionsByName.put(faction.getStub(), faction);
         factionsById.put(faction.getId(), faction);

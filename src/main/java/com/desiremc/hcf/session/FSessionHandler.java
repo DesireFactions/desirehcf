@@ -106,6 +106,11 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         }
         return onlineSessions.get(uuid);
     }
+    
+    public static Collection<FSession> getOnlineFSessions()
+    {
+        return Collections.unmodifiableCollection(onlineSessions.values());
+    }
 
     public static FSession getFSession(CommandSender sender)
     {

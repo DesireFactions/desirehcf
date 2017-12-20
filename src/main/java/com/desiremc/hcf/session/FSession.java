@@ -109,12 +109,13 @@ public class FSession
 
     public FSession()
     {
-        pvpTimer = new PVPTimer();
+        deathBans = new LinkedList<>();
         kills = new LinkedList<>();
         deaths = new LinkedList<>();
-        deathBans = new LinkedList<>();
         kitUses = new HashMap<>();
         kitCooldowns = new HashMap<>();
+        factionSettings = new LinkedList<>();
+        pvpTimer = new PVPTimer();
     }
 
     protected void assignDefaults(UUID uuid, String server)
@@ -335,6 +336,11 @@ public class FSession
         else
         {
             tick.setCount(tick.getCount() + 1);
+        }
+
+        if (hasFaction())
+        {
+            getFaction().addKill();
         }
     }
 

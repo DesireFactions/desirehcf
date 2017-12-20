@@ -1,5 +1,11 @@
 package com.desiremc.hcf;
 
+import java.io.File;
+
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -59,11 +65,6 @@ import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
@@ -102,12 +103,12 @@ public class DesireHCF extends JavaPlugin
             @Override
             public void run()
             {
-                for (FSession session : FSessionHandler.getFSessions())
+                for (FSession fSession : FSessionHandler.getOnlineFSessions())
                 {
-                    FSessionHandler.getInstance().save(session);
+                    fSession.save();
                 }
             }
-        }, 10, 600);
+        }, 600, 600);
     }
 
     private void registerListeners()

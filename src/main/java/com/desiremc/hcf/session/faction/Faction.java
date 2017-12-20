@@ -20,6 +20,7 @@ import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.core.utils.BukkitUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 
 /**
@@ -50,11 +51,15 @@ public class Faction
 
     private double dtr;
 
+    private int totalKills;
+
     private int trophies;
 
     private int kothWins;
 
-    private List<FSession> members;
+    private List<UUID> members;
+    @Transient
+    private List<FSession> parsedMembers;
 
     private Map<UUID, List<String>> announcements;
 
@@ -81,6 +86,18 @@ public class Faction
         claims = new LinkedList<>();
         enemies = new LinkedList<>();
         allies = new LinkedList<>();
+    }
+
+    /**
+     * Loads or reloads the parsed members.
+     */
+    private void loadMembers()
+    {
+        parsedMembers = new LinkedList<>();
+        for (UUID uuid : members)
+        {
+            parsedMembers.add(FSessionHandler.getGeneralFSession(uuid));
+        }
     }
 
     /**
@@ -294,6 +311,32 @@ public class Faction
     }
 
     /**
+     * This number is updated in {@link FSession#addKill(UUID)}.
+     * 
+     * @return the amount of kills players have gotten in total.
+     */
+    public int getTotalKills()
+    {
+        return totalKills;
+    }
+
+    /**
+     * @param totalKills the new kill total.
+     */
+    public void setTotalKills(int totalKills)
+    {
+        this.totalKills = totalKills;
+    }
+
+    /**
+     * Adds a kill to the total;
+     */
+    public void addKill()
+    {
+        this.totalKills++;
+    }
+
+    /**
      * @return the amount of trophies this faction has.
      */
     public int getTrophies()
@@ -325,16 +368,59 @@ public class Faction
         this.kothWins = kothWins;
     }
 
-    // TODO add comments for removeMember and addMember once those are made.
+    private void checkMembers()
+    {
+        if (parsedMembers == null)
+        {
+            loadMembers();
+        }
+    }
+
     /**
      * Returns all the members of the faction. The list that is returned is a view of the {@link List} created by
-     * {@link Collections#unmodifiableList(List)} so it can't be edited at all. If you need to remove a member, use the
+     * {@link Collections#unmodifiableList(List)} so it can't be edited at all. If you need to add or remove a member,
+     * use {@link #addMemer(FSession)} or {@link #removeMember(FSession)}
      * 
-     * @return
+     * @return all member
      */
     public List<FSession> getMembers()
     {
-        return Collections.unmodifiableList(members);
+        checkMembers();
+        return Collections.unmodifiableList(parsedMembers);
+    }
+
+    /**
+     * Add a new member to the faction.
+     * 
+     * @param fSession the new member.
+     */
+    public void addMember(FSession fSession)
+    {
+        checkMembers();
+        members.add(fSession.getUniqueId());
+        parsedMembers.add(fSession);
+    }
+
+    /**
+     * Remove a member from the faction.
+     * 
+     * @param fSession the member to remove.
+     */
+    public void removeMember(FSession fSession)
+    {
+        checkMembers();
+        members.remove(fSession.getUniqueId());
+        parsedMembers.remove(fSession);
+    }
+
+    /**
+     * Remove all members from the faction.
+     */
+    public void removeAllMembers()
+    {
+        checkMembers();
+        members.clear();
+        parsedMembers.clear();
     }
 
     // TODO instead store the members that are currently online
@@ -346,7 +432,8 @@ public class Faction
      */
     public List<FSession> getOnlineMembers()
     {
-        List<FSession> online = new LinkedList<>(members);
+        checkMembers();
+        List<FSession> online = new LinkedList<>(parsedMembers);
         online.removeIf(member -> !member.isOnline());
         return online;
     }
@@ -359,7 +446,7 @@ public class Faction
      */
     public List<FSession> getOfflineMembers()
     {
-        List<FSession> offline = new LinkedList<>(members);
+        List<FSession> offline = new LinkedList<>(parsedMembers);
         offline.removeIf(member -> member.isOnline());
         return offline;
     }
@@ -370,6 +457,27 @@ public class Faction
     public int getMemberSize()
     {
         return members.size();
+    }
+
+    /**
+     * If this is a system faction, this will return null every time.
+     * 
+     * @return the leader of the faction.
+     */
+    public FSession getLeader()
+    {
+        if (!isNormal())
+        {
+            return null;
+        }
+        for (FSession member : getMembers())
+        {
+            if (member.getFactionRank() == FactionRank.LEADER)
+            {
+                return member;
+            }
+        }
+        return null;
     }
 
     /**
@@ -477,7 +585,7 @@ public class Faction
      */
     public boolean isWilderness()
     {
-        return FactionHandler.getWilderness() == this;
+        return getType() == FactionType.WILDERNESS;
     }
 
     /**

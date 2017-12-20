@@ -22,6 +22,7 @@ public class FactionsCommand extends ValidBaseCommand
         addSubCommand(new FactionLeaderCommand());
         addSubCommand(new FactionLocationCommand());
         addSubCommand(new FactionSethomeCommand());
+        addSubCommand(new FactionShowCommand());
     }
 
 }

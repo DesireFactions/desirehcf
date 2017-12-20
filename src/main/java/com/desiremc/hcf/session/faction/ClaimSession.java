@@ -187,7 +187,7 @@ public class ClaimSession implements Runnable
         {
             List<Block> blocks = pointOne.getAllBlocks();
             Block block;
-            for (int i = 0; i < 257; i++)
+            for (int i = 0; i < blocks.size(); i++)
             {
                 block = blocks.get(i);
                 if (block != null && block.getType() == Material.AIR)
