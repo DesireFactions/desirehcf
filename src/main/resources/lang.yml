@@ -214,6 +214,9 @@ factions:
     member: '&7You can''t demote &e{target}&7 any further.'
     valid: '&e{player}&7 has demoted &e{target}&7 to &e{rank}&7.'
   balance: '&e{faction}&7 has a balance of &e${balance}&7.'
+  withdraw: '&e{player}&7 has withdrawn &e{amount}&7 from the faction bank.'
+  deposit: '&e{player}&7 has deposited &e{amount}&7 to the faction bank.'
+  no_money: '&7You don''t have enough money to do that.'
 sotw:
   first: 'Please run the command again to confirm SOTW.'
   confirmed: 'Confirmed. Let SOTW commence.'
