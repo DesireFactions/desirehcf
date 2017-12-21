@@ -15,22 +15,27 @@ import com.desiremc.hcf.session.FSession;
 public class ClaimSession implements Runnable
 {
 
+    private List<Block> toClear;
+
     private BlockColumn pointOne;
 
     private BlockColumn pointTwo;
 
+    private BoundedArea boundedArea;
+
     private boolean deleted;
 
-    private FSession hcfSession;
+    private FSession fSession;
 
     /**
      * @param uuid
      * @param pointOne
      * @param pointTwo
      */
-    public ClaimSession(FSession hcfSession)
+    public ClaimSession(FSession fSession)
     {
-        this.hcfSession = hcfSession;
+        this.fSession = fSession;
+        toClear = new LinkedList<>();
     }
 
     /**
@@ -38,7 +43,7 @@ public class ClaimSession implements Runnable
      */
     public FSession getHcfSession()
     {
-        return hcfSession;
+        return fSession;
     }
 
     /**
@@ -46,7 +51,7 @@ public class ClaimSession implements Runnable
      */
     public void setHcfSession(FSession hcfSession)
     {
-        this.hcfSession = hcfSession;
+        this.fSession = hcfSession;
     }
 
     /**
@@ -62,7 +67,15 @@ public class ClaimSession implements Runnable
      */
     public void setPointOne(BlockColumn pointOne)
     {
+        if (hasPointOne())
+        {
+            toClear.addAll(this.pointOne.getAllBlocks());
+        }
         this.pointOne = pointOne;
+        if (hasPointTwo())
+        {
+            boundedArea = new BoundedArea(this.pointOne, this.pointTwo);
+        }
     }
 
     /**
@@ -86,7 +99,15 @@ public class ClaimSession implements Runnable
      */
     public void setPointTwo(BlockColumn pointTwo)
     {
+        if (hasPointTwo())
+        {
+            toClear.addAll(this.pointTwo.getAllBlocks());
+        }
         this.pointTwo = pointTwo;
+        if (hasPointOne())
+        {
+            boundedArea = new BoundedArea(this.pointOne, this.pointTwo);
+        }
     }
 
     /**
@@ -120,7 +141,14 @@ public class ClaimSession implements Runnable
      */
     public int getArea()
     {
-        return (int) new BoundedArea(pointOne, pointTwo).area();
+        if (boundedArea != null)
+        {
+            return (int) boundedArea.area();
+        }
+        else
+        {
+            return -1;
+        }
     }
 
     /**
@@ -128,13 +156,13 @@ public class ClaimSession implements Runnable
      */
     public double getCost()
     {
-        if (pointOne == null || pointTwo == null)
+        if (pointOne == null || pointTwo == null || boundedArea == null)
         {
             return -1;
         }
-        double claimScale = hcfSession.getFaction().getClaims().size() * DesireHCF.getConfigHandler().getDouble("factions.claims.cost.existing_scale");
-        double blockScale = (Math.max(pointOne.getX(), pointTwo.getX()) - Math.min(pointOne.getX(), pointTwo.getX())) // get the width
-                * (Math.max(pointOne.getX(), pointTwo.getX()) - Math.min(pointOne.getX(), pointTwo.getX())) // get the length
+        double claimScale = fSession.getFaction().getClaims().size() * DesireHCF.getConfigHandler().getDouble("factions.claims.cost.existing_scale");
+        double blockScale = boundedArea.getWidth() // get the width
+                * boundedArea.getLength() // get the length
                 * (DesireHCF.getConfigHandler().getDouble("factions.claims.cost.block")); // get the scale per block
 
         return claimScale + blockScale;
@@ -145,7 +173,7 @@ public class ClaimSession implements Runnable
      */
     public int getLength()
     {
-        return Math.max(pointOne.getX(), pointTwo.getX()) - Math.min(pointOne.getX(), pointTwo.getX());
+        return Math.max(pointOne.getX(), pointTwo.getX()) - Math.min(pointOne.getX(), pointTwo.getX()) + 1;
     }
 
     /**
@@ -153,7 +181,7 @@ public class ClaimSession implements Runnable
      */
     public int getWidth()
     {
-        return Math.max(pointOne.getZ(), pointTwo.getZ()) - Math.min(pointOne.getZ(), pointTwo.getZ());
+        return Math.max(pointOne.getZ(), pointTwo.getZ()) - Math.min(pointOne.getZ(), pointTwo.getZ()) + 1;
     }
 
     @SuppressWarnings("deprecation")
@@ -176,11 +204,22 @@ public class ClaimSession implements Runnable
             {
                 if (block.getType() == Material.AIR)
                 {
-                    hcfSession.getPlayer().sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
+                    fSession.getPlayer().sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
                 }
             }
             return;
         }
+
+        System.out.println(toClear.size());
+        for (Block block : toClear)
+        {
+            if (fSession.isOnline())
+            {
+                fSession.getPlayer().sendBlockChange(block.getLocation(), block.getType(), block.getData());
+            }
+        }
+
+        toClear.clear();
 
         // set the markers if the points are set
         if (pointOne != null)
@@ -192,7 +231,7 @@ public class ClaimSession implements Runnable
                 block = blocks.get(i);
                 if (block != null && block.getType() == Material.AIR)
                 {
-                    hcfSession.getPlayer().sendBlockChange(block.getLocation(), i % 3 == 0 ? Material.DIAMOND_BLOCK : Material.GLASS, (byte) 0);
+                    fSession.getPlayer().sendBlockChange(block.getLocation(), i % 3 == 0 ? Material.DIAMOND_BLOCK : Material.GLASS, (byte) 0);
                 }
             }
         }
@@ -200,12 +239,12 @@ public class ClaimSession implements Runnable
         {
             List<Block> blocks = pointTwo.getAllBlocks();
             Block block;
-            for (int i = 0; i < 257; i++)
+            for (int i = 0; i < blocks.size(); i++)
             {
                 block = blocks.get(i);
                 if (block != null && block.getType() == Material.AIR)
                 {
-                    hcfSession.getPlayer().sendBlockChange(block.getLocation(), i % 3 == 0 ? Material.DIAMOND_BLOCK : Material.GLASS, (byte) 0);
+                    fSession.getPlayer().sendBlockChange(block.getLocation(), i % 3 == 0 ? Material.DIAMOND_BLOCK : Material.GLASS, (byte) 0);
                 }
             }
         }

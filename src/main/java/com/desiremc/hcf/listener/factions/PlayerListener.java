@@ -20,6 +20,7 @@ import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.core.utils.GeometryUtils;
+import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.commands.factions.FactionHomeCommand;
 import com.desiremc.hcf.session.FSession;
@@ -153,12 +154,14 @@ public class PlayerListener implements Listener
      */
     private void processClaim(FSession session, PlayerInteractEvent event)
     {
+        event.setCancelled(true);
+        
         if (!new SenderHasFactionValidator().factionsValidate(session) // check that they're in a faction
                 || !new SenderFactionOfficerValidator().factionsValidate(session) // check that they are a faction officer
                 || !new SenderClaimingValidator().factionsValidate(session)) // check that they are currently claiming
         {
             FactionHandler.takeClaimWand(session.getPlayer());
-            event.setCancelled(true);
+            return;
         }
 
         Faction faction = session.getFaction();
@@ -213,23 +216,25 @@ public class PlayerListener implements Listener
         {
             if (claim.hasPointTwo())
             {
-                if (GeometryUtils.getArea(blockColumn, claim.getPointTwo()) < minSize * minSize)
+                BoundedArea area = GeometryUtils.getBoundedArea(blockColumn, claim.getPointTwo());
+                if (area.getLength() < minSize || area.getWidth() < minSize)
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_small",
                             "{size}", minSize);
                     return;
                 }
+                claim.setPointOne(blockColumn);
                 DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.cost_help",
                         "{x}", claim.getLength(),
                         "{z}", claim.getWidth(),
-                        "{cost}", claim.getCost());
+                        "{cost}", StringUtils.formatNumber(claim.getCost(), 2, true));
                 DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.confirm_help");
             }
             else
             {
+                claim.setPointOne(blockColumn);
                 DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.set.point_one");
             }
-            claim.setPointOne(blockColumn);
         }
         // if they right click a block with the wand
         else if (event.getAction() == Action.RIGHT_CLICK_BLOCK)
@@ -239,19 +244,20 @@ public class PlayerListener implements Listener
                 return;
             }
 
-            if (claim.getArea() < minSize * minSize)
+            BoundedArea area = GeometryUtils.getBoundedArea(claim.getPointOne(), blockColumn);
+            if (area.getLength() < minSize || area.getWidth() < minSize)
             {
                 DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_small",
                         "{size}", minSize);
                 return;
             }
 
+            claim.setPointTwo(blockColumn);
             DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.cost_help",
                     "{x}", claim.getLength(),
                     "{z}", claim.getWidth(),
-                    "{cost}", claim.getCost());
+                    "{cost}", StringUtils.formatNumber(claim.getCost(), 2, true));
             DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.confirm_help");
-            claim.setPointTwo(blockColumn);
         }
         // if they left click the air while sneaking
         else if (event.getAction() == Action.LEFT_CLICK_AIR && session.getPlayer().isSneaking())

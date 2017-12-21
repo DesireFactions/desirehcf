@@ -110,12 +110,6 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         factionsById = new HashMap<>();
         for (Faction faction : find(createQuery().field("faction_state").equal(FactionState.ACTIVE)))
         {
-            // if the faction is the wilderness, set it as such
-            if (faction.getId() == -1)
-            {
-                wilderness = faction;
-            }
-
             // add all factions to the faction map.
             factionsByName.put(faction.getStub(), faction);
             factionsById.put(faction.getId(), faction);
@@ -141,7 +135,6 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             wilderness.setDescription("Land of the factionless.");
             wilderness.setState(FactionState.ACTIVE);
             wilderness.setType(FactionType.WILDERNESS);
-            wilderness.save();
 
             factionsByName.put(wilderness.getName(), wilderness);
             factionsById.put(wilderness.getId(), wilderness);

@@ -9,6 +9,7 @@ import com.desiremc.hcf.session.faction.ClaimSession;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
+import com.desiremc.hcf.validators.SenderNotClaimingValidator;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class FactionClaimCommand extends FactionValidCommand
         super("claim", "Claim land for your faction.", true, new String[] { "startclaim", "claimwand" });
 
         addSenderValidator(new SenderHasFactionValidator());
+        addSenderValidator(new SenderNotClaimingValidator());
         addSenderValidator(new SenderFactionOfficerValidator());
         addSenderValidator(new SenderHasFreeSlotValidator());
     }

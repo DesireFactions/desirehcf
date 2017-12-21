@@ -166,6 +166,7 @@ factions:
     start: '&7You have been given a claim wand.'
     usage: '&7Left-click and right-click to select the two points.'
     not_claiming: '&7Use /faction claim to start claiming land.'
+    claiming: '&7You already have a claim session.'
     need_point_one: '&7You must select the first point first.'
     must_touch: '&7Your faction claims must touch.'
     too_close: '&7That point is too close to another claim.'
