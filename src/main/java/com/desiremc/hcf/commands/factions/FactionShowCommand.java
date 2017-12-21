@@ -2,6 +2,7 @@ package com.desiremc.hcf.commands.factions;
 
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.parsers.FactionParser;
@@ -50,17 +51,6 @@ public class FactionShowCommand extends FactionValidCommand
 
     private String processPlaceholders(String value, Faction faction)
     {
-        String balance;
-
-        if (faction.getBalance() % 1 == 0)
-        {
-            balance = Integer.toString((int) faction.getBalance());
-        }
-        else
-        {
-            balance = Double.toString(faction.getBalance());
-        }
-
         value = DesireHCF.getLangHandler().renderString(value,
                 "{faction}", faction.getName(),
                 "{online}", faction.getOnlineMembers().size(),
@@ -69,27 +59,35 @@ public class FactionShowCommand extends FactionValidCommand
                 "{leader}", faction.getLeader().getName(),
                 "{leader_kills}", faction.getLeader().getTotalKills(),
                 "{kills}", faction.getTotalKills(),
-                "{balance}", balance,
-                "{dtr}", faction.getDTR());
+                "{balance}", StringUtils.doubleFormat(faction.getBalance()),
+                "{dtr}", StringUtils.doubleFormat(faction.getDTR()));
 
         StringBuilder sb = new StringBuilder();
-        for (FSession member : faction.getMembers())
+
+        if (faction.getMembers().size() > 1)
         {
-            if (member == faction.getLeader())
+            for (FSession member : faction.getMembers())
             {
-                continue;
+                if (member == faction.getLeader())
+                {
+                    continue;
+                }
+                if (member.isOnline())
+                {
+                    sb.append("§a");
+                }
+                else
+                {
+                    sb.append("§c");
+                }
+                sb.append(member.getName() + "§e, ");
             }
-            if (member.isOnline())
-            {
-                sb.append("§a");
-            }
-            else
-            {
-                sb.append("§c");
-            }
-            sb.append(member.getName() + "§e, ");
+            sb.setLength(sb.length() - 2);
         }
-        sb.setLength(sb.length() - 2);
+        else
+        {
+            sb.append("§eNone");
+        }
         value = value.replace("{members}", sb.toString());
 
         return value;

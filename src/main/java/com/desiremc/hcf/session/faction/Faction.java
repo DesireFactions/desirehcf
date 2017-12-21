@@ -1,13 +1,11 @@
 package com.desiremc.hcf.session.faction;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
+import com.desiremc.core.utils.BoundedArea;
+import com.desiremc.core.utils.BukkitUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.mongodb.morphia.annotations.Entity;
@@ -16,16 +14,17 @@ import org.mongodb.morphia.annotations.IdGetter;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
-import com.desiremc.core.utils.BoundedArea;
-import com.desiremc.core.utils.BukkitUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * An implementation of a faction for HCF servers.
- * 
+ *
  * @author Michael Ziluck
  */
 @Entity(noClassnameStored = true, value = "factions")
@@ -58,6 +57,7 @@ public class Faction
     private int kothWins;
 
     private List<UUID> members;
+
     @Transient
     private List<FSession> parsedMembers;
 
@@ -72,12 +72,19 @@ public class Faction
     private FactionType factionType;
 
     private List<Integer> enemies;
+
     @Transient
     private List<Faction> parsedEnemies;
 
     private List<Integer> allies;
+
     @Transient
     private List<Faction> parsedAllies;
+
+    private List<UUID> invites;
+
+    @Transient
+    private List<FSession> parsedInvites;
 
     public Faction()
     {
@@ -86,6 +93,7 @@ public class Faction
         claims = new LinkedList<>();
         enemies = new LinkedList<>();
         allies = new LinkedList<>();
+        invites = new LinkedList<>();
     }
 
     /**
@@ -104,7 +112,7 @@ public class Faction
      * Returns the id of this faction. This value can never change. If a faction is deleted it still remains in the
      * database under the same id value, but it just has it's {@link FactionState} changed to
      * {@link FactionState#DELETED}.
-     * 
+     *
      * @return the unique id for the faction.
      */
     @IdGetter
@@ -116,7 +124,7 @@ public class Faction
     /**
      * Sets the id for the faction. This should only ever be done by the {@link FactionHandler} when the faction is
      * created for the first time.
-     * 
+     *
      * @param id the new id for the faction.
      */
     protected void setId(int id)
@@ -166,7 +174,7 @@ public class Faction
 
     /**
      * Returns the home location of the faction. This can be null if the home location has not been set.
-     * 
+     *
      * @return the home location of the faction.
      */
     public Location getHomeLocation()
@@ -185,7 +193,7 @@ public class Faction
 
     /**
      * Sets the new home location.
-     * 
+     *
      * @param home the new home.
      */
     public void setHomeLocation(Location home)
@@ -204,7 +212,7 @@ public class Faction
 
     /**
      * Sets the founded date. This should only be run once when the faction is first created.
-     * 
+     *
      * @param founded the founded date.
      */
     protected void setFounded(long founded)
@@ -312,7 +320,7 @@ public class Faction
 
     /**
      * This number is updated in {@link FSession#addKill(UUID)}.
-     * 
+     *
      * @return the amount of kills players have gotten in total.
      */
     public int getTotalKills()
@@ -379,10 +387,11 @@ public class Faction
     /**
      * Returns all the members of the faction. The list that is returned is a view of the {@link List} created by
      * {@link Collections#unmodifiableList(List)} so it can't be edited at all. If you need to add or remove a member,
-     * use {@link #addMemer(FSession)} or {@link #removeMember(FSession)}
-     * 
+     * use {@link #addMember(FSession)} or {@link #removeMember(FSession)}
+     *
      * @return all member
      */
+
     public List<FSession> getMembers()
     {
         checkMembers();
@@ -391,7 +400,7 @@ public class Faction
 
     /**
      * Add a new member to the faction.
-     * 
+     *
      * @param fSession the new member.
      */
     public void addMember(FSession fSession)
@@ -399,11 +408,17 @@ public class Faction
         checkMembers();
         members.add(fSession.getUniqueId());
         parsedMembers.add(fSession);
+
+        fSession.setFaction(this);
+        fSession.setFactionRank(FactionRank.MEMBER);
+
+        fSession.save();
+        save();
     }
 
     /**
      * Remove a member from the faction.
-     * 
+     *
      * @param fSession the member to remove.
      */
     public void removeMember(FSession fSession)
@@ -411,6 +426,10 @@ public class Faction
         checkMembers();
         members.remove(fSession.getUniqueId());
         parsedMembers.remove(fSession);
+
+        fSession.setFaction(FactionHandler.getWilderness());
+        fSession.setFactionRank(FactionRank.MEMBER);
+        save();
     }
 
     /**
@@ -424,10 +443,11 @@ public class Faction
     }
 
     // TODO instead store the members that are currently online
+
     /**
      * Returns all online members of the faction. The returned list is not related to the actual members list and should
      * be stored for any time period other than the lifetime of a single method call.
-     * 
+     *
      * @return the online members.
      */
     public List<FSession> getOnlineMembers()
@@ -441,7 +461,7 @@ public class Faction
     /**
      * Returns all offline members of the faction. The returned list is not related to the actual members list and
      * should be stored for any time period other than the lifetime of a single method call.
-     * 
+     *
      * @return the offline members.
      */
     public List<FSession> getOfflineMembers()
@@ -461,7 +481,7 @@ public class Faction
 
     /**
      * If this is a system faction, this will return null every time.
-     * 
+     *
      * @return the leader of the faction.
      */
     public FSession getLeader()
@@ -483,7 +503,7 @@ public class Faction
     /**
      * Gets a player's cached announcements. These are a list of all messages send out with /faction announce since the
      * player has last been on the server.
-     * 
+     *
      * @param session the player's announcements to retrieve
      * @return a player's cached announcements.
      */
@@ -495,8 +515,8 @@ public class Faction
     /**
      * Adds an announcement for this player to get the next time they get on the server. If they have pending
      * announcements already it will take the new one on to the end of the list.
-     * 
-     * @param session the player to receive the announcement.
+     *
+     * @param session      the player to receive the announcement.
      * @param announcement the announcement.
      */
     public void addAnnouncement(FSession session, String announcement)
@@ -520,7 +540,7 @@ public class Faction
 
     /**
      * Clear the announcements that were sent to this player.
-     * 
+     *
      * @param session the player's to clear.
      */
     public void clearAnnouncements(FSession session)
@@ -539,7 +559,7 @@ public class Faction
     /**
      * Gets the current {@link FactionState} of the faction. A faction that is marked as {@link FactionState#DELETED}
      * should not exist in the {@link FactionHandler}'s loaded factions.
-     * 
+     *
      * @return the current state of the faction.
      */
     public FactionState getState()
@@ -550,7 +570,7 @@ public class Faction
     /**
      * Sets the {@link FactionState} of the faction to whatever is passed through the parameter. This should only be
      * done by the {@link FactionHandler}.
-     * 
+     *
      * @param state the new state of the faction.
      */
     protected void setState(FactionState state)
@@ -561,7 +581,7 @@ public class Faction
     /**
      * Gets the type of faction. System and default factions are not able to be joined by players, however they are the
      * default for each player.
-     * 
+     *
      * @return the type of the faction.
      */
     public FactionType getType()
@@ -572,7 +592,7 @@ public class Faction
     /**
      * Sets the type of faction to whatever is passed through the parameter. This should only be done by the
      * {@link FactionHandler}.
-     * 
+     *
      * @param factionType the new stype of the faction.
      */
     protected void setType(FactionType factionType)
@@ -622,7 +642,7 @@ public class Faction
 
     /**
      * Add a faction as an enemy.
-     * 
+     *
      * @param faction the faction to add as an enemy.
      */
     public void addEnemy(Faction faction)
@@ -633,7 +653,7 @@ public class Faction
 
     /**
      * Remove a faction as an enemy.
-     * 
+     *
      * @param faction the faction to remove as an enemy.
      */
     public void removeEnemy(Faction faction)
@@ -644,7 +664,7 @@ public class Faction
 
     /**
      * Check if the given faction is an enemy.
-     * 
+     *
      * @param faction the faction to check.
      * @return {@code true} if the given faction is an enemy.
      */
@@ -671,7 +691,7 @@ public class Faction
 
     /**
      * Add a faction as an ally.
-     * 
+     *
      * @param faction the faction to add as an ally.
      */
     public void addAlly(Faction faction)
@@ -682,7 +702,7 @@ public class Faction
 
     /**
      * Remove a faction as an ally.
-     * 
+     *
      * @param faction the faction to remove as an ally.
      */
     public void removeAlly(Faction faction)
@@ -693,7 +713,7 @@ public class Faction
 
     /**
      * Check if the given faction is an ally.
-     * 
+     *
      * @param faction the faction to check.
      * @return {@code true} if the given faction is an ally.
      */
@@ -704,7 +724,7 @@ public class Faction
 
     /**
      * Check the relationship between this faction and the passed faction.
-     * 
+     *
      * @param faction the faction to check.
      * @return the relationship of the two factions.
      */
@@ -729,6 +749,77 @@ public class Faction
         else
         {
             return FactionRelationship.NEUTRAL;
+        }
+    }
+
+    /**
+     * Returns all the invites of the faction.
+     *
+     * @return all invites
+     */
+    public List<FSession> getInvites()
+    {
+        checkInvites();
+        return parsedInvites;
+    }
+
+    /**
+     * Checks to ensure that the invites have been parsed.
+     */
+    private void checkInvites()
+    {
+        if (parsedInvites == null)
+        {
+            loadInvites();
+        }
+    }
+
+    /**
+     * Loads or reloads the parsed members.
+     */
+    private void loadInvites()
+    {
+        parsedInvites = new LinkedList<>();
+        for (UUID uuid : invites)
+        {
+            parsedInvites.add(FSessionHandler.getGeneralFSession(uuid));
+        }
+    }
+
+    /**
+     * Add a new invite to the faction.
+     *
+     * @param fSession the new invited member.
+     */
+    public void addInvite(FSession fSession)
+    {
+        checkInvites();
+        invites.add(fSession.getUniqueId());
+        parsedInvites.add(fSession);
+        save();
+    }
+
+    /**
+     * Remove a member from the faction.
+     *
+     * @param fSession the member to remove.
+     */
+    public void removeInvite(FSession fSession)
+    {
+        checkInvites();
+        invites.remove(fSession.getUniqueId());
+        parsedInvites.remove(fSession);
+        save();
+    }
+
+    /**
+     * Send a message to all online members.
+     */
+    public void broadcast(String message)
+    {
+        for (FSession online : getOnlineMembers())
+        {
+            online.sendMessage(message);
         }
     }
 

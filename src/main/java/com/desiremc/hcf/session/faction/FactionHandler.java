@@ -1,24 +1,5 @@
 package com.desiremc.hcf.session.faction;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Predicate;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitTask;
-import org.mongodb.morphia.dao.BasicDAO;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
@@ -29,6 +10,24 @@ import com.desiremc.hcf.session.FSession;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
 import com.google.common.collect.Iterables;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitTask;
+import org.mongodb.morphia.dao.BasicDAO;
+
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.function.Predicate;
 
 /**
  * Used to manage all the factions and base faction systems such as stuck players and admin bypass mode.
@@ -202,7 +201,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         {
             return wilderness;
         }
-        else if (size == 0)
+        else if (size == 1)
         {
             return search.iterator().next().value();
         }
@@ -226,7 +225,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         {
             return wilderness;
         }
-        else if (size == 0)
+        else if (size == 1)
         {
             return search.iterator().next().value();
         }
@@ -306,13 +305,12 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         faction.setFounded(System.currentTimeMillis());
         faction.setState(FactionState.ACTIVE);
         faction.setType(type);
+        faction.addMember(fSession);
         faction.save();
 
         fSession.setFactionRank(FactionRank.LEADER);
         fSession.setFaction(faction);
         fSession.save();
-
-        faction.addMember(fSession);
 
         factionsByName.put(faction.getStub(), faction);
         factionsById.put(faction.getId(), faction);

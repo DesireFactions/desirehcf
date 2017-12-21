@@ -1,26 +1,5 @@
 package com.desiremc.hcf.session;
 
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-import org.mongodb.morphia.annotations.Embedded;
-import org.mongodb.morphia.annotations.Entity;
-import org.mongodb.morphia.annotations.Id;
-import org.mongodb.morphia.annotations.IdGetter;
-import org.mongodb.morphia.annotations.Indexed;
-import org.mongodb.morphia.annotations.Property;
-import org.mongodb.morphia.annotations.Reference;
-import org.mongodb.morphia.annotations.Transient;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Achievement;
@@ -35,9 +14,30 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.handler.SOTWHandler;
 import com.desiremc.hcf.session.faction.ClaimSession;
 import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionRank;
 import com.desiremc.hcf.session.faction.FactionSetting;
 import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.mongodb.morphia.annotations.Embedded;
+import org.mongodb.morphia.annotations.Entity;
+import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.IdGetter;
+import org.mongodb.morphia.annotations.Indexed;
+import org.mongodb.morphia.annotations.Property;
+import org.mongodb.morphia.annotations.Reference;
+import org.mongodb.morphia.annotations.Transient;
+
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class FSession
@@ -124,6 +124,8 @@ public class FSession
         this.uuid = uuid;
         this.server = server;
         this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
+        this.factionId = FactionHandler.getWilderness().getId();
+        this.parsedFaction = FactionHandler.getWilderness();
     }
 
     public void applyValues(FSession fSession)
@@ -169,7 +171,7 @@ public class FSession
      * A single player can play on multiple instances of the factions servers. This is the literal string name of the
      * server. In the future this may be converted to an enum or other more reliable design pattern, so use with
      * caution.
-     * 
+     *
      * @return the server this HCFSession is for.
      */
     public String getServer()
@@ -180,7 +182,7 @@ public class FSession
     /**
      * Returns the amount of time, in milliseconds, that is left on the player's safe timer. This is used to keep track
      * of whether or not they are allowed to partake in pvp.
-     * 
+     *
      * @return the amount of safe time left.
      */
     public long getSafeTimeLeft()
@@ -190,7 +192,7 @@ public class FSession
 
     /**
      * Sets the amount of time left on a player's safe timer.
-     * 
+     *
      * @param safeTimer the new amount of safe time left.
      */
     public void setSafeTimeLeft(int safeTimer)
@@ -273,7 +275,7 @@ public class FSession
     /**
      * Sets the last time a player was seen. This is saved both when the player connects to the server as well as when
      * they disconnect from the server.
-     * 
+     *
      * @param lastSeen the last time the player was seen.
      */
     public void setLastSeen(long lastSeen)
@@ -447,17 +449,17 @@ public class FSession
 
     /**
      * @return {@code true} if this player is in a faction.<br>
-     *         {@code false} if this player is not in a faction.
+     * {@code false} if this player is not in a faction.
      */
     public boolean hasFaction()
     {
         checkFaction();
-        return !parsedFaction.isWilderness();
+        return parsedFaction != null && !parsedFaction.isWilderness();
     }
 
     /**
      * Returns this player's faction. If they are not in a faction this will return null.
-     * 
+     *
      * @return this player's faction.
      */
     public Faction getFaction()
@@ -468,7 +470,7 @@ public class FSession
 
     /**
      * Sets this palyer's {@link Faction} to the given value. This does nothing more than updating a value.
-     * 
+     *
      * @param faction the new {@link Faction}.
      */
     public void setFaction(Faction faction)
@@ -504,7 +506,7 @@ public class FSession
 
     /**
      * Set the player's claimSession to the given variable.
-     * 
+     *
      * @param claimSession the new claim session.
      */
     public void setClaimSession(ClaimSession claimSession)
@@ -515,7 +517,7 @@ public class FSession
 
     /**
      * Returns the rank that this player holds in their faction. If they are not in a faction this will return null.
-     * 
+     *
      * @return the rank a player holds in their faction.
      */
     public FactionRank getFactionRank()
@@ -525,7 +527,7 @@ public class FSession
 
     /**
      * Sets this player's faction rank to the given value. This does nothing more than updating a value.
-     * 
+     *
      * @param factionRank
      */
     public void setFactionRank(FactionRank factionRank)
@@ -536,7 +538,7 @@ public class FSession
     /**
      * @param setting the setting to check if it's enabled.
      * @return {@code true} if the settings contains the parameter.<br>
-     *         {@code false} if the settings does not contain the parameter.
+     * {@code false} if the settings does not contain the parameter.
      */
     public boolean hasSetting(FactionSetting setting)
     {
@@ -574,7 +576,7 @@ public class FSession
     /**
      * Set a player's session. This should only be done when the HCFSession is loaded, which why it is protected rather
      * than public.
-     * 
+     *
      * @param session the corresponding Session.
      */
     protected void setSession(Session session)
@@ -627,7 +629,7 @@ public class FSession
      * This method does several things. First it will alert the player that they have changed faction locations unless
      * the {@link Faction} reference stored in lastLocation is null, meaning the player only just connected to the
      * server.
-     * 
+     *
      * @param lastLocation the last faction whose claim this player was last seen at.
      */
     public void setLastLocation(Faction lastLocation)
@@ -650,7 +652,7 @@ public class FSession
 
     /**
      * A convenience method for {@link Session#getRank()}.
-     * 
+     *
      * @return the player's rank.
      */
     public Rank getRank()
@@ -660,17 +662,17 @@ public class FSession
 
     /**
      * A convenience method for {@link Session#getPlayer()}.
-     * 
+     *
      * @return the Bukkit player instance.
      */
     public Player getPlayer()
     {
-        return session.getPlayer();
+        return session.getPlayer() != null ? session.getPlayer() : Bukkit.getPlayer(session.getUniqueId());
     }
 
     /**
      * A convenience method for {@link Session#isOnline()}.
-     * 
+     *
      * @return {@code true} if the player is online. {@code false} otherwise.
      */
     public boolean isOnline()
@@ -680,7 +682,7 @@ public class FSession
 
     /**
      * A convenience method for {@link Session#getName()}.
-     * 
+     *
      * @return the player's name.
      */
     public String getName()
@@ -690,7 +692,7 @@ public class FSession
 
     /**
      * A convenience method for {@link Session#getTokens()}.
-     * 
+     *
      * @return the tokens
      */
     public int getTokens()
@@ -700,7 +702,7 @@ public class FSession
 
     /**
      * A convenience method for {@link Session#sendMessage()}.
-     * 
+     *
      * @param message
      */
     public void sendMessage(String message)
@@ -710,7 +712,7 @@ public class FSession
 
     /**
      * A convenience method for {@link Session#hasAchievement(Achievement)}.
-     * 
+     *
      * @param achievement
      * @return {@code true} if the player has the achievement.
      */
@@ -721,9 +723,9 @@ public class FSession
 
     /**
      * A convenience method for {@link Session#awardAchievement(Achievement, boolean)}.
-     * 
+     *
      * @param achievement the achievement.
-     * @param inform whether to inform the player.
+     * @param inform      whether to inform the player.
      */
     public void awardAchievement(Achievement achievement, boolean inform)
     {
@@ -732,7 +734,7 @@ public class FSession
 
     /**
      * A convenience method for {@link Session#getSender()}.
-     * 
+     *
      * @return the {@link CommandSender} of this session.
      */
     public CommandSender getSender()
@@ -743,7 +745,7 @@ public class FSession
     /**
      * A convenience method for {@link #getPlayer()} and then {@link Player#getLocation()}. If the FSession is not a
      * player, this method will return null and fail gracefully.
-     * 
+     *
      * @return the location of the player.
      */
     public Location getLocation()
@@ -767,7 +769,7 @@ public class FSession
     /**
      * Send a message to the player alerting them that the new location they have moved to is owned by a different
      * faction than the one they were in before.
-     * 
+     *
      * @param factionTo the faction the player is moving to.
      */
     public void sendFactionLocationMessage(Faction factionTo)

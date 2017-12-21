@@ -186,6 +186,22 @@ factions:
   config:
     header: '&7&m------------------------------'
     list: '&7{setting} &e- &7{description}'
+  invite:
+    add: '&e{player}&7 has invited &e{target}&7 to your faction.'
+    target: '&7You have been invited to join &e{faction}&7.'
+    remove_target: '&7You have been deinvited from &e{faction}&7.'
+    remove: '&e{player}&7 has deinvited &e{target}&7 from your faction.'
+    none: '&7You don''t have an invite from &e{faction}&7.'
+    none_target: '&e{player}&7 does''nt have an invite from your faction.'
+    has_faction: '&e{player}&7 already has a faction.'
+    already_invited: '&e{player}&7 already has an invite from your faction.'
+  join:
+    sender: '&7You have joined &e{faction}&7.'
+    all: '&e{player}&7 has joined your faction.'
+  leave:
+    cant: '&7You must promote a new leader or disband your faction first.'
+    all: '&e{player}&7 has left your faction.'
+    sender: '&7You have left &e{faction}&7.'
 sotw:
   first: 'Please run the command again to confirm SOTW.'
   confirmed: 'Confirmed. Let SOTW commence.'

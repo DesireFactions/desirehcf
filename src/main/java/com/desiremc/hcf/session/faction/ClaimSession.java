@@ -1,16 +1,15 @@
 package com.desiremc.hcf.session.faction;
 
-import java.util.LinkedList;
-import java.util.List;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSession;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+
+import java.util.LinkedList;
+import java.util.List;
 
 public class ClaimSession implements Runnable
 {
@@ -28,9 +27,7 @@ public class ClaimSession implements Runnable
     private FSession fSession;
 
     /**
-     * @param uuid
-     * @param pointOne
-     * @param pointTwo
+     * @param fSession The session to start a ClaimSession for
      */
     public ClaimSession(FSession fSession)
     {
@@ -250,7 +247,7 @@ public class ClaimSession implements Runnable
         }
 
         // loop this task in 10 ticks
-        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), this, 10l);
+        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), this, 10L);
     }
 
 }
