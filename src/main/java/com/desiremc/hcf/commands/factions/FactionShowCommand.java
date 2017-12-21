@@ -74,6 +74,7 @@ public class FactionShowCommand extends FactionValidCommand
                 }
                 if (member.isOnline())
                 {
+                    //FIX ABOVE METHOD - FSESSION & SESSION NOT SYNCING
                     sb.append("§a");
                 }
                 else

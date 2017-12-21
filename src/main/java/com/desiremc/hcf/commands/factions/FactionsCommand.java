@@ -27,6 +27,7 @@ public class FactionsCommand extends ValidBaseCommand
         addSubCommand(new FactionDeinviteCommand());
         addSubCommand(new FactionJoinCommand());
         addSubCommand(new FactionLeaveCommand());
+        addSubCommand(new FactionKickCommand());
     }
 
 }

@@ -701,7 +701,7 @@ public class FSession
     }
 
     /**
-     * A convenience method for {@link Session#sendMessage()}.
+     * A convenience method for {@link Session#sendMessage(String)}.
      *
      * @param message
      */
