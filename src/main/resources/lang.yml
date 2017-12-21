@@ -209,6 +209,11 @@ factions:
   promote:
     invalid: '&7You can only promote members to ranks below your own.'
     valid: '&e{player}&7 has promoted &e{target}&7 to &e{rank}&7.'
+  demote:
+    invalid: '&7You can only demote members with ranks below your own.'
+    member: '&7You can''t demote &e{target}&7 any further.'
+    valid: '&e{player}&7 has demoted &e{target}&7 to &e{rank}&7.'
+  balance: '&e{faction}&7 has a balance of &e${balance}&7.'
 sotw:
   first: 'Please run the command again to confirm SOTW.'
   confirmed: 'Confirmed. Let SOTW commence.'
