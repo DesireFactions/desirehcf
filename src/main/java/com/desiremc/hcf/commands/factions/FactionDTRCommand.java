@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.factions;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -11,6 +9,8 @@ import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parsers.FactionParser;
 import com.desiremc.hcf.session.faction.Faction;
+
+import java.util.List;
 
 public class FactionDTRCommand extends ValidCommand
 {
@@ -37,6 +37,7 @@ public class FactionDTRCommand extends ValidCommand
         double dtr = (Double) arguments.get(1).getValue();
         
         faction.setDTR(dtr);
+        faction.save();
         
         DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.dtr");
     }

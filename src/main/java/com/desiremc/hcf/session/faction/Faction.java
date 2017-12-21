@@ -409,11 +409,6 @@ public class Faction
         members.add(fSession.getUniqueId());
         parsedMembers.add(fSession);
 
-        fSession.setFaction(this);
-        fSession.setFactionRank(FactionRank.MEMBER);
-
-        fSession.save();
-        save();
     }
 
     /**
@@ -780,6 +775,7 @@ public class Faction
     private void loadInvites()
     {
         parsedInvites = new LinkedList<>();
+        parsedInvites = new LinkedList<>();
         for (UUID uuid : invites)
         {
             parsedInvites.add(FSessionHandler.getGeneralFSession(uuid));
@@ -796,7 +792,6 @@ public class Faction
         checkInvites();
         invites.add(fSession.getUniqueId());
         parsedInvites.add(fSession);
-        save();
     }
 
     /**
@@ -809,7 +804,6 @@ public class Faction
         checkInvites();
         invites.remove(fSession.getUniqueId());
         parsedInvites.remove(fSession);
-        save();
     }
 
     /**

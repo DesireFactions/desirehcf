@@ -7,6 +7,7 @@ import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.parsers.FactionParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionRank;
 import com.desiremc.hcf.validators.SenderHasFactionInviteValidator;
 import com.desiremc.hcf.validators.SenderHasNoFactionValidator;
 
@@ -37,6 +38,11 @@ public class FactionJoinCommand extends FactionValidCommand
 
         faction.removeInvite(sender);
         faction.addMember(sender);
+        faction.save();
+
+        sender.setFaction(faction);
+        sender.setFactionRank(FactionRank.MEMBER);
+        sender.save();
 
         DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.join.sender", "{faction}", faction.getName());
     }

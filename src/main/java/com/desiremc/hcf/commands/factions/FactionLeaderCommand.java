@@ -6,6 +6,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.parsers.FSessionParser;
 import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionRank;
 import com.desiremc.hcf.validators.SenderFactionLeaderValidator;
 import com.desiremc.hcf.validators.SenderFactionSizeValidator;
@@ -22,12 +23,13 @@ public class FactionLeaderCommand extends FactionValidCommand
     {
         super("leader", "Sets a player as the new leader a faction.", true);
 
+        addSenderValidator(new SenderHasFactionValidator());
+        addSenderValidator(new SenderFactionLeaderValidator());
+        addSenderValidator(new SenderFactionSizeValidator(2));
+
         addArgument(CommandArgumentBuilder.createBuilder(FSession.class)
                 .setName("target")
                 .setParser(new FSessionParser())
-                .addSenderValidator(new SenderHasFactionValidator())
-                .addSenderValidator(new SenderFactionLeaderValidator())
-                .addSenderValidator(new SenderFactionSizeValidator(2))
                 .addValidator(new SenderNotTargetValidator())
                 .addValidator(new TargetSameFactionValidator())
                 .build());
@@ -38,6 +40,7 @@ public class FactionLeaderCommand extends FactionValidCommand
     public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         FSession target = (FSession) arguments.get(0).getValue();
+        Faction faction = sender.getFaction();
 
         target.setFactionRank(FactionRank.LEADER);
         sender.setFactionRank(FactionRank.OFFICER);
@@ -45,14 +48,9 @@ public class FactionLeaderCommand extends FactionValidCommand
         target.save();
         sender.save();
 
-        String message = DesireHCF.getLangHandler().renderMessage("factions.new_leader",
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.new_leader",
                 "{old}", sender.getName(),
-                "{new}", target.getName());
-        
-        for (FSession member : sender.getFaction().getMembers())
-        {
-            member.sendMessage(message);
-        }
+                "{new}", target.getName()));
     }
 
 }
