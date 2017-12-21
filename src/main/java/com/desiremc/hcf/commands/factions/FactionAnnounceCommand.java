@@ -19,12 +19,13 @@ public class FactionAnnounceCommand extends FactionValidCommand
     {
         super("announce", "Announce something to all faction members.", true, new String[] { "ann" });
 
+        addSenderValidator(new SenderHasFactionValidator());
+        addSenderValidator(new SenderFactionOfficerValidator());
+
         addArgument(CommandArgumentBuilder.createBuilder(String.class)
                 .setName("announcement")
                 .setParser(new StringParser())
                 .setVariableLength()
-                .addSenderValidator(new SenderHasFactionValidator())
-                .addSenderValidator(new SenderFactionOfficerValidator())
                 .build());
     }
 
