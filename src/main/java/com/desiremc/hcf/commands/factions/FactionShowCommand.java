@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.factions;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.hcf.DesireHCF;
@@ -10,12 +8,14 @@ import com.desiremc.hcf.parsers.FactionParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 
+import java.util.List;
+
 public class FactionShowCommand extends FactionValidCommand
 {
 
     public FactionShowCommand()
     {
-        super("show", "Show information about your faction.", true, new String[] { "who", "info" });
+        super("show", "Show information about your faction.", true, new String[] {"who", "info"});
 
         addArgument(CommandArgumentBuilder.createBuilder(Faction.class)
                 .setName("faction")
@@ -50,6 +50,17 @@ public class FactionShowCommand extends FactionValidCommand
 
     private String processPlaceholders(String value, Faction faction)
     {
+        String balance;
+
+        if (faction.getBalance() % 1 == 0)
+        {
+            balance = Integer.toString((int) faction.getBalance());
+        }
+        else
+        {
+            balance = Double.toString(faction.getBalance());
+        }
+
         value = DesireHCF.getLangHandler().renderString(value,
                 "{faction}", faction.getName(),
                 "{online}", faction.getOnlineMembers().size(),
@@ -58,12 +69,16 @@ public class FactionShowCommand extends FactionValidCommand
                 "{leader}", faction.getLeader().getName(),
                 "{leader_kills}", faction.getLeader().getTotalKills(),
                 "{kills}", faction.getTotalKills(),
-                "{balance}", faction.getBalance(),
+                "{balance}", balance,
                 "{dtr}", faction.getDTR());
 
         StringBuilder sb = new StringBuilder();
         for (FSession member : faction.getMembers())
         {
+            if (member == faction.getLeader())
+            {
+                continue;
+            }
             if (member.isOnline())
             {
                 sb.append("§a");
@@ -76,7 +91,7 @@ public class FactionShowCommand extends FactionValidCommand
         }
         sb.setLength(sb.length() - 2);
         value = value.replace("{members}", sb.toString());
-        
+
         return value;
     }
 
