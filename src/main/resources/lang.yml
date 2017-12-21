@@ -206,6 +206,9 @@ factions:
     invalid: '&7You can only kick members with a lower rank than your own.'
     all: '&e{player}&7 has kicked &e{target}&7 from your faction.'
     target: '&7You have been kicked from &e{faction}&7 by &e{player}&7.'
+  promote:
+    invalid: '&7You can only promote members to ranks below your own.'
+    valid: '&e{player}&7 has promoted &e{target}&7 to &e{rank}&7.'
 sotw:
   first: 'Please run the command again to confirm SOTW.'
   confirmed: 'Confirmed. Let SOTW commence.'
