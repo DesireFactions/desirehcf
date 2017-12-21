@@ -1,7 +1,15 @@
 package com.desiremc.hcf.handler;
 
-import java.util.Iterator;
-
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.tablist.TabAPI;
+import com.desiremc.core.tablist.TabList;
+import com.desiremc.core.tablist.TabSlot;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -11,20 +19,12 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.tablist.TabAPI;
-import com.desiremc.core.tablist.TabList;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
+import java.util.Iterator;
 
 public class TablistHandler implements Listener
 {
 
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event)
@@ -34,7 +34,7 @@ public class TablistHandler implements Listener
             System.out.println("TablistHandler.onJoin() called.");
         }
         Session iterSession;
-        for (Iterator<Session> it = SessionHandler.getSessions().iterator(); it.hasNext();)
+        for (Iterator<Session> it = SessionHandler.getSessions().iterator(); it.hasNext(); )
         {
             iterSession = it.next();
             if (DEBUG)
@@ -66,7 +66,7 @@ public class TablistHandler implements Listener
     public void onQuit(PlayerQuitEvent event)
     {
         Session iterSession;
-        for (Iterator<Session> it = SessionHandler.getSessions().iterator(); it.hasNext();)
+        for (Iterator<Session> it = SessionHandler.getSessions().iterator(); it.hasNext(); )
         {
             iterSession = it.next();
             if (iterSession.getPlayer() == null || !iterSession.getPlayer().isOnline())
@@ -102,6 +102,10 @@ public class TablistHandler implements Listener
                 // if the player is on 1.8, ignore them
                 if (!list.isOld())
                 {
+                    if (DEBUG)
+                    {
+                        System.out.println("TablistHandler.applyClassic() returning, Player is on 1.8.");
+                    }
                     return;
                 }
 
@@ -109,6 +113,10 @@ public class TablistHandler implements Listener
                 FSession user = FSessionHandler.getOnlineFSession(player.getUniqueId());
                 if (user == null)
                 {
+                    if (DEBUG)
+                    {
+                        System.out.println("TablistHandler.applyClassic() returning, FSession is null.");
+                    }
                     return;
                 }
 
@@ -165,6 +173,20 @@ public class TablistHandler implements Listener
 
                 // update the player list
                 list.update();
+                if (DEBUG)
+                {
+                    System.out.println("TablistHandler.applyClassic() updating player list.");
+                }
+                if (DEBUG)
+                {
+                    for (TabSlot slot : list.getSlots())
+                    {
+                        if (slot != null)
+                        {
+                            System.out.println("TablistHandler.getTabList(Player) slot: " + slot.getName());
+                        }
+                    }
+                }
             }
         });
     }
@@ -188,7 +210,6 @@ public class TablistHandler implements Listener
                 System.out.println("TablistHandler.getTabList(Player) it's null, populate.");
             }
             list = TabAPI.createTabListForPlayer(player);
-            list.send();
         }
         if (DEBUG)
         {
