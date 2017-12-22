@@ -1,11 +1,5 @@
 package com.desiremc.hcf;
 
-import java.io.File;
-
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -33,7 +27,6 @@ import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.lives.ReviveCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
-import com.desiremc.hcf.handler.BrewingSpeedHandler;
 import com.desiremc.hcf.handler.CombatLoggerHandler;
 import com.desiremc.hcf.handler.CrowbarHandler;
 import com.desiremc.hcf.handler.EnchantmentLimiterHandler;
@@ -65,6 +58,11 @@ import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
+import org.bukkit.Bukkit;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
@@ -140,7 +138,7 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new GappleHandler(), this);
         listenerManager.addListener(new CombatLoggerHandler(), this);
         listenerManager.addListener(new EnderchestHandler(), this);
-        listenerManager.addListener(new BrewingSpeedHandler(), this);
+        //listenerManager.addListener(new BrewingSpeedHandler(), this);
         listenerManager.addListener(new LootingBuffHandler(), this);
         listenerManager.addListener(new EnchantmentLimiterHandler(), this);
         listenerManager.addListener(new PotionLimiterHandler(), this);
