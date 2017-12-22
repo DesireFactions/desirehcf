@@ -134,6 +134,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             wilderness.setDescription("Land of the factionless.");
             wilderness.setState(FactionState.ACTIVE);
             wilderness.setType(FactionType.WILDERNESS);
+            wilderness.save();
 
             factionsByName.put(wilderness.getName(), wilderness);
             factionsById.put(wilderness.getId(), wilderness);

@@ -10,13 +10,12 @@ public class SenderHasNoFactionValidator extends FactionSenderValidator
     @Override
     public boolean factionsValidate(FSession sender)
     {
-        if (!sender.hasFaction())
+        if (sender.hasFaction())
         {
-            return true;
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.already_member");
+            return false;
         }
-
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.already_member");
-        return false;
+        return true;
     }
 
 }
