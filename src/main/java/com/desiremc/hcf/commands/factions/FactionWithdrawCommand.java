@@ -32,7 +32,7 @@ public class FactionWithdrawCommand extends FactionValidCommand
     public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         Faction faction = sender.getFaction();
-        double amount = Double.parseDouble((String) arguments.get(0).getValue());
+        double amount = ((Number) arguments.get(0).getValue()).doubleValue();
 
         faction.withdrawBalance(amount);
         sender.depositBalance(amount);

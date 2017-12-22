@@ -266,6 +266,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         {
             fSession.setFaction(wilderness);
             fSession.setFactionRank(null);
+            fSession.setChannel(FactionChannel.GENERAL);
             Bukkit.getPluginManager().callEvent(new FactionLeaveEvent(faction, fSession));
             fSession.save();
         }

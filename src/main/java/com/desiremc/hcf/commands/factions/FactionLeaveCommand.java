@@ -6,6 +6,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionChannel;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.validators.SenderCanLeaveFactionValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
@@ -31,6 +32,7 @@ public class FactionLeaveCommand extends FactionValidCommand
 
         sender.setFactionRank(null);
         sender.setFaction(FactionHandler.getWilderness());
+        sender.setChannel(FactionChannel.GENERAL);
 
         sender.save();
         faction.save();

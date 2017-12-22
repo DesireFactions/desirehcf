@@ -14,6 +14,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.handler.SOTWHandler;
 import com.desiremc.hcf.session.faction.ClaimSession;
 import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionChannel;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionRank;
 import com.desiremc.hcf.session.faction.FactionSetting;
@@ -87,6 +88,8 @@ public class FSession
 
     private FactionRank factionRank;
 
+    private FactionChannel channel;
+
     private List<FactionSetting> factionSettings;
 
     @Transient
@@ -142,6 +145,7 @@ public class FSession
         kitCooldowns = fSession.kitCooldowns;
         factionId = fSession.factionId;
         factionRank = fSession.factionRank;
+        channel = fSession.channel;
         factionSettings = fSession.factionSettings;
     }
 
@@ -859,6 +863,26 @@ public class FSession
     {
         this.pvpClass = pvpClass;
         save();
+    }
+
+    /**
+     * Returns the channel that this player is currently in.
+     *
+     * @return the channel a player is currently in
+     */
+    public FactionChannel getChannel()
+    {
+        return channel;
+    }
+
+    /**
+     * Sets this player's faction channel to the given value. This does nothing more than updating a value.
+     *
+     * @param channel
+     */
+    public void setChannel(FactionChannel channel)
+    {
+        this.channel = channel;
     }
 
     /**

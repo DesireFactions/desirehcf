@@ -217,6 +217,9 @@ factions:
   withdraw: '&e{player}&7 has withdrawn &e{amount}&7 from the faction bank.'
   deposit: '&e{player}&7 has deposited &e{amount}&7 to the faction bank.'
   no_money: '&7You don''t have enough money to do that.'
+  chat:
+    invalid_channel: '&7You have entered an invalid chat channel.'
+    switch: '&7You have switched to &e{channel}&7 chat.'
 sotw:
   first: 'Please run the command again to confirm SOTW.'
   confirmed: 'Confirmed. Let SOTW commence.'
