@@ -18,12 +18,12 @@ public class FactionDTRCommand extends ValidCommand
     protected FactionDTRCommand()
     {
         super("dtr", "Sets the DTR of a faction.", Rank.SRMOD);
-        
+
         addArgument(CommandArgumentBuilder.createBuilder(Faction.class)
                 .setName("faction")
                 .setParser(new FactionParser())
                 .build());
-        
+
         addArgument(CommandArgumentBuilder.createBuilder(Double.class)
                 .setName("dtr")
                 .setParser(new DoubleParser())
@@ -35,11 +35,11 @@ public class FactionDTRCommand extends ValidCommand
     {
         Faction faction = (Faction) arguments.get(0).getValue();
         double dtr = (Double) arguments.get(1).getValue();
-        
+
         faction.setDTR(dtr);
         faction.save();
-        
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.dtr");
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.dtr", "{faction}", faction.getName(), "{dtr}", dtr);
     }
 
 }
