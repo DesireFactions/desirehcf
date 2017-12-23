@@ -153,14 +153,14 @@ public class CombatListener implements Listener
                 if (ds.getSafeTimeLeft() > 0)
                 {
                     e.setCancelled(true);
-                    damager.sendMessage(DesireHCF.getLangHandler().getString("pvp.damager_protected"));
+                    DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.damager_protected");
                     return;
                 }
 
                 if (vs.getSafeTimeLeft() > 0)
                 {
                     e.setCancelled(true);
-                    damager.sendMessage(DesireHCF.getLangHandler().getString("pvp.target_protected"));
+                    DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.target_protected");
                 }
             }
         }
@@ -233,9 +233,7 @@ public class CombatListener implements Listener
 
             // console wants to know too
             DesireHCF.getInstance().getLogger().info(message.toOldMessageFormat());
-        } catch (
-
-                Exception ex)
+        } catch (Exception ex)
         {
             ChatUtils.sendStaffMessage(ex, DesireHCF.getInstance());
         }
