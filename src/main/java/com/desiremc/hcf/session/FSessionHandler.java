@@ -17,6 +17,8 @@ import java.util.UUID;
 public class FSessionHandler extends BasicDAO<FSession, Integer>
 {
 
+    private static final boolean DEBUG = true;
+
     private static FSession console;
 
     private static FSessionHandler instance;
@@ -140,13 +142,19 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         FSession fSession = sessions.get(uuid);
         if (fSession == null)
         {
+            if (DEBUG)
+            {
+                System.out.println("FSessionHandler.initializeFSession() called. FSession null.");
+            }
             fSession = createFSession(uuid);
         }
         else
         {
+            if (DEBUG)
+            {
+                System.out.println("FSessionHandler.initializeFSession() called. FSession not null.");
+            }
             fSession.applyValues(instance.findOne(instance.createQuery().field("_id").equal(fSession.getId())));
-            Session session = SessionHandler.getGeneralSession(uuid);
-            fSession.setSession(session);
             fSession.save();
         }
         onlineSessions.put(fSession.getUniqueId(), fSession);

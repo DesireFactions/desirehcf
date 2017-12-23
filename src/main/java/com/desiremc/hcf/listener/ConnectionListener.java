@@ -30,6 +30,8 @@ import java.util.UUID;
 public class ConnectionListener implements Listener
 {
 
+    private static final boolean DEBUG = true;
+
     public static List<UUID> firstJoin = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
@@ -39,6 +41,7 @@ public class ConnectionListener implements Listener
         Player player = e.getPlayer();
         FSessionHandler.initializeFSession(e.getPlayer().getUniqueId());
         FSession fSession = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
+
         boolean safe = false;
         for (Region region : RegionHandler.getRegions())
         {

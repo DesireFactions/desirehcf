@@ -24,7 +24,7 @@ import java.util.Iterator;
 public class TablistHandler implements Listener
 {
 
-    private static final boolean DEBUG = true;
+    private static final boolean DEBUG = false;
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event)
