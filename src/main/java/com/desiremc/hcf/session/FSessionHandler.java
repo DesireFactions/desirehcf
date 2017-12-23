@@ -164,7 +164,6 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
     {
         fSession.save();
         onlineSessions.remove(fSession.getUniqueId());
-
         // TODO change this over
         return true;
     }

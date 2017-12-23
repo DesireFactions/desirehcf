@@ -30,8 +30,6 @@ import java.util.UUID;
 public class ConnectionListener implements Listener
 {
 
-    private static final boolean DEBUG = true;
-
     public static List<UUID> firstJoin = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
@@ -96,7 +94,6 @@ public class ConnectionListener implements Listener
 
         fSession.getSafeTimer().pause();
         fSession.save();
-
         FSessionHandler.endSession(fSession);
     }
 
