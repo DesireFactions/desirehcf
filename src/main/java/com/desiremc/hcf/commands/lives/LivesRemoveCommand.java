@@ -1,3 +1,4 @@
+
 package com.desiremc.hcf.commands.lives;
 
 import java.util.List;
@@ -5,7 +6,7 @@ import java.util.List;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.newparsers.PositiveIntegerParser;
+import com.desiremc.core.parsers.PositiveIntegerParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;

@@ -1,7 +1,9 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
-import com.desiremc.core.newvalidators.SenderHasFreeSlotValidator;
+import com.desiremc.core.validators.SenderHasFreeSlotValidator;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
@@ -10,8 +12,6 @@ import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 import com.desiremc.hcf.validators.SenderNotClaimingValidator;
-
-import java.util.List;
 
 public class FactionClaimCommand extends FactionValidCommand
 {

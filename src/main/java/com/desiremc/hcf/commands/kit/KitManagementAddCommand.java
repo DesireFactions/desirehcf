@@ -1,16 +1,16 @@
 package com.desiremc.hcf.commands.kit;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.newvalidators.ItemInHandValidator;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+import com.desiremc.core.validators.ItemInHandValidator;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parsers.KitParser;
 import com.desiremc.hcf.session.HKit;
-
-import java.util.List;
 
 public class KitManagementAddCommand extends ValidCommand
 {

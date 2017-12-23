@@ -1,17 +1,17 @@
 package com.desiremc.hcf.commands.lives;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.newparsers.StringParser;
+import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parsers.FSessionParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.validators.PlayerHasDeathbanValidator;
-
-import java.util.List;
 
 public class ReviveCommand extends ValidCommand
 {
