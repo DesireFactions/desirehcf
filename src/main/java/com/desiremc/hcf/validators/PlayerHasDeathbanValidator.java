@@ -10,7 +10,7 @@ public class PlayerHasDeathbanValidator extends FactionValidator<FSession>
     @Override
     public boolean factionsValidateArgument(FSession sender, String[] label, FSession arg)
     {
-        if (!sender.hasDeathBan())
+        if (!arg.hasDeathBan())
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender.getPlayer(), "no_deathban");
             return false;

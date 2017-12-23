@@ -2,6 +2,7 @@ package com.desiremc.hcf.listener;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
+import com.desiremc.core.commands.spawn.SpawnCommand;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Session;
@@ -24,7 +25,6 @@ import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCRegistry;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.Location;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Enderman;
@@ -169,9 +169,7 @@ public class CombatListener implements Listener
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event)
     {
-        Location loc = new Location(Bukkit.getWorld(config.getString("spawn.world")), config.getDouble("spawn.x"), config.getDouble("spawn.y"),
-                config.getDouble("spawn.z"), (float) config.getDouble("spawn.yaw").doubleValue(), (float) config.getDouble("spawn.pitch").doubleValue());
-        event.setRespawnLocation(loc);
+        event.setRespawnLocation(SpawnCommand.getSpawnLocation());
     }
 
     @EventHandler

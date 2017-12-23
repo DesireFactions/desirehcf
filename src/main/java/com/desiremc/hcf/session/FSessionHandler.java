@@ -1,19 +1,18 @@
 package com.desiremc.hcf.session;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.UUID;
-
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.hcf.listener.ConnectionListener;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.dao.BasicDAO;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.listener.ConnectionListener;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class FSessionHandler extends BasicDAO<FSession, Integer>
 {
@@ -65,8 +64,8 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
     /**
      * Gets a collection of all currently connected {@link FSession}. This collection is immutable, so do not edit it or
      * the operations will throw {@link UnsupportedOperationException UnsupportedOperationExceptions}
-     * 
-     * @return
+     *
+     * @return collection of all FSessions.
      */
     public static Collection<FSession> getFSessions()
     {
@@ -76,9 +75,8 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
     /**
      * Gets the {@link FSession} of a user referenced by their {@link UUID} for the given server. This will not save
      * them to the online player list.
-     * 
+     *
      * @param uuid the {@link UUID} of the player.
-     * @param server the server to search for.
      * @return the {@link FSession} if found.
      */
     public static FSession getGeneralFSession(UUID uuid)
@@ -106,7 +104,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         }
         return onlineSessions.get(uuid);
     }
-    
+
     public static Collection<FSession> getOnlineFSessions()
     {
         return Collections.unmodifiableCollection(onlineSessions.values());
@@ -147,6 +145,8 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         else
         {
             fSession.applyValues(instance.findOne(instance.createQuery().field("_id").equal(fSession.getId())));
+            Session session = SessionHandler.getGeneralSession(uuid);
+            fSession.setSession(session);
         }
         onlineSessions.put(fSession.getUniqueId(), fSession);
     }

@@ -45,7 +45,7 @@ public class FSession
 {
 
     @Transient
-    private static final boolean DEBUG = false;
+    private static final boolean DEBUG = true;
 
     @Id
     private int id;
@@ -681,6 +681,13 @@ public class FSession
      */
     public boolean isOnline()
     {
+        if (DEBUG)
+        {
+            if (session == null)
+            {
+                System.out.println("FSession.isOnline() called. Session is null");
+            }
+        }
         return session.isOnline();
     }
 

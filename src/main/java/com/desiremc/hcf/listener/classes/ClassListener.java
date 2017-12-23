@@ -144,7 +144,7 @@ public class ClassListener implements Listener
         if (session.getPvpClass() != null)
         {
             removePermanentEffects(session.getPvpClass(), player);
-            DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.disable", "{class}", StringUtils.capitalize(session.getPvpClass().name().toLowerCase()));
+            DesireHCF.getLangHandler().sendRenderMessage(player, "classes.disable", "{class}", StringUtils.capitalize(session.getPvpClass().name().toLowerCase()));
             EntryRegistry.getInstance().removeValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"));
             EntryRegistry.getInstance().removeValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"));
         }
@@ -175,7 +175,7 @@ public class ClassListener implements Listener
                     session.setPvpClass(PVPClass.ARCHER);
                     applyPermanentEffects(PVPClass.ARCHER, player);
 
-                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Archer");
+                    DesireHCF.getLangHandler().sendRenderMessage(player, "classes.enable", "{class}", "Archer");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Archer");
                     energy.put(player.getUniqueId(), 0);
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
@@ -194,7 +194,7 @@ public class ClassListener implements Listener
                     session.setPvpClass(PVPClass.BARD);
                     applyPermanentEffects(PVPClass.BARD, player);
 
-                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Bard");
+                    DesireHCF.getLangHandler().sendRenderMessage(player, "classes.enable", "{class}", "Bard");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Bard");
                     energy.put(player.getUniqueId(), 0);
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
@@ -213,7 +213,7 @@ public class ClassListener implements Listener
                     session.setPvpClass(PVPClass.ROGUE);
                     applyPermanentEffects(PVPClass.ROGUE, player);
 
-                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Rogue");
+                    DesireHCF.getLangHandler().sendRenderMessage(player, "classes.enable", "{class}", "Rogue");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Rogue");
                     energy.put(player.getUniqueId(), 0);
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.energy-scoreboard"), "0");
@@ -232,7 +232,7 @@ public class ClassListener implements Listener
                     session.setPvpClass(PVPClass.MINER);
                     applyPermanentEffects(PVPClass.MINER, player);
 
-                    DesireHCF.getLangHandler().sendRenderMessageNoPrefix(player, "classes.enable", "{class}", "Miner");
+                    DesireHCF.getLangHandler().sendRenderMessage(player, "classes.enable", "{class}", "Miner");
                     EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("classes.scoreboard"), "Miner");
 
                     Session s = SessionHandler.getSession(player);
