@@ -147,6 +147,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
             fSession.applyValues(instance.findOne(instance.createQuery().field("_id").equal(fSession.getId())));
             Session session = SessionHandler.getGeneralSession(uuid);
             fSession.setSession(session);
+            fSession.save();
         }
         onlineSessions.put(fSession.getUniqueId(), fSession);
     }
@@ -162,12 +163,11 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
 
     private static FSession createFSession(UUID uuid)
     {
+        Session session = SessionHandler.getGeneralSession(uuid);
         FSession fSession = new FSession();
         fSession.assignDefaults(uuid, DesireCore.getCurrentServer());
-        fSession.save();
-
-        Session session = SessionHandler.getGeneralSession(uuid);
         fSession.setSession(session);
+        fSession.save();
 
         sessions.put(uuid, fSession);
 

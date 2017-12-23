@@ -84,6 +84,7 @@ public class FSession
 
     @Transient
     private Faction parsedFaction;
+
     private int factionId = -1;
 
     private FactionRank factionRank;
