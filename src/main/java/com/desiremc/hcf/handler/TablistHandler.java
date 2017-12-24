@@ -27,7 +27,7 @@ import com.desiremc.hcf.util.FactionsUtils;
 public class TablistHandler implements Listener
 {
 
-    private HashMap<UUID, Set<Player>> classicTabs;
+    private HashMap<UUID, Set<Player>> classicTabs = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event)
@@ -36,8 +36,9 @@ public class TablistHandler implements Listener
         for (Session session : SessionHandler.getOnlineSessions())
         {
             TabList tabList;
-            if (event.getPlayer() == session.getPlayer())
+            if (event.getPlayer().getUniqueId().equals(session.getUniqueId()))
             {
+                System.out.println("Created tablist");
                 tabList = TabAPI.createTabListForPlayer(joiner);
                 FSession fSession = FSessionHandler.getOnlineFSession(joiner.getUniqueId());
                 if (session.getSetting(SessionSetting.CLASSICTAB))
@@ -67,10 +68,10 @@ public class TablistHandler implements Listener
                     tabList.setSlot(3, 2, "In each quadrant");
 
                     tabList.setSlot(5, 2, "§b§lWorld Border:");
-                    tabList.setSlot(6, 2, "§7±3000");
+                    tabList.setSlot(6, 2, "§7+-3000");
 
-                    tabList.setSlot(5, 2, "§b§lPlayers Online:");
-                    tabList.setSlot(6, 2, "§7" + Bukkit.getOnlinePlayers().size());
+                    tabList.setSlot(7, 2, "§b§lPlayers Online:");
+                    tabList.setSlot(8, 2, "§7" + Bukkit.getOnlinePlayers().size());
                 }
             }
             else if (session.getSetting(SessionSetting.CLASSICTAB))
@@ -117,6 +118,11 @@ public class TablistHandler implements Listener
                 }
                 tabList.setSlot(i, "");
                 players.remove(leaver);
+            }
+            else
+            {
+                tabList = TabAPI.getPlayerTabList(session.getPlayer());
+                tabList.setSlot(6, 2, "§7" + Bukkit.getOnlinePlayers().size());
             }
         }
         TabAPI.removePlayer(event.getPlayer());
