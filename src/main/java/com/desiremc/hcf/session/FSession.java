@@ -454,7 +454,7 @@ public class FSession
 
     /**
      * @return {@code true} if this player is in a faction.<br>
-     * {@code false} if this player is not in a faction.
+     *         {@code false} if this player is not in a faction.
      */
     public boolean hasFaction()
     {
@@ -543,7 +543,7 @@ public class FSession
     /**
      * @param setting the setting to check if it's enabled.
      * @return {@code true} if the settings contains the parameter.<br>
-     * {@code false} if the settings does not contain the parameter.
+     *         {@code false} if the settings does not contain the parameter.
      */
     public boolean hasSetting(FactionSetting setting)
     {
@@ -672,7 +672,7 @@ public class FSession
      */
     public Player getPlayer()
     {
-        return session.getPlayer() != null ? session.getPlayer() : Bukkit.getPlayer(session.getUniqueId());
+        return session.getPlayer();
     }
 
     /**
@@ -682,13 +682,6 @@ public class FSession
      */
     public boolean isOnline()
     {
-        if (DEBUG)
-        {
-            if (session == null)
-            {
-                System.out.println("FSession.isOnline() called. Session is null");
-            }
-        }
         return session.isOnline();
     }
 
@@ -737,7 +730,7 @@ public class FSession
      * A convenience method for {@link Session#awardAchievement(Achievement, boolean)}.
      *
      * @param achievement the achievement.
-     * @param inform      whether to inform the player.
+     * @param inform whether to inform the player.
      */
     public void awardAchievement(Achievement achievement, boolean inform)
     {
@@ -762,9 +755,9 @@ public class FSession
      */
     public Location getLocation()
     {
-        if (isOnline())
+        if (session.isPlayer() && session.isOnline())
         {
-            return getPlayer().getLocation();
+            return session.getPlayer().getLocation();
         }
         else
         {
