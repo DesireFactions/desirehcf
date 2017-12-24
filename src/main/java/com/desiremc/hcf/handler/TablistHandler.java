@@ -129,7 +129,7 @@ public class TablistHandler implements Listener
         TabAPI.removePlayer(event.getPlayer());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockMove(PlayerBlockMoveEvent event)
     {
         TabList tabList = TabAPI.getPlayerTabList(event.getPlayer());
