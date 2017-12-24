@@ -33,6 +33,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.barrier.TagHandler.Tag;
 import com.desiremc.hcf.handler.SOTWHandler;
+import com.desiremc.hcf.handler.TablistHandler;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.Region;
@@ -197,6 +198,7 @@ public class CombatListener implements Listener
             if (kSession != null)
             {
                 kSession.addKill(vPlayer.getUniqueId());
+                TablistHandler.updateKills(kSession);
 
                 Session s = SessionHandler.getSession(event.getEntity().getKiller());
                 if (!s.hasAchievement(Achievement.FIRST_KILL))

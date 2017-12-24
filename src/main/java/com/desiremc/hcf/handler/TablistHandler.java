@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
@@ -61,7 +62,7 @@ public class TablistHandler implements Listener
 
                     tabList.setSlot(5, 0, "§b§lLocation:");
                     tabList.setSlot(6, 0, FactionHandler.getFaction(event.getPlayer().getLocation()).getName());
-                    tabList.setSlot(7, 0, "§8(§7" + joiner.getLocation().getBlockX() + "§8," + joiner.getLocation().getBlockZ() + "§8)");
+                    tabList.setSlot(7, 0, "§8(§7" + joiner.getLocation().getBlockX() + "§8,§7" + joiner.getLocation().getBlockZ() + "§8)");
 
                     tabList.setSlot(1, 2, "§b§lEnd Portals:");
                     tabList.setSlot(2, 2, "§7(1000,1000)");
@@ -70,8 +71,8 @@ public class TablistHandler implements Listener
                     tabList.setSlot(5, 2, "§b§lWorld Border:");
                     tabList.setSlot(6, 2, "§7+-3000");
 
-                    tabList.setSlot(7, 2, "§b§lPlayers Online:");
-                    tabList.setSlot(8, 2, "§7" + Bukkit.getOnlinePlayers().size());
+                    tabList.setSlot(8, 2, "§b§lPlayers Online:");
+                    tabList.setSlot(9, 2, "§7" + Bukkit.getOnlinePlayers().size());
                 }
             }
             else if (session.getSetting(SessionSetting.CLASSICTAB))
@@ -126,6 +127,21 @@ public class TablistHandler implements Listener
             }
         }
         TabAPI.removePlayer(event.getPlayer());
+    }
+
+    @EventHandler
+    public void onBlockMove(PlayerBlockMoveEvent event)
+    {
+        TabList tabList = TabAPI.getPlayerTabList(event.getPlayer());
+        FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
+        tabList.setSlot(6, 0, fSession.getLastFactionLocation().getName());
+        tabList.setSlot(7, 0, "§8(§7" + event.getTo().getBlockX() + "§8,§7" + event.getFrom().getBlockZ() + "§8)");
+    }
+
+    public static void updateKills(FSession fSession)
+    {
+        TabList tabList = TabAPI.getPlayerTabList(fSession.getPlayer());
+        tabList.setSlot(2, 0, "§bKills: §c" + fSession.getTotalKills());
     }
 
 }
