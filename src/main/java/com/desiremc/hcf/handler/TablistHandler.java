@@ -1,17 +1,11 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.tablist.TabAPI;
-import com.desiremc.core.tablist.TabList;
-import com.desiremc.core.tablist.TabSlot;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -19,44 +13,77 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
-import java.util.Iterator;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.tablist.TabAPI;
+import com.desiremc.core.tablist.TabList;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.session.faction.FactionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
 
 public class TablistHandler implements Listener
 {
 
-    private static final boolean DEBUG = false;
+    private HashMap<UUID, Set<Player>> classicTabs;
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event)
     {
-        if (DEBUG)
+        Player joiner = event.getPlayer();
+        for (Session session : SessionHandler.getOnlineSessions())
         {
-            System.out.println("TablistHandler.onJoin() called.");
-        }
-        Session iterSession;
-        for (Iterator<Session> it = SessionHandler.getSessions().iterator(); it.hasNext(); )
-        {
-            iterSession = it.next();
-            if (DEBUG)
+            TabList tabList;
+            if (event.getPlayer() == session.getPlayer())
             {
-                System.out.println("TablistHandler.onJoin() iterated with " + iterSession.getName());
-            }
-            if (iterSession.getPlayer() == null || !iterSession.getPlayer().isOnline())
-            {
-                if (DEBUG)
+                tabList = TabAPI.createTabListForPlayer(joiner);
+                FSession fSession = FSessionHandler.getOnlineFSession(joiner.getUniqueId());
+                if (session.getSetting(SessionSetting.CLASSICTAB))
                 {
-                    System.out.println("TablistHandler.onJoin() removed offline or null player.");
+                    Set<Player> players = new HashSet<>();
+                    for (Player player : Bukkit.getOnlinePlayers())
+                    {
+                        tabList.setSlot(players.size(), FactionsUtils.getFaction(player).getRelationshipTo(fSession.getFaction()).getChatColor() + player.getName());
+                        players.add(player);
+                    }
+                    classicTabs.put(joiner.getUniqueId(), players);
                 }
-                it.remove();
-                continue;
+                else
+                {
+                    tabList.setSlot(0, 1, "§3§l" + DesireCore.getCurrentServer());
+
+                    tabList.setSlot(1, 0, "§b§lPlayer Info");
+                    tabList.setSlot(2, 0, "§bKills: §c" + fSession.getTotalKills());
+                    tabList.setSlot(3, 0, "§bDeaths: §c" + fSession.getTotalDeaths());
+
+                    tabList.setSlot(5, 0, "§b§lLocation:");
+                    tabList.setSlot(6, 0, FactionHandler.getFaction(event.getPlayer().getLocation()).getName());
+                    tabList.setSlot(7, 0, "§8(§7" + joiner.getLocation().getBlockX() + "§8," + joiner.getLocation().getBlockZ() + "§8)");
+
+                    tabList.setSlot(1, 2, "§b§lEnd Portals:");
+                    tabList.setSlot(2, 2, "§7(1000,1000)");
+                    tabList.setSlot(3, 2, "In each quadrant");
+
+                    tabList.setSlot(5, 2, "§b§lWorld Border:");
+                    tabList.setSlot(6, 2, "§7±3000");
+
+                    tabList.setSlot(5, 2, "§b§lPlayers Online:");
+                    tabList.setSlot(6, 2, "§7" + Bukkit.getOnlinePlayers().size());
+                }
             }
-            if (iterSession.getSetting(SessionSetting.CLASSICTAB))
+            else if (session.getSetting(SessionSetting.CLASSICTAB))
             {
-                applyClassic(iterSession.getPlayer(), null);
+                Set<Player> players = classicTabs.get(session.getUniqueId());
+                tabList = TabAPI.getPlayerTabList(session.getPlayer());
+                tabList.setSlot(players.size(), FactionsUtils.getFaction(joiner).getRelationshipTo(FSessionHandler.getOnlineFSession(session.getUniqueId()).getFaction()).getChatColor() + joiner.getName());
+                players.add(joiner);
             }
             else
             {
-                applyFactions(iterSession.getPlayer(), null);
+                tabList = TabAPI.getPlayerTabList(session.getPlayer());
+                tabList.setSlot(6, 2, "§7" + Bukkit.getOnlinePlayers().size());
             }
         }
 
@@ -65,157 +92,34 @@ public class TablistHandler implements Listener
     @EventHandler
     public void onQuit(PlayerQuitEvent event)
     {
-        Session iterSession;
-        for (Iterator<Session> it = SessionHandler.getSessions().iterator(); it.hasNext(); )
+        Player leaver = event.getPlayer();
+        TabList tabList;
+        for (Session session : SessionHandler.getOnlineSessions())
         {
-            iterSession = it.next();
-            if (iterSession.getPlayer() == null || !iterSession.getPlayer().isOnline())
+            tabList = TabAPI.getPlayerTabList(session.getPlayer());
+            if (session.getPlayer() == leaver)
             {
-                it.remove();
-                continue;
+                tabList.terminate();
+                classicTabs.remove(leaver.getUniqueId());
             }
-            if (event.getPlayer() != iterSession.getPlayer())
+            else if (session.getSetting(SessionSetting.CLASSICTAB))
             {
-                if (iterSession.getSetting(SessionSetting.CLASSICTAB))
-                {
-                    applyClassic(iterSession.getPlayer(), event.getPlayer());
-                }
-                else
-                {
-                    applyFactions(iterSession.getPlayer(), event.getPlayer());
-                }
-            }
-        }
-        TabAPI.removePlayer(event.getPlayer());
-    }
-
-    private void applyClassic(Player player, Player ignored)
-    {
-        Bukkit.getScheduler().runTaskAsynchronously(DesireHCF.getInstance(), new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                // get or initialize the player's tab list
-                TabList list = getTabList(player);
-
-                // if the player is on 1.8, ignore them
-                if (!list.isOld())
-                {
-                    if (DEBUG)
-                    {
-                        System.out.println("TablistHandler.applyClassic() returning, Player is on 1.8.");
-                    }
-                    return;
-                }
-
-                // get the faction's player store
-                FSession user = FSessionHandler.getOnlineFSession(player.getUniqueId());
-                if (user == null)
-                {
-                    if (DEBUG)
-                    {
-                        System.out.println("TablistHandler.applyClassic() returning, FSession is null.");
-                    }
-                    return;
-                }
-
-                // remove all existing player slots. This is annoying to do, but necessary for now.
-                list.clearAllSlots();
-
-                // used to count up the player slots
+                Set<Player> players = classicTabs.get(session.getUniqueId());
+                tabList = TabAPI.getPlayerTabList(session.getPlayer());
                 int i = 0;
-
-                // set all online players.
-                for (FSession session : FactionsUtils.getOnlineHCFSessions())
+                for (Player player : players)
                 {
-                    if (session.getPlayer() == ignored)
+                    if (player == event.getPlayer())
                     {
-                        continue;
-                    }
-                    String prefix = null, name, suffix = "";
-                    ChatColor color;
-                    if (!session.hasFaction() || !user.hasFaction())
-                    {
-                        color = ChatColor.YELLOW;
-                    }
-                    else
-                    {
-                        color = session.getFaction().getRelationshipTo(user.getFaction()).getChatColor();
-                    }
-                    String str = color + session.getName();
-
-                    if (str.length() <= 16)
-                    {
-                        name = str;
-                    }
-                    else if (str.length() > 16 && str.length() <= 32 && str.charAt(15) != '§')
-                    {
-                        prefix = str.substring(0, str.length() - 16);
-                        name = str.substring(str.length() - 16);
-                    }
-                    else
-                    {
-                        prefix = str.substring(0, 16);
-                        name = str.substring(16, 32);
-                        suffix = str.substring(32);
-                    }
-                    if (prefix != null)
-                    {
-                        list.setSlot(i, prefix, name, suffix);
-                    }
-                    else
-                    {
-                        list.setSlot(i, name);
+                        break;
                     }
                     i++;
                 }
-
-                // update the player list
-                list.update();
-                if (DEBUG)
-                {
-                    System.out.println("TablistHandler.applyClassic() updating player list.");
-                }
-                if (DEBUG)
-                {
-                    for (TabSlot slot : list.getSlots())
-                    {
-                        if (slot != null)
-                        {
-                            System.out.println("TablistHandler.getTabList(Player) slot: " + slot.getName());
-                        }
-                    }
-                }
+                tabList.setSlot(i, "");
+                players.remove(leaver);
             }
-        });
-    }
-
-    private void applyFactions(Player player, Player ignored)
-    {
-        applyClassic(player, ignored);
-    }
-
-    private static TabList getTabList(Player player)
-    {
-        if (DEBUG)
-        {
-            System.out.println("TablistHandler.getTabList(Player) called.");
         }
-        TabList list = TabAPI.getPlayerTabList(player);
-        if (list == null)
-        {
-            if (DEBUG)
-            {
-                System.out.println("TablistHandler.getTabList(Player) it's null, populate.");
-            }
-            list = TabAPI.createTabListForPlayer(player);
-        }
-        if (DEBUG)
-        {
-            System.out.println("TablistHandler.getTabList(Player) return the list.");
-        }
-        return list;
+        TabAPI.removePlayer(event.getPlayer());
     }
 
 }

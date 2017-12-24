@@ -221,7 +221,7 @@ public class CombatListener implements Listener
 
             // send the death message to everyone
             FancyMessage message = processMessage(victim, cause, tag);
-            for (Session s : SessionHandler.getSessions())
+            for (Session s : SessionHandler.getOnlineSessions())
             {
                 if (s.getSetting(SessionSetting.DEATH))
                 {
