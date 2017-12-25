@@ -12,7 +12,7 @@ public class SenderHasNoFactionValidator extends FactionSenderValidator
     {
         if (sender.hasFaction())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.already_member");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.already_member", true, false);
             return false;
         }
         return true;

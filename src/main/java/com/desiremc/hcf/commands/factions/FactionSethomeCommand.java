@@ -32,7 +32,7 @@ public class FactionSethomeCommand extends FactionValidCommand
         faction.setHomeLocation(location);
         faction.save();
 
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.home.set",
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.home.set", true, false,
                 "{player}", sender.getName(),
                 "{x}", location.getBlockX(),
                 "{y}", location.getBlockY(),

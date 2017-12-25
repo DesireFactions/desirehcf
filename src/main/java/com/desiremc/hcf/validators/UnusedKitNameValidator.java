@@ -16,7 +16,7 @@ public class UnusedKitNameValidator implements Validator<String>
 
         if (kit != null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.used_name");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.used_name", true, false);
             return false;
         }
 

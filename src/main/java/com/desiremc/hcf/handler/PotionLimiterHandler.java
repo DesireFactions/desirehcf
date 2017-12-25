@@ -122,7 +122,7 @@ public class PotionLimiterHandler implements Listener
             {
                 if (e instanceof Player)
                 {
-                    DesireCore.getLangHandler().sendRenderMessage((Player) e, "potion.blocked");
+                    DesireCore.getLangHandler().sendRenderMessage((Player) e, "potion.blocked", true, false);
                 }
             }
         }

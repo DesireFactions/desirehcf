@@ -22,6 +22,6 @@ public class CrowbarCommand extends ValidCommand
     {
         sender.getPlayer().getInventory().addItem(CrowbarHandler.getNewCrowbar());
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "crowbar.new_crowbar");
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "crowbar.new_crowbar", true, false);
     }
 }

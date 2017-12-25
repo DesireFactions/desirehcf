@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.lives;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -12,6 +10,8 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parsers.FSessionParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.validators.PlayerHasDeathbanValidator;
+
+import java.util.List;
 
 public class ReviveCommand extends ValidCommand
 {
@@ -41,7 +41,7 @@ public class ReviveCommand extends ValidCommand
         target.revive(reason, true, sender.getUniqueId());
         target.save();
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.revive", "{target}", target.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.revive", true, false, "{target}", target.getName());
 
     }
 

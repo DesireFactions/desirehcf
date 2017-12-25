@@ -12,7 +12,7 @@ public class TargetNotSameFactionValidator extends FactionValidator<FSession>
     {
         if (sender.getFaction() == arg.getFaction())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.member", "{target}", arg.getName());
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.member", true, false, "{target}", arg.getName());
             return false;
         }
 

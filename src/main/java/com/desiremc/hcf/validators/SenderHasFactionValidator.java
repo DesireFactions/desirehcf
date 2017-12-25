@@ -13,7 +13,7 @@ public class SenderHasFactionValidator extends FactionSenderValidator
         if (!sender.hasFaction())
         {
             // this is also sent in FactionWhoCommand
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_faction");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_faction", true, false);
             return false;
         }
         return true;

@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.lives;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -11,6 +9,8 @@ import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parsers.FSessionParser;
 import com.desiremc.hcf.session.FSession;
+
+import java.util.List;
 
 public class LivesAddCommand extends ValidCommand
 {
@@ -39,10 +39,10 @@ public class LivesAddCommand extends ValidCommand
         target.addLives(amount);
         target.save();
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.add", "{amount}", String.valueOf(amount), "{player}", target.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.add", true, false, "{amount}", String.valueOf(amount), "{player}", target.getName());
         if (target.isOnline())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(target.getSender(), "lives.recieved", "{amount}", String.valueOf(amount));
+            DesireHCF.getLangHandler().sendRenderMessage(target.getSender(), "lives.recieved", true, false, "{amount}", String.valueOf(amount));
         }
     }
 

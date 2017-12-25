@@ -1,10 +1,5 @@
 package com.desiremc.hcf.commands.factions;
 
-import java.util.List;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.session.Rank;
@@ -17,6 +12,10 @@ import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.validators.SenderFactionLeaderValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
+import org.bukkit.Bukkit;
+
+import java.util.List;
+import java.util.UUID;
 
 public class FactionDisbandCommand extends FactionValidCommand
 {
@@ -46,14 +45,14 @@ public class FactionDisbandCommand extends FactionValidCommand
 
         if (!disbanding.containsKey(sender.getUniqueId()))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.disband.confirm");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.disband.confirm", true, false);
             disbanding.put(sender.getUniqueId(), System.currentTimeMillis());
         }
         else
         {
             disbanding.remove(sender.getUniqueId());
             FactionHandler.deleteFaction(faction);
-            Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("factions.disband.broadcast",
+            Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("factions.disband.broadcast", true, false,
                     "{faction}", faction.getName()));
         }
     }

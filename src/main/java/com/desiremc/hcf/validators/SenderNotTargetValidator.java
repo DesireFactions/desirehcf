@@ -12,7 +12,7 @@ public class SenderNotTargetValidator extends FactionValidator<FSession>
     {
         if (sender == arg)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender.getSession(), "cant_to_self");
+            DesireCore.getLangHandler().sendRenderMessage(sender.getSession(), "cant_to_self", true, false);
             return false;
         }
         return true;

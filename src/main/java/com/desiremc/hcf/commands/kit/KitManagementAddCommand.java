@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.kit;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -11,6 +9,8 @@ import com.desiremc.core.validators.ItemInHandValidator;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parsers.KitParser;
 import com.desiremc.hcf.session.HKit;
+
+import java.util.List;
 
 public class KitManagementAddCommand extends ValidCommand
 {
@@ -34,7 +34,7 @@ public class KitManagementAddCommand extends ValidCommand
         kit.addItem(sender.getPlayer().getItemInHand());
         kit.save();
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.add_item",
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.add_item", true, false,
                 "{kit}", kit.getName());
     }
 

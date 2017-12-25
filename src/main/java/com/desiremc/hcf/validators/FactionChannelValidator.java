@@ -12,7 +12,7 @@ public class FactionChannelValidator extends FactionValidator<FactionChannel>
     {
         if (arg == null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.chat.invalid_channel");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.chat.invalid_channel", true, false);
             return false;
         }
 

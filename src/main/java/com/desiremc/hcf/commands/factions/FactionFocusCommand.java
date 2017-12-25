@@ -41,7 +41,7 @@ public class FactionFocusCommand extends FactionValidCommand
 
         for (FSession session : sender.getFaction().getOnlineMembers())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(session.getPlayer(), "factions.focus", "{player}", target.getName());
+            DesireHCF.getLangHandler().sendRenderMessage(session.getPlayer(), "factions.focus", true, false, "{player}", target.getName());
 
             ((CraftPlayer) session.getPlayer()).getHandle().playerConnection.sendPacket(new PacketPlayOutNamedEntitySpawn(entityPlayer));
         }

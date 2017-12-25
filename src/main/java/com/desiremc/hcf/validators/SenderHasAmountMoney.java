@@ -11,7 +11,7 @@ public class SenderHasAmountMoney extends FactionValidator<Integer>
     {
         if (sender.getBalance() < arg)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_money");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_money", true, false);
             return false;
         }
         return true;

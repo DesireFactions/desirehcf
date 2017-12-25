@@ -18,7 +18,7 @@ public class KitParser implements Parser<HKit>
 
         if (kit == null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.not_found");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.not_found", true, false);
             return null;
         }
 

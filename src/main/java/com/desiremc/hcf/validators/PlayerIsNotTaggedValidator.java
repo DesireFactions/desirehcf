@@ -16,7 +16,7 @@ public class PlayerIsNotTaggedValidator implements SenderValidator
 
         if (TagHandler.getTag(p.getUniqueId()) != null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getPlayer(), "tagged");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getPlayer(), "tagged", true, false);
             return false;
         }
         return true;

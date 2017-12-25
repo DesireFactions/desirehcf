@@ -31,7 +31,7 @@ public class RegionDeleteCommand extends ValidCommand
         Region region = (Region) arguments.get(0).getValue();
         RegionHandler.getInstance().delete(region);
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.delete", "{name}", region.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.delete", true, false, "{name}", region.getName());
     }
 
 }

@@ -49,7 +49,7 @@ public class FactionPromoteCommand extends FactionValidCommand
 
         target.save();
 
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.promote.valid", "{player}", sender.getName(), "{target}", target.getName(),
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.promote.valid", true, false, "{player}", sender.getName(), "{target}", target.getName(),
                 "{rank}", StringUtils.capitalize(rank.name().replace("_", " ").toLowerCase())));
     }
 }

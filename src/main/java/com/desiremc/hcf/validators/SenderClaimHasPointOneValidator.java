@@ -22,7 +22,7 @@ public class SenderClaimHasPointOneValidator extends FactionSenderValidator
         }
         else if (!sender.getClaimSession().hasPointOne())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.claims.need_point_one");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.claims.need_point_one", true, false);
             return false;
         }
         return true;

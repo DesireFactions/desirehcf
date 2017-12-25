@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.lives;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.session.Rank;
@@ -9,6 +7,8 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.parsers.FSessionParser;
 import com.desiremc.hcf.session.FSession;
+
+import java.util.List;
 
 public class LivesCheckCommand extends FactionValidCommand
 {
@@ -30,13 +30,13 @@ public class LivesCheckCommand extends FactionValidCommand
     {
         if (!args.get(0).hasValue())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(fSession.getSender(), "lives.check.self",
+            DesireHCF.getLangHandler().sendRenderMessage(fSession.getSender(), "lives.check.self", true, false,
                     "{lives}", fSession.getLives());
         }
         else
         {
             FSession target = (FSession) args.get(0).getValue();
-            DesireHCF.getLangHandler().sendRenderMessage(fSession.getSender(), "lives.check.others",
+            DesireHCF.getLangHandler().sendRenderMessage(fSession.getSender(), "lives.check.others", true, false,
                     "{lives}", target.getLives(),
                     "{target}", target.getName());
         }

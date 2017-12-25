@@ -14,7 +14,7 @@ public class SenderCanPromoteTargetValidator extends FactionValidator<FSession>
 
         if (sender.getFactionRank().ordinal() <= next.ordinal())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.promote.invalid");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.promote.invalid", true, false);
             return false;
         }
 

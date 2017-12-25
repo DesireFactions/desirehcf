@@ -22,11 +22,11 @@ public class CobbleCommand extends ValidCommand
     {
         if (PickupListener.toggleCobble(sender.getUniqueId()))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "cobble.disable");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "cobble.disable", true, false);
         }
         else
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "cobble.enable");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "cobble.enable", true, false);
         }
     }
 

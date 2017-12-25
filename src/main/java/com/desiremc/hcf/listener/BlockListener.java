@@ -1,10 +1,11 @@
 package com.desiremc.hcf.listener;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
-
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.FSessionHandler;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -15,12 +16,10 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.utils.ChatUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.FSessionHandler;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 public class BlockListener implements Listener
 {
@@ -71,7 +70,7 @@ public class BlockListener implements Listener
         {
             if (session.getSetting(SessionSetting.FINDORE))
             {
-                DesireHCF.getLangHandler().sendRenderMessage(session, "findore.notification",
+                DesireHCF.getLangHandler().sendRenderMessage(session, "findore.notification", true, false,
                         "{player}", p.getName(),
                         "{count}", vein.size(),
                         "{ore}", type.name().replaceAll("_", " "));

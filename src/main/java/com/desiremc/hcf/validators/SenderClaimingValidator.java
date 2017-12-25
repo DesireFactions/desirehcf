@@ -12,7 +12,7 @@ public class SenderClaimingValidator extends FactionSenderValidator
     {
         if (!sender.hasClaimSession())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.claims.not_claiming");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.claims.not_claiming", true, false);
             return false;
         }
 

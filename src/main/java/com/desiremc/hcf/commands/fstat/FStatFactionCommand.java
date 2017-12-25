@@ -30,13 +30,13 @@ public class FStatFactionCommand extends FactionValidCommand
     {
         Faction faction = (Faction) arguments.get(0).getValue();
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "trophy_points",
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "trophy_points", true, false,
                 "{points}", faction.getTrophies());
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "koth_wins",
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "koth_wins", true, false,
                 "{koth_wins}", faction.getKothWins());
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "faction",
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "faction", true, false,
                 "{faction}", faction.getName());
     }
 

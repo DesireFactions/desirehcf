@@ -1,10 +1,16 @@
 package com.desiremc.hcf.listener.classes;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.listener.MovementListener;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
+import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.v1_7_R4.entity.CraftPlayer;
@@ -18,18 +24,10 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.util.Vector;
 
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.cache.Cache;
-import com.desiremc.core.utils.cache.RemovalListener;
-import com.desiremc.core.utils.cache.RemovalNotification;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.listener.MovementListener;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
-
-import net.minecraft.server.v1_7_R4.PacketPlayOutEntityEquipment;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class RogueListener implements DesireClass
 {
@@ -54,7 +52,7 @@ public class RogueListener implements DesireClass
                 Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    DesireHCF.getLangHandler().sendString(p, "classes.rogue.uninvis-over");
+                    DesireHCF.getLangHandler().sendRenderMessage(p, "classes.rogue.uninvis-over", true, false);
                 }
             }
         }, DesireHCF.getInstance());
@@ -112,7 +110,7 @@ public class RogueListener implements DesireClass
         if (FactionsUtils.getEnemiesInRange(p, DesireHCF.getConfigHandler().getInteger("classes.rogue" + ".uninvis-range")).size() > 0)
         {
             invisCooldown.put(p.getUniqueId(), System.currentTimeMillis());
-            DesireHCF.getLangHandler().sendString(p, "classes.rogue.shown");
+            DesireHCF.getLangHandler().sendRenderMessage(p, "classes.rogue.shown", true, false);
             p.removePotionEffect(PotionEffectType.INVISIBILITY);
         }
     }
@@ -215,7 +213,7 @@ public class RogueListener implements DesireClass
 
         if (invisCooldown.get(player.getUniqueId()) != null)
         {
-            DesireHCF.getLangHandler().sendString(player, "classes.rogue.on-cooldown");
+            DesireHCF.getLangHandler().sendRenderMessage(player, "classes.rogue.on-cooldown", true, false);
             return;
         }
 

@@ -40,11 +40,11 @@ public class FactionDeinviteCommand extends FactionValidCommand
         faction.removeInvite(target);
         faction.save();
 
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.invite.remove", "{player}", sender.getName(), "{target}", target.getName()));
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.invite.remove", true, false, "{player}", sender.getName(), "{target}", target.getName()));
 
         if (target.isOnline())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(target.getSender(), "factions.invite.remove_target", "{faction}", faction.getName());
+            DesireHCF.getLangHandler().sendRenderMessage(target.getSender(), "factions.invite.remove_target", true, false, "{faction}", faction.getName());
         }
     }
 }

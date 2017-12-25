@@ -18,7 +18,7 @@ public class PlayerHasSafeTimeLeft implements SenderValidator
 
         if (session.getSafeTimeLeft() <= 0)
         {
-            DesireHCF.getLangHandler().sendString(p, "pvp.already-disabled");
+            DesireHCF.getLangHandler().sendRenderMessage(p, "pvp.already-disabled", true, false);
             return false;
         }
 

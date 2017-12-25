@@ -37,14 +37,14 @@ public class FactionChatCommand extends FactionValidCommand
             FactionChannel channel = FactionChannel.getNext(sender.getChannel());
             sender.setChannel(channel);
 
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.chat.switch", "{channel}", StringUtils.capitalize(channel.name().toLowerCase()));
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.chat.switch", true, false, "{channel}", StringUtils.capitalize(channel.name().toLowerCase()));
         }
         else
         {
             FactionChannel channel = (FactionChannel) arguments.get(0).getValue();
             sender.setChannel(channel);
 
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.chat.switch", "{channel}", StringUtils.capitalize(channel.name().toLowerCase()));
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.chat.switch", true, false, "{channel}", StringUtils.capitalize(channel.name().toLowerCase()));
         }
     }
 }

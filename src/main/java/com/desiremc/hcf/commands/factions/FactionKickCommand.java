@@ -48,7 +48,7 @@ public class FactionKickCommand extends FactionValidCommand
         faction.save();
         target.save();
 
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.kick.all", "{player}", sender.getName(), "{target}", target.getName()));
-        DesireHCF.getLangHandler().sendRenderMessage(target.getSender(), "factions.kick.target", "{faction}", faction.getName(), "{player}", sender.getName());
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.kick.all", true, false, "{player}", sender.getName(), "{target}", target.getName()));
+        DesireHCF.getLangHandler().sendRenderMessage(target.getSender(), "factions.kick.target", true, false, "{faction}", faction.getName(), "{player}", sender.getName());
     }
 }

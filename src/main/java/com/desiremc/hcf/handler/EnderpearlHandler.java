@@ -40,7 +40,7 @@ public class EnderpearlHandler implements Listener
                     {
                         return;
                     }
-                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("enderpearl.scoreboard"));
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false));
                 }
             }
         }, DesireHCF.getInstance());
@@ -85,7 +85,7 @@ public class EnderpearlHandler implements Listener
                 Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("enderpearl.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
+                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
                 }
                 else
                 {

@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.kit;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -14,6 +12,8 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HKit;
 import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.validators.UnusedKitNameValidator;
+
+import java.util.List;
 
 public class KitManagementCreateCommand extends ValidCommand
 {
@@ -56,7 +56,7 @@ public class KitManagementCreateCommand extends ValidCommand
             kit = HKitHandler.createKit(name, cooldown, (Rank) args.get(2).getValue());
         }
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.created",
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.created", true, false,
                 "{kit}", kit.getName());
     }
 

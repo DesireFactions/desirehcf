@@ -28,19 +28,19 @@ public class StartOfTheWorldCommand extends ValidCommand
     {
         if (SOTWHandler.getSOTW())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "sotw.already");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "sotw.already", true, false);
             return;
         }
 
         if (counter.contains(sender.getUniqueId()))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "sotw.confirmed");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "sotw.confirmed", true, false);
             SOTWHandler.getInstance().startSOTWTimer();
             counter.remove(sender.getUniqueId());
         }
         else
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "sotw.first");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "sotw.first", true, false);
             counter.add(sender.getUniqueId());
         }
     }

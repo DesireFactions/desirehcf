@@ -1,8 +1,11 @@
 package com.desiremc.hcf.handler;
 
-import java.util.Arrays;
-import java.util.List;
-
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.util.FactionsUtils;
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -18,19 +21,11 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import com.desiremc.core.api.FileHandler;
-import com.desiremc.core.api.LangHandler;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.faction.Faction;
-import com.desiremc.hcf.util.FactionsUtils;
+import java.util.Arrays;
+import java.util.List;
 
 public class CrowbarHandler implements Listener
 {
-    private static LangHandler lang = DesireHCF.getLangHandler();
-    private static FileHandler config = DesireHCF.getConfigHandler();
 
     @EventHandler
     public void onInteract(PlayerInteractEvent e)
@@ -51,7 +46,7 @@ public class CrowbarHandler implements Listener
             if (!(block.getType() == Material.MOB_SPAWNER || block.getType() == Material.ENDER_PORTAL_FRAME))
             {
                 e.setCancelled(true);
-                lang.sendString(player, "crowbar.wrong_block");
+                DesireHCF.getLangHandler().sendRenderMessage(player, "crowbar.wrong_block", true, false);
                 return;
             }
 
@@ -61,7 +56,7 @@ public class CrowbarHandler implements Listener
             if (target != source && !target.isWilderness())
             {
                 e.setCancelled(true);
-                lang.sendString(player, "crowbar.not_yours");
+                DesireHCF.getLangHandler().sendRenderMessage(player, "crowbar.not_yours", true, false);
                 return;
             }
 
@@ -70,22 +65,22 @@ public class CrowbarHandler implements Listener
 
             if (block.getType() == Material.MOB_SPAWNER)
             {
-                cost = config.getInteger("crowbar.spawner.cost");
+                cost = DesireHCF.getConfigHandler().getInteger("crowbar.spawner.cost");
                 if (uses < cost)
                 {
                     e.setCancelled(true);
-                    lang.sendString(player, "crowbar.not_enough_charges");
+                    DesireHCF.getLangHandler().sendRenderMessage(player, "crowbar.not_enough_charges", true, false);
                     return;
                 }
                 world.dropItemNaturally(block.getLocation(), getSpawner(((CreatureSpawner) block.getState()).getSpawnedType()));
             }
             else
             {
-                cost = config.getInteger("crowbar.frame.cost");
+                cost = DesireHCF.getConfigHandler().getInteger("crowbar.frame.cost");
                 if (uses < cost)
                 {
                     e.setCancelled(true);
-                    lang.sendString(player, "crowbar.not_enough_charges");
+                    DesireHCF.getLangHandler().sendRenderMessage(player, "crowbar.not_enough_charges", true, false);
                     return;
                 }
                 world.dropItemNaturally(block.getLocation(), new ItemStack(Material.ENDER_PORTAL_FRAME));
@@ -99,7 +94,7 @@ public class CrowbarHandler implements Listener
             {
                 player.setItemInHand(new ItemStack(Material.AIR));
                 player.playSound(player.getLocation(), Sound.ANVIL_BREAK, 1L, 1L);
-                lang.sendString(player, "crowbar.out_of_uses");
+                DesireHCF.getLangHandler().sendRenderMessage(player, "crowbar.out_of_uses", true, false);
             }
 
             Session s = SessionHandler.getSession(player);
@@ -132,10 +127,10 @@ public class CrowbarHandler implements Listener
                 && is.getType() == Material.GOLD_HOE
                 && is.hasItemMeta()
                 && is.getItemMeta().hasDisplayName()
-                && is.getItemMeta().getDisplayName().equals(lang.renderMessageNoPrefix("crowbar.name"))
+                && is.getItemMeta().getDisplayName().equals(DesireHCF.getLangHandler().renderMessage("crowbar.name", false, false))
                 && is.getItemMeta().hasLore()
                 && is.getItemMeta().getLore().size() >= 1
-                && is.getItemMeta().getLore().get(0).startsWith(lang.renderMessageNoPrefix("crowbar.prefix"));
+                && is.getItemMeta().getLore().get(0).startsWith(DesireHCF.getLangHandler().renderMessage("crowbar.prefix", false, false));
     }
 
     public static ItemStack getNewCrowbar()
@@ -154,12 +149,13 @@ public class CrowbarHandler implements Listener
 
     private static List<String> getStartingUses()
     {
-        return Arrays.asList(lang.renderMessageNoPrefix("crowbar.prefix") + DesireHCF.getConfigHandler().getInteger("crowbar.uses"));
+        return Arrays.asList(DesireHCF.getLangHandler().renderMessage("crowbar.prefix", false, false)
+                + DesireHCF.getConfigHandler().getInteger("crowbar.uses"));
     }
 
     private static String getCrowbarName()
     {
-        return lang.renderMessageNoPrefix("crowbar.name");
+        return DesireHCF.getLangHandler().renderMessage("crowbar.name", false, false);
     }
 
     public static int getUses(ItemStack is)
@@ -168,7 +164,7 @@ public class CrowbarHandler implements Listener
         {
             return -1;
         }
-        return Integer.parseInt(is.getItemMeta().getLore().get(0).replace(lang.renderMessageNoPrefix("crowbar.prefix"), ""));
+        return Integer.parseInt(is.getItemMeta().getLore().get(0).replace(DesireHCF.getLangHandler().renderMessage("crowbar.prefix", false, false), ""));
     }
 
     public static ItemStack adjustUses(ItemStack is, int change)
@@ -181,7 +177,7 @@ public class CrowbarHandler implements Listener
                 throw new IllegalStateException("Can't have negative uses.");
             }
             List<String> lore = is.getItemMeta().getLore();
-            lore.set(0, lang.renderMessageNoPrefix("crowbar.prefix") + uses);
+            lore.set(0, DesireHCF.getLangHandler().renderMessage("crowbar.prefix", false, false) + uses);
 
             ItemMeta meta = is.getItemMeta();
             meta.setLore(lore);
@@ -194,21 +190,21 @@ public class CrowbarHandler implements Listener
     {
         ItemStack item = new ItemStack(Material.MOB_SPAWNER);
         ItemMeta meta = item.getItemMeta();
-        meta.setDisplayName(lang.renderMessageNoPrefix("crowbar.spawner") + type.toString());
+        meta.setDisplayName(DesireHCF.getLangHandler().renderMessage("crowbar.spawner", false, false) + type.toString());
         item.setItemMeta(meta);
         return item;
     }
 
     public static boolean isSpawner(ItemStack is)
     {
-        return is.getType() == Material.MOB_SPAWNER && is.hasItemMeta() && is.getItemMeta().hasDisplayName() && is.getItemMeta().getDisplayName().startsWith(lang.renderMessageNoPrefix("crowbar.spawner"));
+        return is.getType() == Material.MOB_SPAWNER && is.hasItemMeta() && is.getItemMeta().hasDisplayName() && is.getItemMeta().getDisplayName().startsWith(DesireHCF.getLangHandler().renderMessage("crowbar.spawner", false, false));
     }
 
     @SuppressWarnings("deprecation")
     public static EntityType getSpawnerType(ItemStack is)
     {
         String name = is.getItemMeta().getDisplayName();
-        name = name.replace(lang.renderMessageNoPrefix("crowbar.spawner"), "");
+        name = name.replace(DesireHCF.getLangHandler().renderMessage("crowbar.spawner", false, false), "");
         return EntityType.fromName(name);
     }
 

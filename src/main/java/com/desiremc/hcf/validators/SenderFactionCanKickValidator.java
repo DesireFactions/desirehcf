@@ -11,7 +11,7 @@ public class SenderFactionCanKickValidator extends FactionValidator<FSession>
     {
         if (sender.getFactionRank().ordinal() <= arg.getFactionRank().ordinal())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.kick.invalid");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.kick.invalid", true, false);
             return false;
         }
         return true;

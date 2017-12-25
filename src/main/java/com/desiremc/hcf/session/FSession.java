@@ -779,7 +779,7 @@ public class FSession
      */
     public void sendFactionLocationMessage(Faction factionTo)
     {
-        DesireHCF.getLangHandler().sendRenderMessage(getSender(), "factions.moved_location",
+        DesireHCF.getLangHandler().sendRenderMessage(getSender(), "factions.moved_location", true, false,
                 "{fromColor}", getFaction().getRelationshipTo(getLastFactionLocation()).getChatColor(),
                 "{fromName}", getLastFactionLocation().getName(),
                 "{fromType}", getLastFactionLocation().getType().toString(),
@@ -821,7 +821,7 @@ public class FSession
             lastRunTime = System.currentTimeMillis();
             if (safeTimer <= 0)
             {
-                EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().getStringNoPrefix("pvp.scoreboard"));
+                EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", true, false));
                 safeTimer = 0;
             }
             else
@@ -832,7 +832,7 @@ public class FSession
 
         public void setScoreboard()
         {
-            EntryRegistry.getInstance().setValue(getPlayer(), DesireHCF.getLangHandler().getStringNoPrefix("pvp.scoreboard"), getTimeLeftFormatted());
+            EntryRegistry.getInstance().setValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", true, false), getTimeLeftFormatted());
         }
 
         public String getTimeLeftFormatted()

@@ -13,7 +13,7 @@ public class SenderFactionOfficerValidator extends FactionSenderValidator
     {
         if (sender.getFactionRank().ordinal() < FactionRank.OFFICER.ordinal())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.not_officer");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.not_officer", true, false);
             return false;
         }
 

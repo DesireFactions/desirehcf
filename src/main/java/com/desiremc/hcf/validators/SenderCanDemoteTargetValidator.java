@@ -12,13 +12,13 @@ public class SenderCanDemoteTargetValidator extends FactionValidator<FSession>
     {
         if (sender.getFactionRank().ordinal() <= arg.getFactionRank().ordinal())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.demote.invalid");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.demote.invalid", true, false);
             return false;
         }
 
         if (FactionRank.MEMBER.equals(arg.getFactionRank()))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.demote.member", "{target}", arg.getName());
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.demote.member", true, false, "{target}", arg.getName());
             return false;
         }
 

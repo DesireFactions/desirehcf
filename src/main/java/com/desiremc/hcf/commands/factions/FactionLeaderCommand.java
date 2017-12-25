@@ -48,7 +48,7 @@ public class FactionLeaderCommand extends FactionValidCommand
         target.save();
         sender.save();
 
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.new_leader",
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.new_leader", true, false,
                 "{old}", sender.getName(),
                 "{new}", target.getName()));
     }

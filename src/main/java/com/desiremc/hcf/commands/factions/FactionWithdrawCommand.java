@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.factions;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.parsers.IntegerParser;
@@ -12,6 +10,8 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
+
+import java.util.List;
 
 public class FactionWithdrawCommand extends FactionValidCommand
 {
@@ -40,6 +40,6 @@ public class FactionWithdrawCommand extends FactionValidCommand
         faction.save();
         sender.save();
 
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.withdraw", "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.withdraw", true, false, "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
     }
 }

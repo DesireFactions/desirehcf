@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.lives;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.session.Rank;
@@ -11,6 +9,8 @@ import com.desiremc.hcf.parsers.FSessionParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.validators.PlayerHasDeathbanValidator;
 import com.desiremc.hcf.validators.PlayerHasLivesValidator;
+
+import java.util.List;
 
 public class LivesUseCommand extends FactionValidCommand
 {
@@ -37,7 +37,7 @@ public class LivesUseCommand extends FactionValidCommand
         sender.takeLives(1);
         sender.save();
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "lives.use", "{target}", target.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "lives.use", true, false, "{target}", target.getName());
     }
 
 }

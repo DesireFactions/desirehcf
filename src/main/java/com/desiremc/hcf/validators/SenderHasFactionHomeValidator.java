@@ -22,7 +22,7 @@ public class SenderHasFactionHomeValidator extends FactionSenderValidator
         }
         if (sender.getFaction().getHomeLocation() == null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.not_set");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.not_set", true, false);
             return false;
         }
         return true;

@@ -35,7 +35,7 @@ public class FSessionParser implements Parser<FSession>
         // if they were not found, send the error message and return null.
         if (arg == null)
         {
-            DesireCore.getLangHandler().sendRenderMessage(sender, "player-not-found");
+            DesireCore.getLangHandler().sendRenderMessage(sender, "player-not-found", true, false);
             return null;
         }
         

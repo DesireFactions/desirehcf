@@ -36,7 +36,7 @@ public class SenderFactionSizeValidator extends FactionSenderValidator
 
         if (faction.getMemberSize() < size)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.size_too_small",
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.size_too_small", true, false,
                     "{size}", size - 1,
                     "{s}", size - 1 != 1 ? "s" : "");
             return false;

@@ -26,7 +26,7 @@ public class FactionLocationCommand extends FactionValidCommand
         Faction faction = sender.getFaction();
         Location loc = sender.getPlayer().getLocation();
 
-        String message = DesireHCF.getLangHandler().renderMessageNoPrefix("factions.location",
+        String message = DesireHCF.getLangHandler().renderMessage("factions.location", false, false,
                 "{player}", sender.getName(),
                 "{x}", Math.round(loc.getX()),
                 "{y}", Math.round(loc.getY()),

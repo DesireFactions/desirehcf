@@ -17,7 +17,7 @@ public class RegionParser implements Parser<Region>
         Region region = RegionHandler.getRegion(rawArgument);
         if (region == null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "region.not_found");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "region.not_found", true, false);
             return null;
         }
         return region;

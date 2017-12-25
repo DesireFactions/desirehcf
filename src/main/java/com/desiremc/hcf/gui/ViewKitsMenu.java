@@ -1,14 +1,5 @@
 package com.desiremc.hcf.gui;
 
-import java.util.Arrays;
-import java.util.List;
-
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
-
 import com.desiremc.core.gui.Menu;
 import com.desiremc.core.gui.MenuItem;
 import com.desiremc.core.utils.DateUtils;
@@ -18,6 +9,14 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.HKit;
 import com.desiremc.hcf.session.HKitHandler;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class ViewKitsMenu extends Menu
 {
@@ -63,18 +62,18 @@ public class ViewKitsMenu extends Menu
             boolean noPermission = session.getRank().getId() < kit.getId();
             if (noPermission)
             {
-                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.no_permission",
+                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.no_permission", true, false,
                         "{rank}", kit.getRequiredRank().getDisplayName());
             }
             else if (onCooldown)
             {
-                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.has_cooldown",
+                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.has_cooldown", true, false,
                         "{kit}", kit.getName(),
                         "{time}", DateUtils.formatDateDiff(session.getKitCooldown(kit) + System.currentTimeMillis()));
             }
             else
             {
-                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.used_kit",
+                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.used_kit", true, false,
                         "{kit}", kit.getName());
 
                 player.getInventory().addItem(ItemUtils.toArray(kit.getContents()));

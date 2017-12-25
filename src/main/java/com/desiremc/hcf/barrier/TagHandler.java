@@ -40,8 +40,8 @@ public class TagHandler
                     BarrierTask.addToClear(entry.getKey());
                     if (p != null)
                     {
-                        DesireHCF.getLangHandler().sendRenderMessage(p, "tag.expire");
-                        EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessageNoPrefix("tag.scoreboard"));
+                        DesireHCF.getLangHandler().sendRenderMessage(p, "tag.expire", true, false);
+                        EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false));
                     }
                 }
             }

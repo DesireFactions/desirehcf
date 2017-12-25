@@ -36,7 +36,7 @@ public class RegionListCommand extends ValidCommand
             }
         }
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.list",
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.list", true, false,
                 "{regions}", sb.toString());
     }
 

@@ -23,12 +23,12 @@ public class EnderChestCommand extends ValidCommand
         if (EnderchestHandler.getEnderChestStatus())
         {
             EnderchestHandler.setEnderchestStatus(false);
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "enderchest.enabled");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "enderchest.enabled", true, false);
         }
         else
         {
             EnderchestHandler.setEnderchestStatus(true);
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "enderchest.disabled");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "enderchest.disabled", true, false);
         }
     }
 }

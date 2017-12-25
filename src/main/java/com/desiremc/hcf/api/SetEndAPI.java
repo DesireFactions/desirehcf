@@ -1,10 +1,9 @@
 package com.desiremc.hcf.api;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.utils.BukkitUtils;
 import com.desiremc.hcf.DesireHCF;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class SetEndAPI
 {
@@ -13,7 +12,7 @@ public class SetEndAPI
     {
         Player player = (Player) sender;
         DesireHCF.getConfigHandler().setString(configName, BukkitUtils.toString(player.getLocation()));
-        DesireHCF.getLangHandler().sendString(sender, messageName);
+        DesireHCF.getLangHandler().sendRenderMessage(sender, messageName, true, false);
     }
 
     public static void setEndSpawn(CommandSender sender, String configName, String messageName)

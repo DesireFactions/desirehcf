@@ -14,7 +14,7 @@ public class PlayerKitRequiredRankValidator implements Validator<HKit>
 
         if (s.getRank().getId() < kit.getRequiredRank().getId())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(s, "kits.no_permission",
+            DesireHCF.getLangHandler().sendRenderMessage(s, "kits.no_permission", true, false,
                     "{rank}", kit.getRequiredRank().getDisplayName());
             return false;
         }

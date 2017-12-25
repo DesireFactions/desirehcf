@@ -29,18 +29,18 @@ public class LogoutCommand extends ValidCommand
 
         if (SafeLogoutTask.hasTask(player))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "logout.cancelled");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "logout.cancelled", true, false);
             SafeLogoutTask.cancel(player);
         }
         else
         {
             if (FactionsUtils.isInSafeZone(player))
             {
-                player.kickPlayer(DesireHCF.getLangHandler().renderMessageNoPrefix("logout.success"));
+                player.kickPlayer(DesireHCF.getLangHandler().renderMessage("logout.success", false, false));
             }
             else
             {
-                DesireHCF.getLangHandler().sendRenderMessage(sender, "logout.started");
+                DesireHCF.getLangHandler().sendRenderMessage(sender, "logout.started", true, false);
                 SafeLogoutTask.run(DesireHCF.getInstance(), player);
             }
         }

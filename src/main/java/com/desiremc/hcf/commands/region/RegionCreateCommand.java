@@ -1,10 +1,5 @@
 package com.desiremc.hcf.commands.region;
 
-import java.util.List;
-
-import org.bukkit.entity.Player;
-import org.bukkit.material.MaterialData;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
@@ -22,6 +17,10 @@ import com.desiremc.hcf.session.RegionBlocks;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.validators.regions.UnusedRegionNameValidator;
 import com.sk89q.worldedit.bukkit.selections.Selection;
+import org.bukkit.entity.Player;
+import org.bukkit.material.MaterialData;
+
+import java.util.List;
 
 public class RegionCreateCommand extends ValidCommand
 {
@@ -61,7 +60,7 @@ public class RegionCreateCommand extends ValidCommand
                 barrierMaterialData,
                 DesireHCF.getConfigHandler().getInteger("barrier.view-distance"));
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.create",
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.create", true, false,
                 "{name}", name,
                 "{material}", ItemNames.lookup(barrierMaterialData));
     }

@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Rank;
@@ -9,6 +7,8 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.validators.PlayerHasSafeTimeLeft;
+
+import java.util.List;
 
 public class PVPCommand extends FactionValidCommand
 {
@@ -25,8 +25,8 @@ public class PVPCommand extends FactionValidCommand
     {
         sender.setSafeTimeLeft(0);
         sender.save();
-        DesireHCF.getLangHandler().sendString(sender.getPlayer(), "pvp.disabled");
-        EntryRegistry.getInstance().removeValue(sender.getPlayer(), DesireHCF.getLangHandler().getStringNoPrefix("pvp.scoreboard"));
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getPlayer(), "pvp.disabled", true, false);
+        EntryRegistry.getInstance().removeValue(sender.getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", true, false));
     }
 
 }

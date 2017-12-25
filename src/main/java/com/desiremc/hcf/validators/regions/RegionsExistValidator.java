@@ -13,7 +13,7 @@ public class RegionsExistValidator implements SenderValidator
     {
         if (RegionHandler.getRegions().size() < 1)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "region.none");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "region.none", true, false);
             return false;
         }
 

@@ -12,7 +12,7 @@ public class PlayerHasDeathbanValidator extends FactionValidator<FSession>
     {
         if (!arg.hasDeathBan())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getPlayer(), "no_deathban");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getPlayer(), "no_deathban", true, false);
             return false;
         }
 

@@ -11,7 +11,7 @@ public class PlayerHasFactionInviteValidator extends FactionValidator<FSession>
     {
         if (!sender.getFaction().getInvites().contains(arg))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.invite.none_target", "{player}", arg.getName());
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.invite.none_target", true, false, "{player}", arg.getName());
             return false;
         }
 

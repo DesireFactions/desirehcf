@@ -1,7 +1,12 @@
 package com.desiremc.hcf.listener.factions;
 
-import java.util.List;
-
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.commands.factions.FactionHomeCommand;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionHandler;
+import com.desiremc.hcf.session.faction.FactionSetting;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,13 +15,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.scheduler.BukkitTask;
 
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.commands.factions.FactionHomeCommand;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-import com.desiremc.hcf.session.faction.Faction;
-import com.desiremc.hcf.session.faction.FactionHandler;
-import com.desiremc.hcf.session.faction.FactionSetting;
+import java.util.List;
 
 public class ConnectionListener implements Listener
 {
@@ -38,7 +37,7 @@ public class ConnectionListener implements Listener
             {
                 if (online != session && online.hasSetting(FactionSetting.CONNECTION_MESSAGES))
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(online.getSession(), "faction.member_connect",
+                    DesireHCF.getLangHandler().sendRenderMessage(online.getSession(), "faction.member_connect", true, false,
                             "{player}", session.getName());
                 }
             }
@@ -80,7 +79,7 @@ public class ConnectionListener implements Listener
         if (FactionHandler.isStuck(session))
         {
             // if they are stuck, let them know that the next time they get on.
-            session.getFaction().addAnnouncement(session, DesireHCF.getLangHandler().renderMessage("factions.stuck.cancelled.quit"));
+            session.getFaction().addAnnouncement(session, DesireHCF.getLangHandler().renderMessage("factions.stuck.cancelled.quit", false, false));
         }
 
         // take their claim wand if they have one
@@ -90,7 +89,7 @@ public class ConnectionListener implements Listener
         BukkitTask task = FactionHomeCommand.getTeleportTask(event.getPlayer().getUniqueId());
         if (task != null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(event.getPlayer(), "factions.home.cancelled");
+            DesireHCF.getLangHandler().sendRenderMessage(event.getPlayer(), "factions.home.cancelled", false, false);
             task.cancel();
         }
 
@@ -107,7 +106,7 @@ public class ConnectionListener implements Listener
             {
                 if (online.hasSetting(FactionSetting.CONNECTION_MESSAGES))
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(online.getSession(), "faction.member_disconnect",
+                    DesireHCF.getLangHandler().sendRenderMessage(online.getSession(), "faction.member_disconnect", true, false,
                             "{player}", session.getName());
                 }
             }

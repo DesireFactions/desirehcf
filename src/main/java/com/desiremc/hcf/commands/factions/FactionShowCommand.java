@@ -31,7 +31,7 @@ public class FactionShowCommand extends FactionValidCommand
     {
         if (!arguments.get(0).hasValue() && !sender.hasFaction())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_faction");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_faction", true, false);
             return;
         }
 

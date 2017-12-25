@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.lives;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.parsers.PositiveIntegerParser;
@@ -11,6 +9,8 @@ import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.parsers.FSessionParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.validators.PlayerHasEnoughLivesValidator;
+
+import java.util.List;
 
 public class LivesSendCommand extends FactionValidCommand
 {
@@ -41,13 +41,13 @@ public class LivesSendCommand extends FactionValidCommand
         sender.save();
         target.save();
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "lives.send",
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "lives.send", true, false,
                 "{amount}", String.valueOf(amount),
                 "{player}", target.getName());
 
         if (target.isOnline())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(target.getSender(), "lives.send_target",
+            DesireHCF.getLangHandler().sendRenderMessage(target.getSender(), "lives.send_target", true, false,
                     "{amount}", String.valueOf(amount),
                     "{player}", sender.getName());
         }

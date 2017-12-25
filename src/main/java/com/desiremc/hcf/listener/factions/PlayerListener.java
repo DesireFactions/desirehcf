@@ -1,21 +1,5 @@
 package com.desiremc.hcf.listener.factions;
 
-import java.util.EnumSet;
-import java.util.Set;
-
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
-
 import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
@@ -36,6 +20,21 @@ import com.desiremc.hcf.validators.SenderClaimingValidator;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 import com.github.davidmoten.rtree.Entry;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.EnumSet;
+import java.util.Set;
 
 /**
  * The listener in charge for ensuring that factions behave the way they are supposed to. It prevents players from going
@@ -58,7 +57,7 @@ public class PlayerListener implements Listener
         BukkitTask task = FactionHomeCommand.getTeleportTask(fSession.getUniqueId());
         if (task != null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(event.getPlayer(), "factions.home.cancelled");
+            DesireHCF.getLangHandler().sendRenderMessage(event.getPlayer(), "factions.home.cancelled", true, false);
             task.cancel();
         }
     }
@@ -178,11 +177,11 @@ public class PlayerListener implements Listener
             {
                 if (entry.geometry().intersects(blockColumn))
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.overlap.other");
+                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.overlap.other", true, false);
                 }
                 else
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_close");
+                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_close", true, false);
                 }
                 return;
             }
@@ -190,11 +189,11 @@ public class PlayerListener implements Listener
             {
                 if (entry.geometry().intersects(blockColumn))
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "faction.claims.overlap.self");
+                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "faction.claims.overlap.self", true, false);
                 }
                 else if (entry.geometry().distance(blockColumn) > 1)
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "faction.claims.must_touch");
+                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "faction.claims.must_touch", true, false);
                 }
                 else
                 {
@@ -219,21 +218,21 @@ public class PlayerListener implements Listener
                 BoundedArea area = GeometryUtils.getBoundedArea(blockColumn, claim.getPointTwo());
                 if (area.getLength() < minSize || area.getWidth() < minSize)
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_small",
+                    DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_small", true, false,
                             "{size}", minSize);
                     return;
                 }
                 claim.setPointOne(blockColumn);
-                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.cost_help",
+                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.cost_help", true, false,
                         "{x}", claim.getLength(),
                         "{z}", claim.getWidth(),
                         "{cost}", StringUtils.formatNumber(claim.getCost(), 2, true));
-                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.confirm_help");
+                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.confirm_help", true, false);
             }
             else
             {
                 claim.setPointOne(blockColumn);
-                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.set.point_one");
+                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.set.point_one", true, false);
             }
         }
         // if they right click a block with the wand
@@ -247,17 +246,17 @@ public class PlayerListener implements Listener
             BoundedArea area = GeometryUtils.getBoundedArea(claim.getPointOne(), blockColumn);
             if (area.getLength() < minSize || area.getWidth() < minSize)
             {
-                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_small",
+                DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.too_small", true, false,
                         "{size}", minSize);
                 return;
             }
 
             claim.setPointTwo(blockColumn);
-            DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.cost_help",
+            DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.cost_help", true, false,
                     "{x}", claim.getLength(),
                     "{z}", claim.getWidth(),
                     "{cost}", StringUtils.formatNumber(claim.getCost(), 2, true));
-            DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.confirm_help");
+            DesireHCF.getLangHandler().sendRenderMessage(session.getSession(), "factions.claims.confirm_help", true, false);
         }
         // if they left click the air while sneaking
         else if (event.getAction() == Action.LEFT_CLICK_AIR && session.getPlayer().isSneaking())
@@ -334,7 +333,7 @@ public class PlayerListener implements Listener
             }
             else
             {
-                DesireHCF.getLangHandler().sendRenderMessage(hcfSession.getSession(), "factions.protection.use_blocks");
+                DesireHCF.getLangHandler().sendRenderMessage(hcfSession.getSession(), "factions.protection.use_blocks", true, false);
                 return false;
             }
         }
@@ -347,7 +346,7 @@ public class PlayerListener implements Listener
             }
             else
             {
-                DesireHCF.getLangHandler().sendRenderMessage(hcfSession.getSession(), "factions.protection.use_chests");
+                DesireHCF.getLangHandler().sendRenderMessage(hcfSession.getSession(), "factions.protection.use_chests", true, false);
                 return false;
             }
         }
@@ -386,7 +385,7 @@ public class PlayerListener implements Listener
         // safezones and warzones behave the same as far as item usage goes.
         if (otherFaction.getType() == FactionType.SAFEZONE || otherFaction.getType() == FactionType.WARZONE)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(hcfSession.getSession(), "factions.protection.use_items");
+            DesireHCF.getLangHandler().sendRenderMessage(hcfSession.getSession(), "factions.protection.use_items", true, false);
             return false;
         }
 
@@ -400,7 +399,7 @@ public class PlayerListener implements Listener
         FactionRelationship rel = otherFaction.getRelationshipTo(hcfSession.getFaction());
         if (!rel.canBuild())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(hcfSession.getSession(), "factions.protection.use_items");
+            DesireHCF.getLangHandler().sendRenderMessage(hcfSession.getSession(), "factions.protection.use_items", true, false);
             return false;
         }
 

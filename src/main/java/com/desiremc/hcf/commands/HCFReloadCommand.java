@@ -21,7 +21,7 @@ public class HCFReloadCommand extends ValidCommand
     {
         DesireHCF.getLangHandler().reload();
         DesireHCF.getConfigHandler().reload();
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "hcfreload");
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "hcfreload", true, false);
     }
 
 }

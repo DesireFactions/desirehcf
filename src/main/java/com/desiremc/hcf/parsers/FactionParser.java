@@ -19,7 +19,7 @@ public class FactionParser implements Parser<Faction>
 
         if (faction == null || faction.isWilderness())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.not_found");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.not_found", true, false);
             return null;
         }
 

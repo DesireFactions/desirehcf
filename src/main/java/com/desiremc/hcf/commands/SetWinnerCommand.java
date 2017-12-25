@@ -37,6 +37,6 @@ public class SetWinnerCommand extends FactionValidCommand
             }
         }
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "set_winner", "{faction}", faction.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "set_winner", true, false, "{faction}", faction.getName());
     }
 }

@@ -1,16 +1,5 @@
 package com.desiremc.hcf.commands.factions;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World.Environment;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitTask;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.hcf.DesireHCF;
@@ -26,6 +15,16 @@ import com.desiremc.hcf.session.faction.FactionRelationship;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.hcf.validators.SenderHasFactionHomeValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World.Environment;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 
 public class FactionHomeCommand extends FactionValidCommand
 {
@@ -87,13 +86,13 @@ public class FactionHomeCommand extends FactionValidCommand
                 if (sender.isOnline())
                 {
                     sender.getPlayer().teleport(sender.getFaction().getHomeLocation());
-                    DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.teleported");
+                    DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.teleported", true, false);
                 }
                 teleporting.remove(sender.getUniqueId());
             }
         }, time * 20));
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.confirm",
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.confirm", true, false,
                 "{time}", time);
     }
 

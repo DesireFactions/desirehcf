@@ -59,7 +59,7 @@ public class KitCommand extends FactionValidCommand
             player.getInventory().addItem(ItemUtils.toArray(kit.getContents()));
             sender.useKit(kit);
 
-            DesireHCF.getLangHandler().sendRenderMessage(player, "kits.used_kit",
+            DesireHCF.getLangHandler().sendRenderMessage(player, "kits.used_kit", true, false,
                     "{kit}", kit.getName());
         }
     }

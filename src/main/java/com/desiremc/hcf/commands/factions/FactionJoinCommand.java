@@ -34,7 +34,7 @@ public class FactionJoinCommand extends FactionValidCommand
     {
         Faction faction = (Faction) arguments.get(0).getValue();
 
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.join.all", "{player}", sender.getName()));
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.join.all", true, false, "{player}", sender.getName()));
 
         faction.removeInvite(sender);
         faction.addMember(sender);
@@ -44,6 +44,6 @@ public class FactionJoinCommand extends FactionValidCommand
         sender.setFactionRank(FactionRank.MEMBER);
         sender.save();
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.join.sender", "{faction}", faction.getName());
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.join.sender", true, false, "{faction}", faction.getName());
     }
 }

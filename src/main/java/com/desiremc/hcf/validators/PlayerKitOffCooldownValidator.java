@@ -19,7 +19,7 @@ public class PlayerKitOffCooldownValidator implements Validator<HKit>
 
         if (session.hasKitCooldown(kit))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.has_cooldown",
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "kits.has_cooldown", true, false,
                     "{kit}", kit.getName(),
                     "{time}", DateUtils.formatDateDiff(System.currentTimeMillis() + cooldown));
             return false;

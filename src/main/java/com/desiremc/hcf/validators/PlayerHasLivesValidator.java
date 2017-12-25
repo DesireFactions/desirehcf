@@ -15,7 +15,7 @@ public class PlayerHasLivesValidator implements SenderValidator
         FSession session = FSessionHandler.getGeneralFSession(sender.getUniqueId());
         if (session.getLives() <= 0 && !session.getRank().isManager())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.no_lives");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.no_lives", true, false);
             return false;
         }
         return true;

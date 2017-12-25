@@ -23,14 +23,14 @@ public class FStatShowCommand extends FactionValidCommand
     public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         Faction faction = sender.getFaction();
-        
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "faction",
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "faction", true, false,
                 "{faction}", faction);
-        
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "trophy_points",
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "trophy_points", true, false,
                 "{points}", Integer.toString(faction.getTrophies()));
-        
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "koth_wins",
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "koth_wins", true, false,
                 "{koth_wins}", Integer.toString(faction.getKothWins()));
     }
 

@@ -12,7 +12,7 @@ public class SenderCanLeaveFactionValidator extends FactionSenderValidator
     {
         if (sender.getFactionRank().equals(FactionRank.LEADER))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.leave.cant");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.leave.cant", true, false);
             return false;
         }
         return true;

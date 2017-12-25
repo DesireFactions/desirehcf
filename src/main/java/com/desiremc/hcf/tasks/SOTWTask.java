@@ -26,7 +26,7 @@ public class SOTWTask extends BukkitRunnable
     {
         for (Player p : Bukkit.getOnlinePlayers())
         {
-            EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("sotw.scoreboard"), DateUtils.formatDateDiff((TIMER * 1000) + start));
+            EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", true, false), DateUtils.formatDateDiff((TIMER * 1000) + start));
         }
 
         if (getRemainingSeconds() <= 0)
@@ -46,11 +46,11 @@ public class SOTWTask extends BukkitRunnable
     public void cancel()
     {
         SOTWHandler.setSOTW(false);
-        Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("sotw.over"));
+        Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("sotw.over", true, false));
 
         for (Player p : Bukkit.getOnlinePlayers())
         {
-            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("sotw.scoreboard"));
+            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", true, false));
         }
     }
 }

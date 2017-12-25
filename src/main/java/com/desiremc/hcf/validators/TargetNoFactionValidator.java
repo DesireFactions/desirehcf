@@ -11,7 +11,7 @@ public class TargetNoFactionValidator extends FactionValidator<FSession>
     {
         if (!arg.getFaction().isWilderness())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.invite.has_faction", "{player}", arg.getName());
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.invite.has_faction", true, false, "{player}", arg.getName());
             return false;
         }
 

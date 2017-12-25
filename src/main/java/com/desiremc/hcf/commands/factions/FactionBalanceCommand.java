@@ -31,12 +31,12 @@ public class FactionBalanceCommand extends FactionValidCommand
     {
         if (!arguments.get(0).hasValue() && !sender.hasFaction())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_faction");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_faction", true, false);
             return;
         }
 
         Faction faction = arguments.get(0).hasValue() ? (Faction) arguments.get(0).getValue() : sender.getFaction();
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.balance", "{faction}", faction.getName(), "{balance}", StringUtils.doubleFormat(faction.getBalance()));
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.balance", true, false, "{faction}", faction.getName(), "{balance}", StringUtils.doubleFormat(faction.getBalance()));
     }
 }

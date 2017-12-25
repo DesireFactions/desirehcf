@@ -59,12 +59,12 @@ public class SafeLogoutTask extends BukkitRunnable
 
         if (hasMoved(player))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.cancelled");
+            DesireHCF.getLangHandler().sendRenderMessage(SessionHandler.getSession(player), "logout.cancelled", true, false);
             cancel();
             return;
         }
 
-        EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().getStringNoPrefix("logout.scoreboard"), String.valueOf((logoutTime - System.currentTimeMillis()) / 1000));
+        EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("logout.scoreboard", false, false), String.valueOf((logoutTime - System.currentTimeMillis()) / 1000));
 
         // Safely logout the player once timer is up
         int remainingSeconds = getRemainingSeconds();
@@ -73,7 +73,7 @@ public class SafeLogoutTask extends BukkitRunnable
             finished = true;
             TagHandler.clearTag(playerId);
 
-            player.kickPlayer(DesireHCF.getLangHandler().renderMessageNoPrefix("logout.success"));
+            player.kickPlayer(DesireHCF.getLangHandler().renderMessage("logout.success", false, false));
             cancel();
             return;
         }
@@ -91,7 +91,7 @@ public class SafeLogoutTask extends BukkitRunnable
         Player p = PlayerUtils.getPlayer(playerId);
         if (p != null)
         {
-            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("logout.scoreboard"));
+            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("logout.scoreboard", false, false));
         }
     }
 

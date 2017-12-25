@@ -49,7 +49,7 @@ public class ArcherListener implements DesireClass
                         Player p = PlayerUtils.getPlayer(entry.getKey());
                         if (p != null)
                         {
-                            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.archer.scoreboard"));
+                            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("classes.archer.scoreboard", false, false));
                         }
                     }
                 }, DesireHCF.getInstance());
@@ -62,7 +62,7 @@ public class ArcherListener implements DesireClass
                 for (UUID uuid : archerHit.keySet())
                 {
                     Player p = Bukkit.getPlayer(uuid);
-                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("classes.archer.scoreboard"), String.valueOf((duration - System.currentTimeMillis()) / 1000));
+                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("classes.archer.scoreboard", false, false), String.valueOf((duration - System.currentTimeMillis()) / 1000));
                 }
             }
         }, 20, 20);

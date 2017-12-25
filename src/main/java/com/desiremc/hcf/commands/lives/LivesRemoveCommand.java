@@ -1,8 +1,6 @@
 
 package com.desiremc.hcf.commands.lives;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -12,6 +10,8 @@ import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parsers.FSessionParser;
 import com.desiremc.hcf.session.FSession;
+
+import java.util.List;
 
 public class LivesRemoveCommand extends ValidCommand
 {
@@ -40,7 +40,7 @@ public class LivesRemoveCommand extends ValidCommand
         target.takeLives(amount);
         target.save();
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.remove",
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.remove", true, false,
                 "{amount}", String.valueOf(amount),
                 "{player}", target.getName());
     }

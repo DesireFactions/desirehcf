@@ -13,7 +13,7 @@ public class SenderFactionLeaderValidator extends FactionSenderValidator
     {
         if (sender.getFactionRank() != FactionRank.LEADER)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.not_leader");
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.not_leader", true, false);
             return false;
         }
 

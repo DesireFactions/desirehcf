@@ -38,8 +38,8 @@ public class GappleHandler implements Listener
                 Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    DesireHCF.getLangHandler().sendString(p, "gapple.ended");
-                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getStringNoPrefix("gapple.scoreboard"));
+                    DesireHCF.getLangHandler().sendRenderMessage(p, "gapple.ended", true, false);
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", true, false));
                 }
             }
         }, DesireHCF.getInstance());
@@ -54,7 +54,7 @@ public class GappleHandler implements Listener
                     Player p = PlayerUtils.getPlayer(uuid);
                     if (p != null)
                     {
-                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getStringNoPrefix("gapple.scoreboard"), String.valueOf(TIMER - ((System.currentTimeMillis() - history.get(uuid)) / 1000)));
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", true, false), String.valueOf(TIMER - ((System.currentTimeMillis() - history.get(uuid)) / 1000)));
                     }
                 }
             }
@@ -92,7 +92,8 @@ public class GappleHandler implements Listener
         else
         {
             event.setCancelled(true);
-            DesireHCF.getLangHandler().sendRenderMessage(player, "gapple.message", "{time}", String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
+            DesireHCF.getLangHandler().sendRenderMessage(player, "gapple.message", true, false, "{time}",
+                    String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
         }
     }
 }

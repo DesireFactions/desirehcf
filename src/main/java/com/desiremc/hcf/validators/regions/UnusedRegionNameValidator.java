@@ -16,7 +16,7 @@ public class UnusedRegionNameValidator implements Validator<String>
 
         if (region != null)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "region.used_name");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "region.used_name", true, false);
             return false;
         }
 

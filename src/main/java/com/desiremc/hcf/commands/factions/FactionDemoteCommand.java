@@ -49,7 +49,7 @@ public class FactionDemoteCommand extends FactionValidCommand
 
         target.save();
 
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.demote.valid", "{player}", sender.getName(), "{target}", target.getName(),
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.demote.valid", true, false, "{player}", sender.getName(), "{target}", target.getName(),
                 "{rank}", StringUtils.capitalize(rank.name().replace("_", " ").toLowerCase())));
     }
 }

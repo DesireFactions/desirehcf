@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.region.modify;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -12,6 +10,8 @@ import com.desiremc.core.validators.NumberSizeValidator;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parsers.RegionParser;
 import com.desiremc.hcf.session.Region;
+
+import java.util.List;
 
 public class RegionModifyDistanceCommand extends ValidCommand
 {
@@ -43,7 +43,7 @@ public class RegionModifyDistanceCommand extends ValidCommand
         region.setViewDistance(distance);
         region.save();
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.change",
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.change", true, false,
                 "{change}", "distance",
                 "{region}", region.getName(),
                 "{old}", oldDistance,

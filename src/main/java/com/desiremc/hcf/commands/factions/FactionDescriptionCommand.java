@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands.factions;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.parsers.StringParser;
@@ -12,6 +10,8 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
+
+import java.util.List;
 
 public class FactionDescriptionCommand extends FactionValidCommand
 {
@@ -38,7 +38,7 @@ public class FactionDescriptionCommand extends FactionValidCommand
         String description = (String) arguments.get(0).getValue();
         
         faction.setDescription(description);
-        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.description", 
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.description", true, false,
                 "{description}", description);
         
     }

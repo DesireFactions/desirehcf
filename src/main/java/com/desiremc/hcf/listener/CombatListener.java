@@ -1,23 +1,5 @@
 package com.desiremc.hcf.listener;
 
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.commands.spawn.SpawnCommand;
 import com.desiremc.core.fanciful.FancyMessage;
@@ -40,6 +22,23 @@ import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCRegistry;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.util.UUID;
 
 public class CombatListener implements Listener
 {
@@ -107,7 +106,7 @@ public class CombatListener implements Listener
         if (SOTWHandler.getSOTW())
         {
             e.setCancelled(true);
-            DesireHCF.getLangHandler().sendRenderMessage(damager, "sotw.pvp");
+            DesireHCF.getLangHandler().sendRenderMessage(damager, "sotw.pvp", true, false);
             return;
         }
 
@@ -128,13 +127,13 @@ public class CombatListener implements Listener
                 {
                     if (region.getRegionBlocks().isWithin(damager.getLocation()))
                     {
-                        DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.damager_safe");
+                        DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.damager_safe", true, false);
                         state = 1;
                         break;
                     }
                     else if (region.getRegionBlocks().isWithin(victim.getLocation()))
                     {
-                        DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.victim_zone");
+                        DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.victim_zone", true, false);
                         state = 2;
                         break;
                     }
@@ -151,14 +150,14 @@ public class CombatListener implements Listener
                 if (ds.getSafeTimeLeft() > 0)
                 {
                     e.setCancelled(true);
-                    DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.damager_protected");
+                    DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.damager_protected", true, false);
                     return;
                 }
 
                 if (vs.getSafeTimeLeft() > 0)
                 {
                     e.setCancelled(true);
-                    DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.target_protected");
+                    DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.target_protected", true, false);
                 }
             }
         }

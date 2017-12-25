@@ -12,7 +12,7 @@ public class SenderHasFactionInviteValidator extends FactionValidator<Faction>
     {
         if (!arg.getInvites().contains(sender))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.invite.none", "{faction}", arg.getName());
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.invite.none", true, false, "{faction}", arg.getName());
             return false;
         }
         return true;

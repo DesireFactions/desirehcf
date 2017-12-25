@@ -1,18 +1,17 @@
 package com.desiremc.hcf.gui;
 
-import java.util.Map.Entry;
-
+import com.desiremc.core.gui.Menu;
+import com.desiremc.core.gui.MenuItem;
+import com.desiremc.core.utils.ItemNames;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.HKit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.material.MaterialData;
 
-import com.desiremc.core.gui.Menu;
-import com.desiremc.core.gui.MenuItem;
-import com.desiremc.core.utils.ItemNames;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.HKit;
+import java.util.Map.Entry;
 
 public class EditKitMenu extends Menu
 {
@@ -45,7 +44,7 @@ public class EditKitMenu extends Menu
             public void onClick(Player player)
             {
                 state = EditState.DELETEING;
-                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.delete_mode");
+                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.delete_mode", true, false);
             }
         }, 39);
         addMenuItem(new MenuItem("§aSwap Items", new MaterialData(Material.WOOL, (byte) 5), 1, (short) 5)
@@ -55,7 +54,7 @@ public class EditKitMenu extends Menu
             public void onClick(Player player)
             {
                 state = EditState.SWAPPING;
-                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.swap_mode",
+                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.swap_mode", true, false,
                         "{state}", "first");
             }
         }, 41);
@@ -71,7 +70,7 @@ public class EditKitMenu extends Menu
                     {
                         kit.removeItem(item.getKey());
                         state = null;
-                        DesireHCF.getLangHandler().sendRenderMessage(player, "kits.delete_item",
+                        DesireHCF.getLangHandler().sendRenderMessage(player, "kits.delete_item", true, false,
                                 "{item}", ChatColor.stripColor(ItemNames.lookup(getItemStack())));
                     }
                     else if (state == EditState.SWAPPING)
@@ -80,11 +79,11 @@ public class EditKitMenu extends Menu
                         {
                             if (swapItem == getSlot())
                             {
-                                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.different_swap");
+                                DesireHCF.getLangHandler().sendRenderMessage(player, "kits.different_swap", true, false);
                                 return;
                             }
                             kit.swapItemOrder(getSlot(), swapItem);
-                            DesireHCF.getLangHandler().sendRenderMessage(player, "kits.swap_item",
+                            DesireHCF.getLangHandler().sendRenderMessage(player, "kits.swap_item", true, false,
                                     "{item1}", ChatColor.stripColor(ItemNames.lookup(items[swapItem].getItemStack())),
                                     "{item2}", ChatColor.stripColor(ItemNames.lookup(getItemStack())));
                             swapItem = -1;
@@ -93,7 +92,7 @@ public class EditKitMenu extends Menu
                         else
                         {
                             swapItem = getSlot();
-                            DesireHCF.getLangHandler().sendRenderMessage(player, "kits.swap_mode",
+                            DesireHCF.getLangHandler().sendRenderMessage(player, "kits.swap_mode", true, false,
                                     "{state}", "second");
                         }
                     }

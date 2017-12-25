@@ -14,7 +14,7 @@ public class PlayerHasEnoughLivesValidator implements Validator<Integer>
         FSession session = FSessionHandler.getGeneralFSession(sender.getUniqueId());
         if (session.getLives() < arg && !session.getRank().isManager())
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.not_enough");
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.not_enough", true, false);
             return false;
         }
         return true;
