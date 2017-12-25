@@ -126,7 +126,7 @@ public class ClaimSession implements Runnable
     /**
      * Sets this claim session as deleted.
      */
-    public void setDeleted()
+    public void delete()
     {
         this.deleted = true;
     }
@@ -201,13 +201,15 @@ public class ClaimSession implements Runnable
             {
                 if (block.getType() == Material.AIR)
                 {
-                    fSession.getPlayer().sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
+                    if (fSession.isOnline())
+                    {
+                        fSession.getPlayer().sendBlockChange(block.getLocation(), Material.AIR, (byte) 0);
+                    }
                 }
             }
             return;
         }
 
-        System.out.println(toClear.size());
         for (Block block : toClear)
         {
             if (fSession.isOnline())

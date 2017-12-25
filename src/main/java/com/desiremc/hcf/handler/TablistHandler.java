@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.SessionSetting;
@@ -27,7 +28,7 @@ import com.desiremc.hcf.util.FactionsUtils;
 public class TablistHandler implements Listener
 {
 
-    private HashMap<UUID, Set<Player>> classicTabs;
+    private HashMap<UUID, Set<Player>> classicTabs = new HashMap<>();
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onJoin(PlayerJoinEvent event)
@@ -36,8 +37,9 @@ public class TablistHandler implements Listener
         for (Session session : SessionHandler.getOnlineSessions())
         {
             TabList tabList;
-            if (event.getPlayer() == session.getPlayer())
+            if (event.getPlayer().getUniqueId().equals(session.getUniqueId()))
             {
+                System.out.println("Created tablist");
                 tabList = TabAPI.createTabListForPlayer(joiner);
                 FSession fSession = FSessionHandler.getOnlineFSession(joiner.getUniqueId());
                 if (session.getSetting(SessionSetting.CLASSICTAB))
@@ -60,17 +62,17 @@ public class TablistHandler implements Listener
 
                     tabList.setSlot(5, 0, "§b§lLocation:");
                     tabList.setSlot(6, 0, FactionHandler.getFaction(event.getPlayer().getLocation()).getName());
-                    tabList.setSlot(7, 0, "§8(§7" + joiner.getLocation().getBlockX() + "§8," + joiner.getLocation().getBlockZ() + "§8)");
+                    tabList.setSlot(7, 0, "§8(§7" + joiner.getLocation().getBlockX() + "§8,§7" + joiner.getLocation().getBlockZ() + "§8)");
 
                     tabList.setSlot(1, 2, "§b§lEnd Portals:");
                     tabList.setSlot(2, 2, "§7(1000,1000)");
                     tabList.setSlot(3, 2, "In each quadrant");
 
                     tabList.setSlot(5, 2, "§b§lWorld Border:");
-                    tabList.setSlot(6, 2, "§7±3000");
+                    tabList.setSlot(6, 2, "§7+-3000");
 
-                    tabList.setSlot(5, 2, "§b§lPlayers Online:");
-                    tabList.setSlot(6, 2, "§7" + Bukkit.getOnlinePlayers().size());
+                    tabList.setSlot(8, 2, "§b§lPlayers Online:");
+                    tabList.setSlot(9, 2, "§7" + Bukkit.getOnlinePlayers().size());
                 }
             }
             else if (session.getSetting(SessionSetting.CLASSICTAB))
@@ -118,8 +120,28 @@ public class TablistHandler implements Listener
                 tabList.setSlot(i, "");
                 players.remove(leaver);
             }
+            else
+            {
+                tabList = TabAPI.getPlayerTabList(session.getPlayer());
+                tabList.setSlot(6, 2, "§7" + Bukkit.getOnlinePlayers().size());
+            }
         }
         TabAPI.removePlayer(event.getPlayer());
+    }
+
+    @EventHandler(priority = EventPriority.MONITOR)
+    public void onBlockMove(PlayerBlockMoveEvent event)
+    {
+        TabList tabList = TabAPI.getPlayerTabList(event.getPlayer());
+        FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
+        tabList.setSlot(6, 0, fSession.getLastFactionLocation().getName());
+        tabList.setSlot(7, 0, "§8(§7" + event.getTo().getBlockX() + "§8,§7" + event.getFrom().getBlockZ() + "§8)");
+    }
+
+    public static void updateKills(FSession fSession)
+    {
+        TabList tabList = TabAPI.getPlayerTabList(fSession.getPlayer());
+        tabList.setSlot(2, 0, "§bKills: §c" + fSession.getTotalKills());
     }
 
 }
