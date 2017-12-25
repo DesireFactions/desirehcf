@@ -40,6 +40,6 @@ public class FactionDepositCommand extends FactionValidCommand
         faction.save();
         sender.save();
 
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.deposit", true, "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.deposit", true, false, "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
     }
 }

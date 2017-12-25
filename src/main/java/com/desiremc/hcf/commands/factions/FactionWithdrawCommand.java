@@ -40,6 +40,6 @@ public class FactionWithdrawCommand extends FactionValidCommand
         faction.save();
         sender.save();
 
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.withdraw", true, "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
+        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.withdraw", true, false, "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
     }
 }

@@ -33,7 +33,7 @@ public class FactionAnnounceCommand extends FactionValidCommand
     public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         Faction faction = sender.getFaction();
-        String message = DesireHCF.getLangHandler().renderMessage("factions.announce", false,
+        String message = DesireHCF.getLangHandler().renderMessage("factions.announce", false, false,
                 "{faction}", faction.getName(),
                 "{message}", arguments.get(0),
                 "{sender}", sender.getName());

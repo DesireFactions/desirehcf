@@ -48,7 +48,7 @@ public class CombatLoggerHandler implements Listener
                     Player p = PlayerUtils.getPlayer(uuid);
                     if (p != null)
                     {
-                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", true),
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", true, false),
                                 String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
                     }
                 }
