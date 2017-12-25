@@ -821,7 +821,7 @@ public class FSession
             lastRunTime = System.currentTimeMillis();
             if (safeTimer <= 0)
             {
-                EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", true, false));
+                EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", true));
                 safeTimer = 0;
             }
             else
@@ -832,7 +832,7 @@ public class FSession
 
         public void setScoreboard()
         {
-            EntryRegistry.getInstance().setValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", true, false), getTimeLeftFormatted());
+            EntryRegistry.getInstance().setValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", true), getTimeLeftFormatted());
         }
 
         public String getTimeLeftFormatted()
