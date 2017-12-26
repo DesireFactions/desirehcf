@@ -1,6 +1,7 @@
 package com.desiremc.hcf.session;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.Messageable;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.DeathBan;
@@ -41,7 +42,7 @@ import java.util.Map;
 import java.util.UUID;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
-public class FSession
+public class FSession implements Messageable
 {
 
     @Transient
