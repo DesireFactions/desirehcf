@@ -1,18 +1,5 @@
 package com.desiremc.hcf.handler;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.session.Session;
@@ -24,6 +11,18 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.UUID;
 
 public class TablistHandler implements Listener
 {
@@ -134,7 +133,7 @@ public class TablistHandler implements Listener
     {
         TabList tabList = TabAPI.getPlayerTabList(event.getPlayer());
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
-        tabList.setSlot(6, 0, fSession.getLastFactionLocation().getName());
+        tabList.setSlot(6, 0, fSession.getLastFactionLocation().getName() != null ? fSession.getLastFactionLocation().getName() : "Wilderness");
         tabList.setSlot(7, 0, "§8(§7" + event.getTo().getBlockX() + "§8,§7" + event.getFrom().getBlockZ() + "§8)");
     }
 
