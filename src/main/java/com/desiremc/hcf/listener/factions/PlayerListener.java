@@ -46,7 +46,7 @@ import com.github.davidmoten.rtree.Entry;
 public class PlayerListener implements Listener
 {
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockMove(PlayerBlockMoveEvent event)
     {
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
