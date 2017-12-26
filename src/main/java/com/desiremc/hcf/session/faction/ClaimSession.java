@@ -116,6 +116,14 @@ public class ClaimSession implements Runnable
     }
 
     /**
+     * @return the area for this claim session.
+     */
+    public BoundedArea getBoundedArea()
+    {
+        return boundedArea;
+    }
+
+    /**
      * @return {@code true} if the claim session has been terminated.
      */
     public boolean isDeleted()
