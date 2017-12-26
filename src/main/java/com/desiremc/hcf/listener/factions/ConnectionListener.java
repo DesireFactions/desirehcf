@@ -73,17 +73,17 @@ public class ConnectionListener implements Listener
     public void onQuit(PlayerQuitEvent event)
     {
         // grab their session
-        FSession session = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
+        FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
 
         // check if the quitting player is stuck
-        if (FactionHandler.isStuck(session))
+        if (FactionHandler.isStuck(fSession))
         {
             // if they are stuck, let them know that the next time they get on.
-            session.getFaction().addAnnouncement(session, DesireHCF.getLangHandler().renderMessage("factions.stuck.cancelled.quit", false, false));
+            fSession.getFaction().addAnnouncement(fSession, DesireHCF.getLangHandler().renderMessage("factions.stuck.cancelled.quit", false, false));
         }
 
         // take their claim wand if they have one
-        FactionHandler.takeClaimWand(event.getPlayer());
+        fSession.clearClaimSession();
 
         // cancel the home task if they have one
         BukkitTask task = FactionHomeCommand.getTeleportTask(event.getPlayer().getUniqueId());
@@ -94,9 +94,9 @@ public class ConnectionListener implements Listener
         }
 
         // if they are in a faction, do some clean up
-        if (session.hasFaction())
+        if (fSession.hasFaction())
         {
-            Faction faction = session.getFaction();
+            Faction faction = fSession.getFaction();
 
             // set the last time a player logged off
             faction.setLastLogOff(System.currentTimeMillis());
@@ -107,7 +107,7 @@ public class ConnectionListener implements Listener
                 if (online.hasSetting(FactionSetting.CONNECTION_MESSAGES))
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(online.getSession(), "faction.member_disconnect", true, false,
-                            "{player}", session.getName());
+                            "{player}", fSession.getName());
                 }
             }
         }
