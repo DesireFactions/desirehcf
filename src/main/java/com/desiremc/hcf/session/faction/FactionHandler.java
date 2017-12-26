@@ -216,26 +216,13 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             }
         });
 
-        Entry<Faction, BoundedArea> query;
         try
         {
-            query = claims.search(blockColumn).toBlocking().toFuture().get();
+            return claims.search(blockColumn).toBlocking().toFuture().get().value();
         }
         catch (InterruptedException | ExecutionException ex)
         {
-            System.out.println("exception wilderness");
-            ex.printStackTrace();
             return wilderness;
-        }
-        if (query == null)
-        {
-            System.out.println("query wilderness");
-            return wilderness;
-        }
-        else
-        {
-            System.out.println("query value");
-            return query.value();
         }
     }
 
