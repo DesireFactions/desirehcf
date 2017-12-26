@@ -134,7 +134,11 @@ public class TablistHandler implements Listener
     {
         TabList tabList = TabAPI.getPlayerTabList(event.getPlayer());
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
-        tabList.setSlot(6, 0, fSession.getLastFactionLocation() != null ? fSession.getLastFactionLocation().getName() : "Wilderness");
+        if (fSession.getLastFactionLocation() == null)
+        {
+            fSession.setLastLocation(FactionsUtils.getFaction(event.getTo()));
+        }
+        tabList.setSlot(6, 0, fSession.getLastFactionLocation().getName());
         tabList.setSlot(7, 0, "§8(§7" + event.getTo().getBlockX() + "§8,§7" + event.getFrom().getBlockZ() + "§8)");
     }
 

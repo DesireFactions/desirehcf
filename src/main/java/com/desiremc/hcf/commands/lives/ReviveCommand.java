@@ -18,7 +18,7 @@ public class ReviveCommand extends ValidCommand
 
     public ReviveCommand()
     {
-        super("revive", "Revive a player before their ban.", Rank.HELPER, false, new String[] {"target", "reason"});
+        super("revive", "Revive a player before their ban.", Rank.HELPER, new String[] { "target", "reason" });
 
         addArgument(CommandArgumentBuilder.createBuilder(FSession.class)
                 .setName("target")
