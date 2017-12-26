@@ -250,7 +250,7 @@ public class PlayerListener implements Listener
             }
             if (faction.getBalance() < claim.getCost())
             {
-                DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.too_poor", true, false);
+                DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.too_poor", true, false);
                 return;
             }
             if (!checkPoint(claim.getPointOne(), faction, fSession) || !checkPoint(claim.getPointTwo(), faction, fSession))
