@@ -1,7 +1,4 @@
 hcfreload: '&7Reloaded the lang files.'
-prefix:
-  text: '&b&lDesire &8»'
-  use: true
 tag:
   active: '&7You are now &fcombat tagged &7and can not enter spawn.'
   expire: '&7You are no longer &fcombat tagged&7.'
