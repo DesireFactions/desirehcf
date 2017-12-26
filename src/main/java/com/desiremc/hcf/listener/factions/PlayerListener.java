@@ -1,5 +1,21 @@
 package com.desiremc.hcf.listener.factions;
 
+import java.util.EnumSet;
+import java.util.Set;
+
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerBucketEmptyEvent;
+import org.bukkit.event.player.PlayerBucketFillEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitTask;
+
 import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
@@ -20,21 +36,6 @@ import com.desiremc.hcf.validators.SenderClaimingValidator;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 import com.github.davidmoten.rtree.Entry;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerBucketEmptyEvent;
-import org.bukkit.event.player.PlayerBucketFillEvent;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.EnumSet;
-import java.util.Set;
 
 /**
  * The listener in charge for ensuring that factions behave the way they are supposed to. It prevents players from going
@@ -45,7 +46,7 @@ import java.util.Set;
 public class PlayerListener implements Listener
 {
 
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockMove(PlayerBlockMoveEvent event)
     {
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
@@ -171,41 +172,7 @@ public class PlayerListener implements Listener
         Block block = event.getClickedBlock();
         BlockColumn blockColumn = new BlockColumn(block);
 
-        // all nearby claims
-        Iterable<Entry<Faction, BoundedArea>> nearby = FactionHandler.getNearbyFactions(blockColumn, DesireHCF.getConfigHandler().getInteger("factions.claims.buffer"));
-        boolean valid = faction.getClaims().size() == 0;
-        for (Entry<Faction, BoundedArea> entry : nearby)
-        {
-            if (entry.value() != faction)
-            {
-                if (entry.geometry().intersects(blockColumn))
-                {
-                    DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.claims.overlap.other", true, false);
-                }
-                else
-                {
-                    DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.claims.too_close", true, false);
-                }
-                return;
-            }
-            else
-            {
-                if (entry.geometry().intersects(blockColumn))
-                {
-                    DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "faction.claims.overlap.self", true, false);
-                }
-                else if (entry.geometry().distance(blockColumn) > 1)
-                {
-                    DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "faction.claims.must_touch", true, false);
-                }
-                else
-                {
-                    valid = true;
-                }
-            }
-        }
-
-        if (!valid)
+        if (!checkPoint(blockColumn, faction, fSession))
         {
             return;
         }
@@ -279,9 +246,65 @@ public class PlayerListener implements Listener
                 DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.too_poor", true, false);
                 return;
             }
-            
-        }
+            if (!checkPoint(claim.getPointOne(), faction, fSession) || !checkPoint(claim.getPointTwo(), faction, fSession))
+            {
+                DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.error", true, false);
+                fSession.clearClaimSession();
+                return;
+            }
 
+            faction.addClaim(claim.getBoundedArea());
+
+            fSession.clearClaimSession();
+
+            faction.addAnnouncement(fSession, DesireHCF.getLangHandler().renderMessage("factions.claims.complete", true, false,
+                    "{player}", fSession.getName()));
+
+        }
+        else if (event.getAction() == Action.RIGHT_CLICK_AIR && fSession.getPlayer().isSneaking())
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.cancel", true, false);
+            fSession.clearClaimSession();
+        }
+    }
+
+    private static boolean checkPoint(BlockColumn blockColumn, Faction faction, FSession fSession)
+    {
+        // all nearby claims
+        Iterable<Entry<Faction, BoundedArea>> nearby = FactionHandler.getNearbyFactions(blockColumn, DesireHCF.getConfigHandler().getInteger("factions.claims.buffer"));
+        for (Entry<Faction, BoundedArea> entry : nearby)
+        {
+            if (entry.value() != faction)
+            {
+                if (entry.geometry().intersects(blockColumn))
+                {
+                    DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.overlap.other", true, false);
+                }
+                else
+                {
+                    DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.too_close", true, false);
+                }
+                return false;
+            }
+            else
+            {
+                if (entry.geometry().intersects(blockColumn))
+                {
+                    DesireHCF.getLangHandler().sendRenderMessage(fSession, "faction.claims.overlap.self", true, false);
+                    return false;
+                }
+                else if (entry.geometry().distance(blockColumn) == 1)
+                {
+                    return true;
+                }
+            }
+        }
+        if (faction.getClaims().size() != 0)
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(fSession, "faction.claims.must_touch", true, false);
+            return false;
+        }
+        return true;
     }
 
     private static final Set<Material> redstoneMaterials = EnumSet.of(

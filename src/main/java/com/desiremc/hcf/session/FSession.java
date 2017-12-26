@@ -510,6 +510,7 @@ public class FSession implements Messageable
     {
         if (this.claimSession != null)
         {
+            FactionHandler.takeClaimWand(getPlayer());
             this.claimSession.delete();
             this.claimSession = null;
         }

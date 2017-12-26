@@ -173,6 +173,9 @@ factions:
     too_small: '&7Claim size must be at least &f{size}&7x&f{size}&7.'
     cost_help: '&7Claim size: &f{x}&7x&f{z}&7. &7Claim cost: $&f{cost}'
     confirm_help: '&fCrouch and &fleft click &7with the claim wand to confirm.'
+    error: '&7Someone tampered with your claim area. Claim cancelled.'
+    cancel: '&7Cancelled your claim session.'
+    complete: '&b{player} just claimed for your faction.'
     overlap:
       self: '&7Your &fclaims &7can''t overlap.'
       other: '&7Your &fclaim &7can''t be within another faction''s claim.'

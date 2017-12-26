@@ -511,7 +511,7 @@ public class Faction
      * Adds an announcement for this player to get the next time they get on the server. If they have pending
      * announcements already it will take the new one on to the end of the list.
      *
-     * @param session      the player to receive the announcement.
+     * @param session the player to receive the announcement.
      * @param announcement the announcement.
      */
     public void addAnnouncement(FSession session, String announcement)
@@ -541,6 +541,16 @@ public class Faction
     public void clearAnnouncements(FSession session)
     {
         announcements.remove(session.getUniqueId());
+    }
+
+    /**
+     * Add a new claim to be owned by the faction.
+     * 
+     * @param boundedArea the new bounded area.
+     */
+    public void addClaim(BoundedArea boundedArea)
+    {
+        claims.add(boundedArea);
     }
 
     /**
