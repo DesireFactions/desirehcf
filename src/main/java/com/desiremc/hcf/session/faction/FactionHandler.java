@@ -1,5 +1,25 @@
 package com.desiremc.hcf.session.faction;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.ExecutionException;
+import java.util.function.Predicate;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitTask;
+import org.mongodb.morphia.dao.BasicDAO;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
@@ -10,24 +30,8 @@ import com.desiremc.hcf.session.FSession;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
 import com.google.common.collect.Iterables;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitTask;
-import org.mongodb.morphia.dao.BasicDAO;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.function.Predicate;
+import rx.functions.Action1;
 
 /**
  * Used to manage all the factions and base faction systems such as stuck players and admin bypass mode.
@@ -197,26 +201,41 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     public static Faction getFaction(Location location)
     {
         BlockColumn blockColumn = new BlockColumn(location.getBlockX(), location.getBlockZ(), location.getWorld());
-        for (Entry<Faction, BoundedArea> area : claims.entries().toBlocking().latest())
+        claims.entries().subscribe(new Action1<Entry<Faction, BoundedArea>>()
         {
-            System.out.println(area.value().getName());
-            System.out.println(area.geometry());
-            System.out.println(blockColumn);
-            System.out.println(area.geometry().intersects(blockColumn));
+
+            @Override
+            public void call(Entry<Faction, BoundedArea> area)
+            {
+                System.out.println("=============subsciption values========");
+                System.out.println(area.value().getName());
+                System.out.println(area.geometry());
+                System.out.println(blockColumn);
+                System.out.println(area.geometry().intersects(blockColumn));
+                System.out.println("=======================================");
+            }
+        });
+
+        Entry<Faction, BoundedArea> query;
+        try
+        {
+            query = claims.search(blockColumn).toBlocking().toFuture().get();
         }
-        Iterable<Entry<Faction, BoundedArea>> search = claims.search(blockColumn).toBlocking().latest();
-        int size = Iterables.size(search);
-        if (size == 0)
+        catch (InterruptedException | ExecutionException ex)
         {
+            System.out.println("exception wilderness");
+            ex.printStackTrace();
             return wilderness;
         }
-        else if (size == 1)
+        if (query == null)
         {
-            return search.iterator().next().value();
+            System.out.println("query wilderness");
+            return wilderness;
         }
         else
         {
-            throw new IllegalStateException("Multiple factions at a single point.");
+            System.out.println("query value");
+            return query.value();
         }
     }
 
