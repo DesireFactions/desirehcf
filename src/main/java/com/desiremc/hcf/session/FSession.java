@@ -599,18 +599,7 @@ public class FSession implements Messageable
      */
     public boolean isConsole()
     {
-        if (getSession() != null)
-        {
-            return getSession().isConsole();
-        }
-        else
-        {
-            if (uuid == DesireCore.getConsoleUUID())
-            {
-                return true;
-            }
-        }
-        return false;
+        return getSession().isConsole();
     }
 
     /**
