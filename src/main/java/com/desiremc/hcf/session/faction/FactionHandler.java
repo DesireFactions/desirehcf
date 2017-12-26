@@ -466,6 +466,18 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         return claims.search(blockColumn, range).toBlocking().next();
     }
 
+    /**
+     * Add a new claim to be tracked. This does NOT update the faction itself so be sure that it is added there and
+     * saved to the database as well.
+     * 
+     * @param faction the faction who has the new claim.
+     * @param area the new claim area.
+     */
+    public static void addClaim(Faction faction, BoundedArea area)
+    {
+        claims = claims.add(faction, area);
+    }
+
     private static void check()
     {
         if (instance == null)

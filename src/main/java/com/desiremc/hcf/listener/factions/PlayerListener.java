@@ -233,8 +233,7 @@ public class PlayerListener implements Listener
                 DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.claims.confirm_help", true, false);
             }
         }
-        
-        
+
         // if they left click the air while sneaking
         if (event.getAction() == Action.LEFT_CLICK_AIR && fSession.getPlayer().isSneaking())
         {
@@ -261,6 +260,7 @@ public class PlayerListener implements Listener
             }
 
             faction.addClaim(claim.getBoundedArea());
+            faction.save();
 
             fSession.clearClaimSession();
 
