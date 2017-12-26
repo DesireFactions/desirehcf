@@ -257,7 +257,7 @@ public class PlayerListener implements Listener
 
             fSession.clearClaimSession();
 
-            faction.addAnnouncement(fSession, DesireHCF.getLangHandler().renderMessage("factions.claims.complete", true, false,
+            faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.claims.complete", true, false,
                     "{player}", fSession.getName()));
 
         }
