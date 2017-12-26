@@ -92,12 +92,15 @@ public class PlayerListener implements Listener
         }
 
         // handle boat glitching.
-        if (hcfSession.getPlayer().getItemInHand() != null && hcfSession.getPlayer().getItemInHand().getType() == Material.BOAT)
+        if (hcfSession.getPlayer().getItemInHand() != null)
         {
-            if (!playerCanUseItem(hcfSession, block.getLocation(), Material.BOAT))
+            if (hcfSession.getPlayer().getItemInHand().getType() == Material.BOAT)
             {
-                event.setCancelled(true);
-                return;
+                if (!playerCanUseItem(hcfSession, block.getLocation(), Material.BOAT))
+                {
+                    event.setCancelled(true);
+                    return;
+                }
             }
         }
 

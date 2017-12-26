@@ -101,6 +101,10 @@ public class PotionLimiterHandler implements Listener
     @EventHandler
     public void onDrink(PlayerItemConsumeEvent event)
     {
+        if (event.getItem() == null || !event.getItem().getType().equals(Material.POTION))
+        {
+            return;
+        }
         Potion pot = Potion.fromItemStack(event.getItem());
         if (pot != null)
         {
