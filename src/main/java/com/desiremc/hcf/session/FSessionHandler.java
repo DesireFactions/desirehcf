@@ -56,6 +56,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
             fSession.setSession(SessionHandler.getGeneralSession(fSession.getUniqueId()));
             fSessions.put(fSession.getUniqueId(), fSession);
         }
+        onlineFSessions.put(DesireCore.getConsoleUUID(), console);
     }
 
     /**

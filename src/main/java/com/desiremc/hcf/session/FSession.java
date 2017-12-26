@@ -1,25 +1,13 @@
 package com.desiremc.hcf.session;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.Messageable;
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.DeathBan;
-import com.desiremc.core.session.DeathBanHandler;
-import com.desiremc.core.session.PVPClass;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.Ticker;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.handler.SOTWHandler;
-import com.desiremc.hcf.session.faction.ClaimSession;
-import com.desiremc.hcf.session.faction.Faction;
-import com.desiremc.hcf.session.faction.FactionChannel;
-import com.desiremc.hcf.session.faction.FactionHandler;
-import com.desiremc.hcf.session.faction.FactionRank;
-import com.desiremc.hcf.session.faction.FactionSetting;
-import com.desiremc.hcf.util.FactionsUtils;
+import java.text.DecimalFormat;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
@@ -33,13 +21,27 @@ import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Reference;
 import org.mongodb.morphia.annotations.Transient;
 
-import java.text.DecimalFormat;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.Messageable;
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.DeathBan;
+import com.desiremc.core.session.DeathBanHandler;
+import com.desiremc.core.session.PVPClass;
+import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.Ticker;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.handler.SOTWHandler;
+import com.desiremc.hcf.session.faction.ClaimSession;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionChannel;
+import com.desiremc.hcf.session.faction.FactionHandler;
+import com.desiremc.hcf.session.faction.FactionRank;
+import com.desiremc.hcf.session.faction.FactionSetting;
+import com.desiremc.hcf.util.FactionsUtils;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class FSession implements Messageable
@@ -582,7 +584,32 @@ public class FSession implements Messageable
      */
     public Session getSession()
     {
+        if (session == null)
+        {
+            session = SessionHandler.getGeneralSession(uuid);
+        }
         return session;
+    }
+
+    /**
+     * Convenience method.
+     *
+     * @return if an FSession is console or not.
+     */
+    public boolean isConsole()
+    {
+        if (getSession() != null)
+        {
+            return getSession().isConsole();
+        }
+        else
+        {
+            if (uuid == DesireCore.getConsoleUUID())
+            {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**
@@ -669,7 +696,7 @@ public class FSession implements Messageable
      */
     public Rank getRank()
     {
-        return session.getRank();
+        return getSession().getRank();
     }
 
     /**
@@ -679,7 +706,7 @@ public class FSession implements Messageable
      */
     public Player getPlayer()
     {
-        return session.getPlayer();
+        return getSession().getPlayer();
     }
 
     /**
@@ -689,7 +716,7 @@ public class FSession implements Messageable
      */
     public boolean isOnline()
     {
-        return session.isOnline();
+        return getSession().isOnline();
     }
 
     /**
@@ -699,7 +726,7 @@ public class FSession implements Messageable
      */
     public String getName()
     {
-        return session.getName();
+        return getSession().getName();
     }
 
     /**
@@ -709,7 +736,7 @@ public class FSession implements Messageable
      */
     public int getTokens()
     {
-        return session.getTokens();
+        return getSession().getTokens();
     }
 
     /**
@@ -719,7 +746,7 @@ public class FSession implements Messageable
      */
     public void sendMessage(String message)
     {
-        session.sendMessage(message);
+        getSession().sendMessage(message);
     }
 
     /**
@@ -730,7 +757,7 @@ public class FSession implements Messageable
      */
     public boolean hasAchievement(Achievement achievement)
     {
-        return session.hasAchievement(achievement);
+        return getSession().hasAchievement(achievement);
     }
 
     /**
@@ -741,7 +768,7 @@ public class FSession implements Messageable
      */
     public void awardAchievement(Achievement achievement, boolean inform)
     {
-        session.awardAchievement(achievement, inform);
+        getSession().awardAchievement(achievement, inform);
     }
 
     /**
@@ -762,9 +789,9 @@ public class FSession implements Messageable
      */
     public Location getLocation()
     {
-        if (session.isPlayer() && session.isOnline())
+        if (getSession().isPlayer() && getSession().isOnline())
         {
-            return session.getPlayer().getLocation();
+            return getSession().getPlayer().getLocation();
         }
         else
         {
