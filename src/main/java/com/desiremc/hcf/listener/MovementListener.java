@@ -49,8 +49,8 @@ public class MovementListener implements Listener
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
             }
         }
-        FSession hcfSession = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
-        if (hcfSession.getSafeTimeLeft() > 0)
+        FSession fSession = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
+        if (fSession.getSafeTimeLeft() > 0)
         {
             for (Region region : RegionHandler.getRegions())
             {
@@ -58,11 +58,11 @@ public class MovementListener implements Listener
                 {
                     if (region.getRegionBlocks().isWithin(e.getTo()))
                     {
-                        hcfSession.getSafeTimer().pause();
+                        fSession.getSafeTimer().pause();
                     }
                     else if (region.getRegionBlocks().isWithin(e.getFrom()))
                     {
-                        hcfSession.getSafeTimer().resume();
+                        fSession.getSafeTimer().resume();
                     }
                 }
             }

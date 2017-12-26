@@ -99,20 +99,20 @@ public class FactionsUtils
      */
     public static Faction getFaction(UUID uuid)
     {
-        FSession hcfSession = FSessionHandler.getGeneralFSession(uuid);
+        FSession fSession = FSessionHandler.getGeneralFSession(uuid);
 
-        return hcfSession != null && hcfSession.getFaction() != null ? hcfSession.getFaction() : null;
+        return fSession != null && fSession.getFaction() != null ? fSession.getFaction() : null;
     }
 
     /**
      * Get the faction of the given {@link FSession}.
      * 
-     * @param hcfSession the {@link FSession} to check.
+     * @param fSession the {@link FSession} to check.
      * @return the {@link Faction} if the {@link FSession} has one.
      */
-    public static Faction getFaction(FSession hcfSession)
+    public static Faction getFaction(FSession fSession)
     {
-        return hcfSession.getFaction();
+        return fSession.getFaction();
     }
 
     /**
@@ -268,11 +268,11 @@ public class FactionsUtils
 
         for (Faction ally : faction.getAllies())
         {
-            for (FSession hcfSession : ally.getOnlineMembers())
+            for (FSession fSession : ally.getOnlineMembers())
             {
-                if (hcfSession.getPlayer().getLocation().distanceSquared(player.getLocation()) <= (range * range))
+                if (fSession.getPlayer().getLocation().distanceSquared(player.getLocation()) <= (range * range))
                 {
-                    inRange.add(hcfSession.getPlayer());
+                    inRange.add(fSession.getPlayer());
                 }
             }
         }
@@ -288,7 +288,7 @@ public class FactionsUtils
         return inRange;
     }
 
-    public static Collection<FSession> getOnlineHCFSessions()
+    public static Collection<FSession> getOnlineFSessions()
     {
         LinkedList<FSession> online = new LinkedList<>(FSessionHandler.getFSessions());
 

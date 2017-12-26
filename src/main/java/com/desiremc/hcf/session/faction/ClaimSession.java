@@ -36,19 +36,19 @@ public class ClaimSession implements Runnable
     }
 
     /**
-     * @return the hcfSession
+     * @return the fSession
      */
-    public FSession getHcfSession()
+    public FSession getFSession()
     {
         return fSession;
     }
 
     /**
-     * @param hcfSession the hcfSession to set
+     * @param fSession the fSession to set
      */
-    public void setHcfSession(FSession hcfSession)
+    public void setFSession(FSession fSession)
     {
-        this.fSession = hcfSession;
+        this.fSession = fSession;
     }
 
     /**

@@ -8,9 +8,9 @@ import com.desiremc.hcf.session.faction.Faction;
 public class FactionJoinEvent extends FactionPlayerEvent
 {
 
-    public FactionJoinEvent(Faction faction, FSession hcfSession)
+    public FactionJoinEvent(Faction faction, FSession fSession)
     {
-        super(faction, hcfSession);
+        super(faction, fSession);
     }
 
     private static HandlerList handlerList = new HandlerList();

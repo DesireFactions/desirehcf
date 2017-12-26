@@ -280,13 +280,13 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     /**
      * Creates a new {@link FactionType#PLAYER} faction. This will set the id as well as save it to the database.
      * 
-     * @param hcfSession the player creating the faction.
+     * @param fSession the player creating the faction.
      * @param name the name of the faction.
      * @return the newly created faction.
      */
-    public static Faction createFaction(FSession hcfSession, String name)
+    public static Faction createFaction(FSession fSession, String name)
     {
-        return createFaction(hcfSession, name, FactionType.PLAYER);
+        return createFaction(fSession, name, FactionType.PLAYER);
     }
 
     /**
@@ -320,7 +320,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         return faction;
     }
 
-    // TODO potentially convert these three methods to being stored in the HCFSession instead.
+    // TODO potentially convert these three methods to being stored in the FSession instead.
     /**
      * Returns a view of all the players in admin bypass mode. This view is immutable. Players in this mode are able to
      * interact with the world as if there were no faction claims, so use with great caution. Even if used accidentally,

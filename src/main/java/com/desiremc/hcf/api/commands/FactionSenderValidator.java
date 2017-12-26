@@ -11,9 +11,9 @@ public abstract class FactionSenderValidator implements SenderValidator
     @Override
     public final boolean validate(Session sender)
     {
-        FSession hcfSession = FSessionHandler.getOnlineFSession(sender.getUniqueId());
+        FSession fSession = FSessionHandler.getOnlineFSession(sender.getUniqueId());
         
-        return factionsValidate(hcfSession);
+        return factionsValidate(fSession);
     }
     
     public abstract boolean factionsValidate(FSession sender);

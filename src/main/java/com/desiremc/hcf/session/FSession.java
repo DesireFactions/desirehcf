@@ -178,7 +178,7 @@ public class FSession implements Messageable
      * server. In the future this may be converted to an enum or other more reliable design pattern, so use with
      * caution.
      *
-     * @return the server this HCFSession is for.
+     * @return the server this FSession is for.
      */
     public String getServer()
     {
@@ -506,8 +506,11 @@ public class FSession implements Messageable
      */
     public void clearClaimSession()
     {
-        // TODO clean up their old claim session.
-        claimSession = null;
+        if (this.claimSession != null)
+        {
+            this.claimSession.delete();
+            this.claimSession = null;
+        }
     }
 
     /**
@@ -517,7 +520,10 @@ public class FSession implements Messageable
      */
     public void setClaimSession(ClaimSession claimSession)
     {
-        // TODO clean up their old claim session.
+        if (this.claimSession != null)
+        {
+            this.claimSession.delete();
+        }
         this.claimSession = claimSession;
     }
 
@@ -580,7 +586,7 @@ public class FSession implements Messageable
     }
 
     /**
-     * Set a player's session. This should only be done when the HCFSession is loaded, which why it is protected rather
+     * Set a player's session. This should only be done when the FSession is loaded, which why it is protected rather
      * than public.
      *
      * @param session the corresponding Session.
@@ -768,7 +774,7 @@ public class FSession implements Messageable
 
     // ========================================================
     // | The following methods are all convenience methods    |
-    // | that are things that are done to HCFSessions a lot,  |
+    // | that are things that are done to FSessions a lot,    |
     // | that would be nice to have a standard system for.    |
     // ========================================================
 
@@ -888,7 +894,7 @@ public class FSession implements Messageable
     }
 
     /**
-     * Save this HCFSession asynchronously.
+     * Save this {@link FSession} asynchronously.
      */
     public void save()
     {

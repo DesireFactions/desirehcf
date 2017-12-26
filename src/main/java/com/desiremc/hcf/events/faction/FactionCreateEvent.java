@@ -15,11 +15,11 @@ public class FactionCreateEvent extends FactionPlayerEvent implements Cancellabl
 
     /**
      * @param faction the {@link Faction} involved with the event.
-     * @param hcfSession the {@link FSession} involved with the event.
+     * @param fSession the {@link FSession} involved with the event.
      */
-    public FactionCreateEvent(Faction faction, FSession hcfSession)
+    public FactionCreateEvent(Faction faction, FSession fSession)
     {
-        super(faction, hcfSession);
+        super(faction, fSession);
     }
 
     /**
