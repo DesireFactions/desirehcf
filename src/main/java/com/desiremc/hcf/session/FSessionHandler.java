@@ -18,12 +18,7 @@ import com.desiremc.hcf.listener.ConnectionListener;
 public class FSessionHandler extends BasicDAO<FSession, Integer>
 {
 
-    private static final FSession console;
-
-    static
-    {
-        console = new FSession();
-    }
+    private static FSession console;
 
     private static FSessionHandler instance;
 
@@ -56,7 +51,10 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
             fSession.setSession(SessionHandler.getGeneralSession(fSession.getUniqueId()));
             fSessions.put(fSession.getUniqueId(), fSession);
         }
-        onlineFSessions.put(DesireCore.getConsoleUUID(), console);
+        
+        console = new FSession();
+        console.setUniqueId(DesireCore.getConsoleUUID());
+        console.setSession(SessionHandler.getConsoleSession());
     }
 
     /**
