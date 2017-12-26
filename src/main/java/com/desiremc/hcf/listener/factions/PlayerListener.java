@@ -260,7 +260,10 @@ public class PlayerListener implements Listener
             }
 
             faction.addClaim(claim.getBoundedArea());
+            faction.withdrawBalance(claim.getCost());
             faction.save();
+            
+            FactionHandler.addClaim(faction, claim.getBoundedArea());
 
             fSession.clearClaimSession();
 

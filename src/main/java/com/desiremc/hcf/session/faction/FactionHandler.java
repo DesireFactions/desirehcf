@@ -196,6 +196,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     public static Faction getFaction(Location location)
     {
+        System.out.println(claims.size());
         Iterable<Entry<Faction, BoundedArea>> search = claims.search(new BlockColumn(location.getBlockX(), location.getBlockZ(), location.getWorld())).toBlocking().latest();
         int size = Iterables.size(search);
         if (size == 0)
