@@ -1,5 +1,12 @@
 package com.desiremc.hcf;
 
+import java.io.File;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.plugin.Plugin;
+import org.bukkit.plugin.java.JavaPlugin;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.api.LangHandler;
@@ -58,11 +65,6 @@ import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.sk89q.worldguard.bukkit.WorldGuardPlugin;
-import org.bukkit.Bukkit;
-import org.bukkit.plugin.Plugin;
-import org.bukkit.plugin.java.JavaPlugin;
-
-import java.io.File;
 
 public class DesireHCF extends JavaPlugin
 {
@@ -108,6 +110,15 @@ public class DesireHCF extends JavaPlugin
             }
         }, 600, 600);
     }
+    
+    public void onDisable()
+    {
+        for (Player player : Bukkit.getOnlinePlayers())
+        {
+            FactionHandler.takeClaimWand(player);
+        }
+    }
+    
 
     private void registerListeners()
     {
