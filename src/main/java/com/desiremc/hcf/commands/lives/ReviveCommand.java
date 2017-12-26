@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.lives;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -11,14 +13,12 @@ import com.desiremc.hcf.parsers.FSessionParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.validators.PlayerHasDeathbanValidator;
 
-import java.util.List;
-
 public class ReviveCommand extends ValidCommand
 {
 
     public ReviveCommand()
     {
-        super("revive", "Revive a player before their ban.", Rank.HELPER, true, new String[] { "target", "reason" });
+        super("revive", "Revive a player before their ban.", Rank.HELPER, false, new String[] {"target", "reason"});
 
         addArgument(CommandArgumentBuilder.createBuilder(FSession.class)
                 .setName("target")
