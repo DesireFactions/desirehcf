@@ -54,6 +54,10 @@ public class PlayerListener implements Listener
     public void onBlockMove(PlayerBlockMoveEvent event)
     {
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
+        if (fSession == null)
+        {
+            fSession = FSessionHandler.initializeFSession(event.getPlayer().getUniqueId());
+        }
         Faction factionTo = FactionsUtils.getFaction(event.getTo());
 
         fSession.setLastLocation(factionTo);
@@ -182,7 +186,7 @@ public class PlayerListener implements Listener
 
             Block block = event.getClickedBlock();
             BlockColumn blockColumn = new BlockColumn(block);
-            
+
             int checkStatus = checkPoint(blockColumn, fSession, event.getAction() == Action.LEFT_CLICK_BLOCK ? 1 : 2);
 
             if (checkStatus == 0)
@@ -268,7 +272,7 @@ public class PlayerListener implements Listener
             faction.addClaim(claim.getBoundedArea());
             faction.withdrawBalance(claim.getCost());
             faction.save();
-            
+
             FactionHandler.addClaim(faction, claim.getBoundedArea());
 
             fSession.clearClaimSession();

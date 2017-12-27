@@ -51,7 +51,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
             fSession.setSession(SessionHandler.getGeneralSession(fSession.getUniqueId()));
             fSessions.put(fSession.getUniqueId(), fSession);
         }
-        
+
         console = new FSession();
         console.setUniqueId(DesireCore.getConsoleUUID());
         console.setSession(SessionHandler.getConsoleSession());
@@ -105,7 +105,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
     {
         return Collections.unmodifiableCollection(onlineFSessions.values());
     }
-    
+
     public static FSession getConsoleFSession()
     {
         return console;
@@ -136,7 +136,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         return null;
     }
 
-    public static void initializeFSession(UUID uuid)
+    public static FSession   initializeFSession(UUID uuid)
     {
         FSession fSession = fSessions.get(uuid);
         if (fSession == null)
@@ -151,6 +151,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
             fSession.save();
         }
         onlineFSessions.put(fSession.getUniqueId(), fSession);
+        return fSession;
     }
 
     public static boolean endSession(FSession fSession)
