@@ -1,11 +1,10 @@
 package com.desiremc.hcf.listener;
 
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.session.SessionSetting;
-import com.desiremc.core.utils.ChatUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.FSessionHandler;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
+
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -15,16 +14,17 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.metadata.FixedMetadataValue;
 
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+import com.desiremc.core.utils.ChatUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.FSessionHandler;
 
 public class BlockListener implements Listener
 {
-
-    private static final boolean DEBUG = false;
 
     private final static LinkedList<Material> ALWAYS = new LinkedList<>(Arrays.asList(Material.GOLD_ORE, Material.IRON_ORE));
     private final static LinkedList<Material> NON_SILK = new LinkedList<>(Arrays.asList(Material.EMERALD_ORE, Material.DIAMOND_ORE, Material.COAL_ORE));
@@ -36,19 +36,11 @@ public class BlockListener implements Listener
         {
             return;
         }
-        if (DEBUG)
-        {
-            System.out.println("BlockListener.onOreBreak() fired.");
-        }
         Player p = event.getPlayer();
         Material type = event.getBlock().getType();
 
         if ((ALWAYS.contains(type) || (!p.getItemInHand().containsEnchantment(Enchantment.SILK_TOUCH) && NON_SILK.contains(type))))
         {
-            if (DEBUG)
-            {
-                System.out.println("BlockListener.onOreBreak() processing current ore.");
-            }
             try
             {
                 FSessionHandler.getOnlineFSession(p.getUniqueId()).getCurrentOre().add(type, 1);
@@ -63,11 +55,20 @@ public class BlockListener implements Listener
         {
             return;
         }
+        
+        if (event.getBlock().hasMetadata("Found"))
+        {
+            return;
+        }
+        
+        System.out.println("===========");
+        System.out.println("ores found");
 
         Set<Block> vein = getVein(event.getBlock());
-
-        for (Session session : SessionHandler.getOnlineStaff())
+        System.out.println(vein.size());
+        for (Session session : SessionHandler.getOnlineSessions())
         {
+            System.out.println(session.getName());
             if (session.getSetting(SessionSetting.FINDORE))
             {
                 DesireHCF.getLangHandler().sendRenderMessage(session, "findore.notification", true, false,
@@ -103,6 +104,7 @@ public class BlockListener implements Listener
                     if (!vein.contains(relative) && block.equals(relative) && (i != 0 || j != 0 || k != 0))
                     {
                         vein.add(relative);
+                        relative.setMetadata("Found", new FixedMetadataValue(DesireHCF.getInstance(), ""));
                         getVein(relative, vein);
                     }
                 }
