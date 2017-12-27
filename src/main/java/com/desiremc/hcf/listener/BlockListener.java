@@ -60,6 +60,7 @@ public class BlockListener implements Listener
 
         if (event.getBlock().hasMetadata("Found"))
         {
+            event.getBlock().removeMetadata("Found", DesireHCF.getInstance());
             return;
         }
 
