@@ -60,7 +60,7 @@ public class TablistHandler implements Listener
             else
             {
                 tabList = TabAPI.getPlayerTabList(session.getPlayer());
-                tabList.setSlot(6, 2, "§7" + Bukkit.getOnlinePlayers().size());
+                tabList.setSlot(9, 2, "§7" + Bukkit.getOnlinePlayers().size());
             }
         }
 
@@ -80,7 +80,7 @@ public class TablistHandler implements Listener
             }
             else
             {
-                tabList.setSlot(6, 2, "§7" + Bukkit.getOnlinePlayers().size());
+                tabList.setSlot(9, 2, "§7" + Bukkit.getOnlinePlayers().size());
             }
         }
         TabAPI.removePlayer(event.getPlayer());
