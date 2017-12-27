@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.utils.StringUtils;
@@ -9,14 +11,12 @@ import com.desiremc.hcf.parsers.FactionParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 
-import java.util.List;
-
 public class FactionShowCommand extends FactionValidCommand
 {
 
     public FactionShowCommand()
     {
-        super("show", "Show information about your faction.", true, new String[] {"who", "info"});
+        super("show", "Show information about your faction.", true, new String[] { "who", "info" });
 
         addArgument(CommandArgumentBuilder.createBuilder(Faction.class)
                 .setName("faction")
@@ -74,7 +74,6 @@ public class FactionShowCommand extends FactionValidCommand
                 }
                 if (member.isOnline())
                 {
-                    //FIX ABOVE METHOD - FSESSION & SESSION NOT SYNCING
                     sb.append("§a");
                 }
                 else

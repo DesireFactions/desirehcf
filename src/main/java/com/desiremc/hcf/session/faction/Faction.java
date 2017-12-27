@@ -483,7 +483,7 @@ public class Faction
     {
         if (!isNormal())
         {
-            return null;
+            return FSessionHandler.getConsoleFSession();
         }
         for (FSession member : getMembers())
         {
