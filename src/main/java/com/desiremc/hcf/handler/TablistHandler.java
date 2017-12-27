@@ -107,6 +107,7 @@ public class TablistHandler implements Listener
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
         if (fSession.getLastFactionLocation() == null)
         {
+            System.out.println(0);
             Faction faction = FactionsUtils.getFaction(event.getTo());
             if (faction == null)
             {
@@ -115,6 +116,7 @@ public class TablistHandler implements Listener
                 System.out.println("=========");
             }
             fSession.setLastLocation(FactionsUtils.getFaction(event.getTo()));
+            System.out.println(5 + ": " + faction.getName());
         }
         tabList.setSlot(6, 0, fSession.getLastFactionLocation().getName());
         tabList.setSlot(7, 0, "§8(§7" + event.getTo().getBlockX() + "§8,§7" + event.getFrom().getBlockZ() + "§8)");
