@@ -15,7 +15,7 @@ public class FactionLocationCommand extends FactionValidCommand
 
     public FactionLocationCommand()
     {
-        super("location", "Announce your location to all faction members.", true, new String[] {"coords", "loc"});
+        super("location", "Send your location to faction members.", true, new String[] {"coords", "loc"});
 
         addSenderValidator(new SenderHasFactionValidator());
     }
