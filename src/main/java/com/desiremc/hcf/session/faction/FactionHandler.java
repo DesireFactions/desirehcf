@@ -31,8 +31,6 @@ import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
 import com.google.common.collect.Iterables;
 
-import rx.functions.Action1;
-
 /**
  * Used to manage all the factions and base faction systems such as stuck players and admin bypass mode.
  * 
@@ -191,7 +189,6 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         return factionsById.get(id);
     }
 
-    // TODO we should try to implement a QuadTree or R*-Tree at some point
     /**
      * Get a faction that has claimed the land at the given location.
      * 
@@ -201,20 +198,6 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     public static Faction getFaction(Location location)
     {
         BlockColumn blockColumn = new BlockColumn(location.getBlockX(), location.getBlockZ(), location.getWorld());
-        claims.entries().subscribe(new Action1<Entry<Faction, BoundedArea>>()
-        {
-
-            @Override
-            public void call(Entry<Faction, BoundedArea> area)
-            {
-                System.out.println("=============subsciption values========");
-                System.out.println(area.value().getName());
-                System.out.println(area.geometry());
-                System.out.println(blockColumn);
-                System.out.println(area.geometry().intersects(blockColumn));
-                System.out.println("=======================================");
-            }
-        });
 
         try
         {

@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.session.Rank;
 import com.desiremc.hcf.DesireHCF;
@@ -10,8 +12,6 @@ import com.desiremc.hcf.session.faction.FactionChannel;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.validators.SenderCanLeaveFactionValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
-
-import java.util.List;
 
 public class FactionLeaveCommand extends FactionValidCommand
 {
@@ -29,15 +29,15 @@ public class FactionLeaveCommand extends FactionValidCommand
         Faction faction = sender.getFaction();
 
         faction.removeMember(sender);
+        faction.save();
 
         sender.setFactionRank(null);
         sender.setFaction(FactionHandler.getWilderness());
         sender.setChannel(FactionChannel.GENERAL);
-
         sender.save();
-        faction.save();
 
         faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.leave.all", true, false, "{player}", sender.getName()));
+
         DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.leave.sender", true, false, "{faction}", faction.getName());
     }
 }

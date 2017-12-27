@@ -126,6 +126,7 @@ factions:
   not_member: '&e{target} &7is not in your faction.'
   member: '&e{target} &7is in your faction.'
   size_too_small: '&7Your faction must have more than &e{size}&7 member{s}.'
+  type_not_found: '&7That type does not exist.'
   announce: '&a{faction} &e[&7{sender}&e] &f{message}'
   too_poor: '&7There is not enough money in your faction bank.'
   new_leader: '&e{old}&7 has promoted &e{new}&7 to be the new faction leader.'
@@ -149,6 +150,8 @@ factions:
   disband:
     confirm: '&7Run command again to &fconfirm &7disbanding.'
     broadcast: '&f{faction} &7has been disbanded.'
+  setting:
+    not_found: '&7That setting does not exist.'
   home:
     not_set: '&7Your faction home is not set.'
     set: '&f{player}&7 set faction home to &f{x}&7, &f{y}&7, &f{z}&7.'

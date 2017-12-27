@@ -1,12 +1,12 @@
 package com.desiremc.hcf.parsers;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.faction.FactionSetting;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class FactionSettingParser implements Parser<FactionSetting>
 {
