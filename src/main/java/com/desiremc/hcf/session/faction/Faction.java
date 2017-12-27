@@ -428,9 +428,8 @@ public class Faction
      */
     public void removeAllMembers()
     {
-        checkMembers();
         members.clear();
-        parsedMembers.clear();
+        parsedMembers = null;
     }
 
     // TODO instead store the members that are currently online

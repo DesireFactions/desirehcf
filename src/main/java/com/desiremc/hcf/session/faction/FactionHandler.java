@@ -29,7 +29,6 @@ import com.desiremc.hcf.events.faction.FactionLeaveEvent;
 import com.desiremc.hcf.session.FSession;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
-import com.google.common.collect.Iterables;
 
 /**
  * Used to manage all the factions and base faction systems such as stuck players and admin bypass mode.
@@ -54,7 +53,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     private static HashMap<String, Faction> factionsByName;
     /**
-     * A map of factions referenced by the faction's id;
+     * A map of factions referenced by the faction's id.
      */
     private static HashMap<Integer, Faction> factionsById;
 
@@ -109,15 +108,18 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         // populate the faction map
         factionsByName = new HashMap<>();
         factionsById = new HashMap<>();
-        for (Faction faction : find(createQuery().field("faction_state").equal(FactionState.ACTIVE)))
+        for (Faction faction : find())
         {
-            // add all factions to the faction map.
-            factionsByName.put(faction.getStub(), faction);
-            factionsById.put(faction.getId(), faction);
-
-            for (BoundedArea claim : faction.getClaims())
+            if (faction.getState() == FactionState.ACTIVE)
             {
-                claims = claims.add(faction, claim);
+                // add all factions to the faction map.
+                factionsByName.put(faction.getStub(), faction);
+                factionsById.put(faction.getId(), faction);
+
+                for (BoundedArea claim : faction.getClaims())
+                {
+                    claims = claims.add(faction, claim);
+                }
             }
 
             // set the greatest id value
@@ -217,19 +219,13 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     public static Faction getFaction(BlockColumn blockColumn)
     {
-        Iterable<Entry<Faction, BoundedArea>> search = claims.search(blockColumn).toBlocking().latest();
-        int size = Iterables.size(search);
-        if (size == 0)
+        try
+        {
+            return claims.search(blockColumn).toBlocking().toFuture().get().value();
+        }
+        catch (InterruptedException | ExecutionException ex)
         {
             return wilderness;
-        }
-        else if (size == 1)
-        {
-            return search.iterator().next().value();
-        }
-        else
-        {
-            throw new IllegalStateException("Multiple factions at a single point.");
         }
     }
 
