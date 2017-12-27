@@ -25,6 +25,7 @@ public class FactionJoinCommand extends FactionValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(Faction.class)
                 .setName("faction")
                 .setParser(new FactionParser())
+                .addSenderValidator(new SenderHasNoFactionValidator())
                 .addValidator(new SenderHasFactionInviteValidator())
                 .build());
     }
