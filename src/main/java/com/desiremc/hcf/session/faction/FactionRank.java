@@ -72,4 +72,23 @@ public enum FactionRank
         }
     }
 
+    public String getPrefix()
+    {
+        if (this == FactionRank.OFFICER)
+        {
+            return "☆";
+        }
+        else if (this == FactionRank.COLEADER)
+        {
+            return "☆☆";
+        }
+        else if (this == FactionRank.LEADER)
+        {
+            return "★";
+        }
+        else
+        {
+            return "";
+        }
+    }
 }

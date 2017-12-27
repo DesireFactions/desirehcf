@@ -16,7 +16,7 @@ public class FactionShowCommand extends FactionValidCommand
 
     public FactionShowCommand()
     {
-        super("show", "Show information about your faction.", true, new String[] { "who", "info" });
+        super("show", "Show information about your faction.", true, new String[] {"who", "info"});
 
         addArgument(CommandArgumentBuilder.createBuilder(Faction.class)
                 .setName("faction")
@@ -74,7 +74,9 @@ public class FactionShowCommand extends FactionValidCommand
             {
                 sb.append("§c");
             }
-            sb.append(member.getName() + "§e, ");
+            sb.append(member.getFactionRank().getPrefix());
+            sb.append(member.getName());
+            sb.append("§e, ");
         }
         sb.setLength(sb.length() - 2);
 
