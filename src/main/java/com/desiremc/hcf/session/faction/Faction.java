@@ -1,11 +1,12 @@
 package com.desiremc.hcf.session.faction;
 
-import com.desiremc.core.utils.BoundedArea;
-import com.desiremc.core.utils.BukkitUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-import com.desiremc.hcf.util.FactionsUtils;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.mongodb.morphia.annotations.Entity;
@@ -14,13 +15,12 @@ import org.mongodb.morphia.annotations.IdGetter;
 import org.mongodb.morphia.annotations.Property;
 import org.mongodb.morphia.annotations.Transient;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import com.desiremc.core.utils.BoundedArea;
+import com.desiremc.core.utils.BukkitUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
 
 /**
  * An implementation of a faction for HCF servers.
@@ -385,17 +385,14 @@ public class Faction
     }
 
     /**
-     * Returns all the members of the faction. The list that is returned is a view of the {@link List} created by
-     * {@link Collections#unmodifiableList(List)} so it can't be edited at all. If you need to add or remove a member,
-     * use {@link #addMember(FSession)} or {@link #removeMember(FSession)}
+     * Returns all the members of the faction. This list should not be modified externally.
      *
      * @return all member
      */
-
     public List<FSession> getMembers()
     {
         checkMembers();
-        return Collections.unmodifiableList(parsedMembers);
+        return parsedMembers;
     }
 
     /**
@@ -408,7 +405,6 @@ public class Faction
         checkMembers();
         members.add(fSession.getUniqueId());
         parsedMembers.add(fSession);
-
     }
 
     /**
