@@ -46,6 +46,10 @@ import com.github.davidmoten.rtree.Entry;
 public class PlayerListener implements Listener
 {
 
+    private static final int INVALID = 0;
+    private static final int NOT_BORDER = 1;
+    private static final int BORDER = 2;
+
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onBlockMove(PlayerBlockMoveEvent event)
     {
@@ -178,8 +182,10 @@ public class PlayerListener implements Listener
 
             Block block = event.getClickedBlock();
             BlockColumn blockColumn = new BlockColumn(block);
+            
+            int checkStatus = checkPoint(blockColumn, fSession, event.getAction() == Action.LEFT_CLICK_BLOCK ? 1 : 2);
 
-            if (!checkPoint(blockColumn, faction, fSession))
+            if (checkStatus == 0)
             {
                 return;
             }
@@ -196,7 +202,7 @@ public class PlayerListener implements Listener
                                 "{size}", minSize);
                         return;
                     }
-                    claim.setPointOne(blockColumn);
+                    claim.setPointOne(blockColumn, checkStatus == BORDER);
                     DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.claims.cost_help", true, false,
                             "{x}", claim.getLength(),
                             "{z}", claim.getWidth(),
@@ -205,7 +211,7 @@ public class PlayerListener implements Listener
                 }
                 else
                 {
-                    claim.setPointOne(blockColumn);
+                    claim.setPointOne(blockColumn, checkStatus == BORDER);
                     DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.claims.set.point_one", true, false);
                 }
             }
@@ -225,7 +231,7 @@ public class PlayerListener implements Listener
                     return;
                 }
 
-                claim.setPointTwo(blockColumn);
+                claim.setPointTwo(blockColumn, checkStatus == BORDER);
                 DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.claims.cost_help", true, false,
                         "{x}", claim.getLength(),
                         "{z}", claim.getWidth(),
@@ -252,7 +258,7 @@ public class PlayerListener implements Listener
                 DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.too_poor", true, false);
                 return;
             }
-            if (!checkPoint(claim.getPointOne(), faction, fSession) || !checkPoint(claim.getPointTwo(), faction, fSession))
+            if (checkPoint(claim.getPointOne(), fSession, 1) == 0 || checkPoint(claim.getPointTwo(), fSession, 2) == 0)
             {
                 DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.error", true, false);
                 fSession.clearClaimSession();
@@ -278,9 +284,12 @@ public class PlayerListener implements Listener
         }
     }
 
-    private static boolean checkPoint(BlockColumn blockColumn, Faction faction, FSession fSession)
+    private static int checkPoint(BlockColumn blockColumn, FSession fSession, int point)
     {
         // all nearby claims
+        Faction faction = fSession.getFaction();
+        ClaimSession claimSession = fSession.getClaimSession();
+
         Iterable<Entry<Faction, BoundedArea>> nearby = FactionHandler.getNearbyFactions(blockColumn, DesireHCF.getConfigHandler().getInteger("factions.claims.buffer"));
         for (Entry<Faction, BoundedArea> entry : nearby)
         {
@@ -294,27 +303,31 @@ public class PlayerListener implements Listener
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.too_close", true, false);
                 }
-                return false;
+                return INVALID;
             }
             else
             {
                 if (entry.geometry().intersects(blockColumn))
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(fSession, "faction.claims.overlap.self", true, false);
-                    return false;
+                    return INVALID;
                 }
                 else if (entry.geometry().distance(blockColumn) == 1)
                 {
-                    return true;
+                    return BORDER;
                 }
             }
         }
         if (faction.getClaims().size() != 0)
         {
+            if ((claimSession.pointOneBorders() && point == 2) || (claimSession.pointTwoBorders() && point == 1))
+            {
+                return NOT_BORDER;
+            }
             DesireHCF.getLangHandler().sendRenderMessage(fSession, "faction.claims.must_touch", true, false);
-            return false;
+            return INVALID;
         }
-        return true;
+        return BORDER;
     }
 
     private static final Set<Material> redstoneMaterials = EnumSet.of(

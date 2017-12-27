@@ -1,15 +1,16 @@
 package com.desiremc.hcf.session.faction;
 
-import com.desiremc.core.utils.BlockColumn;
-import com.desiremc.core.utils.BoundedArea;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.FSession;
+import java.util.LinkedList;
+import java.util.List;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 
-import java.util.LinkedList;
-import java.util.List;
+import com.desiremc.core.utils.BlockColumn;
+import com.desiremc.core.utils.BoundedArea;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.FSession;
 
 public class ClaimSession implements Runnable
 {
@@ -25,6 +26,12 @@ public class ClaimSession implements Runnable
     private boolean deleted;
 
     private FSession fSession;
+
+    // 0 = not touching
+    // 1 = point one touches
+    // 2 = point two touches
+    // 3 = both touch
+    private int touchStatus;
 
     /**
      * @param fSession The session to start a ClaimSession for
@@ -62,11 +69,27 @@ public class ClaimSession implements Runnable
     /**
      * @param pointOne the pointOne to set
      */
-    public void setPointOne(BlockColumn pointOne)
+    public void setPointOne(BlockColumn pointOne, boolean touches)
     {
         if (hasPointOne())
         {
             toClear.addAll(this.pointOne.getAllBlocks());
+        }
+        if (touchStatus == 0 && touches)
+        {
+            touchStatus = 1;
+        }
+        else if (touchStatus == 1 && !touches)
+        {
+            touchStatus = 0;
+        }
+        else if (touchStatus == 2 && touches)
+        {
+            touchStatus = 3;
+        }
+        else if (touchStatus == 3 && !touches)
+        {
+            touchStatus = 2;
         }
         this.pointOne = pointOne;
         if (hasPointTwo())
@@ -84,6 +107,14 @@ public class ClaimSession implements Runnable
     }
 
     /**
+     * @return {@code true} if the first point touches one of the faction's claims.
+     */
+    public boolean pointOneBorders()
+    {
+        return hasPointTwo() && (touchStatus == 1 || touchStatus == 3);
+    }
+
+    /**
      * @return the pointTwo
      */
     public BlockColumn getPointTwo()
@@ -94,11 +125,27 @@ public class ClaimSession implements Runnable
     /**
      * @param pointTwo the pointTwo to set
      */
-    public void setPointTwo(BlockColumn pointTwo)
+    public void setPointTwo(BlockColumn pointTwo, boolean touches)
     {
         if (hasPointTwo())
         {
             toClear.addAll(this.pointTwo.getAllBlocks());
+        }
+        if (touchStatus == 0 && touches)
+        {
+            touchStatus = 2;
+        }
+        else if (touchStatus == 1 && touches)
+        {
+            touchStatus = 3;
+        }
+        else if (touchStatus == 2 && !touches)
+        {
+            touchStatus = 0;
+        }
+        else if (touchStatus == 3 && !touches)
+        {
+            touchStatus = 1;
         }
         this.pointTwo = pointTwo;
         if (hasPointOne())
@@ -113,6 +160,14 @@ public class ClaimSession implements Runnable
     public boolean hasPointTwo()
     {
         return pointTwo != null;
+    }
+
+    /**
+     * @return {@code true} if the second point touches one of the faction's claims.
+     */
+    public boolean pointTwoBorders()
+    {
+        return hasPointTwo() && (touchStatus == 2 || touchStatus == 3);
     }
 
     /**
