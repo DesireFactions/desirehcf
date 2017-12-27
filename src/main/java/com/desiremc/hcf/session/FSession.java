@@ -663,16 +663,12 @@ public class FSession implements Messageable
      */
     public void setLastLocation(Faction lastLocation)
     {
-        System.out.println(1);
         if (this.lastLocation != lastLocation)
         {
-            System.out.println(2);
             if (this.lastLocation != null)
             {
-                System.out.println(3);
                 sendFactionLocationMessage(lastLocation);
             }
-            System.out.println(4);
             this.lastLocation = lastLocation;
         }
     }

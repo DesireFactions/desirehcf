@@ -22,6 +22,7 @@ import com.desiremc.core.session.DeathBan;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
@@ -77,7 +78,7 @@ public class ConnectionListener implements Listener
                     (float) config.getDouble("spawn.yaw").doubleValue(),
                     (float) config.getDouble("spawn.pitch").doubleValue());
 
-            player.teleport(loc);
+            Bukkit.getScheduler().runTask(DesireHCF.getInstance(), () -> player.teleport(loc));
             firstJoin.remove(player.getUniqueId());
         }
 
