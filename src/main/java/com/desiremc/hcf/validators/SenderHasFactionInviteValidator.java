@@ -10,7 +10,7 @@ public class SenderHasFactionInviteValidator extends FactionValidator<Faction>
     @Override
     public boolean factionsValidateArgument(FSession sender, String[] label, Faction arg)
     {
-        if (!arg.getInvites().contains(sender))
+        if (!arg.getInvites().contains(sender) && !arg.isNormal())
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.invite.none", true, false, "{faction}", arg.getName());
             return false;

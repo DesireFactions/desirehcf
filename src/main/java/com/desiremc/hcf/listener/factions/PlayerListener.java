@@ -298,12 +298,13 @@ public class PlayerListener implements Listener
                 if (entry.geometry().intersects(blockColumn))
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.overlap.other", true, false);
+                    return INVALID;
                 }
-                else
+                else if (faction.isNormal())
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.too_close", true, false);
+                    return INVALID;
                 }
-                return INVALID;
             }
             else
             {
@@ -320,7 +321,7 @@ public class PlayerListener implements Listener
         }
         if (faction.getClaims().size() != 0)
         {
-            if ((claimSession.pointOneBorders() && point == 2) || (claimSession.pointTwoBorders() && point == 1))
+            if ((claimSession.pointOneBorders() && point == 2) || (claimSession.pointTwoBorders() && point == 1) || !faction.isNormal())
             {
                 return NOT_BORDER;
             }
