@@ -17,6 +17,7 @@ import com.desiremc.core.tablist.TabAPI;
 import com.desiremc.core.tablist.TabList;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 
@@ -106,6 +107,13 @@ public class TablistHandler implements Listener
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
         if (fSession.getLastFactionLocation() == null)
         {
+            Faction faction = FactionsUtils.getFaction(event.getTo());
+            if (faction == null)
+            {
+                System.out.println("=============");
+                System.out.println("FACTION WAS NULL FOR SOME REASON");
+                System.out.println("=========");
+            }
             fSession.setLastLocation(FactionsUtils.getFaction(event.getTo()));
         }
         tabList.setSlot(6, 0, fSession.getLastFactionLocation().getName());
