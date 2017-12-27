@@ -456,7 +456,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     public static Iterable<Entry<Faction, BoundedArea>> getNearbyFactions(BlockColumn blockColumn, int range)
     {
-        return claims.search(blockColumn, range).toBlocking().next();
+        return claims.search(blockColumn, range).toList().toBlocking().first();
     }
 
     /**

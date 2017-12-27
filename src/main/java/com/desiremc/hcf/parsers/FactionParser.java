@@ -17,7 +17,7 @@ public class FactionParser implements Parser<Faction>
     {
         Faction faction = FactionsUtils.getFaction(rawArgument);
 
-        if (faction == null || !faction.isNormal())
+        if (faction == null || (!faction.isNormal() && !sender.getRank().isManager()))
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.not_found", true, false);
             return null;
