@@ -133,6 +133,7 @@ public class FSession implements Messageable
         this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
         this.factionId = FactionHandler.getWilderness().getId();
         this.parsedFaction = FactionHandler.getWilderness();
+        this.balance = DesireHCF.getConfigHandler().getDouble("starting-balance");
     }
 
     public void applyValues(FSession fSession)

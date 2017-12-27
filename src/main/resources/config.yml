@@ -379,3 +379,4 @@ factions:
     length:
       min: 5
       max: 16
+starting-balance: 100
