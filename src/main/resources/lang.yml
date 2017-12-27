@@ -230,6 +230,14 @@ factions:
   chat:
     invalid_channel: '&7You have entered an invalid chat channel.'
     switch: '&7You have switched to &b{channel}&7 chat.'
+  ally:
+    already_allied: '&7Your faction is already allied to &b{faction}&7.'
+    now_allied: '&7Your faction is now allied to &b{faction)&7.'
+    sent: '&7You have sent your ally request to &b{faction}&7.'
+    received: '&b{faction}&7 would like to be allies with you.'
+  neutral:
+    already_neutral: '&7Your faction is already neutral to &b{faction}&7.'
+    sent: '&7You are no longer allies with &b{faction)&7.'
 sotw:
   first: '&7Please run the command again to confirm &bSOTW&7.'
   confirmed: '&7Confirmed. Let &bSOTW &7commence.'

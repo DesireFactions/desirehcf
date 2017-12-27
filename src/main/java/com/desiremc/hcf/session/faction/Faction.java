@@ -76,6 +76,11 @@ public class Faction
     @Transient
     private List<Faction> parsedAllies;
 
+    private List<Integer> outgoingAllies;
+
+    @Transient
+    private List<Faction> parsedOutgoingAllies;
+
     private List<UUID> invites;
 
     @Transient
@@ -665,6 +670,44 @@ public class Faction
     public boolean isAlly(Faction faction)
     {
         return getAllies().contains(faction);
+    }
+
+    /**
+     * @return all outgoing ally requests {@link Faction Factions}.
+     */
+    public List<Faction> getOutgoingAllies()
+    {
+        if (parsedOutgoingAllies == null)
+        {
+            parsedOutgoingAllies = new LinkedList<>();
+            for (Integer id : outgoingAllies)
+            {
+                parsedOutgoingAllies.add(FactionsUtils.getFaction(id));
+            }
+        }
+        return parsedOutgoingAllies;
+    }
+
+    /**
+     * Add a faction as an outgoing ally.
+     *
+     * @param faction the faction to add as an outgoing ally.
+     */
+    public void addOutgoingAlly(Faction faction)
+    {
+        outgoingAllies.add(faction.getId());
+        getOutgoingAllies().add(faction);
+    }
+
+    /**
+     * Remove a faction as an outgoing ally.
+     *
+     * @param faction the faction to remove as an outgoing ally.
+     */
+    public void removeOutgoingAlly(Faction faction)
+    {
+        outgoingAllies.remove(faction.getId());
+        getOutgoingAllies().remove(faction);
     }
 
     /**
