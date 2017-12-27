@@ -23,6 +23,7 @@ import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSessionHandler;
+import com.sun.xml.internal.ws.util.StringUtils;
 
 public class BlockListener implements Listener
 {
@@ -69,10 +70,10 @@ public class BlockListener implements Listener
         {
             if (session.getSetting(SessionSetting.FINDORE))
             {
-                DesireHCF.getLangHandler().sendRenderMessage(session, "findore.notification", true, false,
+                DesireHCF.getLangHandler().sendRenderMessage(session, "findore.notification", false, false,
                         "{player}", p.getName(),
                         "{count}", vein.size(),
-                        "{ore}", type.name().replaceAll("_", " "));
+                        "{ore}", StringUtils.capitalize(type.name().replaceAll("_", " ")));
             }
         }
     }
