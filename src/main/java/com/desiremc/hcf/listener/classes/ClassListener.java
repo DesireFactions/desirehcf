@@ -568,27 +568,30 @@ public class ClassListener implements Listener
 
     private void holdEvent(Player player, ItemStack item)
     {
-        FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
-
-        if (session.getPvpClass() == null || !ClassListener.isClassEvent(session.getPvpClass(), session, item, "hold"))
+        FSession fSession = FSessionHandler.getOnlineFSession(player.getUniqueId());
+        if (fSession == null)
+        {
+            return;
+        }
+        if (fSession.getPvpClass() == null || !ClassListener.isClassEvent(fSession.getPvpClass(), fSession, item, "hold"))
         {
             ClassListener.holders.remove(player.getUniqueId());
             return;
         }
 
         ConfigurationSection section = DesireHCF.getConfigHandler().getConfigurationSection("classes." +
-                session.getPvpClass().name().toLowerCase() + ".effects." + item.getType().name() + ".hold");
+                fSession.getPvpClass().name().toLowerCase() + ".effects." + item.getType().name() + ".hold");
 
         int duration = section.getInt("duration");
         int range = DesireHCF.getConfigHandler().getInteger("classes.bard.range");
 
-        if (PVPClass.ROGUE.equals(session.getPvpClass()) || PVPClass.ARCHER.equals(session.getPvpClass()))
+        if (PVPClass.ROGUE.equals(fSession.getPvpClass()) || PVPClass.ARCHER.equals(fSession.getPvpClass()))
         {
-            ClassListener.applyEffectSelf(player, item.getType(), "hold", session.getPvpClass(), duration);
+            ClassListener.applyEffectSelf(player, item.getType(), "hold", fSession.getPvpClass(), duration);
         }
         else
         {
-            ClassListener.applyEffect(player, item.getType(), "hold", session.getPvpClass(), duration, range,
+            ClassListener.applyEffect(player, item.getType(), "hold", fSession.getPvpClass(), duration, range,
                     section.getBoolean("faction"), section.getBoolean("self"),
                     section.getBoolean("allies"),
                     section.getBoolean("other"));
