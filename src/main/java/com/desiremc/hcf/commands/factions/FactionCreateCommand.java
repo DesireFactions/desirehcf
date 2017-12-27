@@ -54,11 +54,19 @@ public class FactionCreateCommand extends FactionValidCommand
 
         Bukkit.getPluginManager().callEvent(event);
 
-        String broadcast = DesireHCF.getLangHandler().renderMessage("factions.create", true, false,
-                "{player}", sender.getName(),
-                "{faction}", faction.getName());
+        if (faction.isNormal())
+        {
+            Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("factions.create", true, false,
+                    "{player}", sender.getName(),
+                    "{faction}", faction.getName()));
+        }
+        else
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.create_system", true, false,
+                    "{faction}", faction.getName(),
+                    "{type}", type.toString());
+        }
 
-        Bukkit.broadcastMessage(broadcast);
     }
 
 }

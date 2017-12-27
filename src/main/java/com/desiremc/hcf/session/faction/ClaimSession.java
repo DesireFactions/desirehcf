@@ -165,6 +165,10 @@ public class ClaimSession implements Runnable
         {
             return -1;
         }
+        if (!fSession.getFaction().isNormal())
+        {
+            return 0;
+        }
         double claimScale = fSession.getFaction().getClaims().size() * DesireHCF.getConfigHandler().getDouble("factions.claims.cost.existing_scale");
         double blockScale = boundedArea.getWidth() // get the width
                 * boundedArea.getLength() // get the length
