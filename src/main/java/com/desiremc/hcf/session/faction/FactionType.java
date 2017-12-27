@@ -20,9 +20,18 @@ public enum FactionType
     @Override
     public String toString()
     {
-        return StringUtils.capitalize(name().toLowerCase());
+        switch (this)
+        {
+            case SAFEZONE:
+                return "§aNon-Deathban";
+            case PLAYER:
+            case WARZONE:
+            case WILDERNESS:
+            default:
+                return "§cDeathban";
+        }
     }
-    
+
     public static FactionType getFactionType(String raw)
     {
         raw = raw.toLowerCase();

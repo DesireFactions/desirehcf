@@ -803,7 +803,7 @@ public class FSession implements Messageable
      */
     public void sendFactionLocationMessage(Faction factionTo)
     {
-        DesireHCF.getLangHandler().sendRenderMessage(getSender(), "factions.moved_location", true, false,
+        DesireHCF.getLangHandler().sendRenderMessage(getSender(), "factions.moved_location", false, false,
                 "{fromColor}", getFaction().getRelationshipTo(getLastFactionLocation()).getChatColor(),
                 "{fromName}", getLastFactionLocation().getName(),
                 "{fromType}", getLastFactionLocation().getType().toString(),
