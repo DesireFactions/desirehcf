@@ -238,7 +238,7 @@ public class FactionsUtils
             return inRange;
         }
 
-        for (FSession session : FSessionHandler.getFSessions())
+        for (FSession session : FSessionHandler.getOnlineFSessions())
         {
             if (session.getFaction().getRelationshipTo(faction).canAttack())
             {
