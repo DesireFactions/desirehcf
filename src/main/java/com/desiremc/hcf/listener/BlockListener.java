@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
 
+import org.apache.commons.lang.StringUtils;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.enchantments.Enchantment;
@@ -23,7 +24,6 @@ import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSessionHandler;
-import com.sun.xml.internal.ws.util.StringUtils;
 
 public class BlockListener implements Listener
 {
