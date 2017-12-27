@@ -170,7 +170,7 @@ factions:
     not_claiming: '&7Use &f/faction claim &7to start claiming land.'
     claiming: '&7You already have a &fclaim session&7.'
     need_point_one: '&7You must select the &ffirst&7 point first.'
-    need_point_one: '&7You must select the &fsecond&7 point first.'
+    need_point_two: '&7You must select the &fsecond&7 point first.'
     must_touch: '&7Your &ffaction &7claims must touch.'
     too_close: '&7That point is too &fclose &7to another claim.'
     too_small: '&7Claim size must be at least &f{size}&7x&f{size}&7.'
