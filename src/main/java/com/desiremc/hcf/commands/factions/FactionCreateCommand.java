@@ -1,5 +1,9 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.parsers.StringParser;
@@ -14,9 +18,6 @@ import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionType;
 import com.desiremc.hcf.validators.SenderHasNoFactionValidator;
-import org.bukkit.Bukkit;
-
-import java.util.List;
 
 public class FactionCreateCommand extends FactionValidCommand
 {
@@ -53,18 +54,19 @@ public class FactionCreateCommand extends FactionValidCommand
 
         Bukkit.getPluginManager().callEvent(event);
 
-        if (event.isCancelled())
+        if (faction.isNormal())
         {
-            FactionHandler.deleteFaction(faction);
+            Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("factions.create", true, false,
+                    "{player}", sender.getName(),
+                    "{faction}", faction.getName()));
         }
         else
         {
-            String broadcast = DesireHCF.getLangHandler().renderMessage("factions.create", true, false,
-                    "{player}", sender.getName(),
-                    "{faction}", faction.getName());
-
-            Bukkit.broadcastMessage(broadcast);
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.create_system", true, false,
+                    "{faction}", faction.getName(),
+                    "{type}", type.toString());
         }
+
     }
 
 }
