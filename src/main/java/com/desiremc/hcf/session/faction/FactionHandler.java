@@ -157,7 +157,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     public static int getNextId()
     {
-        return lastId++;
+        return ++lastId;
     }
 
     /**
