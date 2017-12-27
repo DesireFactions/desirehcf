@@ -76,7 +76,7 @@ public class BlockListener implements Listener
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void onPlace(BlockPlaceEvent event)
     {
         if (FINDORE.contains(event.getBlockPlaced().getType()))
