@@ -9,7 +9,6 @@ public enum FactionRelationship
 
     ALLY(ChatColor.LIGHT_PURPLE),
     NEUTRAL(ChatColor.YELLOW),
-    ENEMY(ChatColor.RED),
     MEMBER(ChatColor.GREEN);
 
     private ChatColor chatColor;
@@ -28,11 +27,11 @@ public enum FactionRelationship
     }
 
     /**
-     * @return {@code true} if the relationship is {@link #NEUTRAL} or {@link #ENEMY}.
+     * @return {@code true} if the relationship is {@link #NEUTRAL}.
      */
     public boolean canAttack()
     {
-        return this == ENEMY || this == NEUTRAL;
+        return this == NEUTRAL;
     }
     
     public boolean canUseRedstone()

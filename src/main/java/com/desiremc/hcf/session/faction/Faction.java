@@ -71,11 +71,6 @@ public class Faction
     @Property("faction_type")
     private FactionType factionType;
 
-    private List<Integer> enemies;
-
-    @Transient
-    private List<Faction> parsedEnemies;
-
     private List<Integer> allies;
 
     @Transient
@@ -91,7 +86,6 @@ public class Faction
         members = new LinkedList<>();
         announcements = new HashMap<>();
         claims = new LinkedList<>();
-        enemies = new LinkedList<>();
         allies = new LinkedList<>();
         invites = new LinkedList<>();
     }
@@ -625,55 +619,6 @@ public class Faction
     }
 
     /**
-     * @return all enemy {@link Faction Factions}.
-     */
-    public List<Faction> getEnemies()
-    {
-        if (parsedEnemies == null)
-        {
-            parsedEnemies = new LinkedList<>();
-            for (Integer id : enemies)
-            {
-                parsedEnemies.add(FactionsUtils.getFaction(id));
-            }
-        }
-        return parsedEnemies;
-    }
-
-    /**
-     * Add a faction as an enemy.
-     *
-     * @param faction the faction to add as an enemy.
-     */
-    public void addEnemy(Faction faction)
-    {
-        enemies.add(faction.getId());
-        getEnemies().add(faction);
-    }
-
-    /**
-     * Remove a faction as an enemy.
-     *
-     * @param faction the faction to remove as an enemy.
-     */
-    public void removeEnemy(Faction faction)
-    {
-        enemies.remove(faction.getId());
-        getEnemies().remove(faction);
-    }
-
-    /**
-     * Check if the given faction is an enemy.
-     *
-     * @param faction the faction to check.
-     * @return {@code true} if the given faction is an enemy.
-     */
-    public boolean isEnemy(Faction faction)
-    {
-        return getEnemies().contains(faction);
-    }
-
-    /**
      * @return all allied {@link Faction Factions}.
      */
     public List<Faction> getAllies()
@@ -733,10 +678,6 @@ public class Faction
         if (getAllies().contains(faction))
         {
             return FactionRelationship.ALLY;
-        }
-        else if (getEnemies().contains(faction))
-        {
-            return FactionRelationship.ENEMY;
         }
         else if (isWilderness())
         {
