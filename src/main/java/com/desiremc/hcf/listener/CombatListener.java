@@ -1,5 +1,23 @@
 package com.desiremc.hcf.listener;
 
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.entity.Creeper;
+import org.bukkit.entity.EnderPearl;
+import org.bukkit.entity.Enderman;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Projectile;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.commands.spawn.SpawnCommand;
 import com.desiremc.core.fanciful.FancyMessage;
@@ -23,23 +41,6 @@ import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCRegistry;
-import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-
-import java.util.UUID;
 
 public class CombatListener implements Listener
 {
@@ -270,12 +271,12 @@ public class CombatListener implements Listener
                     .tooltip(FactionsUtils.getMouseoverDetails(killer))
                     .color(killer.getRank().getMain())
                     .then("[")
-                    .color(ChatColor.DARK_RED)
+                    .color(ChatColor.WHITE)
                     .then(Integer.toString(killer.getTotalKills()))
                     .tooltip(killer.getKillDisplay())
-                    .color(ChatColor.RED)
+                    .color(ChatColor.WHITE)
                     .then("]")
-                    .color(ChatColor.DARK_RED)
+                    .color(ChatColor.WHITE)
                     .then(" using ")
                     .color(ChatColor.WHITE)
                     .then(ItemNames.lookup(tag.getItem()))
