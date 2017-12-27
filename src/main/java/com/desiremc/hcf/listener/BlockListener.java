@@ -95,14 +95,26 @@ public class BlockListener implements Listener
 
     private void getVein(Block block, Set<Block> vein)
     {
-        for (int i = -1; i < 2; i++)
+        for (int i = -1; i <= 1; i++)
         {
-            for (int j = -1; j < 2; j++)
+            if (i == 0)
             {
-                for (int k = -1; k < 2; k++)
+                continue;
+            }
+            for (int j = -1; j <= 1; j++)
+            {
+                if (j == 0)
                 {
+                    continue;
+                }
+                for (int k = -1; k <= 1; k++)
+                {
+                    if (k == 0)
+                    {
+                        continue;
+                    }
                     Block relative = block.getRelative(i, j, k);
-                    if (!vein.contains(relative) && block.equals(relative) && (i != 0 || j != 0 || k != 0))
+                    if (!vein.contains(relative) && block.getType().equals(relative.getType()))
                     {
                         vein.add(relative);
                         relative.setMetadata("Found", new FixedMetadataValue(DesireHCF.getInstance(), ""));
