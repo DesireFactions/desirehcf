@@ -19,8 +19,6 @@ import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.DeathBan;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
@@ -82,10 +80,9 @@ public class ConnectionListener implements Listener
             firstJoin.remove(player.getUniqueId());
         }
 
-        Session s = SessionHandler.getSession(fSession.getSender());
-        if (!s.hasAchievement(Achievement.FIRST_LOGIN))
+        if (!fSession.hasAchievement(Achievement.FIRST_LOGIN))
         {
-            s.awardAchievement(Achievement.FIRST_LOGIN, true);
+            fSession.awardAchievement(Achievement.FIRST_LOGIN, true);
         }
     }
 

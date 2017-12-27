@@ -7,6 +7,9 @@ enderchest:
   disabled: '&7enderchest &fdisabled&7!'
   enabled: '&7enderchest &fenabled&7!'
   blocked: '&7Enderchests are currently &fdisabled&7.'
+set_end:
+  spawn: '&7Set the end spawn.'
+  exit: '&7Set the end exit.'
 region:
   doesnt_exist: 'That region does not exist.'
   change: '&7Changed the {change} &7of &c{region}&7 from &f{old} &7to &f{new}&7.'
