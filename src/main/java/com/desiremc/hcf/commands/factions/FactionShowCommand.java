@@ -64,30 +64,20 @@ public class FactionShowCommand extends FactionValidCommand
 
         StringBuilder sb = new StringBuilder();
 
-        if (faction.getMembers().size() > 1)
+        for (FSession member : faction.getMembers())
         {
-            for (FSession member : faction.getMembers())
+            if (member.isOnline())
             {
-                if (member == faction.getLeader())
-                {
-                    continue;
-                }
-                if (member.isOnline())
-                {
-                    sb.append("§a");
-                }
-                else
-                {
-                    sb.append("§c");
-                }
-                sb.append(member.getName() + "§e, ");
+                sb.append("§a");
             }
-            sb.setLength(sb.length() - 2);
+            else
+            {
+                sb.append("§c");
+            }
+            sb.append(member.getName() + "§e, ");
         }
-        else
-        {
-            sb.append("§eNone");
-        }
+        sb.setLength(sb.length() - 2);
+
         value = value.replace("{members}", sb.toString());
 
         return value;

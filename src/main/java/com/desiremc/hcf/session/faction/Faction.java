@@ -392,6 +392,8 @@ public class Faction
     public List<FSession> getMembers()
     {
         checkMembers();
+        System.out.println(members.size());
+        System.out.println(parsedMembers.size());
         return parsedMembers;
     }
 
