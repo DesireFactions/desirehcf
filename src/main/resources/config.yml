@@ -93,9 +93,6 @@ allowed_potions:
   SLOW:
     level: 2
     extended: true
-findore:
-  - 'diamond_ore'
-  - 'emerald_ore'
 crowbar:
   uses: 6
   spawner:

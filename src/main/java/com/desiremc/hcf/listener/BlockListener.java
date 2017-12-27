@@ -1,6 +1,7 @@
 package com.desiremc.hcf.listener;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Set;
@@ -28,6 +29,7 @@ public class BlockListener implements Listener
 
     private final static LinkedList<Material> ALWAYS = new LinkedList<>(Arrays.asList(Material.GOLD_ORE, Material.IRON_ORE));
     private final static LinkedList<Material> NON_SILK = new LinkedList<>(Arrays.asList(Material.EMERALD_ORE, Material.DIAMOND_ORE, Material.COAL_ORE));
+    private final static EnumSet<Material> FINDORE = EnumSet.of(Material.DIAMOND_ORE, Material.EMERALD_ORE);
 
     @EventHandler(priority = EventPriority.MONITOR)
     public void onOreBreak(BlockBreakEvent event)
@@ -51,24 +53,19 @@ public class BlockListener implements Listener
             }
         }
 
-        if (!DesireHCF.getConfigHandler().getStringList("xray_ores").contains(event.getBlock().getType().name().toLowerCase()))
+        if (!FINDORE.contains(event.getBlock().getType()))
         {
             return;
         }
-        
+
         if (event.getBlock().hasMetadata("Found"))
         {
             return;
         }
-        
-        System.out.println("===========");
-        System.out.println("ores found");
 
         Set<Block> vein = getVein(event.getBlock());
-        System.out.println(vein.size());
         for (Session session : SessionHandler.getOnlineSessions())
         {
-            System.out.println(session.getName());
             if (session.getSetting(SessionSetting.FINDORE))
             {
                 DesireHCF.getLangHandler().sendRenderMessage(session, "findore.notification", true, false,
@@ -82,6 +79,10 @@ public class BlockListener implements Listener
     @EventHandler
     public void onPlace(BlockPlaceEvent event)
     {
+        if (FINDORE.contains(event.getBlockPlaced().getType()))
+        {
+            event.getBlock().setMetadata("Found", new FixedMetadataValue(DesireHCF.getInstance(), ""));
+        }
     }
 
     private Set<Block> getVein(Block block)
