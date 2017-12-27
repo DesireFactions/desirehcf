@@ -95,25 +95,26 @@ public class BlockListener implements Listener
 
     private void getVein(Block block, Set<Block> vein)
     {
-        for (int i = -1; i <= 1; i++)
+        i: for (int i = -1; i <= 1; i++)
         {
             if (i == 0)
             {
-                continue;
+                continue i;
             }
-            for (int j = -1; j <= 1; j++)
+            j: for (int j = -1; j <= 1; j++)
             {
                 if (j == 0)
                 {
-                    continue;
+                    continue j;
                 }
-                for (int k = -1; k <= 1; k++)
+                k: for (int k = -1; k <= 1; k++)
                 {
                     if (k == 0)
                     {
-                        continue;
+                        continue k;
                     }
                     Block relative = block.getRelative(i, j, k);
+                    System.out.println(block.getType() + " " + relative.getType());
                     if (!vein.contains(relative) && block.getType().equals(relative.getType()))
                     {
                         vein.add(relative);
