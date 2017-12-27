@@ -238,6 +238,9 @@ factions:
   neutral:
     already_neutral: '&7Your faction is already neutral to &b{faction}&7.'
     sent: '&7You are no longer allies with &b{faction)&7.'
+  name:
+    name_taken: '&7The faction name &b{name}&7 is already taken.'
+    name_set: '&7Your faction''name was changed to &b{name}&7 by &b{player}&7.'
 sotw:
   first: '&7Please run the command again to confirm &bSOTW&7.'
   confirmed: '&7Confirmed. Let &bSOTW &7commence.'

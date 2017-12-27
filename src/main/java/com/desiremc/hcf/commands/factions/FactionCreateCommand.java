@@ -17,6 +17,7 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionType;
+import com.desiremc.hcf.validators.FactionNameNotTaken;
 import com.desiremc.hcf.validators.SenderHasNoFactionValidator;
 
 public class FactionCreateCommand extends FactionValidCommand
@@ -32,6 +33,7 @@ public class FactionCreateCommand extends FactionValidCommand
                 .setName("name")
                 .setParser(new StringParser())
                 .addValidator(new StringLengthValidator(DesireHCF.getConfigHandler().getInteger("factions.names.length.min"), DesireHCF.getConfigHandler().getInteger("factions.names.length.max")))
+                .addValidator(new FactionNameNotTaken())
                 .build());
 
         addArgument(CommandArgumentBuilder.createBuilder(FactionType.class)
