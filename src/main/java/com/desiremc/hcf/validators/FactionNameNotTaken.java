@@ -5,6 +5,7 @@ import com.desiremc.hcf.api.commands.FactionValidator;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
+import com.desiremc.hcf.session.faction.FactionState;
 
 public class FactionNameNotTaken extends FactionValidator<String>
 {
@@ -15,7 +16,7 @@ public class FactionNameNotTaken extends FactionValidator<String>
 
         for (Faction faction : FactionHandler.getFactions())
         {
-            if (faction.getName().equalsIgnoreCase(arg))
+            if (faction.getName().equalsIgnoreCase(arg) && faction.getState() == FactionState.ACTIVE)
             {
                 allowed = false;
             }
