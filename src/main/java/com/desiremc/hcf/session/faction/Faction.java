@@ -418,7 +418,7 @@ public class Faction
         parsedMembers.remove(fSession);
 
         fSession.setFaction(FactionHandler.getWilderness());
-        fSession.setFactionRank(FactionRank.MEMBER);
+        fSession.setFactionRank(null);
         save();
     }
 
@@ -708,6 +708,19 @@ public class Faction
     {
         outgoingAllies.remove(faction.getId());
         getOutgoingAllies().remove(faction);
+    }
+
+    /**
+     * Remove all members from the faction.
+     */
+    public void removeAllAllies()
+    {
+        for (Faction faction : parsedAllies)
+        {
+            faction.removeAlly(this);
+        }
+        allies.clear();
+        parsedAllies = null;
     }
 
     /**
