@@ -715,12 +715,15 @@ public class Faction
      */
     public void removeAllAllies()
     {
-        for (Faction faction : parsedAllies)
+        if (parsedAllies != null)
         {
-            faction.removeAlly(this);
+            for (Faction faction : parsedAllies)
+            {
+                faction.removeAlly(this);
+            }
+            allies.clear();
+            parsedAllies = null;
         }
-        allies.clear();
-        parsedAllies = null;
     }
 
     /**
