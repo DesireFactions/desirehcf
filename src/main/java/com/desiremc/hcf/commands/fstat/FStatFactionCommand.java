@@ -1,32 +1,43 @@
 package com.desiremc.hcf.commands.fstat;
 
-import org.bukkit.command.CommandSender;
-
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.PlayerValidator;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.parser.FactionSessionParser;
-import com.desiremc.hcf.session.FactionSession;
+import com.desiremc.hcf.api.commands.FactionValidCommand;
+import com.desiremc.hcf.parsers.FactionParser;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.faction.Faction;
 
-public class FStatFactionCommand extends ValidCommand
+import java.util.List;
+
+public class FStatFactionCommand extends FactionValidCommand
 {
-
 
     public FStatFactionCommand()
     {
-        super("faction", "shows faction stats", Rank.MODERATOR, new String[] { "faction" });
-        addParser(new FactionSessionParser(), "faction");
-        addValidator(new PlayerValidator());
+        super("faction", "Shows faction stats", Rank.MODERATOR);
+
+        addArgument(CommandArgumentBuilder.createBuilder(Faction.class)
+                .setName("faction")
+                .setParser(new FactionParser())
+                .build());
+
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        FactionSession session = (FactionSession) args[0];
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "trophy_points", "{points}", Integer.toString(session.getTrophies()));
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "koth_wins", "{koth_wins}", Integer.toString(session.getKoth()));
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "faction", "{faction}", session.getName());
+        Faction faction = (Faction) arguments.get(0).getValue();
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "trophy_points", true, false,
+                "{points}", faction.getTrophies());
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "koth_wins", true, false,
+                "{koth_wins}", faction.getKothWins());
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "faction", true, false,
+                "{faction}", faction.getName());
     }
 
 }

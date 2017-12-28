@@ -78,7 +78,7 @@ public class EnchantmentLimiterHandler implements Listener
         Player player = (Player) inventoryClickEvent.getWhoClicked();
         Inventory inventory = inventoryClickEvent.getInventory();
         InventoryType.SlotType slotType = inventoryClickEvent.getSlotType();
-        if (inventory.getType().equals((Object) InventoryType.ANVIL) && slotType.equals(InventoryType.SlotType.RESULT))
+        if (inventory.getType().equals(InventoryType.ANVIL) && slotType.equals(InventoryType.SlotType.RESULT))
         {
             ItemStack currentItem = inventoryClickEvent.getCurrentItem();
             for (EnchantmentLimit enchantmentLimit : this.enchantmentLimits)

@@ -1,23 +1,25 @@
 package com.desiremc.hcf.listener;
 
-import com.desiremc.core.session.HCFSession;
-import com.desiremc.core.session.HCFSessionHandler;
-import com.desiremc.core.utils.Utils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
 import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.World.Environment;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
-import org.bukkit.event.player.PlayerTeleportEvent.TeleportCause;
+
+import com.desiremc.core.utils.BukkitUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
 
 public class MovementListener implements Listener
 {
-
     @EventHandler
     public void onMove(PlayerMoveEvent e)
     {
@@ -28,40 +30,39 @@ public class MovementListener implements Listener
         if (TagHandler.isTagged(e.getPlayer()))
         {
             boolean valid = true;
-            for (Region r : RegionHandler.getInstance().getRegions())
+            Region region = RegionHandler.getRegion(e.getTo());
+            if (region != null)
             {
-                if (r.getWorld().equalsIgnoreCase(e.getTo().getWorld().getName()) && r.getRegion().isWithin(e.getTo()))
+                if (TagHandler.hasLastValidLocation(e.getPlayer().getUniqueId()))
                 {
-                    if (TagHandler.hasLastValidLocation(e.getPlayer().getUniqueId()))
-                    {
-                        e.setTo(TagHandler.getLastValidLocation(e.getPlayer().getUniqueId()));
-                    }
-                    else
-                    {
-                        e.setCancelled(true);
-                    }
-                    valid = false;
+                    e.setTo(TagHandler.getLastValidLocation(e.getPlayer().getUniqueId()));
                 }
+                else
+                {
+                    e.setCancelled(true);
+                }
+                valid = false;
             }
-            if (valid && !e.isCancelled() && e.getPlayer().isOnGround())
+
+            if (valid && !e.isCancelled() && isOnGround(e.getPlayer()))
             {
                 TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getPlayer().getLocation());
             }
         }
-        HCFSession s = HCFSessionHandler.getHCFSession(e.getPlayer().getUniqueId());
-        if (s.getSafeTimeLeft() > 0)
+        FSession fSession = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
+        if (fSession.getSafeTimeLeft() > 0)
         {
-            for (Region r : RegionHandler.getInstance().getRegions())
+            for (Region region : RegionHandler.getRegions())
             {
-                if (r.getWorld().equalsIgnoreCase(e.getTo().getWorld().getName()))
+                if (region.getWorld() == e.getTo().getWorld())
                 {
-                    if (r.getRegion().isWithin(e.getTo()))
+                    if (region.getRegionBlocks().isWithin(e.getTo()))
                     {
-                        s.getTimer().pause();
+                        fSession.getSafeTimer().pause();
                     }
-                    else if (r.getRegion().isWithin(e.getFrom()))
+                    else if (region.getRegionBlocks().isWithin(e.getFrom()))
                     {
-                        s.getTimer().resume();
+                        fSession.getSafeTimer().resume();
                     }
                 }
             }
@@ -69,25 +70,30 @@ public class MovementListener implements Listener
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    public void onTeleportMonitor(PlayerTeleportEvent e)
+    public void onTeleportMonitor(PlayerTeleportEvent event)
     {
-        if (!e.isCancelled() && TagHandler.isTagged(e.getPlayer()))
+        if (!event.isCancelled() && TagHandler.isTagged(event.getPlayer()))
         {
-            TagHandler.setLastValidLocation(e.getPlayer().getUniqueId(), e.getTo());
+            TagHandler.setLastValidLocation(event.getPlayer().getUniqueId(), event.getTo());
         }
-        if (e.getCause() == TeleportCause.END_PORTAL)
+        if (event.getTo().getWorld().getEnvironment() == Environment.THE_END && event.getFrom().getWorld().getEnvironment() != Environment.THE_END)
         {
-            e.setTo(Utils.toLocation(DesireHCF.getConfigHandler().getString("set_end.spawn")));
+            event.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("set_end.spawn")));
         }
-        else if (e.getCause() == TeleportCause.END_GATEWAY)
+        else if (event.getTo().getWorld().getEnvironment() != Environment.THE_END && event.getFrom().getWorld().getEnvironment() == Environment.THE_END)
         {
-            e.setTo(Utils.toLocation(DesireHCF.getConfigHandler().getString("set_end.exit")));
+            event.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("set_end.exit")));
         }
     }
 
     public static boolean differentBlocks(Location l1, Location l2)
     {
         return l1.getBlockX() != l2.getBlockX() || l1.getBlockY() != l2.getBlockY() || l1.getBlockZ() != l2.getBlockZ();
+    }
+
+    private boolean isOnGround(Player player)
+    {
+        return !player.isFlying() && player.getLocation().subtract(0, 0.1, 0).getBlock().getType() != Material.AIR;
     }
 
 }

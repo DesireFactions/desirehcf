@@ -1,22 +1,25 @@
 package com.desiremc.hcf.commands.setend;
 
-import org.bukkit.command.CommandSender;
-
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.PlayerValidator;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.api.SetEndAPI;
 
-public class SetEndSpawnCommand extends ValidCommand {
+import java.util.List;
 
-    public SetEndSpawnCommand() {
-        super("spawn", "set end spawn", Rank.ADMIN, new String[] {});
-        addValidator(new PlayerValidator());
+public class SetEndSpawnCommand extends ValidCommand
+{
+
+    public SetEndSpawnCommand()
+    {
+        super("spawn", "set end spawn", Rank.ADMIN, true, new String[] {});
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args) {
-        SetEndAPI.setEndSpawn(sender, "endspawn", "set_end.spawn");
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
+    {
+        SetEndAPI.setEndSpawn(sender.getPlayer(), "endspawn", "set_end.spawn");
     }
 
 }

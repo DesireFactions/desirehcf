@@ -1,31 +1,49 @@
 package com.desiremc.hcf.commands.lives;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
-
-import com.desiremc.core.api.command.ValidCommand;
-import com.desiremc.core.parsers.IntegerParser;
-import com.desiremc.core.parsers.PlayerParser;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
+import com.desiremc.core.parsers.PositiveIntegerParser;
 import com.desiremc.core.session.Rank;
-import com.desiremc.hcf.api.LivesAPI;
+import com.desiremc.core.session.Session;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.parsers.FSessionParser;
+import com.desiremc.hcf.session.FSession;
+
+import java.util.List;
 
 public class LivesAddCommand extends ValidCommand
 {
 
     public LivesAddCommand()
     {
-        super("add", "add lives", Rank.MODERATOR, new String[]{"target", "amount"}, "give");
-        addParser(new PlayerParser(), "target");
-        addParser(new IntegerParser(), "amount");
+        super("add", "add lives", Rank.MODERATOR, false, new String[] { "give" });
+
+        addArgument(CommandArgumentBuilder.createBuilder(FSession.class)
+                .setName("target")
+                .setParser(new FSessionParser())
+                .build());
+
+        addArgument(CommandArgumentBuilder.createBuilder(Integer.class)
+                .setName("amount")
+                .setParser(new PositiveIntegerParser())
+                .build());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        Player target = (Player) args[0];
-        Integer amount = (Integer) args[1];
+        FSession target = (FSession) args.get(0).getValue();
+        int amount = (Integer) args.get(1).getValue();
 
-        LivesAPI.addLives(sender, target, amount);
+        target.addLives(amount);
+        target.save();
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "lives.add", true, false, "{amount}", String.valueOf(amount), "{player}", target.getName());
+        if (target.isOnline())
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(target.getSender(), "lives.recieved", true, false, "{amount}", String.valueOf(amount));
+        }
     }
 
 }

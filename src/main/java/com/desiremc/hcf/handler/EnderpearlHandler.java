@@ -1,11 +1,11 @@
 package com.desiremc.hcf.handler;
 
 import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
 import com.desiremc.hcf.DesireHCF;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -14,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import java.util.Map.Entry;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
@@ -27,34 +28,24 @@ public class EnderpearlHandler implements Listener
     public EnderpearlHandler()
     {
         TIMER = DesireHCF.getConfigHandler().getInteger("enderpearl.time");
-        history = CacheBuilder.newBuilder().expireAfterWrite(TIMER, TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
+        history = new Cache<>(TIMER, TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
-
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
             {
-                Player p = Bukkit.getPlayer(entry.getKey());
+                Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    DesireHCF.getLangHandler().sendString(p, "enderpearl.ended");
-                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().getString("enderpearl.scoreboard"));
+                    if (entry.getCause() != RemovalNotification.Cause.EXPIRE)
+                    {
+                        return;
+                    }
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false));
                 }
             }
-        }).build();
+        }, DesireHCF.getInstance());
 
-        Bukkit.getScheduler().runTaskTimerAsynchronously(DesireHCF.getInstance(), new Runnable()
-        {
-            @Override
-            public void run()
-            {
-                for (UUID uuid : history.asMap().keySet())
-                {
-                    Player p = Bukkit.getPlayer(uuid);
-                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().getString("enderpearl.scoreboard"),
-                            String.valueOf(TIMER - ((System.currentTimeMillis() - history.getIfPresent(uuid)) / 1000)));
-                }
-            }
-        }, 0, 10);
+        Bukkit.getScheduler().runTask(DesireHCF.getInstance(), new EnderpearlUpdater());
     }
 
     @EventHandler
@@ -67,20 +58,43 @@ public class EnderpearlHandler implements Listener
             return;
         }
 
-        if (p.getInventory().getItemInMainHand().getType() == Material.ENDER_PEARL)
+        if (e.getItem() != null && e.getItem().getType().equals(Material.ENDER_PEARL))
         {
             UUID uuid = p.getUniqueId();
-            Long time = history.getIfPresent(uuid);
+            Long time = history.get(uuid);
 
             if (time == null)
             {
                 history.put(uuid, System.currentTimeMillis());
-            } else
+            }
+            else
             {
                 e.setCancelled(true);
-                DesireHCF.getLangHandler().sendRenderMessage(p, "enderpearl.message", "{time}", String.valueOf(TIMER - ((System.currentTimeMillis() - time) / 1000)));
             }
         }
+    }
+
+    private class EnderpearlUpdater implements Runnable
+    {
+
+        @Override
+        public void run()
+        {
+            for (Entry<UUID, Long> entry : history.entrySet())
+            {
+                Player p = PlayerUtils.getPlayer(entry.getKey());
+                if (p != null)
+                {
+                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
+                }
+                else
+                {
+                    history.toRemove(entry.getKey());
+                }
+            }
+            Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), this, 10);
+        }
+
     }
 
 }

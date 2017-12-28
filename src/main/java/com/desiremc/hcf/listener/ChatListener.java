@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -13,15 +14,25 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.util.FactionsUtils;
-import com.massivecraft.factions.Faction;
 
 public class ChatListener implements Listener
 {
 
-    @EventHandler
-    public void chat(AsyncPlayerChatEvent event)
+    private static final boolean DEBUG = false;
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onChat(AsyncPlayerChatEvent event)
     {
+        if (DEBUG)
+        {
+            System.out.println("ChatListener.onChat() called.");
+        }
+        if (event.isCancelled())
+        {
+            return;
+        }
         Player player = event.getPlayer();
         event.setCancelled(true);
         Session s = SessionHandler.getSession(player);
@@ -43,7 +54,7 @@ public class ChatListener implements Listener
         Faction f = FactionsUtils.getFaction(player);
 
         String parsedMessage = s.getRank().getId() >= Rank.ADMIN.getId() ? ChatColor.translateAlternateColorCodes('&', msg) : msg;
-        
+
         FancyMessage message = new FancyMessage(s.getRank().getPrefix())
                 .then(player.getName())
                 .tooltip(FactionsUtils.getMouseoverDetails(f))

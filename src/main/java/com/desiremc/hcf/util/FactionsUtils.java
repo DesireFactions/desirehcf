@@ -1,59 +1,166 @@
 package com.desiremc.hcf.util;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
-import com.desiremc.core.session.HCFSession;
 import com.desiremc.core.session.Session;
-import com.desiremc.hcf.session.FactionSession;
-import com.desiremc.hcf.session.FactionSessionHandler;
-import com.massivecraft.factions.Board;
-import com.massivecraft.factions.FLocation;
-import com.massivecraft.factions.FPlayer;
-import com.massivecraft.factions.FPlayers;
-import com.massivecraft.factions.Faction;
-import com.massivecraft.factions.Factions;
+import com.desiremc.core.utils.BlockColumn;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionHandler;
+import com.desiremc.hcf.session.faction.FactionType;
 
 public class FactionsUtils
 {
 
+    /**
+     * Gets the {@link Faction} by the given id, if one exists.
+     * 
+     * @param id the id to check.
+     * @return the {@link Faction} if found.
+     */
+    public static Faction getFaction(int id)
+    {
+        Faction faction = FactionHandler.getFaction(id);
+        return faction;
+    }
+
+    /**
+     * Get the {@link Faction} by the given name, if one exists.
+     * 
+     * @param name the name to check.
+     * @return the {@link Faction} if found.
+     */
     public static Faction getFaction(String name)
     {
-        Faction f = Factions.getInstance().getByTag(name);
+        Faction f = FactionHandler.getFaction(name);
         return f;
     }
 
-    public static Faction getFaction(Player p)
-    {
-        FPlayer fp = FPlayers.getInstance().getByPlayer(p);
-
-        return fp != null && fp.getFaction() != null ? fp.getFaction() : null;
-    }
-
+    /**
+     * Get the faction that has claimed the land at the given location.
+     * 
+     * @param loc the location to check.
+     * @return the faction if one exists.
+     */
     public static Faction getFaction(Location loc)
     {
-        return Board.getInstance().getFactionAt(new FLocation(loc));
+        return FactionHandler.getFaction(loc);
     }
 
-    public static Faction getFaction(HCFSession s)
+    /**
+     * Get the faction that has claimed the land at the given block column.
+     * 
+     * @param blockColumn the block column.
+     * @return the faction if one exists.
+     */
+    public static Faction getFaction(BlockColumn blockColumn)
     {
-        return getFaction(s.getPlayer());
+        return FactionHandler.getFaction(blockColumn);
     }
 
-    public static Faction getFaction(Session s)
+    /**
+     * Get the faction of the given {@link Player}.
+     * 
+     * @param player the {@link Player} to check.
+     * @return the {@link Faction} if the {@link Player} has one.
+     */
+    public static Faction getFaction(Player player)
     {
-        return getFaction(s.getPlayer());
+        return getFaction(player.getUniqueId());
     }
 
+    /**
+     * Get the faction of the given {@link Session}.
+     * 
+     * @param session the {@link Session} to check.
+     * @return the {@link Faction} if the {@link Session} has one.
+     */
+    public static Faction getFaction(Session session)
+    {
+        return getFaction(session.getUniqueId());
+    }
+
+    /**
+     * Get the faction of the player referenced by their UUID. If the player is not found, returns null rather than the
+     * Wilderness faction.
+     * 
+     * @param uuid the uuid of the player to search for.
+     * @return
+     */
+    public static Faction getFaction(UUID uuid)
+    {
+        FSession fSession = FSessionHandler.getGeneralFSession(uuid);
+
+        return fSession != null && fSession.getFaction() != null ? fSession.getFaction() : null;
+    }
+
+    /**
+     * Get the faction of the given {@link FSession}.
+     * 
+     * @param fSession the {@link FSession} to check.
+     * @return the {@link Faction} if the {@link FSession} has one.
+     */
+    public static Faction getFaction(FSession fSession)
+    {
+        return fSession.getFaction();
+    }
+
+    /**
+     * @return an immutable view of all the factions.
+     */
+    public static Collection<Faction> getFactions()
+    {
+        return Collections.unmodifiableCollection(FactionHandler.getFactions());
+    }
+
+    /**
+     * @return a mutable collection of all factions' names.
+     */
+    public static Collection<String> getFactionNames()
+    {
+        List<String> names = new LinkedList<>();
+        for (Faction faction : FactionHandler.getFactions())
+        {
+            names.add(faction.getName());
+        }
+        return names;
+    }
+
+    /**
+     * Checks if the given {@link Faction} is the Wilderness.
+     * 
+     * @param f the faction to check.
+     * @return {@code true} if the given faction is the Wilderness.
+     */
     public static boolean isWilderness(Faction f)
     {
         return isNone(f);
     }
 
+    /**
+     * Checks if the given {@link Faction} is nothing. In the current Faction system, this is the same as checking if
+     * the faction {@link #isWilderness(Faction)}.
+     * 
+     * @param f the faction to check.
+     * @return {@code true} if the given faction is the Wilderness.
+     */
     public static boolean isNone(Faction f)
     {
-        return f == Factions.getInstance().getNone();
+        if (f == null)
+        {
+            return false;
+        }
+        return f.isWilderness();
     }
 
     public static String[] getMouseoverDetails(Faction f)
@@ -67,13 +174,11 @@ public class FactionsUtils
         }
         else
         {
-            FactionSession fSession = FactionSessionHandler.getFactionSession(f.getTag());
-
             return new String[] {
                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
-                    ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getTag() : "NONE"),
-                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() : "NONE"),
-                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "---")
+                    ChatColor.GRAY + "Name: " + ChatColor.YELLOW + f.getName(),
+                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + f.getMemberSize(),
+                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + f.getTrophies()
             };
         }
     }
@@ -82,10 +187,121 @@ public class FactionsUtils
     {
         return getMouseoverDetails(getFaction(s));
     }
-    
-    public static String[] getMouseoverDetails(HCFSession s)
+
+    public static String[] getMouseoverDetails(FSession s)
     {
         return getMouseoverDetails(getFaction(s));
+    }
+
+    /**
+     * Get a list of faction members that are within the given range of the given player.
+     * 
+     * @param player the player
+     * @param range the range
+     * @return a list of faction members within range.
+     */
+    public static List<Player> getFactionMembersInRange(Player player, int range)
+    {
+        List<Player> inRange = new ArrayList<>();
+
+        Faction faction = getFaction(player);
+        if (faction == null || faction.isWilderness())
+        {
+            return inRange;
+        }
+
+        for (FSession member : faction.getOnlineMembers())
+        {
+            if (member.getPlayer() != player)
+            {
+                inRange.add(member.getPlayer());
+            }
+        }
+
+        return inRange;
+    }
+
+    /**
+     * Get a list of all non-allies that are within the given range of the given player.
+     * 
+     * @param player the player
+     * @param range the range
+     * @return a list of non-allies within range.
+     */
+    public static List<Player> getEnemiesInRange(Player player, int range)
+    {
+        List<Player> inRange = new ArrayList<>();
+
+        Faction faction = getFaction(player);
+        if (faction == null || faction.isWilderness())
+        {
+            return inRange;
+        }
+
+        for (FSession session : FSessionHandler.getOnlineFSessions())
+        {
+            if (session.getFaction().getRelationshipTo(faction).canAttack())
+            {
+                inRange.add(session.getPlayer());
+            }
+        }
+
+        return inRange;
+    }
+
+    /**
+     * Gets a list of all allies and faction members within the given range of the given player.
+     * 
+     * @param player the player
+     * @param range the range
+     * @return a list of allies and faction members.
+     */
+    public static List<Player> getAlliesInRange(Player player, int range)
+    {
+        List<Player> inRange = new ArrayList<>();
+
+        Faction faction = getFaction(player);
+        if (faction == null || faction.isWilderness())
+        {
+            return inRange;
+        }
+
+        for (Faction ally : faction.getAllies())
+        {
+            for (FSession fSession : ally.getOnlineMembers())
+            {
+                if (fSession.getPlayer().getLocation().distanceSquared(player.getLocation()) <= (range * range))
+                {
+                    inRange.add(fSession.getPlayer());
+                }
+            }
+        }
+
+        for (FSession member : faction.getOnlineMembers())
+        {
+            if (member.getPlayer() != player && member.getPlayer().getLocation().distanceSquared(player.getLocation()) <= (range * range))
+            {
+                inRange.add(member.getPlayer());
+            }
+        }
+
+        return inRange;
+    }
+
+    public static Collection<FSession> getOnlineFSessions()
+    {
+        LinkedList<FSession> online = new LinkedList<>(FSessionHandler.getFSessions());
+
+        online.removeIf(check -> !check.isOnline());
+
+        return online;
+    }
+
+    public static boolean isInSafeZone(Player player)
+    {
+        Faction faction = getFaction(player.getLocation());
+
+        return faction.getType() == FactionType.SAFEZONE;
     }
 
 }
