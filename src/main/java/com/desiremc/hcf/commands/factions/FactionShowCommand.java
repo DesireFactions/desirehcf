@@ -95,15 +95,14 @@ public class FactionShowCommand extends FactionValidCommand
         {
             for (Faction ally : faction.getAllies())
             {
-                sb.append("§a");
+                sb.append("§f");
                 sb.append(ally.getName());
-                sb.append("§e, ");
             }
             sb.setLength(sb.length() - 2);
         }
         else
         {
-            sb.append("§eNone");
+            sb.append("§fNone");
         }
 
         value = value.replace("{allies}", sb.toString());
