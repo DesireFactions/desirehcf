@@ -149,6 +149,7 @@ factions:
     - '  &8- &bTotal Kills&7: &f{kills}'
     - '  &8- &bBalance&7: &f${balance}'
     - '  &8- &bDTR&7: &f{dtr}'
+    - '  &8- &bAllies&7: &f{allies}'
     - '  &8- &bMembers&7: &f{members}'
     - '&8&m-----------------------------------------'
   disband:
