@@ -64,23 +64,49 @@ public class FactionShowCommand extends FactionValidCommand
 
         StringBuilder sb = new StringBuilder();
 
-        for (FSession member : faction.getMembers())
+        if (faction.getMembers().size() > 1)
         {
-            if (member.isOnline())
+            for (FSession member : faction.getMembers())
             {
-                sb.append("§a");
+                if (member.isOnline())
+                {
+                    sb.append("§a");
+                }
+                else
+                {
+                    sb.append("§c");
+                }
+                sb.append(member.getFactionRank().getPrefix());
+                sb.append(member.getName());
+                sb.append("§e, ");
             }
-            else
-            {
-                sb.append("§c");
-            }
-            sb.append(member.getFactionRank().getPrefix());
-            sb.append(member.getName());
-            sb.append("§e, ");
+            sb.setLength(sb.length() - 2);
         }
-        sb.setLength(sb.length() - 2);
+        else
+        {
+            sb.append("§eNone");
+        }
 
         value = value.replace("{members}", sb.toString());
+
+        sb.setLength(0);
+
+        if (faction.getAllies().size() > 0)
+        {
+            for (Faction ally : faction.getAllies())
+            {
+                sb.append("§a");
+                sb.append(ally.getName());
+                sb.append("§e, ");
+            }
+            sb.setLength(sb.length() - 2);
+        }
+        else
+        {
+            sb.append("§eNone");
+        }
+
+        value = value.replace("{allies}", sb.toString());
 
         return value;
     }
