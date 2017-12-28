@@ -10,6 +10,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.validators.SenderHasAmountMoney;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 
 import net.minecraft.util.com.google.common.primitives.Doubles;
@@ -25,6 +26,7 @@ public class FactionDepositCommand extends FactionValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(String.class)
                 .setName("amount")
                 .setParser(new StringParser())
+                .addValidator(new SenderHasAmountMoney())
                 .build());
     }
 
