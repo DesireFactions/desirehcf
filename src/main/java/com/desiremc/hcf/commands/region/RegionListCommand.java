@@ -1,46 +1,43 @@
 package com.desiremc.hcf.commands.region;
 
-import java.util.Collection;
-
-import org.bukkit.command.CommandSender;
-
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
-import com.desiremc.hcf.validator.RegionsExistValidator;
+import com.desiremc.hcf.validators.regions.RegionsExistValidator;
+
+import java.util.Iterator;
+import java.util.List;
 
 public class RegionListCommand extends ValidCommand
 {
 
     public RegionListCommand()
     {
-        super("list", "List all the regions created.", Rank.ADMIN, new String[] {});
+        super("list", "List all the regions created.", Rank.ADMIN);
 
-        addValidator(new RegionsExistValidator());
+        addSenderValidator(new RegionsExistValidator());
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        Collection<Region> regions = RegionHandler.getInstance().getRegions();
         StringBuilder sb = new StringBuilder();
+        Iterator<String> it = RegionHandler.getRegionNames().iterator();
 
-        // I did this instead of a for int i because every .get with a
-        // linked list goes through the entire list to get to that point in
-        // the list. Don't change it over.
-        int i = 0;
-        for (Region r : regions)
+        while (it.hasNext())
         {
-            sb.append(r.getName());
-            if (i != regions.size() - 1)
+            sb.append(it.next());
+            if (it.hasNext())
             {
                 sb.append(", ");
             }
-            i++;
         }
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.list", "{regions}", sb.toString());
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.list", true, false,
+                "{regions}", sb.toString());
     }
 
 }

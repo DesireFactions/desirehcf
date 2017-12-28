@@ -1,20 +1,22 @@
 package com.desiremc.hcf.barrier;
 
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
+
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
 
 public class BarrierTask implements Runnable
 {
@@ -32,7 +34,7 @@ public class BarrierTask implements Runnable
         Player p;
         for (UUID uuid : TagHandler.getTaggedPlayers())
         {
-            p = Bukkit.getPlayer(uuid);
+            p = PlayerUtils.getPlayer(uuid);
             if (p == null)
             {
                 continue;
@@ -43,15 +45,15 @@ public class BarrierTask implements Runnable
                 localCache = new HashSet<>();
             }
 
-            for (Region r : RegionHandler.getInstance().getRegions())
+            for (Region region : RegionHandler.getRegions())
             {
-                for (Block b : r.getRegion().getWallBlocks(Bukkit.getWorld(r.getWorld())))
+                for (Block b : region.getRegionBlocks().getWallBlocks(region.getWorld()))
                 {
                     if (b.getType() == Material.AIR)
                     {
-                        if (b.getLocation().distanceSquared(p.getLocation()) <= r.getViewDistance() * r.getViewDistance())
+                        if (b.getLocation().distanceSquared(p.getLocation()) <= region.getViewDistance() * region.getViewDistance())
                         {
-                            p.sendBlockChange(b.getLocation(), r.getBarrierMaterial(), (byte) r.getBarrierMaterialData());
+                            p.sendBlockChange(b.getLocation(), region.getBarrierMaterial(), (byte) region.getBarrierMaterialData());
                             localCache.add(b);
                         }
                         else if (localCache.contains(b))
@@ -66,7 +68,7 @@ public class BarrierTask implements Runnable
         }
         for (UUID uuid : toClear)
         {
-            Player pl = Bukkit.getPlayer(uuid);
+            Player pl = PlayerUtils.getPlayer(uuid);
             if (pl != null)
             {
                 Set<Block> localCache = cache.get(uuid);

@@ -1,17 +1,19 @@
 package com.desiremc.hcf.handler;
 
 import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.event.NPCDespawnEvent;
-import com.desiremc.hcf.event.NPCDespawnReason;
-import com.desiremc.hcf.npc.NPC;
-import com.desiremc.hcf.npc.NPCManager;
-import com.desiremc.hcf.npc.NPCPlayerHelper;
-import com.desiremc.hcf.npc.SafeLogoutTask;
+import com.desiremc.hcf.tasks.SafeLogoutTask;
+import com.desiremc.npc.HumanNPC;
+import com.desiremc.npc.NPC;
+import com.desiremc.npc.NPCLib;
+import com.desiremc.npc.NPCPlayerHelper;
+import com.desiremc.npc.NPCRegistry;
+import com.desiremc.npc.events.NPCDespawnEvent;
+import com.desiremc.npc.events.NPCDespawnEvent.NPCDespawnReason;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,13 +23,9 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
 
 import java.util.UUID;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 public class CombatLoggerHandler implements Listener
 {
@@ -35,98 +33,131 @@ public class CombatLoggerHandler implements Listener
 
     public CombatLoggerHandler()
     {
-
-        Bukkit.getScheduler().runTaskTimerAsynchronously(DesireHCF.getInstance(), new Runnable()
+        Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
             {
                 for (UUID uuid : TagHandler.getTaggedPlayers())
                 {
-                    EntryRegistry.getInstance().setValue(Bukkit.getPlayer(uuid), DesireHCF.getLangHandler().getString("tag.scoreboard"),
-                            String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
+
+                    if (TagHandler.getTagTime(uuid) == null)
+                    {
+                        TagHandler.clearTag(uuid);
+                    }
+                    Player p = PlayerUtils.getPlayer(uuid);
+                    if (p != null)
+                    {
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false),
+                                String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
+                    }
                 }
             }
         }, 0, 10);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onPlayerLogout(PlayerQuitEvent event)
     {
+        NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+
         Player player = event.getPlayer();
 
         NPCPlayerHelper.removePlayerList(player);
-        DesireHCF.getInstance().getPlayerCache().removePlayer(player);
 
-        Session session = SessionHandler.getSession(player);
+        Session session = SessionHandler.getGeneralSession(player.getUniqueId());
 
-        if (session.getRank() == Rank.ADMIN) return;
+        if (session.getRank().isManager())
+        {
+            return;
+        }
 
         UUID uuid = player.getUniqueId();
         Long time = TagHandler.getTagTime(uuid);
 
         if (time != null)
         {
-            NPCManager.spawn(player);
+            HumanNPC npc = npcRegistry.createHumanNPC(uuid, player.getName());
+            npc.spawn(player.getLocation());
         }
-        else if (!SafeLogoutTask.isFinished(player))
+        else if (SafeLogoutTask.hasTask(player) && !SafeLogoutTask.isFinished(player))
         {
             int tagDistance = DesireHCF.getConfigHandler().getInteger("tag.distance");
+
             for (Player p : Bukkit.getOnlinePlayers())
             {
+                if (p == player)
+                {
+                    continue;
+                }
                 if (p.getLocation().distanceSquared(player.getLocation()) <= (tagDistance * tagDistance))
                 {
-                    NPCManager.spawn(player);
+                    HumanNPC npc = npcRegistry.createHumanNPC(uuid, player.getName());
+                    npc.setSkin(uuid);
+                    npc.spawn(player.getLocation());
                     break;
                 }
             }
         }
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.MONITOR)
     public void despawnNPC(PlayerJoinEvent event)
     {
+        NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+
         Player player = event.getPlayer();
 
         NPCPlayerHelper.createPlayerList(player);
 
-        DesireHCF.getInstance().getPlayerCache().addPlayer(player);
-
-        NPC npc = NPCManager.getSpawnedNPC(event.getPlayer().getUniqueId());
-        if (npc != null)
+        NPC npc = npcRegistry.getByUUID(event.getPlayer().getUniqueId());
+        if (npc != null && npc.isSpawned())
         {
-            NPCManager.despawn(npc);
+            npc.despawn(NPCDespawnReason.DESPAWN);
         }
     }
 
     @EventHandler
     public void despawnNPC(PlayerDeathEvent event)
     {
+        NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+
         Player player = event.getEntity();
-        if (!NPCPlayerHelper.isNpc(player)) return;
+        if (!npcRegistry.isNPC(player))
+        {
+            return;
+        }
 
-        UUID id = NPCPlayerHelper.getIdentity(player).getId();
-        final NPC npc = NPCManager.getSpawnedNPC(id);
-        if (npc == null) return;
+        NPC npc = npcRegistry.getByUUID(player.getUniqueId());
 
-        TagHandler.clearTag(id);
+        if (npc == null)
+        {
+            throw new IllegalStateException("Entity is NPC but could not retrieve by UUID.");
+        }
+
+        TagHandler.clearTag(player.getUniqueId());
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(DesireHCF.getInstance(), new Runnable()
         {
             @Override
             public void run()
             {
-                NPCManager.despawn(npc, NPCDespawnReason.DEATH);
+                npc.despawn(NPCDespawnReason.DEATH);
             }
         });
     }
 
-    @EventHandler(priority = EventPriority.LOWEST)
+    @EventHandler(priority = EventPriority.HIGHEST)
     public void syncOffline(PlayerDeathEvent event)
     {
+        NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
+
         // Do nothing if player is not a NPC
         final Player player = event.getEntity();
-        if (!NPCPlayerHelper.isNpc(player)) return;
+        if (!npcRegistry.isNPC(player))
+        {
+            return;
+        }
 
         // NPC died, remove player's combat tag
         TagHandler.clearTag(player.getUniqueId());
@@ -145,76 +176,42 @@ public class CombatLoggerHandler implements Listener
     @EventHandler
     public void syncOffline(AsyncPlayerPreLoginEvent event)
     {
-        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED) return;
+        NPCRegistry npcRegistry = NPCLib.getNPCRegistry(DesireHCF.getInstance());
 
-        final UUID playerId = event.getUniqueId();
-        if (!NPCManager.NPCExists(playerId)) return;
+        if (event.getLoginResult() != AsyncPlayerPreLoginEvent.Result.ALLOWED)
+        {
+            return;
+        }
 
-        Future<?> future = Bukkit.getScheduler().callSyncMethod(DesireHCF.getInstance(), new Callable<Void>()
+        NPC npc = npcRegistry.getByUUID(event.getUniqueId());
+
+        if (npc == null)
+        {
+            return;
+        }
+
+        Bukkit.getScheduler().callSyncMethod(DesireHCF.getInstance(), new Callable<Void>()
         {
             @Override
             public Void call() throws Exception
             {
-                NPC npc = NPCManager.getSpawnedNPC(playerId);
-                if (npc == null) return null;
 
-                NPCPlayerHelper.syncOffline(npc.getEntity());
+                NPCPlayerHelper.syncOffline((Player) npc.getEntity());
                 return null;
             }
         });
-
-        try
-        {
-            future.get();
-        }
-        catch (InterruptedException | ExecutionException e)
-        {
-            throw new RuntimeException(e);
-        }
     }
 
-    @SuppressWarnings("deprecation")
     @EventHandler
     public void syncOffline(NPCDespawnEvent event)
     {
         NPC npc = event.getNPC();
 
         // Save player data when the NPC despawns
-        Player player = DesireHCF.getInstance().getPlayerCache().getPlayer(npc.getIdentity().getId());
+        Player player = PlayerUtils.getPlayer(npc.getUUID());
         if (player == null)
         {
-            NPCPlayerHelper.syncOffline(npc.getEntity());
-            return;
+            NPCPlayerHelper.syncOffline((Player) npc.getEntity());
         }
-
-        // Copy NPC player data to online player
-        Player npcPlayer = npc.getEntity();
-        player.setMaximumAir(npcPlayer.getMaximumAir());
-        player.setRemainingAir(npcPlayer.getRemainingAir());
-        player.setHealthScale(npcPlayer.getHealthScale());
-        player.setMaxHealth(getRealMaxHealth(npcPlayer));
-        player.setHealth(npcPlayer.getHealth());
-        player.setTotalExperience(npcPlayer.getTotalExperience());
-        player.setFoodLevel(npcPlayer.getFoodLevel());
-        player.setExhaustion(npcPlayer.getExhaustion());
-        player.setSaturation(npcPlayer.getSaturation());
-        player.setFireTicks(npcPlayer.getFireTicks());
-        player.getInventory().setContents(npcPlayer.getInventory().getContents());
-        player.getInventory().setArmorContents(npcPlayer.getInventory().getArmorContents());
-        player.addPotionEffects(npcPlayer.getActivePotionEffects());
-    }
-
-    private static double getRealMaxHealth(Player npcPlayer)
-    {
-        @SuppressWarnings("deprecation")
-        double health = npcPlayer.getMaxHealth();
-        for (PotionEffect p : npcPlayer.getActivePotionEffects())
-        {
-            if (p.getType().equals(PotionEffectType.HEALTH_BOOST))
-            {
-                health -= (p.getAmplifier() + 1) * 4;
-            }
-        }
-        return health;
     }
 }

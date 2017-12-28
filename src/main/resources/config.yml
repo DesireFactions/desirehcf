@@ -1,3 +1,32 @@
+sotw:
+  time: 3600
+death:
+  pvp:
+    default: ' &fwas killed by '
+    projectile: ' &fwas shot by '
+  pve:
+    default: ' &fdied in a freak accident.'
+    custom: ' &fwas killed by admin abuse. Grab the pitchforks!'
+    block_explosion: ' &fdied from an exploding block.'
+    contact: ' &ftried to hug a cactus.'
+    dragon_breath: ' &fgave a breath check to a dragon.'
+    drowning: ' &fforgot they didn''t have underwater breathing.'
+    entity_attack: ' &fgot beaten up by a zombie.'
+    entity_explosion: ' &fdidn''t notice the creeper.'
+    fall: ' &ffell off a cliff.'
+    falling_block: ' &fhad an anvil land on their head.'
+    fire: ' &fstood in the flames.'
+    fire_tick: ' &fgot slow roasted.'
+    lava: ' &fswam in lava.'
+    lightning: '&fgot struck by lightning!'
+    poison: ' &fwas poisoned.'
+    projectile: ' &ftook an arrow to the knee.'
+    starvation: ' &fstarved to death.'
+    suffocation: ' &fbreathed in too much sand.'
+    suicide: ' &fdidn''t call 1-800-273-8255.'
+    thorns: ' &fwore a crown of thorns.'
+    void: ' &fwent flying with the elder dragon.'
+    wither: ' &fwithered away.'
 tag:
   time: 30
   distance: 10
@@ -18,7 +47,7 @@ barrier:
 regions:
   max-name: 16
 enderpearl:
-  time: 60
+  time: 15
 enchantment-limiter:
   ARROW_DAMAGE: 4
   ARROW_FIRE: 0
@@ -45,87 +74,25 @@ enchantment-limiter:
   THORNS: 0
   WATER_WORKER: -1
 unrepairable-lore-line: "&cUnrepairable"
-#  Use -1 for no change
-#  Use 0 to disable potion
-#  Use other values to limit potion level
-#  Change extended to false to disable extended potions
-#  Disabled-potion-msg decides if a message is sent when a potion is used that is not allowed.
-disabled-potion-msg: true
-potion-limiter:
-  SPEED:
-    level: -1
-    extended: true
-  SLOW:
-    level: 1
-    extended: false
-  FAST_DIGGING:
-    level: -1
-    extended: true
-  SLOW_DIGGING:
-    level: -1
-    extended: true
-  INCREASE_DAMAGE:
-    level: 0
-    extended: true
+allowed_potions:
   HEAL:
-    level: -1
-    extended: true
-  HARM:
-    level: 0
-    extended: true
-  JUMP:
-    level: -1
-    extended: true
-  CONFUSION:
-    level: -1
-    extended: true
-  REGENERATION:
-    level: 0
-    extended: true
-  DAMAGE_RESISTANCE:
-    level: -1
-    extended: true
+    level: 2
+    extended: false
   FIRE_RESISTANCE:
-    level: -1
-    extended: true
-  WATER_BREATHING:
-    level: -1
+    level: 1
     extended: true
   INVISIBILITY:
-    level: 0
-    extended: true
-  BLINDNESS:
-    level: -1
-    extended: true
-  NIGHT_VISION:
-    level: -1
-    extended: true
-  HUNGER:
-    level: 0
-    extended: true
-  WEAKNESS:
-    level: 0
-    extended: true
-  POISON:
     level: 1
     extended: false
-  WITHER:
-    level: -1
+  POISON:
+    level: 2
     extended: true
-  HEALTH_BOOST:
-    level: -1
+  SPEED:
+    level: 2
     extended: true
-  ABSORPTION:
-    level: -1
+  SLOW:
+    level: 2
     extended: true
-  SATURATION:
-    level: -1
-    extended: true
-disabled-potion-msg: true
-xray-ores:
-  - "DIAMOND_ORE"
-  - "IRON_ORE"
-  - "EMERALD_ORE"
 crowbar:
   uses: 6
   spawner:
@@ -133,4 +100,283 @@ crowbar:
   frame:
     cost: 1
 logout:
-  time: 25
+  time: 30
+blocked:
+  - FURNACE
+  - CHEST
+  - TRAPPED_CHEST
+  - BEACON
+  - DISPENSER
+  - DROPPER
+  - HOPPER
+  - WORKBENCH
+  - ENCHANTMENT_TABLE
+  - ENDER_CHEST
+  - ANVIL
+  - BED_BLOCK
+  - FENCE_GATE
+  - SPRUCE_FENCE_GATE
+  - BIRCH_FENCE_GATE
+  - ACACIA_FENCE_GATE
+  - JUNGLE_FENCE_GATE
+  - DARK_OAK_FENCE_GATE
+  - IRON_DOOR_BLOCK
+  - WOODEN_DOOR
+  - SPRUCE_DOOR
+  - BIRCH_DOOR
+  - JUNGLE_DOOR
+  - ACACIA_DOOR
+  - DARK_OAK_DOOR
+  - WOOD_BUTTON
+  - STONE_BUTTON
+  - TRAP_DOOR
+  - IRON_TRAPDOOR
+  - DIODE_BLOCK_OFF
+  - DIODE_BLOCK_ON
+  - REDSTONE_COMPARATOR_OFF
+  - REDSTONE_COMPARATOR_ON
+  - FENCE
+  - SPRUCE_FENCE
+  - BIRCH_FENCE
+  - JUNGLE_FENCE
+  - DARK_OAK_FENCE
+  - ACACIA_FENCE
+  - NETHER_FENCE
+  - BREWING_STAND
+  - CAULDRON
+  - SIGN_POST
+  - WALL_SIGN
+  - SIGN
+  - LEVER
+  - BLACK_SHULKER_BOX
+  - BLUE_SHULKER_BOX
+  - BROWN_SHULKER_BOX
+  - CYAN_SHULKER_BOX
+  - GRAY_SHULKER_BOX
+  - GREEN_SHULKER_BOX
+  - LIGHT_BLUE_SHULKER_BOX
+  - LIME_SHULKER_BOX
+  - MAGENTA_SHULKER_BOX
+  - ORANGE_SHULKER_BOX
+  - PINK_SHULKER_BOX
+  - PURPLE_SHULKER_BOX
+  - RED_SHULKER_BOX
+  - SILVER_SHULKER_BOX
+  - WHITE_SHULKER_BOX
+  - YELLOW_SHULKER_BOX
+classes:
+  archer:
+    increase-percent: 1.20
+    hit-time: 30
+    cooldown: 10
+    effects:
+      SUGAR:
+        effect: SPEED
+        click:
+          amplifier: 3
+          duration: 7
+          energy: 20
+          self: true
+          faction: false
+          allies: false
+          other: false
+      FEATHER:
+        effect: JUMP
+        click:
+          amplifier: 6
+          duration: 8
+          energy: 20
+          self: true
+          faction: false
+          allies: false
+          other: false
+        hold:
+          amplifier: 1
+          duration: 7
+          self: true
+          faction: true
+          allies: false
+          other: false
+  bard:
+    range: 10
+    hold-duration: 7
+    effects:
+      SUGAR:
+        effect: SPEED
+        click:
+          amplifier: 2
+          duration: 7
+          energy: 20
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 1
+          duration: 7
+          self: false
+          faction: true
+          allies: false
+          other: false
+      BLAZE_POWDER:
+        effect: INCREASE_DAMAGE
+        click:
+          amplifier: 1
+          duration: 7
+          energy: 45
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 0
+          duration: 7
+          self: false
+          faction: true
+          allies: false
+          other: false
+      IRON_INGOT:
+        effect: DAMAGE_RESISTANCE
+        click:
+          amplifier: 1
+          duration: 5
+          energy: 40
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 0
+          duration: 6
+          self: false
+          faction: true
+          allies: false
+          other: false
+      SPIDER_EYE:
+        effect: WITHER
+        click:
+          amplifier: 0
+          duration: 6
+          energy: 45
+          self: true
+          faction: false
+          allies: false
+          other: true
+      GHAST_TEAR:
+        effect: REGENERATION
+        click:
+          amplifier: 1
+          duration: 3
+          energy: 40
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 0
+          duration: 5
+          self: false
+          faction: true
+          allies: false
+          other: true
+      FEATHER:
+        effect: JUMP
+        click:
+          amplifier: 6
+          duration: 8
+          energy: 30
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 3
+          duration: 7
+          self: true
+          faction: true
+          allies: false
+          other: true
+      MAGMA_CREAM:
+        effect: FIRE_RESISTANCE
+        click:
+          amplifier: 0
+          duration: 180
+          energy: 30
+          self: true
+          faction: true
+          allies: false
+          other: false
+        hold:
+          amplifier: 0
+          duration: 8
+          self: true
+          faction: true
+          allies: false
+          other: false
+    rouge-finder:
+      range: 80
+      remainder: 30
+  rogue:
+    duration: 20
+    invisible-length: 120
+    uninvis-range: 10
+    uninvis-timer: 30
+    effects:
+      SUGAR:
+        effect: SPEED
+        click:
+          amplifier: 5
+          duration: 5
+          energy: 20
+          cooldown: 30
+      FEATHER:
+        effect: JUMP
+        click:
+          amplifier: 6
+          duration: 7
+          energy: 20
+          cooldown: 15
+      IRON_INGOT:
+        effect: DAMAGE_RESISTANCE
+        click:
+          amplifier: 2
+          duration: 6
+          energy: 20
+          cooldown: 30
+  miner:
+    diamonds:
+      100:
+        - SPEED-2
+      250:
+        - SPEED-2
+        - DAMAGE_RESISTANCE-1
+      500:
+        - SPEED-3
+        - DAMAGE_RESISTANCE-1
+      1000:
+        - SPEED-3
+        - DAMAGE_RESISTANCE-1
+        - FAST_DIGGING-3
+      2500:
+        - SPEED-3
+        - DAMAGE_RESISTANCE-2
+        - FAST_DIGGING-3
+factions:
+  stuck:
+    time: 3600
+  claim_wand:
+    name: '§6§lClaim Wand'
+    lore:
+      - '§eLeft-Click for point one.'
+      - '§eRight-Click for point two.'
+  claims:
+    cost:
+      block: 0.25
+      existing_scale: 500
+    buffer: 5
+    min_size: 5
+  names:
+    length:
+      min: 5
+      max: 16
+starting-balance: 100

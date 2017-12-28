@@ -2,85 +2,141 @@ package com.desiremc.hcf.session;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Key;
+import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.material.MaterialData;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
-import com.mongodb.WriteResult;
 
 public class RegionHandler extends BasicDAO<Region, Integer>
 {
 
     private static RegionHandler instance;
 
-    private HashMap<String, Region> regions = new HashMap<>();
+    private static HashMap<String, Region> regions = new HashMap<>();
 
-    private int nextId = 0;
+    private static int nextId = 0;
 
-    public RegionHandler(Datastore ds)
+    public RegionHandler()
     {
-        super(Region.class, ds);
-        load();
+        super(Region.class, DesireCore.getInstance().getMongoWrapper().getDatastore());
+
+        DesireCore.getInstance().getMongoWrapper().getMorphia().map(Region.class);
+
+        loadRegions();
     }
 
     public static void initialize()
     {
-        instance = new RegionHandler(DesireCore.getInstance().getMongoWrapper().getDatastore());
+        instance = new RegionHandler();
     }
 
-    private void load()
+    private void loadRegions()
     {
-        for (Region r : find().asList())
+        for (Region region : find())
         {
-            regions.put(r.getName().toLowerCase(), r);
-            if (r.getId() >= nextId)
+            regions.put(region.getName().toLowerCase(), region);
+            if (region.getId() >= nextId)
             {
-                nextId = r.getId() + 1;
+                nextId = region.getId() + 1;
             }
-            r.getRegion().calculate();
         }
     }
 
-    public Region getRegion(String name)
+    /**
+     * Get a region by the given case-insensitive name if one exists.
+     * 
+     * @param name the name of the region to search for.
+     * @return the region if one is found.
+     */
+    public static Region getRegion(String name)
     {
         return regions.get(name.toLowerCase());
     }
 
-    public Collection<Region> getRegions()
+    /**
+     * @return an immutable view of all the regions.
+     */
+    public static Collection<Region> getRegions()
     {
         return regions.values();
     }
 
-    @Override
-    public WriteResult delete(Region r)
+    /**
+     * @return a mutable list of all region names.
+     */
+    public static List<String> getRegionNames()
     {
-        regions.remove(r.getName().toLowerCase());
-        return super.delete(r);
+        List<String> names = new LinkedList<>();
+        for (Region region : getRegions())
+        {
+            names.add(region.getName());
+        }
+        return names;
     }
 
-    public Key<Region> save(Region r, boolean applyId)
+    /**
+     * Delete a region from the database.
+     * 
+     * @param region the region to delete.
+     */
+    public static void deleteRegion(Region region)
     {
-        r.setId(nextId);
+        regions.remove(region.getName().toLowerCase());
+        getInstance().delete(region);
+    }
+
+    /**
+     * Create a new region with the given values. This will also save the region to the database.
+     * 
+     * @param name the name of the region.
+     * @param world the world the region exists in.
+     * @param regionBlocks the blocks of the region.
+     * @param barrierMaterial the material the barrier is made up of.
+     * @param viewDistance the distance a player can view the barrier from.
+     * @return the newly created region.
+     */
+    public static Region createRegion(String name, World world, RegionBlocks regionBlocks, MaterialData barrierMaterial, int viewDistance)
+    {
+        Region region = new Region();
+        region.setId(nextId);
+        region.setName(name);
+        region.setWorld(world);
+        region.setRegionBlocks(regionBlocks);
+        region.setBarrierMaterial(barrierMaterial);
+        region.setViewDistance(viewDistance);
+        region.save();
+
         nextId++;
-        r.getRegion().calculate();
-        return this.save(r);
+
+        return region;
     }
 
-    @Override
-    public Key<Region> save(Region r)
+    /**
+     * Get the region that the location is in. If it is not within a region, it returns null.
+     * 
+     * @param location the location to check.
+     * @return the region if one is found.
+     */
+    public static Region getRegion(Location location)
     {
-        regions.put(r.getName().toLowerCase(), r);
-        r.getRegion().calculate();
-        return super.save(r);
+        for (Region region : regions.values())
+        {
+            if (region.getWorld() == location.getWorld() && region.getRegionBlocks().isWithin(location))
+            {
+                return region;
+            }
+        }
+        return null;
     }
 
-    public void remove(String name)
-    {
-        regions.remove(name);
-    }
-
+    /**
+     * @return the singleton instance of this handler.
+     */
     public static RegionHandler getInstance()
     {
         return instance;

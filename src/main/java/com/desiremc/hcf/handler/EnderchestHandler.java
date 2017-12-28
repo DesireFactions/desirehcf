@@ -1,8 +1,5 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.DesireHCF;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
@@ -26,14 +23,6 @@ public class EnderchestHandler implements Listener
                 {
                     event.setCancelled(true);
                     DesireHCF.getLangHandler().getString("enderchest.blocked");
-                }
-                else
-                {
-                    Session s = SessionHandler.getSession(event.getPlayer());
-                    if (!s.hasAchievement(Achievement.FIRST_ENDERCHEST_OPEN))
-                    {
-                        s.awardAchievement(Achievement.FIRST_ENDERCHEST_OPEN, true);
-                    }
                 }
             }
         }

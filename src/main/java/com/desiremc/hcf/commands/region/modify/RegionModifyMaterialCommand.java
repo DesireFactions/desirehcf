@@ -1,43 +1,56 @@
 package com.desiremc.hcf.commands.region.modify;
 
-import org.bukkit.command.CommandSender;
-import org.bukkit.material.MaterialData;
-
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.parsers.MaterialDataParser;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.ItemNames;
 import com.desiremc.core.validators.ItemBlockValidator;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.parser.RegionParser;
+import com.desiremc.hcf.parsers.RegionParser;
 import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
+import org.bukkit.material.MaterialData;
+
+import java.util.List;
 
 public class RegionModifyMaterialCommand extends ValidCommand
 {
-    
+
     public RegionModifyMaterialCommand()
     {
-        super("material", "Change the material of a region.", Rank.ADMIN, new String[] { "region", "material" }, new String[] {});
+        super("material", "Change the material of a region.", Rank.ADMIN);
 
-        addParser(new RegionParser(), "region");
-        addParser(new MaterialDataParser(), "material");
+        addArgument(CommandArgumentBuilder.createBuilder(Region.class)
+                .setName("region")
+                .setParser(new RegionParser())
+                .build());
 
-        addValidator(new ItemBlockValidator(), "material");
+        addArgument(CommandArgumentBuilder.createBuilder(MaterialData.class)
+                .setName("material")
+                .setParser(new MaterialDataParser())
+                .addValidator(new ItemBlockValidator())
+                .build());
     }
 
     @SuppressWarnings("deprecation")
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        Region r = (Region) args[0];
-        MaterialData data = (MaterialData) args[1];
-        MaterialData oldData = new MaterialData(r.getBarrierMaterial(), (byte) r.getBarrierMaterialData());
+        Region region = (Region) arguments.get(0).getValue();
+        MaterialData data = (MaterialData) arguments.get(1).getValue();
 
-        r.setBarrierMaterial(data);
-        RegionHandler.getInstance().save(r);
+        MaterialData oldData = new MaterialData(region.getBarrierMaterial(), (byte) region.getBarrierMaterialData());
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.change", "{change}", "material", "{old}", ItemNames.lookup(oldData), "{new}", ItemNames.lookup(data));
+        region.setBarrierMaterial(data);
+        region.save();
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "region.change", true, false,
+                "{change}", "material",
+                "{region}", region.getName(),
+                "{old}", ItemNames.lookup(oldData),
+                "{new}", ItemNames.lookup(data));
 
     }
 

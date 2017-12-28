@@ -1,22 +1,22 @@
 package com.desiremc.hcf.barrier;
 
-import java.util.HashMap;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
+import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
+import com.desiremc.core.utils.cache.RemovalNotification.Cause;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.tasks.SafeLogoutTask;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.npc.SafeLogoutTask;
-import com.google.common.cache.Cache;
-import com.google.common.cache.CacheBuilder;
-import com.google.common.cache.RemovalListener;
-import com.google.common.cache.RemovalNotification;
+import java.util.HashMap;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 public class TagHandler
 {
@@ -29,22 +29,25 @@ public class TagHandler
 
     public static void initialize()
     {
-        tags = CacheBuilder.newBuilder().expireAfterWrite(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).removalListener(new RemovalListener<UUID, Long>()
+        tags = new Cache<>(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
         {
-
             @Override
             public void onRemoval(RemovalNotification<UUID, Long> entry)
             {
-                if (entry.getCause().ordinal() > 2)
+                if (entry.getCause() == Cause.EXPIRE || entry.getCause() == Cause.REMOVE)
                 {
+                    Player p = PlayerUtils.getPlayer(entry.getKey());
                     BarrierTask.addToClear(entry.getKey());
-                    Bukkit.getPlayer(entry.getKey()).sendMessage(DesireHCF.getLangHandler().getString("tag.expire"));
-                    EntryRegistry.getInstance().removeValue(Bukkit.getPlayer(entry.getKey()), DesireHCF.getLangHandler().getString("tag.scoreboard"));
+                    if (p != null)
+                    {
+                        DesireHCF.getLangHandler().sendRenderMessage(p, "tag.expire", true, false);
+                        EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false));
+                    }
                 }
             }
-        }).build();
+        }, DesireHCF.getInstance());
 
-        history = CacheBuilder.newBuilder().expireAfterWrite(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS).build();
+        history = new Cache<>(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS, DesireHCF.getInstance());
 
         Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new Runnable()
         {
@@ -58,7 +61,7 @@ public class TagHandler
 
     public static boolean isTagged(Player p)
     {
-        return tags.asMap().containsKey(p.getUniqueId());
+        return tags.containsKey(p.getUniqueId());
     }
 
     public static void tagPlayer(Player p, Player damager)
@@ -67,13 +70,13 @@ public class TagHandler
         {
             p.sendMessage(DesireHCF.getLangHandler().getString("tag.active"));
         }
-        if (!isTagged(damager))
+        if (p != damager && !isTagged(damager))
         {
             damager.sendMessage(DesireHCF.getLangHandler().getString("tag.active"));
         }
         tags.put(p.getUniqueId(), System.currentTimeMillis());
         tags.put(damager.getUniqueId(), System.currentTimeMillis());
-        history.put(p.getUniqueId(), new Tag(damager.getUniqueId(), damager.getInventory().getItemInMainHand()));
+        history.put(p.getUniqueId(), new Tag(damager.getUniqueId(), damager.getItemInHand()));
 
         SafeLogoutTask.cancel(p);
         SafeLogoutTask.cancel(damager);
@@ -96,12 +99,12 @@ public class TagHandler
 
     public static Long getTagTime(UUID uuid)
     {
-        return tags.getIfPresent(uuid);
+        return tags.get(uuid);
     }
 
     public static UUID getTagger(UUID uuid)
     {
-        Tag tag = history.getIfPresent(uuid);
+        Tag tag = history.get(uuid);
         if (tag == null)
         {
             return null;
@@ -111,17 +114,17 @@ public class TagHandler
 
     public static Tag getTag(UUID uuid)
     {
-        return history.getIfPresent(uuid);
+        return history.get(uuid);
     }
 
     public static void clearTag(UUID uuid)
     {
-        tags.invalidate(uuid);
+        tags.remove(uuid);
     }
 
     public static Set<UUID> getTaggedPlayers()
     {
-        return tags.asMap().keySet();
+        return tags.keySet();
     }
 
     public static class Tag

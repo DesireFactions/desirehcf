@@ -1,11 +1,10 @@
 package com.desiremc.hcf.listener;
 
-import java.util.function.Consumer;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
@@ -15,17 +14,25 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.FactionSession;
-import com.desiremc.hcf.session.FactionSessionHandler;
+import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.util.FactionsUtils;
-import com.massivecraft.factions.Faction;
 
 public class ChatListener implements Listener
 {
 
-    @EventHandler
-    public void chat(AsyncPlayerChatEvent event)
+    private static final boolean DEBUG = false;
+
+    @EventHandler(priority = EventPriority.HIGHEST)
+    public void onChat(AsyncPlayerChatEvent event)
     {
+        if (DEBUG)
+        {
+            System.out.println("ChatListener.onChat() called.");
+        }
+        if (event.isCancelled())
+        {
+            return;
+        }
         Player player = event.getPlayer();
         event.setCancelled(true);
         Session s = SessionHandler.getSession(player);
@@ -47,49 +54,15 @@ public class ChatListener implements Listener
         Faction f = FactionsUtils.getFaction(player);
 
         String parsedMessage = s.getRank().getId() >= Rank.ADMIN.getId() ? ChatColor.translateAlternateColorCodes('&', msg) : msg;
-        System.out.println(player.getName() + ": " + parsedMessage);
-        Bukkit.getOnlinePlayers().stream().forEach(new Consumer<Player>()
-        {
 
-            private FancyMessage message;
-            
-            @Override
-            public void accept(Player player)
-            {
+        FancyMessage message = new FancyMessage(s.getRank().getPrefix())
+                .then(player.getName())
+                .tooltip(FactionsUtils.getMouseoverDetails(f))
+                .then(": ")
+                .then(parsedMessage)
+                .color(s.getRank().getColor());
 
-                if (FactionsUtils.isNone(f))
-                {
-                    message = new FancyMessage(s.getRank().getPrefix())
-                            .then(player.getName())
-                            .tooltip(new String[] {
-                                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "NO FACTION"
-                            })
-                            .then(": ")
-                            .then(parsedMessage)
-                            .color(s.getRank().getColor());
-
-                }
-                else
-                {
-                    FactionSession fSession = FactionSessionHandler.getFactionSession(f.getTag());
-
-                    message = new FancyMessage(s.getRank().getPrefix())
-                            .then(player.getName())
-                            .tooltip(new String[] {
-                                    ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
-                                    ChatColor.GRAY + "Name: " + ChatColor.YELLOW + "" + (f != null ? f.getTag() : "NONE"),
-                                    ChatColor.GRAY + "Members: " + ChatColor.YELLOW + "" + (f != null ? f.getFPlayers().size() : "NONE"),
-                                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + "" + (f != null && fSession != null ? fSession.getTrophies() : "---")
-                            })
-                            .then(": ")
-                            .then(parsedMessage)
-                            .color(s.getRank().getColor());
-                }
-
-                message.send(player);
-                System.out.println();
-            }
-        });
+        Bukkit.getOnlinePlayers().stream().forEach(p -> message.send(p));
     }
 
 }

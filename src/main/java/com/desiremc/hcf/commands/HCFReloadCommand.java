@@ -1,25 +1,27 @@
 package com.desiremc.hcf.commands;
 
-import org.bukkit.command.CommandSender;
-
-import com.desiremc.core.api.FileHandler;
-import com.desiremc.core.api.command.ValidCommand;
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
+
+import java.util.List;
 
 public class HCFReloadCommand extends ValidCommand
 {
 
     public HCFReloadCommand()
     {
-        super("hcfreload", "Reload the lang file.", Rank.ADMIN, new String[]{});
+        super("hcfreload", "Reload the lang file.", Rank.ADMIN, new String[] {});
     }
 
     @Override
-    public void validRun(CommandSender sender, String label, Object... args)
+    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        FileHandler.reloadAll();
-        DesireHCF.getLangHandler().sendString(sender, "hcfreload");
+        DesireHCF.getLangHandler().reload();
+        DesireHCF.getConfigHandler().reload();
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "hcfreload", true, false);
     }
 
 }

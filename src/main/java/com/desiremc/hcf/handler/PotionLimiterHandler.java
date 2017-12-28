@@ -1,198 +1,174 @@
 package com.desiremc.hcf.handler;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.hcf.DesireHCF;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.entity.ThrownPotion;
+import org.bukkit.event.Cancellable;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.entity.PotionSplashEvent;
 import org.bukkit.event.inventory.BrewEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.inventory.BrewerInventory;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.PotionMeta;
-import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffectType;
-import org.bukkit.projectiles.ProjectileSource;
-import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.potion.PotionType;
 
 import java.util.ArrayList;
 
 public class PotionLimiterHandler implements Listener
 {
 
-    private ArrayList<PotionLimit> potionLimits;
+    private ArrayList<AllowedPotion> allowedPotions;
 
     public PotionLimiterHandler()
     {
-        this.potionLimits = new ArrayList<>();
+        this.allowedPotions = new ArrayList<>();
         this.loadPotionLimits();
     }
 
     private void loadPotionLimits()
     {
-        ConfigurationSection configurationSection = DesireHCF.getConfigHandler().getConfigurationSection("potion-limiter");
-        for (String s : configurationSection.getKeys(false))
+        ConfigurationSection allowedSection = DesireHCF.getConfigHandler().getConfigurationSection("allowed_potions");
+        for (String s : allowedSection.getKeys(false))
         {
-            PotionLimit potionLimit = new PotionLimit();
-            potionLimit.setType(PotionEffectType.getByName(s));
-            potionLimit.setLevel(configurationSection.getInt(s + ".level"));
-            potionLimit.setExtended(configurationSection.getBoolean(s + ".extended"));
-            this.potionLimits.add(potionLimit);
+            try
+            {
+                this.allowedPotions.add(new AllowedPotion(PotionType.getByEffect(PotionEffectType.getByName(s)), allowedSection.getInt(s + ".level"), allowedSection.getBoolean(s + ".extended")));
+            }
+            catch (Exception ex)
+            {
+                DesireHCF.getInstance().getLogger().severe("There was an error loading potion " + s + " for the potion limiter.");
+            }
         }
     }
 
     @EventHandler
-    public void onPotionSplash(PotionSplashEvent event)
+    public void onBrewComplete(BrewEvent event)
     {
-        ThrownPotion potion = event.getPotion();
-
-        for (PotionEffect effect : potion.getEffects())
+        BrewerInventory inv = event.getContents();
+        ItemStack ingredient = inv.getIngredient();
+        Material ingredientType = ingredient.getType();
+        ItemStack potItem;
+        Potion pot;
+        if (ingredientType == Material.GHAST_TEAR || ingredientType == Material.BLAZE_POWDER)
         {
-            if (containsPotion(effect))
+            cancel(event, inv);
+        }
+        else if (ingredientType == Material.REDSTONE)
+        {
+            for (int i = 0; i < 3; i++)
             {
-                if (!isPotionAllowed((PotionMeta) potion.getItem().getItemMeta(),
-                        potion.getShooter(), DesireHCF.getConfigHandler().getBoolean("potion-disabled")))
+                potItem = inv.getItem(i);
+                if (potItem != null && potItem.getType() == Material.POTION)
                 {
-                    event.setCancelled(true);
-                }
-            }
-        }
-    }
-
-    @EventHandler
-    public void onConsumeEvent(PlayerItemConsumeEvent event)
-    {
-        if (!event.getItem().getType().equals(Material.POTION)) return;
-
-        Player p = event.getPlayer();
-        PotionMeta potion = (PotionMeta) event.getItem().getItemMeta();
-
-        for (PotionEffect effect : potion.getCustomEffects())
-        {
-            if (containsPotion(effect))
-            {
-                if (!isPotionAllowed(potion, p, DesireHCF.getConfigHandler().getBoolean("potion-disabled")))
-                    event.setCancelled(true);
-            }
-        }
-    }
-
-    @EventHandler
-    public void onPotionBrew(BrewEvent brewEvent)
-    {
-        BrewerInventory contents = brewEvent.getContents();
-        ItemStack clone = contents.getIngredient().clone();
-        ItemStack[] array = new ItemStack[3];
-        for (int i = 0; i < 3; ++i)
-        {
-            if (contents.getItem(i) != null)
-            {
-                array[i] = contents.getItem(i).clone();
-            }
-        }
-        new BukkitRunnable()
-        {
-            public void run()
-            {
-                for (ItemStack item : contents.getContents())
-                {
-                    PotionMeta meta = (PotionMeta) item.getItemMeta();
-                    for (PotionEffect potionEffect : meta.getCustomEffects())
+                    pot = Potion.fromItemStack(potItem);
+                    if (pot != null && pot.getType() == PotionType.INVISIBILITY)
                     {
-                        for (PotionLimit potionLimit : potionLimits)
-                        {
-                            if (potionLimit.getType().equals(potionEffect.getType()))
-                            {
-                                int level = potionLimit.getLevel();
-                                int n = potionEffect.getAmplifier() + 1;
-                                if (level == 0 || n > level)
-                                {
-                                    contents.setIngredient(clone);
-                                    for (int j = 0; j < 3; ++j)
-                                    {
-                                        contents.setItem(j, array[j]);
-                                    }
-                                    return;
-                                }
-                                if (meta.getBasePotionData().isExtended() && !potionLimit.isExtended())
-                                {
-                                    contents.setIngredient(clone);
-                                    for (int k = 0; k < 3; ++k)
-                                    {
-                                        contents.setItem(k, array[k]);
-                                    }
-                                    return;
-                                }
-                            }
-                        }
+                        cancel(event, inv);
                     }
                 }
             }
-        }.runTaskLater(DesireHCF.getInstance(), 1L);
-    }
-
-    public boolean containsPotion(PotionEffect effect)
-    {
-        for (PotionLimit limits : potionLimits)
-        {
-            if (limits.getType().equals(effect.getType())) return true;
         }
-        return false;
     }
 
-    private PotionLimit getPotionLimit(PotionEffectType type)
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event)
     {
-        for (PotionLimit limit : potionLimits)
+        if (event.getPlayer().getItemInHand() == null || event.getPlayer().getItemInHand().getType() != Material.POTION)
         {
-            if (limit.getType().equals(type)) return limit;
+            return;
+        }
+
+        Potion pot = Potion.fromItemStack(event.getItem());
+        if (pot != null)
+        {
+            if (!isPotionAllowed(pot))
+            {
+                cancel(event, null);
+            }
+        }
+    }
+
+    @EventHandler
+    public void onDrink(PlayerItemConsumeEvent event)
+    {
+        if (event.getItem() == null || !event.getItem().getType().equals(Material.POTION))
+        {
+            return;
+        }
+        Potion pot = Potion.fromItemStack(event.getItem());
+        if (pot != null)
+        {
+            Session session = SessionHandler.getOnlineSession(event.getPlayer().getUniqueId());
+
+            if (!session.hasAchievement(Achievement.FIRST_POTION_USE))
+            {
+                session.awardAchievement(Achievement.FIRST_POTION_USE, true);
+            }
+        }
+    }
+
+    private static void cancel(Cancellable event, Inventory inv)
+    {
+        event.setCancelled(true);
+        if (inv != null)
+        {
+            for (HumanEntity e : inv.getViewers())
+            {
+                if (e instanceof Player)
+                {
+                    DesireCore.getLangHandler().sendRenderMessage((Player) e, "potion.blocked", true, false);
+                }
+            }
+        }
+    }
+
+    private AllowedPotion getAllowedPotion(PotionType type)
+    {
+        for (AllowedPotion allowed : allowedPotions)
+        {
+            if (allowed.getType().equals(type))
+            {
+                return allowed;
+            }
         }
         return null;
     }
 
-    private boolean isPotionAllowed(PotionMeta potion, ProjectileSource source, boolean msg)
+    private boolean isPotionAllowed(Potion potion)
     {
-        for (PotionEffect effect : potion.getCustomEffects())
-        {
-            PotionLimit limit = getPotionLimit(effect.getType());
-
-            int potionLevel = effect.getAmplifier() + 1;
-            int maxLevel = limit.getLevel();
-
-            if (maxLevel == 0 || potionLevel > maxLevel || (potion.getBasePotionData().isExtended() && !limit.isExtended()))
-            {
-                if (msg)
-                {
-                    if (source instanceof Player)
-                    {
-                        Player p = (Player) source;
-                        Session session = SessionHandler.getSession(p);
-                        DesireHCF.getLangHandler().sendRenderMessage(session, "potion-disabled");
-                        p.getInventory().setItemInMainHand(new ItemStack(Material.AIR));
-                    }
-                }
-                return false;
-            }
-        }
-        return true;
+        AllowedPotion allowed = getAllowedPotion(potion.getType());
+        return allowed == null || (potion.getLevel() <= allowed.getLevel() && (allowed.isExtended() || !potion.hasExtendedDuration()));
     }
 
-    public class PotionLimit
+    public class AllowedPotion
     {
-        private PotionEffectType type;
+        private PotionType type;
         private int level;
         private boolean extended;
 
-        public PotionEffectType getType()
+        public AllowedPotion(PotionType type, int level, boolean extended)
+        {
+            this.type = type;
+            this.level = level;
+            this.extended = extended;
+        }
+
+        public PotionType getType()
         {
             return this.type;
         }
 
-        public void setType(PotionEffectType type)
+        public void setType(PotionType type)
         {
             this.type = type;
         }
