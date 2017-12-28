@@ -93,6 +93,7 @@ public class Faction
         claims = new LinkedList<>();
         allies = new LinkedList<>();
         invites = new LinkedList<>();
+        outgoingAllies = new LinkedList<>();
     }
 
     /**
