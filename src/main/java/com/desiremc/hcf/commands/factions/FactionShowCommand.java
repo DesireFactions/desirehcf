@@ -56,7 +56,7 @@ public class FactionShowCommand extends FactionValidCommand
                 "{online}", faction.getOnlineMembers().size(),
                 "{max}", faction.getMemberSize(),
                 "{description}", faction.getDescription(),
-                "{leader}", faction.getLeader().getName(),
+                "{leader}", faction.getLeader().isOnline() ? "§a" + faction.getLeader().getName() : "§c" + faction.getLeader().getName(),
                 "{leader_kills}", faction.getLeader().getTotalKills(),
                 "{kills}", faction.getTotalKills(),
                 "{balance}", StringUtils.doubleFormat(faction.getBalance()),
