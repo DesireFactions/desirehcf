@@ -6,6 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
@@ -15,6 +16,7 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.tablist.TabAPI;
 import com.desiremc.core.tablist.TabList;
+import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.FactionHandler;
@@ -45,6 +47,9 @@ public class TablistHandler implements Listener
                 tabList.setSlot(5, 0, "§b§lLocation:");
                 tabList.setSlot(6, 0, FactionHandler.getFaction(event.getPlayer().getLocation()).getName());
                 tabList.setSlot(7, 0, "§8(§7" + joiner.getLocation().getBlockX() + "§8,§7" + joiner.getLocation().getBlockZ() + "§8)");
+
+                tabList.setSlot(9, 0, "§b§lDirection:");
+                tabList.setSlot(10, 0, PlayerUtils.getCardinalDirection(joiner));
 
                 tabList.setSlot(1, 2, "§b§lEnd Portals:");
                 tabList.setSlot(2, 2, "§7(1000,1000)");
@@ -110,6 +115,13 @@ public class TablistHandler implements Listener
         }
         tabList.setSlot(6, 0, fSession.getLastFactionLocation().getName());
         tabList.setSlot(7, 0, "§8(§7" + event.getTo().getBlockX() + "§8,§7" + event.getFrom().getBlockZ() + "§8)");
+    }
+
+    @EventHandler
+    public void onMove(PlayerMoveEvent event)
+    {
+        TabList tabList = TabAPI.getPlayerTabList(event.getPlayer());
+        tabList.setSlot(10, 0, PlayerUtils.getCardinalDirection(event.getPlayer()));
     }
 
     public static void updateKills(FSession fSession)
