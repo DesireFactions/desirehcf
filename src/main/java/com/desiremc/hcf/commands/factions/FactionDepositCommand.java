@@ -13,6 +13,8 @@ import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.SenderHasAmountMoney;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 
+import net.minecraft.util.com.google.common.primitives.Doubles;
+
 public class FactionDepositCommand extends FactionValidCommand
 {
     public FactionDepositCommand()
@@ -32,7 +34,18 @@ public class FactionDepositCommand extends FactionValidCommand
     public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         Faction faction = sender.getFaction();
-        double amount = ((Number) arguments.get(0).getValue()).doubleValue();
+        String arg = (String) arguments.get(0).getValue();
+        double amount;
+
+        if (arg.equalsIgnoreCase("all"))
+        {
+            amount = sender.getBalance();
+        }
+        else
+        {
+            amount = Doubles.tryParse(arg);
+        }
+
 
         faction.depositBalance(amount);
         sender.withdrawBalance(amount);
