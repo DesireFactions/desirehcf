@@ -1,42 +1,24 @@
 package com.desiremc.hcf.listener;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.UUID;
-
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
 
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
+
 public class PickupListener implements Listener
 {
 
-    private static Set<UUID> disabledCobble = new HashSet<>();
-
     @EventHandler
-    public void onPickup(PlayerPickupItemEvent e)
+    public void onPickup(PlayerPickupItemEvent event)
     {
-        if (disabledCobble.contains(e.getPlayer().getUniqueId()))
+        Session session = SessionHandler.getOnlineSession(event.getPlayer().getUniqueId());
+        if (session.getSetting(SessionSetting.COBBLE))
         {
-            e.setCancelled(true);
+            event.setCancelled(true);
         }
-    }
-
-    /**
-     * Toggles cobblestone mode on and off.
-     * 
-     * @param uuid the player to toggle.
-     * @return whether or not the player previously had it toggled.
-     */
-    public static boolean toggleCobble(UUID uuid)
-    {
-        if (disabledCobble.contains(uuid))
-        {
-            disabledCobble.remove(uuid);
-            return true;
-        }
-        disabledCobble.add(uuid);
-        return false;
     }
 
 }
