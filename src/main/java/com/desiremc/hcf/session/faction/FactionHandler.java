@@ -267,6 +267,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
 
         faction.setState(FactionState.DELETED);
         faction.removeAllMembers();
+        faction.removeAllAllies();
         faction.save();
     }
 
