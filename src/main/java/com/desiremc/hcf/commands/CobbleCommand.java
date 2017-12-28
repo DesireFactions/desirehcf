@@ -1,13 +1,13 @@
 package com.desiremc.hcf.commands;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionSetting;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.listener.PickupListener;
-
-import java.util.List;
 
 public class CobbleCommand extends ValidCommand
 {
@@ -20,7 +20,7 @@ public class CobbleCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        if (PickupListener.toggleCobble(sender.getUniqueId()))
+        if (sender.toggleSetting(SessionSetting.COBBLE))
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "cobble.disable", true, false);
         }
@@ -28,6 +28,7 @@ public class CobbleCommand extends ValidCommand
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "cobble.enable", true, false);
         }
+        sender.save();
     }
 
 }
