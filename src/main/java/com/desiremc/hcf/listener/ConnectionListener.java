@@ -66,6 +66,8 @@ public class ConnectionListener implements Listener
             }
         }
 
+        Bukkit.broadcastMessage(fSession.getSafeTimeLeft() + " TEST");
+
         if (firstJoin.contains(player.getUniqueId()))
         {
             FileHandler config = DesireCore.getConfigHandler();
