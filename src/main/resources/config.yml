@@ -2,7 +2,7 @@ sotw:
   time: 3600
 timers:
   pvp:
-    time:
+    time: 1800
 death:
   pvp:
     default: ' &fwas killed by '
