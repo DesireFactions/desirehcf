@@ -136,7 +136,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         return null;
     }
 
-    public static FSession   initializeFSession(UUID uuid)
+    public static FSession initializeFSession(UUID uuid)
     {
         FSession fSession = fSessions.get(uuid);
         if (fSession == null)

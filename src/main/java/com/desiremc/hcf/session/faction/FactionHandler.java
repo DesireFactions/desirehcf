@@ -18,6 +18,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.scheduler.BukkitTask;
+import org.mongodb.morphia.Key;
 import org.mongodb.morphia.dao.BasicDAO;
 
 import com.desiremc.core.DesireCore;
@@ -471,6 +472,12 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     public static void addClaim(Faction faction, BoundedArea area)
     {
         claims = claims.add(faction, area);
+    }
+    
+    @Override
+    public Key<Faction> save(Faction entity)
+    {
+        return super.save(entity);
     }
 
     private static void check()

@@ -142,7 +142,6 @@ public class FSession implements Messageable
         lives = fSession.lives;
         balance = fSession.balance;
         lastSeen = fSession.lastSeen;
-
         kills = fSession.kills;
         deaths = fSession.deaths;
         currentOre = fSession.currentOre;
