@@ -3,6 +3,7 @@ package com.desiremc.hcf.listener.factions;
 import java.util.EnumSet;
 import java.util.Set;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -207,6 +208,7 @@ public class PlayerListener implements Listener
                         return;
                     }
                     claim.setPointOne(blockColumn, checkStatus == BORDER);
+                    Bukkit.broadcastMessage(StringUtils.formatNumber(claim.getCost(), 2, true));
                     DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.claims.cost_help", true, false,
                             "{x}", claim.getLength(),
                             "{z}", claim.getWidth(),
@@ -236,6 +238,7 @@ public class PlayerListener implements Listener
                 }
 
                 claim.setPointTwo(blockColumn, checkStatus == BORDER);
+                Bukkit.broadcastMessage(StringUtils.formatNumber(claim.getCost(), 2, true));
                 DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.claims.cost_help", true, false,
                         "{x}", claim.getLength(),
                         "{z}", claim.getWidth(),
@@ -270,6 +273,7 @@ public class PlayerListener implements Listener
             }
 
             faction.addClaim(claim.getBoundedArea());
+            Bukkit.broadcastMessage(claim.getCost() + "");
             faction.withdrawBalance(claim.getCost());
             faction.save();
 
