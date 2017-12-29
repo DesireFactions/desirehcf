@@ -882,11 +882,19 @@ public class FSession implements Messageable
             if (!paused && safeTimer > 0 && !SOTWHandler.getSOTW())
             {
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
+                if (DEBUG)
+                {
+                    System.out.println("PVPTimer.run() rescheduling event");
+                }
             }
 
             if (SOTWHandler.getSOTW())
             {
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 20);
+                if (DEBUG)
+                {
+                    System.out.println("PVPTimer.run() returned SOTW active.");
+                }
                 return;
             }
 

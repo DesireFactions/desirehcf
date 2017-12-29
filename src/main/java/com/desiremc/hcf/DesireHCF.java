@@ -93,7 +93,7 @@ public class DesireHCF extends JavaPlugin
         BarrierTask.initialize();
         HKitHandler.initialize();
 
-        new SOTWHandler();
+        SOTWHandler.initialize();
 
         registerListeners();
         registerCommands();

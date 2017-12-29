@@ -8,12 +8,6 @@ public class SOTWHandler
     private static boolean sotw;
     private static SOTWHandler instance;
 
-    public SOTWHandler()
-    {
-        sotw = false;
-        instance = this;
-    }
-
     public static SOTWHandler getInstance()
     {
         return instance;
@@ -33,5 +27,11 @@ public class SOTWHandler
     {
         SOTWHandler.setSOTW(true);
         new SOTWTask();
+    }
+
+    public static void initialize()
+    {
+        instance = new SOTWHandler();
+        sotw = false;
     }
 }
