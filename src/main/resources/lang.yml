@@ -145,7 +145,7 @@ factions:
     - '&8&m-----------------------------------------'
     - '&b{faction} &7[&f{online}&7/&f{max}&7]'
     - '  &8- &bDescription&7: &f{description}'
-    - '  &8- &bHome&7: &7{x}&7,&f{z}'
+    - '  &8- &bHome&7: &f{home}'
     - '  &8- &bLeader: &f{leader}&7[&f{leader_kills}&7]'
     - '  &8- &bTotal Kills&7: &f{kills}'
     - '  &8- &bBalance&7: &f${balance}'

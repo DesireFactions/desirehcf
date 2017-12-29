@@ -60,9 +60,7 @@ public class FactionShowCommand extends FactionValidCommand
                 "{leader_kills}", faction.getLeader().getTotalKills(),
                 "{kills}", faction.getTotalKills(),
                 "{balance}", StringUtils.doubleFormat(faction.getBalance()),
-                "{dtr}", StringUtils.doubleFormat(faction.getDTR()),
-                "{x}", faction.getHomeLocation().getBlockX(),
-                "{z}", faction.getHomeLocation().getBlockZ());
+                "{dtr}", StringUtils.doubleFormat(faction.getDTR()));
 
         StringBuilder sb = new StringBuilder();
 
@@ -112,6 +110,15 @@ public class FactionShowCommand extends FactionValidCommand
         }
 
         value = value.replace("{allies}", sb.toString());
+
+        if (faction.getHomeLocation() == null)
+        {
+            value = value.replace("{home}", "None");
+        }
+        else
+        {
+            value = value.replace("{home}", faction.getHomeLocation().getBlockX() + "," + faction.getHomeLocation().getBlockZ());
+        }
 
         return value;
     }
