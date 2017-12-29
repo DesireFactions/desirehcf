@@ -876,6 +876,10 @@ public class FSession implements Messageable
         {
             if (player == null || !player.isOnline())
             {
+                if (DEBUG)
+                {
+                    System.out.println("PVPTimer.run() player null or not online");
+                }
                 return;
             }
 

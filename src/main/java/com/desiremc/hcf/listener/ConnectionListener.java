@@ -58,15 +58,15 @@ public class ConnectionListener implements Listener
         {
             if (safe)
             {
+                Bukkit.broadcastMessage("Safe");
                 fSession.getSafeTimer().setScoreboard();
             }
             else
             {
+                Bukkit.broadcastMessage("Not Safe");
                 fSession.getSafeTimer().resume();
             }
         }
-
-        Bukkit.broadcastMessage(fSession.getSafeTimeLeft() + " TEST");
 
         if (firstJoin.contains(player.getUniqueId()))
         {
