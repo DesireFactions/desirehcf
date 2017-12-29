@@ -136,7 +136,7 @@ public class FSession implements Messageable
         this.id = FSessionHandler.getNextId();
         this.uuid = uuid;
         this.server = server;
-        this.safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
+        this.safeTimer = DesireHCF.getConfigHandler().getInteger("timers.pvp.time") * 1000;
         this.factionId = FactionHandler.getWilderness().getId();
         this.parsedFaction = FactionHandler.getWilderness();
         this.balance = DesireHCF.getConfigHandler().getDouble("starting-balance");
@@ -667,7 +667,7 @@ public class FSession implements Messageable
     public void resetPVPTimer()
     {
         pvpTimer = new PVPTimer();
-        safeTimer = DesireCore.getConfigHandler().getInteger("timers.pvp.time") * 1000;
+        safeTimer = DesireHCF.getConfigHandler().getInteger("timers.pvp.time") * 1000;
     }
 
     @Override
