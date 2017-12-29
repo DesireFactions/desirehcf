@@ -252,6 +252,7 @@ factions:
   list:
     header: '&9&m----------&r&b[ Faction List {pagenumber}/{pagecount} ]&9&m----------'
     message: '{faction}: {online}/{members} online, {dtr} DTR'
+    none: '&7There are currently no factions.'
 sotw:
   first: '&7Please run the command again to confirm &bSOTW&7.'
   confirmed: '&7Confirmed. Let &bSOTW &7commence.'

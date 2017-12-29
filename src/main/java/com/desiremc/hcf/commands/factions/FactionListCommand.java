@@ -14,12 +14,15 @@ import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionState;
 import com.desiremc.hcf.session.faction.FactionType;
+import com.desiremc.hcf.validators.ServerHasFactionsValidator;
 
 public class FactionListCommand extends FactionValidCommand
 {
     public FactionListCommand()
     {
         super("list", "List all factions.", Rank.GUEST, true, new String[] {});
+
+        addSenderValidator(new ServerHasFactionsValidator());
 
         addArgument(CommandArgumentBuilder.createBuilder(Integer.class)
                 .setName("page")
