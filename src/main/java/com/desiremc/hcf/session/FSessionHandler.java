@@ -145,11 +145,13 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         }
         else
         {
+            System.out.println(fSession.getFactionId() + " TESTING...");
             fSession.applyValues(instance.findOne(instance.createQuery()
                     .field("_id").equal(fSession.getId())
                     .field("server").equal(DesireCore.getCurrentServer())));
             fSession.save();
         }
+        System.out.println(fSession.getFactionId() + " TESTING...");
         onlineFSessions.put(fSession.getUniqueId(), fSession);
         return fSession;
     }

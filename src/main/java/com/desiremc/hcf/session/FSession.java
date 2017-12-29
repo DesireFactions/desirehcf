@@ -488,6 +488,14 @@ public class FSession implements Messageable
     }
 
     /**
+     * @return the player's faction id.
+     */
+    public int getFactionId()
+    {
+        return factionId;
+    }
+
+    /**
      * @return the player's active {@link ClaimSession}.
      */
     public ClaimSession getClaimSession()
