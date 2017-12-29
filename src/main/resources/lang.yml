@@ -257,6 +257,7 @@ factions:
     header: '&7&m----------&r&b[ Faction List {pagenumber}/{pagecount} ]&7&m----------'
     message: ' {faction}: {online}/{members} online, {dtr} DTR'
     none: '&7There are currently no factions.'
+  not_own: '&7You must do that in your own faction land.'
 sotw:
   first: '&7Please run the command again to confirm &bSOTW&7.'
   confirmed: '&7Confirmed. Let &bSOTW &7commence.'
