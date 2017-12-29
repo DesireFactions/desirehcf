@@ -186,7 +186,7 @@ public class DesireHCF extends JavaPlugin
         Plugin p = Bukkit.getPluginManager().getPlugin("WorldGuard");
         if (p == null)
         {
-            System.out.println("This could would crash if that were to happen.");
+            System.out.println("This could would crash if that were to happen..");
             return null;
         }
         return (WorldGuardPlugin) p;
