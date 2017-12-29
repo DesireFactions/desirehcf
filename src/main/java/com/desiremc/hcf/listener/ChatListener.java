@@ -76,6 +76,10 @@ public class ChatListener implements Listener
                     member.sendMessage(message);
                 }
             }
+            for (FSession member : f.getOnlineMembers())
+            {
+                member.sendMessage(message);
+            }
         }
         else
         {
