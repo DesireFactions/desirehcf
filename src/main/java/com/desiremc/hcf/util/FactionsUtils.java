@@ -214,9 +214,18 @@ public class FactionsUtils
         {
             if (member.getPlayer() != player)
             {
-                inRange.add(member.getPlayer());
+                if (player.getLocation().distanceSquared(member.getPlayer().getLocation()) <= (range * range))
+                {
+                    inRange.add(member.getPlayer());
+                }
             }
         }
+
+        for (Player p : inRange)
+        {
+            System.out.println(p.getName());
+        }
+        System.out.println(faction.getName());
 
         return inRange;
     }

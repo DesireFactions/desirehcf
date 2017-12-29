@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.session.Rank;
@@ -14,14 +16,12 @@ import com.desiremc.hcf.validators.TargetNoFactionValidator;
 import com.desiremc.hcf.validators.TargetNoInviteValidator;
 import com.desiremc.hcf.validators.TargetNotSameFactionValidator;
 
-import java.util.List;
-
 public class FactionInviteCommand extends FactionValidCommand
 {
 
     public FactionInviteCommand()
     {
-        super("invite", "Invite a player to your faction.", Rank.GUEST, true, new String[] {});
+        super("invite", "Invite a player to your faction.", Rank.GUEST, true, new String[] {"inv"});
 
         addSenderValidator(new SenderHasFactionValidator());
         addSenderValidator(new SenderFactionOfficerValidator());

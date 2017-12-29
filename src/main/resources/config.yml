@@ -266,7 +266,7 @@ classes:
         effect: REGENERATION
         click:
           amplifier: 1
-          duration: 3
+          duration: 4
           energy: 40
           self: true
           faction: true
