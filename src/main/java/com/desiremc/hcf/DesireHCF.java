@@ -26,7 +26,6 @@ import com.desiremc.hcf.commands.OreCommand;
 import com.desiremc.hcf.commands.PVPCommand;
 import com.desiremc.hcf.commands.SetWinnerCommand;
 import com.desiremc.hcf.commands.StartOfTheWorldCommand;
-import com.desiremc.hcf.commands.factions.FactionFocusCommand;
 import com.desiremc.hcf.commands.factions.FactionsCommand;
 import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.kit.KitCommand;
@@ -178,7 +177,7 @@ public class DesireHCF extends JavaPlugin
         commandHandler.registerCommand(new CrowbarCommand(), this);
         commandHandler.registerCommand(new CoordsCommand(), this);
         commandHandler.registerCommand(new StartOfTheWorldCommand());
-        commandHandler.registerCommand(new FactionFocusCommand());
+        //commandHandler.registerCommand(new FactionFocusCommand());
         commandHandler.registerCommand(new CraftCommand());
     }
 

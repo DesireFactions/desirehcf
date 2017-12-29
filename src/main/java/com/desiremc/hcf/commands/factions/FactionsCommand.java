@@ -17,7 +17,7 @@ public class FactionsCommand extends ValidBaseCommand
         addSubCommand(new FactionDescriptionCommand());
         addSubCommand(new FactionDisbandCommand());
         addSubCommand(new FactionDTRCommand());
-        addSubCommand(new FactionFocusCommand());
+        //addSubCommand(new FactionFocusCommand());
         addSubCommand(new FactionHomeCommand());
         addSubCommand(new FactionLeaderCommand());
         addSubCommand(new FactionLocationCommand());
