@@ -558,6 +558,14 @@ public class Faction
     }
 
     /**
+     * Remove all of the factions claims.
+     */
+    public void removeAllClaims()
+    {
+        claims.clear();
+    }
+
+    /**
      * Gets the current {@link FactionState} of the faction. A faction that is marked as {@link FactionState#DELETED}
      * should not exist in the {@link FactionHandler}'s loaded factions.
      *
