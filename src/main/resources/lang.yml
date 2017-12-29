@@ -233,6 +233,8 @@ factions:
   chat:
     invalid_channel: '&7You have entered an invalid chat channel.'
     switch: '&7You have switched to &b{channel}&7 chat.'
+    faction: '&a(F) &f{name}&7: &f{message}'
+    ally: '&d(A) &f{name}&7: &f{message}'
   ally:
     already_allied: '&7Your faction is already allied to &b{faction}&7.'
     now_allied: '&7Your faction is now allied to &b{faction}&7.'

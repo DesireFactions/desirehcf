@@ -14,7 +14,10 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionChannel;
 import com.desiremc.hcf.util.FactionsUtils;
 
 public class ChatListener implements Listener
@@ -52,19 +55,43 @@ public class ChatListener implements Listener
         String msg = event.getMessage();
 
         Faction f = FactionsUtils.getFaction(player);
+        FSession fSession = FSessionHandler.getOnlineFSession(player.getUniqueId());
 
-        String parsedMessage = s.getRank().getId() >= Rank.ADMIN.getId() ? ChatColor.translateAlternateColorCodes('&', msg) : msg;
+        if (fSession.getChannel() == FactionChannel.FACTION)
+        {
+            String message = DesireHCF.getLangHandler().renderMessage("factions.chat.faction", false, false, "{name}", player.getName(), "{message}", msg);
+            for (FSession member : f.getOnlineMembers())
+            {
+                member.sendMessage(message);
+            }
+        }
+        else if (fSession.getChannel() == FactionChannel.ALLY)
+        {
+            String message = DesireHCF.getLangHandler().renderMessage("factions.chat.ally", false, false, "{name}", player.getName(), "{message}", msg);
 
-        FancyMessage message = new FancyMessage(f.isWilderness() ? "§8[§b*§8] " : "§8[§b" + f.getName() + "§8] ")
-                .then(s.getRank().getPrefix())
-                .then(player.getName())
-                .color(s.getRank().getMain())
-                .tooltip(FactionsUtils.getMouseoverDetails(f))
-                .then(": ")
-                .then(parsedMessage)
-                .color(s.getRank().getColor());
+            for (Faction ally : f.getAllies())
+            {
+                for (FSession member : ally.getOnlineMembers())
+                {
+                    member.sendMessage(message);
+                }
+            }
+        }
+        else
+        {
+            String parsedMessage = s.getRank().getId() >= Rank.ADMIN.getId() ? ChatColor.translateAlternateColorCodes('&', msg) : msg;
 
-        Bukkit.getOnlinePlayers().stream().forEach(p -> message.send(p));
+            FancyMessage message = new FancyMessage(f.isWilderness() ? "§8[§b*§8] " : "§8[§b" + f.getName() + "§8] ")
+                    .then(s.getRank().getPrefix())
+                    .then(player.getName())
+                    .color(s.getRank().getMain())
+                    .tooltip(FactionsUtils.getMouseoverDetails(f))
+                    .then(": ")
+                    .then(parsedMessage)
+                    .color(s.getRank().getColor());
+
+            Bukkit.getOnlinePlayers().stream().forEach(p -> message.send(p));
+        }
     }
 
 }
