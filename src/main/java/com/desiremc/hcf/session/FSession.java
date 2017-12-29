@@ -874,47 +874,27 @@ public class FSession implements Messageable
         @Override
         public void run()
         {
-            if (DEBUG)
-            {
-                System.out.println("PVPTimer.run() fired");
-            }
             if (getPlayer() == null || !getPlayer().isOnline())
             {
-                if (DEBUG)
-                {
-                    System.out.println("PVPTimer.run() player null or not online");
-                }
                 return;
             }
 
             if (!paused && safeTimer > 0 && !SOTWHandler.getSOTW())
             {
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
-                if (DEBUG)
-                {
-                    System.out.println("PVPTimer.run() rescheduling event");
-                }
             }
 
             if (SOTWHandler.getSOTW())
             {
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 20);
-                if (DEBUG)
-                {
-                    System.out.println("PVPTimer.run() returned SOTW active.");
-                }
                 return;
             }
 
-            if (DEBUG)
-            {
-                System.out.println("PVPTimer.run() safeTimer = " + safeTimer);
-            }
             safeTimer -= System.currentTimeMillis() - lastRunTime;
             lastRunTime = System.currentTimeMillis();
             if (safeTimer <= 0)
             {
-                EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", true, false));
+                EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false));
                 safeTimer = 0;
             }
             else
@@ -925,7 +905,7 @@ public class FSession implements Messageable
 
         public void setScoreboard()
         {
-            EntryRegistry.getInstance().setValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", true, false), getTimeLeftFormatted());
+            EntryRegistry.getInstance().setValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false), getTimeLeftFormatted());
         }
 
         public String getTimeLeftFormatted()
