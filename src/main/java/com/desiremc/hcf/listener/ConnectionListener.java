@@ -54,38 +54,36 @@ public class ConnectionListener implements Listener
             TagHandler.setLastValidLocation(player.getUniqueId(), player.getLocation());
         }
 
-        if (fSession.getSafeTimeLeft() > 0)
+        Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
         {
-            if (safe)
+            @Override
+            public void run()
             {
-                Bukkit.broadcastMessage("Safe");
-                fSession.getSafeTimer().setScoreboard();
+                if (fSession.getSafeTimeLeft() > 0)
+                {
+                    fSession.getSafeTimer().resume();
+                }
+
+                if (firstJoin.contains(player.getUniqueId()))
+                {
+                    FileHandler config = DesireCore.getConfigHandler();
+                    Location loc = new Location(Bukkit.getWorld(config.getString("spawn.world")),
+                            config.getDouble("spawn.x"),
+                            config.getDouble("spawn.y"),
+                            config.getDouble("spawn.z"),
+                            (float) config.getDouble("spawn.yaw").doubleValue(),
+                            (float) config.getDouble("spawn.pitch").doubleValue());
+
+                    Bukkit.getScheduler().runTask(DesireHCF.getInstance(), () -> player.teleport(loc));
+                    firstJoin.remove(player.getUniqueId());
+                }
+
+                if (!fSession.hasAchievement(Achievement.FIRST_LOGIN))
+                {
+                    fSession.awardAchievement(Achievement.FIRST_LOGIN, true);
+                }
             }
-            else
-            {
-                Bukkit.broadcastMessage("Not Safe");
-                fSession.getSafeTimer().resume();
-            }
-        }
-
-        if (firstJoin.contains(player.getUniqueId()))
-        {
-            FileHandler config = DesireCore.getConfigHandler();
-            Location loc = new Location(Bukkit.getWorld(config.getString("spawn.world")),
-                    config.getDouble("spawn.x"),
-                    config.getDouble("spawn.y"),
-                    config.getDouble("spawn.z"),
-                    (float) config.getDouble("spawn.yaw").doubleValue(),
-                    (float) config.getDouble("spawn.pitch").doubleValue());
-
-            Bukkit.getScheduler().runTask(DesireHCF.getInstance(), () -> player.teleport(loc));
-            firstJoin.remove(player.getUniqueId());
-        }
-
-        if (!fSession.hasAchievement(Achievement.FIRST_LOGIN))
-        {
-            fSession.awardAchievement(Achievement.FIRST_LOGIN, true);
-        }
+        }, 5);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
