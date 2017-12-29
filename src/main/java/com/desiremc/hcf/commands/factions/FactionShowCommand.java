@@ -68,6 +68,10 @@ public class FactionShowCommand extends FactionValidCommand
         {
             for (FSession member : faction.getMembers())
             {
+                if (member == faction.getLeader())
+                {
+                    continue;
+                }
                 if (member.isOnline())
                 {
                     sb.append("§a");
