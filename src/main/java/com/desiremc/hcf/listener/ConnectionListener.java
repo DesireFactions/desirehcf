@@ -97,7 +97,6 @@ public class ConnectionListener implements Listener
             fSession.getClaimSession().delete();
             fSession.getClaimSession().run();
         }
-        fSession.save();
         FSessionHandler.endSession(fSession);
     }
 
