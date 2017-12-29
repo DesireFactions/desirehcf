@@ -1,5 +1,6 @@
 package com.desiremc.hcf.listener;
 
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerPickupItemEvent;
@@ -15,7 +16,7 @@ public class PickupListener implements Listener
     public void onPickup(PlayerPickupItemEvent event)
     {
         Session session = SessionHandler.getOnlineSession(event.getPlayer().getUniqueId());
-        if (session.getSetting(SessionSetting.COBBLE))
+        if (session.getSetting(SessionSetting.COBBLE) && event.getItem().getItemStack().getType() == Material.COBBLESTONE)
         {
             event.setCancelled(true);
         }
