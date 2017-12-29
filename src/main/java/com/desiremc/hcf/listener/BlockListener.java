@@ -73,7 +73,7 @@ public class BlockListener implements Listener
                 DesireHCF.getLangHandler().sendRenderMessage(session, "findore.notification", false, false,
                         "{player}", p.getName(),
                         "{count}", vein.size(),
-                        "{ore}", StringUtils.capitalize(type.name().replaceAll("_", " ")));
+                        "{ore}", StringUtils.capitalize(type.name().replaceAll("_", " ").toLowerCase()));
             }
         }
     }

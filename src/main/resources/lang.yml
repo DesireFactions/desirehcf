@@ -93,7 +93,7 @@ cobble:
   enable: '&7Picking up cobblestone &fenabled&7.'
   disable: '&7Picking up cobblestone &fdisabled&7.'
 findore:
-  notification: '&7[&b\u2726&7] &b{player} &7has found a vein of &b{count} &b{ore}&7.'
+  notification: '&7[&bx&7] &b{player} &7has found a vein of &b{count} &b{ore}&7.'
 coords:
 - '&8&m------------------------------'
 - '&b&lKoth Coords'
