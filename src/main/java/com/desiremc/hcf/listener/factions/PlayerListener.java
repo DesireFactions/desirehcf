@@ -208,7 +208,6 @@ public class PlayerListener implements Listener
                         return;
                     }
                     claim.setPointOne(blockColumn, checkStatus == BORDER);
-                    Bukkit.broadcastMessage(StringUtils.formatNumber(claim.getCost(), 2, true));
                     DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.claims.cost_help", true, false,
                             "{x}", claim.getLength(),
                             "{z}", claim.getWidth(),
@@ -238,7 +237,6 @@ public class PlayerListener implements Listener
                 }
 
                 claim.setPointTwo(blockColumn, checkStatus == BORDER);
-                Bukkit.broadcastMessage(StringUtils.formatNumber(claim.getCost(), 2, true));
                 DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.claims.cost_help", true, false,
                         "{x}", claim.getLength(),
                         "{z}", claim.getWidth(),
