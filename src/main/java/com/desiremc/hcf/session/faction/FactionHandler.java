@@ -122,6 +122,11 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
                 {
                     claims = claims.add(faction, claim);
                 }
+
+                if (faction.isWilderness())
+                {
+                    wilderness = faction;
+                }
             }
 
             // set the greatest id value

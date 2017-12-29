@@ -250,8 +250,8 @@ factions:
     no_invites: '&7Your faction has no outgoing invites.'
     valid: '&7Your faction has outgoing invites to &b{players}&7.'
   list:
-    header: '&9&m----------&r&b[ Faction List {pagenumber}/{pagecount} ]&9&m----------'
-    message: '{faction}: {online}/{members} online, {dtr} DTR'
+    header: '&7&m----------&r&b[ Faction List {pagenumber}/{pagecount} ]&7&m----------'
+    message: ' {faction}: {online}/{members} online, {dtr} DTR'
     none: '&7There are currently no factions.'
 sotw:
   first: '&7Please run the command again to confirm &bSOTW&7.'

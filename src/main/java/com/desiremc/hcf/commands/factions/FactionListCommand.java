@@ -57,7 +57,7 @@ public class FactionListCommand extends FactionValidCommand
             end = factionList.size();
         }
 
-        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.list.header", false, false);
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.list.header", false, false, "{pagenumber}", page, "{pagecount}", pages);
 
         factionList.subList(start, end).stream()
                 .filter(faction -> faction.getType() == FactionType.PLAYER)
