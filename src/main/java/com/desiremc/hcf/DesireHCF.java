@@ -17,6 +17,7 @@ import com.desiremc.hcf.barrier.BarrierTask;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.commands.CobbleCommand;
 import com.desiremc.hcf.commands.CoordsCommand;
+import com.desiremc.hcf.commands.CraftCommand;
 import com.desiremc.hcf.commands.CrowbarCommand;
 import com.desiremc.hcf.commands.EnderChestCommand;
 import com.desiremc.hcf.commands.HCFReloadCommand;
@@ -178,6 +179,7 @@ public class DesireHCF extends JavaPlugin
         commandHandler.registerCommand(new CoordsCommand(), this);
         commandHandler.registerCommand(new StartOfTheWorldCommand());
         commandHandler.registerCommand(new FactionFocusCommand());
+        commandHandler.registerCommand(new CraftCommand());
     }
 
     public static WorldGuardPlugin getWorldGuard()
