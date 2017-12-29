@@ -56,8 +56,9 @@ public class ChatListener implements Listener
         String parsedMessage = s.getRank().getId() >= Rank.ADMIN.getId() ? ChatColor.translateAlternateColorCodes('&', msg) : msg;
 
         FancyMessage message = new FancyMessage(s.getRank().getPrefix())
-                .then(player.getName())
+                .then(s.getRank().getMain().toString())
                 .tooltip(FactionsUtils.getMouseoverDetails(f))
+                .color(s.getRank().getMain())
                 .then(": ")
                 .then(parsedMessage)
                 .color(s.getRank().getColor());
