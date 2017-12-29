@@ -1,5 +1,6 @@
 package com.desiremc.hcf.session.faction;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -167,6 +168,39 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     public static Collection<Faction> getFactions()
     {
         return factionsByName.values();
+    }
+
+    /**
+     * @return a collection of all factions, sorted..
+     */
+    public static Collection<Faction> getSortedFactions()
+    {
+        List<Faction> factions = new ArrayList<>(getFactions());
+
+        // Sort by total members first
+        Collections.sort(factions, (Faction faction1, Faction faction2) ->
+        {
+            int faction1Size = faction1.getMembers().size();
+            int faction2Size = faction2.getMembers().size();
+
+            if (faction1Size < faction2Size) return 1;
+            if (faction1Size > faction2Size) return -1;
+
+            return 0;
+        });
+
+        // Then sort by how many members are online now
+        Collections.sort(factions, (Faction faction1, Faction faction2) ->
+        {
+            int faction1Size = faction1.getOnlineMembers().size();
+            int faction2Size = faction2.getOnlineMembers().size();
+
+            if (faction1Size < faction2Size) return 1;
+            if (faction1Size > faction2Size) return -1;
+
+            return 0;
+        });
+        return factions;
     }
 
     /**

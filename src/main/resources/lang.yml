@@ -247,6 +247,9 @@ factions:
   invites:
     no_invites: '&7Your faction has no outgoing invites.'
     valid: '&7Your faction has outgoing invites to &b{players}&7.'
+  list:
+    header: '&9&m----------&r&b[ Faction List {pagenumber}/{pagecount} ]&9&m----------'
+    message: '{faction}: {online}/{members} online, {dtr} DTR'
 sotw:
   first: '&7Please run the command again to confirm &bSOTW&7.'
   confirmed: '&7Confirmed. Let &bSOTW &7commence.'
