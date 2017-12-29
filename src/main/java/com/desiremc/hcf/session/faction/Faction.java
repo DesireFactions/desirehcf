@@ -562,6 +562,11 @@ public class Faction
      */
     public void removeAllClaims()
     {
+        for (BoundedArea area : claims)
+        {
+            FactionHandler.removeClaim(this, area);
+        }
+
         claims.clear();
     }
 

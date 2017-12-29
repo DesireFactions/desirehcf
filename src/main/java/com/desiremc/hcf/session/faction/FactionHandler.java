@@ -528,6 +528,17 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     {
         claims = claims.add(faction, area);
     }
+
+    /**
+     * Removes a claim.
+     *
+     * @param faction the faction who has the claim removed.
+     * @param area    the removed claim area.
+     */
+    public static void removeClaim(Faction faction, BoundedArea area)
+    {
+        claims = claims.delete(faction, area);
+    }
     
     @Override
     public Key<Faction> save(Faction entity)
