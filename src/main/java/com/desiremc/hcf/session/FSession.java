@@ -66,6 +66,12 @@ public class FSession implements Messageable
 
     private double balance;
 
+    @Property("claimed_rank")
+    private boolean claimedRank;
+
+    @Property("unclaimed_lives")
+    private int unclaimedLives;
+
     @Property("last_seen")
     private long lastSeen;
 
@@ -270,6 +276,38 @@ public class FSession implements Messageable
     public void withdrawBalance(double amount)
     {
         this.balance -= amount;
+    }
+
+    /**
+     * @return {@code true} if the FSession has claimed their rank.
+     */
+    public boolean hasClaimedRank()
+    {
+        return this.claimedRank;
+    }
+
+    /**
+     * @param claimedRank the new claimed rank status.
+     */
+    public void setClaimedRank(boolean claimedRank)
+    {
+        this.claimedRank = claimedRank;
+    }
+
+    /**
+     * @return the current number of unclaimed lives.
+     */
+    public int getUnclaimedLives()
+    {
+        return unclaimedLives;
+    }
+
+    /**
+     * @param unclaimedLives the new number of unclaimed lives.
+     */
+    public void setUnclaimedLives(int unclaimedLives)
+    {
+        this.unclaimedLives = unclaimedLives;
     }
 
     /**
