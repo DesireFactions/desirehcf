@@ -1,5 +1,16 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.World.Environment;
+import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitTask;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.hcf.DesireHCF;
@@ -15,16 +26,6 @@ import com.desiremc.hcf.session.faction.FactionRelationship;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.hcf.validators.SenderHasFactionHomeValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.World.Environment;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.scheduler.BukkitTask;
-
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
 
 public class FactionHomeCommand extends FactionValidCommand
 {
@@ -49,7 +50,7 @@ public class FactionHomeCommand extends FactionValidCommand
         {
             time = 0;
         }
-        else if (loc.getWorld().getEnvironment() == Environment.NETHER || currentFaction.isWilderness())
+        else if (loc.getWorld().getEnvironment() == Environment.NETHER)
         {
             time = 20;
         }
@@ -59,7 +60,7 @@ public class FactionHomeCommand extends FactionValidCommand
         }
         else if (currentFaction.isWilderness())
         {
-            time = 20;
+            time = 10;
         }
         else
         {
