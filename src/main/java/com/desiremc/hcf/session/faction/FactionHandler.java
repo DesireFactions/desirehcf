@@ -272,6 +272,21 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         faction.save();
     }
 
+
+    /**
+     * Renames a faction, replaces it's values in factionsByName.
+     *
+     * @param faction the faction to rename.
+     * @param name    the new name of the faction.
+     */
+    public static void renameFaction(Faction faction, String name)
+    {
+        factionsByName.remove(faction.getName());
+        faction.setName(name);
+        faction.save();
+        factionsByName.put(name, faction);
+    }
+
     /**
      * Creates a new {@link FactionType#PLAYER} faction. This will set the id as well as save it to the database.
      * 

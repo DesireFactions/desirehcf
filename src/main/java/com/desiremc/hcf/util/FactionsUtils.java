@@ -42,8 +42,7 @@ public class FactionsUtils
      */
     public static Faction getFaction(String name)
     {
-        Faction f = FactionHandler.getFaction(name);
-        return f;
+        return FactionHandler.getFaction(name);
     }
 
     /**

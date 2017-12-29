@@ -10,6 +10,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.validators.FactionNameNotTaken;
 import com.desiremc.hcf.validators.SenderFactionLeaderValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
@@ -36,7 +37,7 @@ public class FactionNameCommand extends FactionValidCommand
         Faction faction = sender.getFaction();
         String name = (String) arguments.get(0).getValue();
 
-        faction.setName(name);
+        FactionHandler.renameFaction(faction, name);
 
         faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.name.name_set", true, false, "{name}", name, "{player}", sender.getName()));
     }
