@@ -874,6 +874,10 @@ public class FSession implements Messageable
         @Override
         public void run()
         {
+            if (DEBUG)
+            {
+                System.out.println("PVPTimer.run() fired");
+            }
             if (player == null || !player.isOnline())
             {
                 if (DEBUG)
