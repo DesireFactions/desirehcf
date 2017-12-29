@@ -874,15 +874,22 @@ public class FSession implements Messageable
         @Override
         public void run()
         {
-            if (player == null || !player.isOnline() || SOTWHandler.getSOTW())
+            if (player == null || !player.isOnline())
             {
                 return;
             }
 
-            if (!paused && safeTimer > 0)
+            if (!paused && safeTimer > 0 && !SOTWHandler.getSOTW())
             {
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
             }
+
+            if (SOTWHandler.getSOTW())
+            {
+                Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 20);
+                return;
+            }
+
             if (DEBUG)
             {
                 System.out.println("PVPTimer.run() safeTimer = " + safeTimer);
