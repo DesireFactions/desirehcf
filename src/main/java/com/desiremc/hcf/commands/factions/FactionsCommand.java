@@ -37,6 +37,7 @@ public class FactionsCommand extends ValidBaseCommand
         addSubCommand(new FactionAllyCommand());
         addSubCommand(new FactionNeutralCommand());
         addSubCommand(new FactionNameCommand());
+        addSubCommand(new FactionInvitesCommand());
     }
 
 }

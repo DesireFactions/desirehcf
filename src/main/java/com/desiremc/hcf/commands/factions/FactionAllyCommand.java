@@ -53,5 +53,7 @@ public class FactionAllyCommand extends FactionValidCommand
             target.broadcast(DesireHCF.getLangHandler().renderMessage("factions.ally.received", true, false, "{faction}", faction.getName()));
         }
 
+        faction.save();
+        target.save();
     }
 }

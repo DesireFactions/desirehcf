@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.parsers.IntegerParser;
@@ -11,13 +13,11 @@ import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 
-import java.util.List;
-
 public class FactionWithdrawCommand extends FactionValidCommand
 {
     public FactionWithdrawCommand()
     {
-        super("withdraw", "Withdraw money from your faction.", true);
+        super("withdraw", "Withdraw money from your faction.", true, new String[] {"w"});
 
         addSenderValidator(new SenderHasFactionValidator());
         addSenderValidator(new SenderFactionOfficerValidator());
