@@ -419,6 +419,7 @@ public class Faction
 
         fSession.setFaction(FactionHandler.getWilderness());
         fSession.setFactionRank(null);
+        fSession.setChannel(FactionChannel.GENERAL);
         save();
     }
 

@@ -11,6 +11,16 @@ public class SenderFactionOfficerValidator extends FactionSenderValidator
     @Override
     public boolean factionsValidate(FSession sender)
     {
+        if (sender == null)
+        {
+            DesireHCF.getInstance().getLogger().severe("SenderFactionOfficerValidator had a null sender.");
+            return false;
+        }
+        if (sender.getFactionRank() == null)
+        {
+            DesireHCF.getInstance().getLogger().severe("SenderFactionOfficerValidator had a null faction rank.");
+            return false;
+        }
         if (sender.getFactionRank().ordinal() < FactionRank.OFFICER.ordinal())
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.not_officer", true, false);

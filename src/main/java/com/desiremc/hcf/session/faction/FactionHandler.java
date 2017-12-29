@@ -258,11 +258,11 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
 
         for (FSession fSession : faction.getMembers())
         {
-            fSession.setFaction(wilderness);
             fSession.setFactionRank(null);
+            fSession.setFaction(wilderness);
             fSession.setChannel(FactionChannel.GENERAL);
-            Bukkit.getPluginManager().callEvent(new FactionLeaveEvent(faction, fSession));
             fSession.save();
+            Bukkit.getPluginManager().callEvent(new FactionLeaveEvent(faction, fSession));
         }
 
         faction.setState(FactionState.DELETED);
@@ -306,6 +306,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
 
         fSession.setFactionRank(FactionRank.LEADER);
         fSession.setFaction(faction);
+        fSession.setChannel(FactionChannel.GENERAL);
         fSession.save();
 
         factionsByName.put(faction.getStub(), faction);
