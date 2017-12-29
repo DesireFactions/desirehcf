@@ -1,6 +1,7 @@
 package com.desiremc.hcf.handler;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -10,7 +11,6 @@ import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.desiremc.core.DesireCore;
 import com.desiremc.core.events.PlayerBlockMoveEvent;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -34,11 +34,10 @@ public class TablistHandler implements Listener
             TabList tabList;
             if (event.getPlayer().getUniqueId().equals(session.getUniqueId()))
             {
-                System.out.println("Created tablist");
                 tabList = TabAPI.createTabListForPlayer(joiner);
                 FSession fSession = FSessionHandler.getOnlineFSession(joiner.getUniqueId());
 
-                tabList.setSlot(0, 1, "§3§l" + DesireCore.getCurrentServer());
+                tabList.setSlot(0, 1, "§3§lDesireHCF");
 
                 tabList.setSlot(1, 0, "§b§lPlayer Info");
                 tabList.setSlot(2, 0, "§bKills: §c" + fSession.getTotalKills());
@@ -94,27 +93,15 @@ public class TablistHandler implements Listener
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockMove(PlayerBlockMoveEvent event)
     {
-        TabList tabList = TabAPI.getPlayerTabList(event.getPlayer());
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
-        if (fSession.getLastFactionLocation() == null)
-        {
-            fSession.setLastLocation(FactionsUtils.getFaction(event.getTo()));
-        }
-        tabList.setSlot(6, 0, fSession.getLastFactionLocation().getName());
-        tabList.setSlot(7, 0, "§8(§7" + event.getTo().getBlockX() + "§8,§7" + event.getFrom().getBlockZ() + "§8)");
+        updateLocation(fSession, event.getTo());
     }
 
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event)
     {
-        TabList tabList = TabAPI.getPlayerTabList(event.getPlayer());
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
-        if (fSession.getLastFactionLocation() == null)
-        {
-            fSession.setLastLocation(FactionsUtils.getFaction(event.getTo()));
-        }
-        tabList.setSlot(6, 0, fSession.getLastFactionLocation().getName());
-        tabList.setSlot(7, 0, "§8(§7" + event.getTo().getBlockX() + "§8,§7" + event.getFrom().getBlockZ() + "§8)");
+        updateLocation(fSession, event.getTo());
     }
 
     @EventHandler
@@ -128,6 +115,18 @@ public class TablistHandler implements Listener
     {
         TabList tabList = TabAPI.getPlayerTabList(fSession.getPlayer());
         tabList.setSlot(2, 0, "§bKills: §c" + fSession.getTotalKills());
+    }
+
+    public static void updateLocation(FSession session, Location loc)
+    {
+        Player player = session.getPlayer();
+        TabList tabList = TabAPI.getPlayerTabList(player);
+        if (session.getLastFactionLocation() == null)
+        {
+            session.setLastLocation(FactionsUtils.getFaction(loc));
+        }
+        tabList.setSlot(6, 0, session.getLastFactionLocation().getName());
+        tabList.setSlot(7, 0, "§8(§7" + loc.getBlockX() + "§8,§7" + loc.getBlockZ() + "§8)");
     }
 
 }
