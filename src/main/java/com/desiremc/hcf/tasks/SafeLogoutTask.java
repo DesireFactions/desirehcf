@@ -1,10 +1,10 @@
 package com.desiremc.hcf.tasks;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.barrier.TagHandler;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.UUID;
+
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -12,10 +12,10 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.scheduler.BukkitScheduler;
 import org.bukkit.util.NumberConversions;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.UUID;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
 
 public class SafeLogoutTask extends BukkitRunnable
 {
@@ -64,7 +64,8 @@ public class SafeLogoutTask extends BukkitRunnable
             return;
         }
 
-        EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("logout.scoreboard", false, false), String.valueOf((logoutTime - System.currentTimeMillis()) / 1000));
+        //EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("logout.scoreboard", false, false), String.valueOf((logoutTime - System.currentTimeMillis()) / 1000));
+        DesireHCF.getLangHandler().sendRenderMessage(player, "You can log out in {time}s.", true, false, "{time}", (logoutTime - System.currentTimeMillis()) / 1000);
 
         // Safely logout the player once timer is up
         int remainingSeconds = getRemainingSeconds();
@@ -91,7 +92,7 @@ public class SafeLogoutTask extends BukkitRunnable
         Player p = PlayerUtils.getPlayer(playerId);
         if (p != null)
         {
-            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("logout.scoreboard", false, false));
+            //EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("logout.scoreboard", false, false));
         }
     }
 

@@ -60,6 +60,8 @@ public class CombatListener implements Listener
 
                 if (!victim.getName().equalsIgnoreCase(damager.getName()))
                 {
+                    DesireHCF.getLangHandler().sendRenderMessage(victim, ChatColor.GRAY + "You are now combat tagged.", true, false);
+                    DesireHCF.getLangHandler().sendRenderMessage(damager, ChatColor.GRAY + "You are now combat tagged.", true, false);
                     TagHandler.tagPlayer(victim, damager);
                 }
             }

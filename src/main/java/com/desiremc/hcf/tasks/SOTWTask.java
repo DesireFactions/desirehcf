@@ -1,6 +1,7 @@
 package com.desiremc.hcf.tasks;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
@@ -29,6 +30,7 @@ public class SOTWTask extends BukkitRunnable
         {
             EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false), DateUtils.formatDateDiff(getRemainingSeconds() + System.currentTimeMillis()));
         }
+        Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage(ChatColor.GRAY + "The SOTW timer is currently at {time}.", true, false, "{time}", DateUtils.formatDateDiff(getRemainingSeconds() + System.currentTimeMillis())));
 
         if (getRemainingSeconds() <= 0)
         {
@@ -36,7 +38,7 @@ public class SOTWTask extends BukkitRunnable
             return;
         }
 
-        runTaskLater(DesireHCF.getInstance(), 20L);
+        runTaskLater(DesireHCF.getInstance(), 200L);
     }
 
     private int getRemainingSeconds()

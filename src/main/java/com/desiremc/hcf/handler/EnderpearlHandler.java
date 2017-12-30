@@ -1,12 +1,11 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
-import com.desiremc.core.utils.PlayerUtils;
-import com.desiremc.core.utils.cache.Cache;
-import com.desiremc.core.utils.cache.RemovalListener;
-import com.desiremc.core.utils.cache.RemovalNotification;
-import com.desiremc.hcf.DesireHCF;
+import java.util.Map.Entry;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -14,9 +13,11 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-import java.util.Map.Entry;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
+import com.desiremc.core.utils.PlayerUtils;
+import com.desiremc.core.utils.cache.Cache;
+import com.desiremc.core.utils.cache.RemovalListener;
+import com.desiremc.core.utils.cache.RemovalNotification;
+import com.desiremc.hcf.DesireHCF;
 
 public class EnderpearlHandler implements Listener
 {
@@ -40,7 +41,8 @@ public class EnderpearlHandler implements Listener
                     {
                         return;
                     }
-                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false));
+                    DesireHCF.getLangHandler().sendRenderMessage(p, ChatColor.GRAY + "You can now use an enderpearl.", true, false);
+                    //EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false));
                 }
             }
         }, DesireHCF.getInstance());
@@ -69,6 +71,7 @@ public class EnderpearlHandler implements Listener
             }
             else
             {
+                DesireHCF.getLangHandler().sendRenderMessage(p, ChatColor.GRAY + "You can't use an enderpearl yet.", true, false);
                 e.setCancelled(true);
             }
         }
@@ -85,7 +88,7 @@ public class EnderpearlHandler implements Listener
                 Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
+                    //EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
                 }
                 else
                 {

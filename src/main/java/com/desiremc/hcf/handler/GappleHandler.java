@@ -1,6 +1,15 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.scoreboard.EntryRegistry;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.player.PlayerItemConsumeEvent;
+
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -9,15 +18,6 @@ import com.desiremc.core.utils.cache.Cache;
 import com.desiremc.core.utils.cache.RemovalListener;
 import com.desiremc.core.utils.cache.RemovalNotification;
 import com.desiremc.hcf.DesireHCF;
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
 
 public class GappleHandler implements Listener
 {
@@ -39,7 +39,7 @@ public class GappleHandler implements Listener
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(p, "gapple.ended", true, false);
-                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", false, false));
+                    //EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", false, false));
                 }
             }
         }, DesireHCF.getInstance());
@@ -54,7 +54,7 @@ public class GappleHandler implements Listener
                     Player p = PlayerUtils.getPlayer(uuid);
                     if (p != null)
                     {
-                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - history.get(uuid)) / 1000)));
+                        //EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - history.get(uuid)) / 1000)));
                     }
                 }
             }
