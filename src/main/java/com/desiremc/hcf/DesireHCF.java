@@ -27,7 +27,6 @@ import com.desiremc.hcf.commands.PVPCommand;
 import com.desiremc.hcf.commands.SetWinnerCommand;
 import com.desiremc.hcf.commands.StartOfTheWorldCommand;
 import com.desiremc.hcf.commands.factions.FactionsCommand;
-import com.desiremc.hcf.commands.fstat.FStatCommand;
 import com.desiremc.hcf.commands.kit.KitCommand;
 import com.desiremc.hcf.commands.kit.KitManagementCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
@@ -158,7 +157,6 @@ public class DesireHCF extends JavaPlugin
     private void registerCommands()
     {
         CommandHandler commandHandler = CommandHandler.getInstance();
-        commandHandler.registerCommand(new FStatCommand(), this);
         commandHandler.registerCommand(new SetWinnerCommand(), this);
         commandHandler.registerCommand(new RegionCommand(), this);
         commandHandler.registerCommand(new FactionsCommand(), this);

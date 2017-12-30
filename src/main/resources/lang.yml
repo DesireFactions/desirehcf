@@ -66,7 +66,7 @@ gapple:
 potion:
   blocked: '&7That &fpotion &7is blocked.'
 trophy_points: '&7Trophy Points &f{points}'
-koth_wins: '&7Trophy Points &f{koth}'
+koth_wins: '&7Koth Wins &f{koth}'
 faction: '&7Faction &f{faction}'
 logout:
   cancelled: '&7Your &fsafe logout &7has been &fcancelled&7.'
@@ -153,6 +153,8 @@ factions:
     - '  &8- &bLeader: &f{leader}&7[&f{leader_kills}&7]'
     - '  &8- &bTotal Kills&7: &f{kills}'
     - '  &8- &bBalance&7: &f${balance}'
+    - '  &8- &bTrophies&7: &f{points}'
+    - '  &8- &bKoth Wins&7: &f{koth}'
     - '  &8- &bDTR&7: &f{dtr}'
     - '  &8- &bAllies&7: &f{allies}'
     - '  &8- &bMembers&7: &f{members}'
