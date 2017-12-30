@@ -54,7 +54,7 @@ public class SignListener implements Listener
             return;
         }
 
-        event.setLine(0, ChatColor.DARK_GRAY + "[" + ChatColor.AQUA + "DesireHCF" + ChatColor.DARK_GRAY + "]");
+        event.setLine(0, ChatColor.AQUA + "Shop");
     }
 
     @EventHandler
@@ -74,7 +74,7 @@ public class SignListener implements Listener
 
         Sign sign = (Sign) clicked.getState();
 
-        if (!sign.getLine(0).equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', "&8[&bDesireHCF&8]")))
+        if (!sign.getLine(0).equalsIgnoreCase(ChatColor.translateAlternateColorCodes('&', "&bShop")))
         {
             return;
         }
