@@ -90,7 +90,7 @@ public class FactionShowCommand extends FactionValidCommand
         }
         else
         {
-            sb.append("§eNone");
+            sb.append("§fNone");
         }
 
         value = value.replace("{members}", sb.toString());

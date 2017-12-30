@@ -58,6 +58,7 @@ import com.desiremc.hcf.listener.classes.MinerListener;
 import com.desiremc.hcf.listener.classes.RogueListener;
 import com.desiremc.hcf.listener.factions.FactionListener;
 import com.desiremc.hcf.listener.factions.PlayerListener;
+import com.desiremc.hcf.listener.factions.TrophyListener;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.HKitHandler;
@@ -142,6 +143,7 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new com.desiremc.hcf.listener.factions.ConnectionListener(), this);
         listenerManager.addListener(new FactionListener(), this);
         listenerManager.addListener(new PlayerListener(), this);
+        listenerManager.addListener(new TrophyListener());
 
         // EVERYTHING BELOW HERE IS UNTESTED
         listenerManager.addListener(new EnderpearlHandler(), this);
