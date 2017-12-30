@@ -52,8 +52,6 @@ public class Faction
 
     private int totalKills;
 
-    private int trophies;
-
     private int kothWins;
 
     private List<UUID> members;
@@ -85,6 +83,8 @@ public class Faction
 
     @Transient
     private List<FSession> parsedInvites;
+
+    private double trophies;
 
     public Faction()
     {
@@ -342,22 +342,6 @@ public class Faction
     public void addKill()
     {
         this.totalKills++;
-    }
-
-    /**
-     * @return the amount of trophies this faction has.
-     */
-    public int getTrophies()
-    {
-        return trophies;
-    }
-
-    /**
-     * @param trophies the new amount of trophies.
-     */
-    public void setTrophies(int trophies)
-    {
-        this.trophies = trophies;
     }
 
     /**
@@ -824,6 +808,38 @@ public class Faction
         checkInvites();
         invites.remove(fSession.getUniqueId());
         parsedInvites.remove(fSession);
+    }
+
+    /**
+     * @return the amount of trophy points
+     */
+    public double getTrophyPoints()
+    {
+        return trophies;
+    }
+
+    /**
+     * @param trophies the new trophyPoints value.
+     */
+    public void setTrophyPoints(double trophies)
+    {
+        this.trophies = trophies;
+    }
+
+    /**
+     * @param trophies the trophyPoints to add.
+     */
+    public void addTrophyPoints(double trophies)
+    {
+        this.trophies += trophies;
+    }
+
+    /**
+     * @param trophies the trophyPoints to remove.
+     */
+    public void removeTrophyPoints(double trophies)
+    {
+        this.trophies -= trophies;
     }
 
     /**

@@ -209,6 +209,27 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     }
 
     /**
+     * @return a collection of all factions, sorted by trophy points
+     */
+    public static Collection<Faction> getSortedFactionsTrophyPoints()
+    {
+        List<Faction> factions = new ArrayList<>(getFactions());
+
+        // Then sort by how many members are online now
+        Collections.sort(factions, (Faction faction1, Faction faction2) ->
+        {
+            double faction1Size = faction1.getTrophyPoints();
+            double faction2Size = faction2.getTrophyPoints();
+
+            if (faction1Size < faction2Size) return 1;
+            if (faction1Size > faction2Size) return -1;
+
+            return 0;
+        });
+        return factions;
+    }
+
+    /**
      * Get a faction by the given name. This method is <u>not</u> case sensitive, as names are not case sensitive as
      * well.
      * 

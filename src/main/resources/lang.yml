@@ -257,7 +257,17 @@ factions:
     header: '&7&m----------&r&b[ Faction List {pagenumber}/{pagecount} ]&7&m----------'
     message: ' {faction}: {online}/{members} online, {dtr} DTR'
     none: '&7There are currently no factions.'
+  leaderboard:
+    header: '&7&m----------&r&b[ Faction List {pagenumber}/{pagecount} ]&7&m----------'
+    message: ' {faction}: {points}'
+    none: '&7There are currently no factions.'
   not_own: '&7You must do that in your own faction land.'
+  trophies:
+    koth: '&7Your faction gained &b{points} &7trophies by capturing a KOTH.'
+    death: '&7Your faction lost &b{points} &7trophies by &b{player} &fbeing killed by &b{killer}&7.'
+    kill: '&7Your faction gained &b{points} &7trophies by &b{killer} &7killing &b{player}&7.'
+    mine: '&7Your faction gained &b{points} &7trophies by mining &b{ore}&7.'
+    raidable: '&7Your factions trophy points was set to &b0&7 for going raidable.'
 sotw:
   first: '&7Please run the command again to confirm &bSOTW&7.'
   confirmed: '&7Confirmed. Let &bSOTW &7commence.'
