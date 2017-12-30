@@ -1,10 +1,13 @@
 package com.desiremc.hcf.listener.factions;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
 
 import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
@@ -66,7 +69,6 @@ public class TrophyListener implements Listener
             {
                 //they just went raidable
                 player.getFaction().setTrophyPoints(0);
-                player.getFaction().save();
                 player.getFaction().broadcast(DesireHCF.getLangHandler().renderMessage("factions.trophies.raidable", true, false));
             }
         }
@@ -98,5 +100,33 @@ public class TrophyListener implements Listener
         String ore = StringUtils.capitalize(event.getBlock().getType().name().replace("_", " ").toLowerCase());
 
         faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.trophies.mine", true, false, "{points}", 0.5, "{ore}", ore));
+    }
+
+    @EventHandler
+    public void onItemPickup(InventoryPickupItemEvent event)
+    {
+        if (!event.getItem().getItemStack().getType().equals(Material.DRAGON_EGG))
+        {
+            return;
+        }
+
+        if (!(event.getInventory().getHolder() instanceof Player))
+        {
+            return;
+        }
+
+        FSession player = FSessionHandler.getFSession((Player) event.getInventory().getHolder());
+        Faction faction = player.getFaction();
+
+        if (player.getFaction().isWilderness())
+        {
+            return;
+        }
+
+        faction.addTrophyPoints(175);
+        faction.save();
+
+        String msg = DesireHCF.getLangHandler().renderMessage("factions.trophies.ender_egg", true, false, "{faction}", faction.getName(), "{points}", 175);
+        Bukkit.broadcastMessage(msg);
     }
 }
