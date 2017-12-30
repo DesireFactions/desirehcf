@@ -81,7 +81,7 @@ public class ClassListener implements Listener
                         int newEnergy = energy.get(uuid) + 1;
                         energy.replace(uuid, newEnergy);
 
-                        //EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("classes.energy-scoreboard", false, false),String.valueOf(newEnergy));
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("classes.energy-scoreboard", false, false), String.valueOf(newEnergy));
                     }
                 }
             }
@@ -176,9 +176,9 @@ public class ClassListener implements Listener
                     applyPermanentEffects(PVPClass.ARCHER, player);
 
                     DesireHCF.getLangHandler().sendRenderMessage(player, "classes.enable", true, false, "{class}", "Archer");
-                    //EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.scoreboard", false, false), "Archer");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.scoreboard", false, false), "Archer");
                     energy.put(player.getUniqueId(), 0);
-                    //EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.energy-scoreboard", false, false), "0");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.energy-scoreboard", false, false), "0");
 
                     Session s = SessionHandler.getSession(player);
                     if (!s.hasAchievement(Achievement.FIRST_ARCHER))
@@ -195,9 +195,9 @@ public class ClassListener implements Listener
                     applyPermanentEffects(PVPClass.BARD, player);
 
                     DesireHCF.getLangHandler().sendRenderMessage(player, "classes.enable", true, false, "{class}", "Bard");
-                    //EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.scoreboard", false, false), "Bard");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.scoreboard", false, false), "Bard");
                     energy.put(player.getUniqueId(), 0);
-                    //EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.energy-scoreboard", false, false), "0");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.energy-scoreboard", false, false), "0");
 
                     Session s = SessionHandler.getSession(player);
                     if (!s.hasAchievement(Achievement.FIRST_BARD))
@@ -214,9 +214,9 @@ public class ClassListener implements Listener
                     applyPermanentEffects(PVPClass.ROGUE, player);
 
                     DesireHCF.getLangHandler().sendRenderMessage(player, "classes.enable", true, false, "{class}", "Rogue");
-                    //EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.scoreboard", false, false), "Rogue");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.scoreboard", false, false), "Rogue");
                     energy.put(player.getUniqueId(), 0);
-                    //EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.energy-scoreboard", false, false), "0");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.energy-scoreboard", false, false), "0");
 
                     Session s = SessionHandler.getSession(player);
                     if (!s.hasAchievement(Achievement.FIRST_ROGUE))
@@ -233,7 +233,7 @@ public class ClassListener implements Listener
                     applyPermanentEffects(PVPClass.MINER, player);
 
                     DesireHCF.getLangHandler().sendRenderMessage(player, "classes.enable", true, false, "{class}", "Miner");
-                    //EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.scoreboard", false, false), "Miner");
+                    EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.scoreboard", false, false), "Miner");
 
                     Session s = SessionHandler.getSession(player);
                     if (!s.hasAchievement(Achievement.FIRST_MINER))
@@ -633,7 +633,7 @@ public class ClassListener implements Listener
         int newEnergy = energy.get(player.getUniqueId()) - energyNeeded;
 
         energy.replace(player.getUniqueId(), newEnergy);
-        //EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.energy-scoreboard", false, false),String.valueOf(newEnergy));
+        EntryRegistry.getInstance().setValue(player, DesireHCF.getLangHandler().renderMessage("classes.energy-scoreboard", false, false), String.valueOf(newEnergy));
 
         if (PVPClass.ROGUE.equals(session.getPvpClass()) || PVPClass.ARCHER.equals(session.getPvpClass()))
         {

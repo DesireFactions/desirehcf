@@ -14,6 +14,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.utils.PlayerUtils;
@@ -47,13 +48,13 @@ public class CombatLoggerHandler implements Listener
                     {
                         if (p != null)
                         {
-                            //EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false));
+                            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false));
                         }
                         TagHandler.clearTag(uuid);
                     }
                     if (p != null)
                     {
-                        // EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false),String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
                         DesireHCF.getLangHandler().sendRenderMessage(p, ChatColor.GRAY + "You are tagged for another {time}s.", true, false, "{time]", TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000));
                     }
                 }

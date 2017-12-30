@@ -78,7 +78,14 @@ public class ConnectionListener implements Listener
                     (float) config.getDouble("spawn.yaw").doubleValue(),
                     (float) config.getDouble("spawn.pitch").doubleValue());
 
-            Bukkit.getScheduler().runTask(DesireHCF.getInstance(), () -> player.teleport(loc));
+            Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
+            {
+                @Override
+                public void run()
+                {
+                    player.teleport(loc);
+                }
+            }, 15);
             firstJoin.remove(player.getUniqueId());
 
             player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 16));

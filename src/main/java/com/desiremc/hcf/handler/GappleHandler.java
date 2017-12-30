@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerItemConsumeEvent;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -39,7 +40,7 @@ public class GappleHandler implements Listener
                 if (p != null)
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(p, "gapple.ended", true, false);
-                    //EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", false, false));
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", false, false));
                 }
             }
         }, DesireHCF.getInstance());
@@ -54,7 +55,7 @@ public class GappleHandler implements Listener
                     Player p = PlayerUtils.getPlayer(uuid);
                     if (p != null)
                     {
-                        //EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - history.get(uuid)) / 1000)));
+                        EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - history.get(uuid)) / 1000)));
                     }
                 }
             }

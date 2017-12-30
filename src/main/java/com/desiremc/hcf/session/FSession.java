@@ -892,7 +892,7 @@ public class FSession implements Messageable
 
         public void setScoreboard()
         {
-            //EntryRegistry.getInstance().setValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false), getTimeLeftFormatted());
+            EntryRegistry.getInstance().setValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false), getTimeLeftFormatted());
         }
 
         public String getTimeLeftFormatted()

@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 
+import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.core.utils.cache.Cache;
 import com.desiremc.core.utils.cache.RemovalListener;
@@ -42,7 +43,7 @@ public class EnderpearlHandler implements Listener
                         return;
                     }
                     DesireHCF.getLangHandler().sendRenderMessage(p, ChatColor.GRAY + "You can now use an enderpearl.", true, false);
-                    //EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false));
+                    EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false));
                 }
             }
         }, DesireHCF.getInstance());
@@ -88,7 +89,7 @@ public class EnderpearlHandler implements Listener
                 Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    //EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
+                    EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - entry.getValue()) / 1000)));
                 }
                 else
                 {
