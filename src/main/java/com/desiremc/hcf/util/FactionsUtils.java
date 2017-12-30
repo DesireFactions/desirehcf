@@ -177,7 +177,7 @@ public class FactionsUtils
                     ChatColor.DARK_RED + "" + ChatColor.BOLD + "FACTION INFO",
                     ChatColor.GRAY + "Name: " + ChatColor.YELLOW + f.getName(),
                     ChatColor.GRAY + "Members: " + ChatColor.YELLOW + f.getMemberSize(),
-                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + f.getTrophies()
+                    ChatColor.GRAY + "Trophy Points: " + ChatColor.YELLOW + f.getTrophyPoints()
             };
         }
     }
