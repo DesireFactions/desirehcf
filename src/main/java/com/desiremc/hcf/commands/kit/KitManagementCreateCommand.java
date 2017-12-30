@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.kit;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -12,8 +14,6 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.HKit;
 import com.desiremc.hcf.session.HKitHandler;
 import com.desiremc.hcf.validators.UnusedKitNameValidator;
-
-import java.util.List;
 
 public class KitManagementCreateCommand extends ValidCommand
 {
@@ -44,7 +44,7 @@ public class KitManagementCreateCommand extends ValidCommand
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
         String name = (String) args.get(0).getValue();
-        int cooldown = Integer.parseInt((String) args.get(1).getValue());
+        int cooldown = ((Number) args.get(1).getValue()).intValue();
 
         HKit kit;
         if (!args.get(2).hasValue())
