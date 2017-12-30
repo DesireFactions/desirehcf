@@ -40,7 +40,7 @@ lives:
 revive: '&7Revived &f{target} &7early for reason ''&f{reason}&7''.'
 reclaim:
   already_claimed: '&7You have already reclaimed for this SOTW.'
-  lives_broadcast: '&7» &b{player} has reclaimed lives!'
+  broadcast: '&7» &b{player} has reclaimed their rank!'
   lives: '&7You have reclaimed &b{lives}&7 lives.'
 pvp:
   target_protected: '&7That player has pvp &fdisabled&7.'

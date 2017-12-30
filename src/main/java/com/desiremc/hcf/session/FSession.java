@@ -69,9 +69,6 @@ public class FSession implements Messageable
     @Property("claimed_rank")
     private boolean claimedRank;
 
-    @Property("unclaimed_lives")
-    private int unclaimedLives;
-
     @Property("last_seen")
     private long lastSeen;
 
@@ -157,6 +154,7 @@ public class FSession implements Messageable
         factionRank = fSession.factionRank;
         channel = fSession.channel;
         factionSettings = fSession.factionSettings;
+        claimedRank = fSession.claimedRank;
     }
 
     protected void setId(int id)
@@ -292,22 +290,6 @@ public class FSession implements Messageable
     public void setClaimedRank(boolean claimedRank)
     {
         this.claimedRank = claimedRank;
-    }
-
-    /**
-     * @return the current number of unclaimed lives.
-     */
-    public int getUnclaimedLives()
-    {
-        return unclaimedLives;
-    }
-
-    /**
-     * @param unclaimedLives the new number of unclaimed lives.
-     */
-    public void setUnclaimedLives(int unclaimedLives)
-    {
-        this.unclaimedLives = unclaimedLives;
     }
 
     /**

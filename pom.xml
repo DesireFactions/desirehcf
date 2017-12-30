@@ -34,6 +34,12 @@
 			<artifactId>DesireNPC</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
+		<!-- Desire Crates -->
+		<dependency>
+			<groupId>com.desiremc.crates</groupId>
+			<artifactId>DesireCrates</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<!-- WorldGuard API -->
         <dependency>
             <groupId>com.sk89q.worldguard</groupId>
