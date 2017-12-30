@@ -25,7 +25,7 @@ public class ChatListener implements Listener
 
     private static final boolean DEBUG = false;
 
-    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event)
     {
         if (DEBUG)
@@ -60,7 +60,6 @@ public class ChatListener implements Listener
             {
                 member.sendMessage(message);
             }
-            event.setCancelled(true);
         }
         else if (fSession.getChannel() == FactionChannel.ALLY)
         {
@@ -77,7 +76,6 @@ public class ChatListener implements Listener
             {
                 member.sendMessage(message);
             }
-            event.setCancelled(true);
         }
         else
         {
