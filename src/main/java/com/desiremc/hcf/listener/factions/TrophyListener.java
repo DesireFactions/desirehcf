@@ -14,15 +14,15 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.Faction;
-import com.desiremc.koth.events.NewCapperKothEvent;
+import com.desiremc.koth.events.KothEndEvent;
 
 public class TrophyListener implements Listener
 {
 
     @EventHandler
-    public void onKothCapture(NewCapperKothEvent event)
+    public void onKothCapture(KothEndEvent event)
     {
-        FSession session = event.getPlayerSession();
+        FSession session = event.getWinner();
         Faction faction = session.getFaction();
 
         if (!faction.isWilderness())
