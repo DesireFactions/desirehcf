@@ -1,12 +1,13 @@
 package com.desiremc.hcf.tasks;
 
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitRunnable;
+
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.handler.SOTWHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class SOTWTask extends BukkitRunnable
 {
@@ -26,7 +27,7 @@ public class SOTWTask extends BukkitRunnable
     {
         for (Player p : Bukkit.getOnlinePlayers())
         {
-            EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false), DateUtils.formatDateDiff(start + getRemainingSeconds() * 1000));
+            EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false), DateUtils.formatDateDiff(getRemainingSeconds()));
         }
 
         if (getRemainingSeconds() <= 0)
