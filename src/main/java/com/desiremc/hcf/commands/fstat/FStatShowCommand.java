@@ -25,7 +25,7 @@ public class FStatShowCommand extends FactionValidCommand
         Faction faction = sender.getFaction();
 
         DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "faction", true, false,
-                "{faction}", faction);
+                "{faction}", faction.getName());
 
         DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "trophy_points", true, false,
                 "{points}", Double.toString(faction.getTrophyPoints()));
