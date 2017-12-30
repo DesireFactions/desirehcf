@@ -13,6 +13,7 @@ public class KitManagementCommand extends ValidBaseCommand
         addSubCommand(new KitManagementCreateCommand());
         addSubCommand(new KitManagementAddCommand());
         addSubCommand(new KitManagementEditCommand());
+        addSubCommand(new KitManagegmentListCommand());
     }
 
 }

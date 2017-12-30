@@ -1,5 +1,14 @@
 package com.desiremc.hcf.gui;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.material.MaterialData;
+
 import com.desiremc.core.gui.Menu;
 import com.desiremc.core.gui.MenuItem;
 import com.desiremc.core.utils.DateUtils;
@@ -9,14 +18,8 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.HKit;
 import com.desiremc.hcf.session.HKitHandler;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.material.MaterialData;
 
-import java.util.Arrays;
-import java.util.List;
+import net.md_5.bungee.api.ChatColor;
 
 public class ViewKitsMenu extends Menu
 {
@@ -119,6 +122,7 @@ public class ViewKitsMenu extends Menu
             item = new MaterialData(Material.WOOL, color).toItemStack();
 
             ItemMeta meta = item.getItemMeta();
+            meta.setDisplayName(ChatColor.AQUA + kit.getName());
             meta.setLore(lore);
             item.setItemMeta(meta);
 

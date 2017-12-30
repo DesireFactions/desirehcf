@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.lives;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.session.Rank;
@@ -10,8 +12,6 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.validators.PlayerHasDeathbanValidator;
 import com.desiremc.hcf.validators.PlayerHasLivesValidator;
 
-import java.util.List;
-
 public class LivesUseCommand extends FactionValidCommand
 {
 
@@ -19,11 +19,12 @@ public class LivesUseCommand extends FactionValidCommand
     {
         super("use", "Use a life to revive another player.", Rank.GUEST, new String[] { "revive" });
 
+        addSenderValidator(new PlayerHasLivesValidator());
+
         addArgument(CommandArgumentBuilder.createBuilder(FSession.class)
                 .setName("target")
                 .setParser(new FSessionParser())
                 .addValidator(new PlayerHasDeathbanValidator())
-                .addSenderValidator(new PlayerHasLivesValidator())
                 .build());
     }
 
