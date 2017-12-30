@@ -59,8 +59,8 @@ public class FactionShowCommand extends FactionValidCommand
                 "{leader}", faction.getLeader().isOnline() ? "§a" + faction.getLeader().getName() : "§c" + faction.getLeader().getName(),
                 "{leader_kills}", faction.getLeader().getTotalKills(),
                 "{kills}", faction.getTotalKills(),
-                "{balance}", StringUtils.doubleFormat(faction.getBalance()),
-                "{dtr}", StringUtils.doubleFormat(faction.getDTR()),
+                "{balance}", StringUtils.formatNumber(faction.getBalance(), 2, true),
+                "{dtr}", StringUtils.formatNumber(faction.getDTR(), 3, false),
                 "{points}", faction.getTrophyPoints(),
                 "{koth}", faction.getKothWins());
 

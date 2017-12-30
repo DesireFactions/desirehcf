@@ -123,7 +123,7 @@ kits:
   swap_item: '&7Swapped items &f{item1}&7 and &f{item2}&7.'
   different_swap: '&7You can''t &fswap &7an item with itself.'
 factions:
-  moved_location: '&7Leaving {fromColor}{fromName}&6({fromType}&6). Entering {toColor}{toName}&6({toType}&6).'
+  moved_location: '&7Leaving {fromColor}{fromName}&7({fromType}&7).{nl}&7Entering {toColor}{toName}&7({toType}&7).'
   not_found: '&7That faction doesn''t exist.'
   no_faction: '&7You are not part of a faction.'
   already_member: '&7You already have a faction.'
