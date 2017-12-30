@@ -21,6 +21,7 @@ import com.desiremc.hcf.commands.CraftCommand;
 import com.desiremc.hcf.commands.CrowbarCommand;
 import com.desiremc.hcf.commands.EnderChestCommand;
 import com.desiremc.hcf.commands.HCFReloadCommand;
+import com.desiremc.hcf.commands.HelpOpCommand;
 import com.desiremc.hcf.commands.LogoutCommand;
 import com.desiremc.hcf.commands.OreCommand;
 import com.desiremc.hcf.commands.PVPCommand;
@@ -183,6 +184,7 @@ public class DesireHCF extends JavaPlugin
         //commandHandler.registerCommand(new FactionFocusCommand());
         commandHandler.registerCommand(new CraftCommand());
         commandHandler.registerCommand(new ReclaimCommand());
+        commandHandler.registerCommand(new HelpOpCommand());
     }
 
     public static WorldGuardPlugin getWorldGuard()
