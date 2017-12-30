@@ -874,6 +874,11 @@ public class FSession implements Messageable
         @Override
         public void run()
         {
+            if (!isOnline())
+            {
+                return;
+            }
+
             if (getPlayer() == null || !getPlayer().isOnline())
             {
                 return;
