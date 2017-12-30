@@ -178,6 +178,33 @@ public class ClaimSession implements Runnable
         return boundedArea;
     }
 
+    public BlockColumn[] getPoints(BlockColumn blockColumn, int point)
+    {
+        BlockColumn[] points = new BlockColumn[4];
+        if (point == 0)
+        {
+            points[0] = pointOne;
+            points[1] = pointTwo;
+            points[2] = new BlockColumn(pointOne.getX(), pointTwo.getZ(), pointOne.getWorld());
+            points[3] = new BlockColumn(pointTwo.getX(), pointOne.getZ(), pointOne.getWorld());
+        }
+        else if (point == 1)
+        {
+            points[0] = blockColumn;
+            points[1] = pointTwo;
+            points[2] = new BlockColumn(blockColumn.getX(), pointTwo.getZ(), blockColumn.getWorld());
+            points[3] = new BlockColumn(pointTwo.getX(), blockColumn.getZ(), blockColumn.getWorld());
+        }
+        else if (point == 2)
+        {
+            points[0] = pointOne;
+            points[1] = blockColumn;
+            points[2] = new BlockColumn(pointOne.getX(), blockColumn.getZ(), pointOne.getWorld());
+            points[3] = new BlockColumn(blockColumn.getX(), pointOne.getZ(), pointOne.getWorld());
+        }
+        return points;
+    }
+
     /**
      * @return {@code true} if the claim session has been terminated.
      */
