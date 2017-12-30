@@ -113,6 +113,8 @@ public class RegionHandler extends BasicDAO<Region, Integer>
 
         nextId++;
 
+        regions.put(name, region);
+
         return region;
     }
 

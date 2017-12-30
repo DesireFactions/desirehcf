@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.region;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -9,8 +11,6 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parsers.RegionParser;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
-
-import java.util.List;
 
 public class RegionDeleteCommand extends ValidCommand
 {
@@ -29,7 +29,7 @@ public class RegionDeleteCommand extends ValidCommand
     public void validRun(Session sender, String[] label, List<CommandArgument<?>> arguments)
     {
         Region region = (Region) arguments.get(0).getValue();
-        RegionHandler.getInstance().delete(region);
+        RegionHandler.deleteRegion(region);
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "region.delete", true, false, "{name}", region.getName());
     }
