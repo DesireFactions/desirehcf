@@ -19,7 +19,7 @@ public class FactionNameCommand extends FactionValidCommand
 {
     protected FactionNameCommand()
     {
-        super("name", "Change your faction name.", Rank.GUEST, new String[] {"rename"});
+        super("name", "Change your faction name.", Rank.GUEST, new String[] { "rename" });
 
         addSenderValidator(new SenderHasFactionValidator());
         addSenderValidator(new SenderFactionLeaderValidator());
