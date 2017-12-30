@@ -54,13 +54,13 @@ public class MovementListener implements Listener
         {
             for (Region region : RegionHandler.getRegions())
             {
-                if (region.getWorld() == e.getTo().getWorld())
+                if (region.getWorld().equals(e.getTo().getWorld()))
                 {
                     if (region.getRegionBlocks().isWithin(e.getTo()))
                     {
                         fSession.getSafeTimer().pause();
                     }
-                    else if (region.getRegionBlocks().isWithin(e.getFrom()))
+                    else
                     {
                         fSession.getSafeTimer().resume();
                     }
