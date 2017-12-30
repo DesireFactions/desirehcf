@@ -112,6 +112,15 @@ public class CombatListener implements Listener
             return;
         }
 
+        FSession p = FSessionHandler.getFSession((Player) e.getEntity());
+        FSession k = FSessionHandler.getFSession((Player) e.getDamager());
+
+        if (!p.getFaction().getRelationshipTo(k.getFaction()).canAttack())
+        {
+            e.setCancelled(true);
+            return;
+        }
+
         Player victim = (Player) e.getEntity();
 
         if (!npcRegistry.isNPC(victim))
