@@ -294,17 +294,65 @@ public class PlayerListener implements Listener
         Faction faction = fSession.getFaction();
         ClaimSession claimSession = fSession.getClaimSession();
 
+        BlockColumn[] columns;
+        if (point == 2 && claimSession.hasPointOne())
+        {
+            columns = claimSession.getPoints(blockColumn, 2);
+        }
+        else if (point == 1 && claimSession.hasPointTwo())
+        {
+            columns = claimSession.getPoints(blockColumn, 1);
+        }
+        else
+        {
+            columns = new BlockColumn[] { blockColumn };
+        }
+
+        int search = -1;
+        boolean borders = false;
+        for (BlockColumn col : columns)
+        {
+            search = checkColumn(fSession, col);
+            if (search == INVALID)
+            {
+                return INVALID;
+            }
+            else if (search == BORDER)
+            {
+                borders = true;
+            }
+        }
+
+        if (fSession.getFaction().getClaims().size() != 0)
+        {
+            if ((fSession.getClaimSession().pointOneBorders() && point == 2) || (claimSession.pointTwoBorders() && point == 1) || !faction.isNormal())
+            {
+                return NOT_BORDER;
+            }
+            if (borders)
+            {
+                return BORDER;
+            }
+            DesireHCF.getLangHandler().sendRenderMessage(fSession, "faction.claims.must_touch", true, false);
+            return INVALID;
+        }
+        return BORDER;
+
+    }
+
+    private static int checkColumn(FSession fSession, BlockColumn blockColumn)
+    {
         Iterable<Entry<Faction, BoundedArea>> nearby = FactionHandler.getNearbyFactions(blockColumn, DesireHCF.getConfigHandler().getInteger("factions.claims.buffer"));
         for (Entry<Faction, BoundedArea> entry : nearby)
         {
-            if (entry.value() != faction)
+            if (entry.value() != fSession.getFaction())
             {
                 if (entry.geometry().intersects(blockColumn))
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.overlap.other", true, false);
                     return INVALID;
                 }
-                else if (faction.isNormal())
+                else if (fSession.getFaction().isNormal())
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.too_close", true, false);
                     return INVALID;
@@ -323,16 +371,7 @@ public class PlayerListener implements Listener
                 }
             }
         }
-        if (faction.getClaims().size() != 0)
-        {
-            if ((claimSession.pointOneBorders() && point == 2) || (claimSession.pointTwoBorders() && point == 1) || !faction.isNormal())
-            {
-                return NOT_BORDER;
-            }
-            DesireHCF.getLangHandler().sendRenderMessage(fSession, "faction.claims.must_touch", true, false);
-            return INVALID;
-        }
-        return BORDER;
+        return -1;
     }
 
     private static final Set<Material> redstoneMaterials = EnumSet.of(
