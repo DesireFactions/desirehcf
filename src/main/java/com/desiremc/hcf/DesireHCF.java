@@ -51,6 +51,7 @@ import com.desiremc.hcf.listener.ConnectionListener;
 import com.desiremc.hcf.listener.CreatureSpawnListener;
 import com.desiremc.hcf.listener.MovementListener;
 import com.desiremc.hcf.listener.PickupListener;
+import com.desiremc.hcf.listener.SignListener;
 import com.desiremc.hcf.listener.classes.ArcherListener;
 import com.desiremc.hcf.listener.classes.ArmorListener;
 import com.desiremc.hcf.listener.classes.ClassListener;
@@ -138,6 +139,7 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new PickupListener(), this);
         listenerManager.addListener(new FurnaceSpeedHandler(), this);
         listenerManager.addListener(new BlockListener(), this);
+        listenerManager.addListener(new SignListener(), this);
 
         // faction listeners
         listenerManager.addListener(new com.desiremc.hcf.listener.factions.ConnectionListener(), this);

@@ -280,3 +280,9 @@ sotw:
   scoreboard: '&bSOTW: '
   over: '&bSOTW PvP timer is now over!'
   already: '&7A SOTW timer is already running.'
+signs:
+  not_enough_money: '&7You don''t have enough money to buy that.'
+  full_inventory: '&7You need an empty inventory spot to do that.'
+  buy_success: '&7You have bought 1 &b{item}&7 for &b{price}&7.'
+  no_item: '&7You need 1 &b{item} &7to do that.'
+  sell_success: '&7You have sold 1 &b{item}&7 for &b{price}&7.'
