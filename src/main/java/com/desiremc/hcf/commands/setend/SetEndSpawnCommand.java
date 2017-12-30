@@ -19,7 +19,7 @@ public class SetEndSpawnCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        SetEndAPI.setEndSpawn(sender.getPlayer(), "endspawn", "set_end.spawn");
+        SetEndAPI.setEndSpawn(sender.getPlayer());
     }
 
 }

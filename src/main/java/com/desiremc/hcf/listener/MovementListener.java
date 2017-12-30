@@ -78,11 +78,11 @@ public class MovementListener implements Listener
         }
         if (event.getTo().getWorld().getEnvironment() == Environment.THE_END && event.getFrom().getWorld().getEnvironment() != Environment.THE_END)
         {
-            event.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("set_end.spawn")));
+            event.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("endspawn")));
         }
         else if (event.getTo().getWorld().getEnvironment() != Environment.THE_END && event.getFrom().getWorld().getEnvironment() == Environment.THE_END)
         {
-            event.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("set_end.exit")));
+            event.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("endexit")));
         }
     }
 

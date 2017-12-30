@@ -19,6 +19,6 @@ public class SetEndExitCommand extends ValidCommand
     @Override
     public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
     {
-        SetEndAPI.setEndExit(sender.getPlayer(), "endexit", "set_end.exit");
+        SetEndAPI.setEndExit(sender.getPlayer());
     }
 }
