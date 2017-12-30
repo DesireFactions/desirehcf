@@ -24,6 +24,7 @@ import com.desiremc.hcf.commands.HCFReloadCommand;
 import com.desiremc.hcf.commands.LogoutCommand;
 import com.desiremc.hcf.commands.OreCommand;
 import com.desiremc.hcf.commands.PVPCommand;
+import com.desiremc.hcf.commands.ReclaimCommand;
 import com.desiremc.hcf.commands.SetWinnerCommand;
 import com.desiremc.hcf.commands.StartOfTheWorldCommand;
 import com.desiremc.hcf.commands.factions.FactionsCommand;
@@ -183,6 +184,7 @@ public class DesireHCF extends JavaPlugin
         commandHandler.registerCommand(new StartOfTheWorldCommand());
         //commandHandler.registerCommand(new FactionFocusCommand());
         commandHandler.registerCommand(new CraftCommand());
+        commandHandler.registerCommand(new ReclaimCommand());
     }
 
     public static WorldGuardPlugin getWorldGuard()
