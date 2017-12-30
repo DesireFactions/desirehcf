@@ -25,7 +25,7 @@ public class ChatListener implements Listener
 
     private static final boolean DEBUG = false;
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.HIGH, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event)
     {
         if (DEBUG)
