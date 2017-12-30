@@ -39,6 +39,7 @@ public class FactionsCommand extends ValidBaseCommand
         addSubCommand(new FactionNameCommand());
         addSubCommand(new FactionInvitesCommand());
         addSubCommand(new FactionListCommand());
+        addSubCommand(new FactionLeaderboardCommand());
     }
 
 }
