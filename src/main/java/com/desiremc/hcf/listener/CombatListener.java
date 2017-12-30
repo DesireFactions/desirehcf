@@ -2,7 +2,6 @@ package com.desiremc.hcf.listener;
 
 import java.util.UUID;
 
-import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderPearl;
@@ -38,6 +37,7 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
+import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCRegistry;
@@ -193,33 +193,51 @@ public class CombatListener implements Listener
             victim.addDeath(killer);
             victim.resetPVPTimer();
 
+            // check if they have a faction
+            if (victim.hasFaction())
+            {
+                // if they do, decrease their dtr
+                Faction faction = victim.getFaction();
+                faction.setDTR(faction.getDTR() - 1);
+                if (faction.getDTR() < faction.getMinDTR())
+                {
+                    faction.setDTR(faction.getMinDTR());
+                }
+
+                // also set their last death time
+                faction.setLastDeathTime(System.currentTimeMillis());
+
+                // save them too
+                faction.save();
+            }
+
             // if the killer was a player, give them their reward
             FSession kSession = getKillerSession(tag);
             if (kSession != null)
             {
+                // if they have a faction, add the kill stat
+                if (kSession.hasFaction())
+                {
+                    kSession.getFaction().addKill();
+                    kSession.getFaction().save();
+                }
+
+                // add the kill stat to the player
                 kSession.addKill(vPlayer.getUniqueId());
+
+                // update a player's kills
                 TablistHandler.updateKills(kSession);
 
-                Session s = SessionHandler.getSession(event.getEntity().getKiller());
-                if (!s.hasAchievement(Achievement.FIRST_KILL))
+                // give em an achievement
+                if (!kSession.hasAchievement(Achievement.FIRST_KILL))
                 {
-                    s.awardAchievement(Achievement.FIRST_KILL, true);
+                    kSession.awardAchievement(Achievement.FIRST_KILL, true);
                 }
             }
 
             // update the database
-            Bukkit.getScheduler().runTaskAsynchronously(DesireHCF.getInstance(), new Runnable()
-            {
-                @Override
-                public void run()
-                {
-                    victim.save();
-                    if (kSession != null)
-                    {
-                        kSession.save();
-                    }
-                }
-            });
+            victim.save();
+            kSession.save();
 
             // send the death message to everyone
             FancyMessage message = processMessage(victim, cause, tag);

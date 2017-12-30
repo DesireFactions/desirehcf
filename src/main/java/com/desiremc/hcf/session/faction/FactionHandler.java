@@ -41,6 +41,11 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
 {
 
     /**
+     * Rate of dtr regen per minute per player online.
+     */
+    private static final double REGEN = 0.025;
+
+    /**
      * Singleton instance of the handler.
      */
     private static FactionHandler instance;
@@ -154,6 +159,26 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         // initialize all the lists
         bypassing = new LinkedList<>();
         stuck = new HashMap<>();
+
+        Bukkit.getScheduler().runTaskTimerAsynchronously(DesireHCF.getInstance(), () ->
+        {
+            for (Faction faction : factionsById.values())
+            {
+                if (faction.getLastDeathTime() > System.currentTimeMillis() - 1_800_000)
+                {
+                    continue;
+                }
+                if (faction.getOnlineMembers().size() == 0)
+                {
+                    continue;
+                }
+                if (faction.getDTR() >= faction.getMaxDTR())
+                {
+                    continue;
+                }
+                faction.setDTR(faction.getDTR() + ((REGEN / 120) * faction.getOnlineMembers().size()));
+            }
+        }, 0, 10);
     }
 
     /**
@@ -188,8 +213,10 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             int faction1Size = faction1.getMembers().size();
             int faction2Size = faction2.getMembers().size();
 
-            if (faction1Size < faction2Size) return 1;
-            if (faction1Size > faction2Size) return -1;
+            if (faction1Size < faction2Size)
+                return 1;
+            if (faction1Size > faction2Size)
+                return -1;
 
             return 0;
         });
@@ -200,8 +227,10 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             int faction1Size = faction1.getOnlineMembers().size();
             int faction2Size = faction2.getOnlineMembers().size();
 
-            if (faction1Size < faction2Size) return 1;
-            if (faction1Size > faction2Size) return -1;
+            if (faction1Size < faction2Size)
+                return 1;
+            if (faction1Size > faction2Size)
+                return -1;
 
             return 0;
         });
@@ -221,8 +250,10 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
             double faction1Size = faction1.getTrophyPoints();
             double faction2Size = faction2.getTrophyPoints();
 
-            if (faction1Size < faction2Size) return 1;
-            if (faction1Size > faction2Size) return -1;
+            if (faction1Size < faction2Size)
+                return 1;
+            if (faction1Size > faction2Size)
+                return -1;
 
             return 0;
         });
@@ -333,12 +364,11 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         faction.save();
     }
 
-
     /**
      * Renames a faction, replaces it's values in factionsByName.
      *
      * @param faction the faction to rename.
-     * @param name    the new name of the faction.
+     * @param name the new name of the faction.
      */
     public static void renameFaction(Faction faction, String name)
     {
@@ -379,6 +409,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         faction.setState(FactionState.ACTIVE);
         faction.setType(type);
         faction.addMember(fSession);
+        faction.setDTR(faction.getMaxDTR());
         faction.save();
 
         fSession.setFactionRank(FactionRank.LEADER);
@@ -554,13 +585,13 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * Removes a claim.
      *
      * @param faction the faction who has the claim removed.
-     * @param area    the removed claim area.
+     * @param area the removed claim area.
      */
     public static void removeClaim(Faction faction, BoundedArea area)
     {
         claims = claims.delete(faction, area);
     }
-    
+
     @Override
     public Key<Faction> save(Faction entity)
     {

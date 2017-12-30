@@ -48,7 +48,9 @@ public class Faction
 
     private double balance;
 
-    private double dtr;
+    private volatile double dtr;
+
+    private long lastDeathTime;
 
     private int totalKills;
 
@@ -272,7 +274,7 @@ public class Faction
     /**
      * @return the amount of "deaths til raidable"
      */
-    public double getDTR()
+    public synchronized double getDTR()
     {
         return dtr;
     }
@@ -280,7 +282,7 @@ public class Faction
     /**
      * @param dtr the new dtr value.
      */
-    public void setDTR(double dtr)
+    public synchronized void setDTR(double dtr)
     {
         this.dtr = dtr;
     }
@@ -307,6 +309,16 @@ public class Faction
     public double getMinDTR()
     {
         return -getMaxDTR();
+    }
+
+    public long getLastDeathTime()
+    {
+        return lastDeathTime;
+    }
+
+    public void setLastDeathTime(long lastDeathTime)
+    {
+        this.lastDeathTime = lastDeathTime;
     }
 
     /**
@@ -491,7 +503,7 @@ public class Faction
      * Adds an announcement for this player to get the next time they get on the server. If they have pending
      * announcements already it will take the new one on to the end of the list.
      *
-     * @param session      the player to receive the announcement.
+     * @param session the player to receive the announcement.
      * @param announcement the announcement.
      */
     public void addAnnouncement(FSession session, String announcement)
