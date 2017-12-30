@@ -28,7 +28,7 @@ public class SignListener implements Listener
     public void onSignPlace(SignChangeEvent event)
     {
         String title = event.getLine(0);
-        if (!title.equalsIgnoreCase("[DesireHCF]"))
+        if (!title.equalsIgnoreCase("Shop"))
         {
             return;
         }
