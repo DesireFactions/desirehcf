@@ -113,7 +113,7 @@ public class SignListener implements Listener
         {
             if (!player.getInventory().contains(item.getType()))
             {
-                DesireHCF.getLangHandler().sendRenderMessage(session, "signs.no_item", true, false);
+                DesireHCF.getLangHandler().sendRenderMessage(session, "signs.no_item", true, false, "{item}", name);
                 return;
             }
 

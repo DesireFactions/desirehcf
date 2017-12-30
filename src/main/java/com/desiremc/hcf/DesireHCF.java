@@ -43,6 +43,7 @@ import com.desiremc.hcf.handler.GappleHandler;
 import com.desiremc.hcf.handler.LootingBuffHandler;
 import com.desiremc.hcf.handler.PotionLimiterHandler;
 import com.desiremc.hcf.handler.SOTWHandler;
+import com.desiremc.hcf.handler.SlowChatHandler;
 import com.desiremc.hcf.handler.TablistHandler;
 import com.desiremc.hcf.listener.BlockListener;
 import com.desiremc.hcf.listener.ChatListener;
@@ -156,6 +157,7 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new LootingBuffHandler(), this);
         listenerManager.addListener(new EnchantmentLimiterHandler(), this);
         listenerManager.addListener(new PotionLimiterHandler(), this);
+        listenerManager.addListener(new SlowChatHandler(), this);
     }
 
     private void registerCommands()
