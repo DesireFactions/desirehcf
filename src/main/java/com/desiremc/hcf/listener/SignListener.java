@@ -79,6 +79,8 @@ public class SignListener implements Listener
             return;
         }
 
+        event.setCancelled(true);
+
         Player player = event.getPlayer();
         FSession session = FSessionHandler.getFSession(player);
 
@@ -101,6 +103,7 @@ public class SignListener implements Listener
             }
 
             player.getInventory().addItem(item);
+            player.updateInventory();
 
             session.withdrawBalance(price);
             session.save();
