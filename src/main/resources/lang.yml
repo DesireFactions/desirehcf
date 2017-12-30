@@ -244,6 +244,7 @@ factions:
     now_allied: '&7Your faction is now allied to &b{faction}&7.'
     sent: '&7You have sent your ally request to &b{faction}&7.'
     received: '&b{faction}&7 would like to be allies with you.'
+    no_space: '&7You can only have 1 ally.'
   neutral:
     already_neutral: '&7Your faction is already neutral to &b{faction}&7.'
     sent: '&7You are no longer allies with &b{faction)&7.'

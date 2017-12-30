@@ -101,6 +101,7 @@ public class FactionShowCommand extends FactionValidCommand
             {
                 sb.append("§f");
                 sb.append(ally.getName());
+                sb.append(", ");
             }
             sb.setLength(sb.length() - 2);
         }

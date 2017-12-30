@@ -11,6 +11,7 @@ import com.desiremc.hcf.parsers.FactionParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.FactionNotAlliedValidator;
+import com.desiremc.hcf.validators.SenderFactionHasAllyRoom;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 
@@ -22,6 +23,7 @@ public class FactionAllyCommand extends FactionValidCommand
 
         addSenderValidator(new SenderHasFactionValidator());
         addSenderValidator(new SenderFactionOfficerValidator());
+        addSenderValidator(new SenderFactionHasAllyRoom());
 
         addArgument(CommandArgumentBuilder.createBuilder(Faction.class)
                 .setName("faction")
