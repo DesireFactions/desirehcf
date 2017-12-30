@@ -82,6 +82,7 @@ public class ConnectionListener implements Listener
             firstJoin.remove(player.getUniqueId());
 
             player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 16));
+            player.updateInventory();
         }
 
         if (!fSession.hasAchievement(Achievement.FIRST_LOGIN))
