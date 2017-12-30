@@ -1,6 +1,5 @@
 package com.desiremc.hcf.listener.factions;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -80,10 +79,8 @@ public class TrophyListener implements Listener
     @EventHandler
     public void onBlockBreakEvent(BlockBreakEvent event)
     {
-        Bukkit.broadcastMessage("Test1");
-        if (!event.getBlock().getType().equals(Material.DIAMOND) && !event.getBlock().getType().equals(Material.EMERALD))
+        if (!event.getBlock().getType().equals(Material.DIAMOND_ORE) && !event.getBlock().getType().equals(Material.EMERALD_ORE))
         {
-            Bukkit.broadcastMessage("Test2");
             return;
         }
 
@@ -92,10 +89,8 @@ public class TrophyListener implements Listener
 
         if (player.getFaction().isWilderness())
         {
-            Bukkit.broadcastMessage("Test3");
             return;
         }
-        Bukkit.broadcastMessage("Test4");
 
         faction.addTrophyPoints(0.5);
         faction.save();
