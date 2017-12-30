@@ -1,13 +1,13 @@
 package com.desiremc.hcf.commands.fstat;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
-
-import java.util.List;
 
 public class FStatShowCommand extends FactionValidCommand
 {
@@ -28,7 +28,7 @@ public class FStatShowCommand extends FactionValidCommand
                 "{faction}", faction);
 
         DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "trophy_points", true, false,
-                "{points}", Integer.toString(faction.getTrophies()));
+                "{points}", Double.toString(faction.getTrophyPoints()));
 
         DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "koth_wins", true, false,
                 "{koth_wins}", Integer.toString(faction.getKothWins()));
