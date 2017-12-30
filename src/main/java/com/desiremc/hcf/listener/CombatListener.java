@@ -176,6 +176,7 @@ public class CombatListener implements Listener
     {
         try
         {
+            long last = System.currentTimeMillis();
             // retrieve all variables we need
             Player vPlayer = event.getEntity();
             FSession victim = FSessionHandler.getFSession(vPlayer);
@@ -183,8 +184,14 @@ public class CombatListener implements Listener
             Tag tag = TagHandler.getTag(vPlayer.getUniqueId());
             TagHandler.clearTag(victim.getUniqueId());
 
+            System.out.println("Retrieving variables: " + (System.currentTimeMillis() - last) + "ms");
+            last = System.currentTimeMillis();
+
             // get rid of the dead player
             BungeeUtils.sendToHub(vPlayer);
+
+            System.out.println("Sending to hub: " + (System.currentTimeMillis() - last) + "ms");
+            last = System.currentTimeMillis();
 
             // get the killer uuid. Can be the victim, their tagger, the console, or no one
             final UUID killer = tag == null ? cause != DamageCause.CUSTOM ? cause != DamageCause.SUICIDE ? null : vPlayer.getUniqueId() : DesireCore.getConsoleUUID() : tag.getUniqueId();
@@ -192,6 +199,9 @@ public class CombatListener implements Listener
             // add the death and give them a new pvp timer
             victim.addDeath(killer);
             victim.resetPVPTimer();
+
+            System.out.println("Add death, reset timer, get killer: " + (System.currentTimeMillis() - last) + "ms");
+            last = System.currentTimeMillis();
 
             // check if they have a faction
             if (victim.hasFaction())
@@ -210,6 +220,9 @@ public class CombatListener implements Listener
                 // save them too
                 faction.save();
             }
+
+            System.out.println("Update victim fact: " + (System.currentTimeMillis() - last) + "ms");
+            last = System.currentTimeMillis();
 
             // if the killer was a player, give them their reward
             FSession kSession = getKillerSession(tag);
@@ -236,8 +249,14 @@ public class CombatListener implements Listener
                 kSession.save();
             }
 
+            System.out.println("Update killer: " + (System.currentTimeMillis() - last) + "ms");
+            last = System.currentTimeMillis();
+
             // update the database
             victim.save();
+
+            System.out.println("Save victim: " + (System.currentTimeMillis() - last) + "ms");
+            last = System.currentTimeMillis();
 
             // send the death message to everyone
             FancyMessage message = processMessage(victim, cause, tag);
@@ -249,8 +268,15 @@ public class CombatListener implements Listener
                 }
             }
 
+            System.out.println("Send fancy to server: " + (System.currentTimeMillis() - last) + "ms");
+            last = System.currentTimeMillis();
+
             // console wants to know too
             DesireHCF.getInstance().getLogger().info(message.toOldMessageFormat());
+
+            System.out.println("Send fancy to console: " + (System.currentTimeMillis() - last) + "ms");
+            last = System.currentTimeMillis();
+
         }
         catch (Exception ex)
         {
