@@ -135,7 +135,7 @@ public class CombatListener implements Listener
                     }
                     else if (region.getRegionBlocks().isWithin(victim.getLocation()))
                     {
-                        DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.victim_zone", true, false);
+                        DesireHCF.getLangHandler().sendRenderMessage(damager, "pvp.victim_safe", true, false);
                         state = 2;
                         break;
                     }
