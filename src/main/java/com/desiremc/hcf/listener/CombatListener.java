@@ -233,11 +233,11 @@ public class CombatListener implements Listener
                 {
                     kSession.awardAchievement(Achievement.FIRST_KILL, true);
                 }
+                kSession.save();
             }
 
             // update the database
             victim.save();
-            kSession.save();
 
             // send the death message to everyone
             FancyMessage message = processMessage(victim, cause, tag);
