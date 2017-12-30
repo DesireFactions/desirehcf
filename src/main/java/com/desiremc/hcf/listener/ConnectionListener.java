@@ -6,6 +6,7 @@ import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -14,6 +15,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.FileHandler;
@@ -78,6 +80,8 @@ public class ConnectionListener implements Listener
 
             Bukkit.getScheduler().runTask(DesireHCF.getInstance(), () -> player.teleport(loc));
             firstJoin.remove(player.getUniqueId());
+
+            player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 16));
         }
 
         if (!fSession.hasAchievement(Achievement.FIRST_LOGIN))

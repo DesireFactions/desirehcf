@@ -28,8 +28,6 @@ import com.desiremc.hcf.commands.ReclaimCommand;
 import com.desiremc.hcf.commands.SetWinnerCommand;
 import com.desiremc.hcf.commands.StartOfTheWorldCommand;
 import com.desiremc.hcf.commands.factions.FactionsCommand;
-import com.desiremc.hcf.commands.kit.KitCommand;
-import com.desiremc.hcf.commands.kit.KitManagementCommand;
 import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.lives.ReviveCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
@@ -168,7 +166,7 @@ public class DesireHCF extends JavaPlugin
         commandHandler.registerCommand(new RegionCommand(), this);
         commandHandler.registerCommand(new FactionsCommand(), this);
         //untested below this point
-        commandHandler.registerCommand(new KitManagementCommand(), this);
+        //commandHandler.registerCommand(new KitManagementCommand(), this);
         commandHandler.registerCommand(new OreCommand(), this);
         commandHandler.registerCommand(new CobbleCommand(), this);
         commandHandler.registerCommand(new ReviveCommand(), this);
@@ -178,7 +176,7 @@ public class DesireHCF extends JavaPlugin
         commandHandler.registerCommand(new HCFReloadCommand(), this);
         commandHandler.registerCommand(new SetEndCommand(), this);
         commandHandler.registerCommand(new LivesCommand(), this);
-        commandHandler.registerCommand(new KitCommand(), this);
+        //commandHandler.registerCommand(new KitCommand(), this);
         commandHandler.registerCommand(new CrowbarCommand(), this);
         commandHandler.registerCommand(new CoordsCommand(), this);
         commandHandler.registerCommand(new StartOfTheWorldCommand());
