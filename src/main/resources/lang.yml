@@ -51,7 +51,7 @@ pvp:
   already-disabled: '&7You do not have an &factive &7PVP timer.'
   scoreboard: '&b&lPVP Timer&7: '
 crowbar:
-  new_crowbar: '&7You have recieved a &fcrowbar&7.'
+  new_crowbar: '&7You have recieved a &fcrowbar&7 for &b$15000&7.'
   not_yours: '&7You can''t &fbreak blocks &7in someone else''s &ffaction&7.'
   wrong_block: '&7Only usable on &fender portal frames &7and &fmob spawners&7.'
   not_enough_charges: '&7Your &fcrowbar &7does not have &fenough charges &7for that.'
@@ -59,6 +59,7 @@ crowbar:
   prefix: '&8» &7Uses&f: &b'
   name: '&b&lCrowbar'
   spawner: '&b&lSpawner&7 - &f'
+  not_enough_money: '&7You need &b$15000&7 to purchase a Crowbar.'
 gapple:
   ended: '&7You may now use a &eGapple&7.'
   message: '&7You can not use a &eGapple&7 for &f{time} &7seconds.'

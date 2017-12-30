@@ -1,15 +1,15 @@
 package com.desiremc.hcf.commands;
 
-import com.desiremc.core.api.newcommands.CommandArgument;
-import com.desiremc.core.api.newcommands.ValidCommand;
-import com.desiremc.core.session.Rank;
-import com.desiremc.core.session.Session;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.handler.CrowbarHandler;
-
 import java.util.List;
 
-public class CrowbarCommand extends ValidCommand
+import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.core.session.Rank;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.api.commands.FactionValidCommand;
+import com.desiremc.hcf.handler.CrowbarHandler;
+import com.desiremc.hcf.session.FSession;
+
+public class CrowbarCommand extends FactionValidCommand
 {
 
     public CrowbarCommand()
@@ -18,8 +18,18 @@ public class CrowbarCommand extends ValidCommand
     }
 
     @Override
-    public void validRun(Session sender, String label[], List<CommandArgument<?>> args)
+    public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
+        if (sender.getBalance() < 15000)
+        {
+
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "crowbar.not_enough_money", true, false);
+            return;
+        }
+
+        sender.withdrawBalance(15000);
+        sender.save();
+
         sender.getPlayer().getInventory().addItem(CrowbarHandler.getNewCrowbar());
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "crowbar.new_crowbar", true, false);
