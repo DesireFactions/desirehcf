@@ -1,28 +1,31 @@
 package com.desiremc.hcf.api;
 
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.utils.BukkitUtils;
 import com.desiremc.hcf.DesireHCF;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class SetEndAPI
 {
 
-    private static void handle(CommandSender sender, String configName, String messageName)
+    public static Location spawn;
+    public static Location exit;
+
+    public static void setEndSpawn(Player sender)
     {
-        Player player = (Player) sender;
-        DesireHCF.getConfigHandler().setString(configName, BukkitUtils.toString(player.getLocation()));
-        DesireHCF.getLangHandler().sendRenderMessage(sender, messageName, true, false);
+        exit = sender.getLocation();
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "set_end.spawn", true, false);
+
+        DesireHCF.getConfigHandler().setString("endspawn", BukkitUtils.toString(sender.getLocation()));
     }
 
-    public static void setEndSpawn(CommandSender sender, String configName, String messageName)
+    public static void setEndExit(Player sender)
     {
-        handle(sender, configName, messageName);
-    }
+        exit = sender.getLocation();
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "set_end.exit", true, false);
 
-    public static void setEndExit(CommandSender sender, String configName, String messageName)
-    {
-        handle(sender, configName, messageName);
+        DesireHCF.getConfigHandler().setString("endexit", BukkitUtils.toString(sender.getLocation()));
     }
 
 }
