@@ -25,16 +25,12 @@ public class ChatListener implements Listener
 
     private static final boolean DEBUG = false;
 
-    @EventHandler(priority = EventPriority.HIGHEST)
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChat(AsyncPlayerChatEvent event)
     {
         if (DEBUG)
         {
             System.out.println("ChatListener.onChat() called.");
-        }
-        if (event.isCancelled())
-        {
-            return;
         }
         Player player = event.getPlayer();
         event.setCancelled(true);
@@ -64,6 +60,7 @@ public class ChatListener implements Listener
             {
                 member.sendMessage(message);
             }
+            event.setCancelled(true);
         }
         else if (fSession.getChannel() == FactionChannel.ALLY)
         {
@@ -80,6 +77,7 @@ public class ChatListener implements Listener
             {
                 member.sendMessage(message);
             }
+            event.setCancelled(true);
         }
         else
         {
@@ -87,7 +85,7 @@ public class ChatListener implements Listener
 
             FancyMessage message = new FancyMessage(f.isWilderness() ? "§8[§b*§8] " : "§8[§b" + f.getName() + "§8] ")
                     .then(s.getRank().getPrefix())
-                    .then(player.getName())
+                    .then(s.getName())
                     .color(s.getRank().getMain())
                     .tooltip(FactionsUtils.getMouseoverDetails(f))
                     .then(": ")
