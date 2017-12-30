@@ -108,7 +108,6 @@ public class BlockListener implements Listener
                         continue;
                     }
                     Block relative = block.getRelative(i, j, k);
-                    System.out.println(block.getType() + " " + relative.getType());
                     if (!vein.contains(relative) && block.getType().equals(relative.getType()))
                     {
                         vein.add(relative);
