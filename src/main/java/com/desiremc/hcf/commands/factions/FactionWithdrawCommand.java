@@ -4,14 +4,17 @@ import java.util.List;
 
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
-import com.desiremc.core.parsers.IntegerParser;
+import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.validators.FactionHasAmountMoney;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
+
+import net.minecraft.util.com.google.common.primitives.Doubles;
 
 public class FactionWithdrawCommand extends FactionValidCommand
 {
@@ -22,9 +25,10 @@ public class FactionWithdrawCommand extends FactionValidCommand
         addSenderValidator(new SenderHasFactionValidator());
         addSenderValidator(new SenderFactionOfficerValidator());
 
-        addArgument(CommandArgumentBuilder.createBuilder(Integer.class)
+        addArgument(CommandArgumentBuilder.createBuilder(String.class)
                 .setName("amount")
-                .setParser(new IntegerParser())
+                .setParser(new StringParser())
+                .addValidator(new FactionHasAmountMoney())
                 .build());
     }
 
@@ -32,7 +36,17 @@ public class FactionWithdrawCommand extends FactionValidCommand
     public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
         Faction faction = sender.getFaction();
-        double amount = ((Number) arguments.get(0).getValue()).doubleValue();
+        String arg = (String) arguments.get(0).getValue();
+        double amount;
+
+        if (arg.equalsIgnoreCase("all"))
+        {
+            amount = sender.getBalance();
+        }
+        else
+        {
+            amount = Doubles.tryParse(arg);
+        }
 
         faction.withdrawBalance(amount);
         sender.depositBalance(amount);

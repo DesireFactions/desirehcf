@@ -233,6 +233,7 @@ factions:
   withdraw: '&b{player}&7 has withdrawn &b${amount}&7 from the faction bank.'
   deposit: '&b{player}&7 has deposited &b${amount}&7 to the faction bank.'
   no_money: '&7You don''t have enough money to do that.'
+  no_money_faction: '&7Your faction doesn''t have enough money to do that.'
   invalid_deposit: '&7You must enter a number, or all.'
   chat:
     invalid_channel: '&7You have entered an invalid chat channel.'
