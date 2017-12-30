@@ -1,5 +1,7 @@
 package com.desiremc.hcf.validators;
 
+import org.bukkit.Bukkit;
+
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidator;
 import com.desiremc.hcf.session.FSession;
@@ -37,6 +39,7 @@ public class FactionHasAmountMoney extends FactionValidator<String>
             DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_money_faction", true, false);
             return false;
         }
+        Bukkit.broadcastMessage(faction.getBalance() + ":" + amount);
         return true;
     }
 }
