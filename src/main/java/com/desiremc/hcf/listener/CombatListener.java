@@ -18,7 +18,6 @@ import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.player.PlayerRespawnEvent;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.commands.spawn.SpawnCommand;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Session;
@@ -32,6 +31,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.barrier.TagHandler.Tag;
 import com.desiremc.hcf.handler.SOTWHandler;
+import com.desiremc.hcf.handler.SpawnHandler;
 import com.desiremc.hcf.handler.TablistHandler;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
@@ -177,7 +177,7 @@ public class CombatListener implements Listener
     @EventHandler
     public void onRespawn(PlayerRespawnEvent event)
     {
-        event.setRespawnLocation(SpawnCommand.getSpawnLocation());
+        event.setRespawnLocation(SpawnHandler.getInstance().getSpawn());
     }
 
     @EventHandler
