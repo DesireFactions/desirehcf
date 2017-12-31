@@ -65,7 +65,7 @@ public class ReclaimCommand extends FactionValidCommand
         DesireHCF.getLangHandler().sendRenderMessage(sender, "reclaim.lives", true, false,
                 "{lives}", lives);
         DesireHCF.getLangHandler().sendRenderMessage(sender, "reclaim.keys", true, false,
-                "{lives}", lives, "{type}", sender.getRank().getDisplayName());
+                "{amount}", keys, "{type}", sender.getRank().getDisplayName());
 
         sender.setClaimedRank(true);
         sender.save();
