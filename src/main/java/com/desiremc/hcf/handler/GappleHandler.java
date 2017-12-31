@@ -39,7 +39,6 @@ public class GappleHandler implements Listener
                 Player p = PlayerUtils.getPlayer(entry.getKey());
                 if (p != null)
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(p, "gapple.ended", true, false);
                     EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("gapple.scoreboard", false, false));
                 }
             }
@@ -59,7 +58,7 @@ public class GappleHandler implements Listener
                     }
                 }
             }
-        }, 0, 10);
+        }, 0, 10L);
     }
 
     @EventHandler(ignoreCancelled = true)
