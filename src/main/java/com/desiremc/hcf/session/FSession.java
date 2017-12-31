@@ -871,14 +871,11 @@ public class FSession implements Messageable
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
             }
 
-            if (SOTWHandler.getSOTW())
+            if (!SOTWHandler.getSOTW())
             {
-                Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 20);
-                return;
+                safeTimer -= System.currentTimeMillis() - lastRunTime;
+                lastRunTime = System.currentTimeMillis();
             }
-
-            safeTimer -= System.currentTimeMillis() - lastRunTime;
-            lastRunTime = System.currentTimeMillis();
             if (safeTimer <= 0)
             {
                 EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false));
