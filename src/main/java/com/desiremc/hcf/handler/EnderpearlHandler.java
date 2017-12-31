@@ -5,7 +5,6 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -42,7 +41,6 @@ public class EnderpearlHandler implements Listener
                     {
                         return;
                     }
-                    DesireHCF.getLangHandler().sendRenderMessage(p, ChatColor.GRAY + "You can now use an enderpearl.", true, false);
                     EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("enderpearl.scoreboard", false, false));
                 }
             }
@@ -72,7 +70,6 @@ public class EnderpearlHandler implements Listener
             }
             else
             {
-                DesireHCF.getLangHandler().sendRenderMessage(p, ChatColor.GRAY + "You can't use an enderpearl yet.", true, false);
                 e.setCancelled(true);
             }
         }
