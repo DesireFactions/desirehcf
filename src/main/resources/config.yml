@@ -382,3 +382,10 @@ factions:
       min: 3
       max: 10
 starting-balance: 100
+spawn:
+  x: 0
+  y: 100
+  z: 0
+  yaw: 0
+  pitch: 0
+  world: world
