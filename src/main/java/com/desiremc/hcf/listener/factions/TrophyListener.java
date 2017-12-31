@@ -14,27 +14,9 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.Faction;
-import com.desiremc.koth.events.KothEndEvent;
 
 public class TrophyListener implements Listener
 {
-
-    @EventHandler
-    public void onKothCapture(KothEndEvent event)
-    {
-        FSession session = event.getWinner();
-        Faction faction = session.getFaction();
-
-        if (!faction.isWilderness())
-        {
-            faction.addTrophyPoints(125);
-            faction.save();
-
-            //TODO Add an EOTW mode, and if the KOTH is during EOTW, add 500 points instead.
-        }
-
-        faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.trophies.koth", true, false, "{points}", 125));
-    }
 
     @EventHandler
     public void onPlayerDeath(PlayerDeathEvent event)
