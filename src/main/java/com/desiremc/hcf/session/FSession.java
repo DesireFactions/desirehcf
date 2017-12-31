@@ -892,7 +892,7 @@ public class FSession implements Messageable
         public String getTimeLeftFormatted()
         {
             long time = (safeTimer / 1000);
-            return "§b" + df.format(time / 60) + ":" + df.format(time % 60);
+            return df.format(time / 60) + ":" + df.format(time % 60);
         }
 
         public void pause()
