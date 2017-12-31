@@ -1,6 +1,5 @@
 package com.desiremc.hcf.handler;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
@@ -31,8 +30,6 @@ public class EndHandler implements Listener
     @EventHandler
     public void onTeleport(PlayerPortalEvent event)
     {
-        Bukkit.broadcastMessage("From: " + event.getFrom().getWorld().getEnvironment().name());
-        Bukkit.broadcastMessage("To: " + event.getTo().getWorld().getEnvironment().name());
 
         if (!event.isCancelled() && TagHandler.isTagged(event.getPlayer()))
         {
