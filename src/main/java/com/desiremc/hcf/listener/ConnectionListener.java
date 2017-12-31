@@ -1,12 +1,6 @@
 package com.desiremc.hcf.listener;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -15,15 +9,14 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.ItemStack;
 
 import com.desiremc.core.DesireCore;
-import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.DeathBan;
 import com.desiremc.core.utils.DateUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.handler.SpawnHandler;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.Region;
@@ -31,8 +24,6 @@ import com.desiremc.hcf.session.RegionHandler;
 
 public class ConnectionListener implements Listener
 {
-
-    public static List<UUID> firstJoin = new ArrayList<>();
 
     @SuppressWarnings("deprecation")
     @EventHandler(priority = EventPriority.LOW)
@@ -68,28 +59,18 @@ public class ConnectionListener implements Listener
             }
         }
 
-        if (firstJoin.contains(player.getUniqueId()))
+        if (SpawnHandler.getInstance().getPlayer(player))
         {
-            FileHandler config = DesireCore.getConfigHandler();
-            Location loc = new Location(Bukkit.getWorld(config.getString("spawn.world")),
-                    config.getDouble("spawn.x"),
-                    config.getDouble("spawn.y"),
-                    config.getDouble("spawn.z"),
-                    (float) config.getDouble("spawn.yaw").doubleValue(),
-                    (float) config.getDouble("spawn.pitch").doubleValue());
-
             Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new Runnable()
             {
                 @Override
                 public void run()
                 {
-                    player.teleport(loc);
+                    player.teleport(SpawnHandler.getInstance().getSpawn());
                 }
-            }, 15);
-            firstJoin.remove(player.getUniqueId());
+            }, 20L);
 
-            player.getInventory().addItem(new ItemStack(Material.COOKED_BEEF, 16));
-            player.updateInventory();
+            SpawnHandler.getInstance().removePlayer(player);
         }
 
         if (!fSession.hasAchievement(Achievement.FIRST_LOGIN))
