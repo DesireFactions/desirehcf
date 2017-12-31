@@ -58,6 +58,14 @@ public class SpawnHandler implements Listener
         }
     }
 
+    public void addPlayer(UUID uuid)
+    {
+        if (!firstJoin.contains(uuid))
+        {
+            firstJoin.add(uuid);
+        }
+    }
+
     public void removePlayer(Player player)
     {
         firstJoin.remove(player.getUniqueId());

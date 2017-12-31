@@ -13,7 +13,7 @@ import org.mongodb.morphia.dao.BasicDAO;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.listener.ConnectionListener;
+import com.desiremc.hcf.handler.SpawnHandler;
 
 public class FSessionHandler extends BasicDAO<FSession, Integer>
 {
@@ -176,7 +176,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
 
         fSessions.put(uuid, fSession);
 
-        ConnectionListener.firstJoin.add(uuid);
+        SpawnHandler.getInstance().addPlayer(uuid);
 
         return fSession;
     }
