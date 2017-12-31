@@ -42,7 +42,7 @@ reclaim:
   already_claimed: '&7You have already claimed your rank for this map!'
   broadcast: '&7» &b{player} &7has claimed their &b{rank} &7rank!'
   lives: '&7You have claimed &b{lives}&7 lives.'
-  keys: '&7You have claimed &b{amount} {type}&7 keys.'
+  keys: '&7You have claimed &b{amount} {type}&7 keys. Do &b/crates key claim {type}&7 to get them.'
 pvp:
   target_protected: '&7That player has pvp &fdisabled&7.'
   damager_protected: '&7You have pvp &fdisabled&7.'
@@ -122,6 +122,7 @@ kits:
   delete_item: '&7Deleted item &f{item}&7.'
   swap_item: '&7Swapped items &f{item1}&7 and &f{item2}&7.'
   different_swap: '&7You can''t &fswap &7an item with itself.'
+  list: "&7Kits: {kits}"
 factions:
   moved_location: '&7Leaving {fromColor}{fromName}&7({fromType}&7).{nl}&7Entering {toColor}{toName}&7({toType}&7).'
   not_found: '&7That faction doesn''t exist.'
