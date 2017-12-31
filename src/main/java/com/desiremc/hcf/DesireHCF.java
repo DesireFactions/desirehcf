@@ -38,6 +38,7 @@ import com.desiremc.hcf.commands.spawn.SpawnCommand;
 import com.desiremc.hcf.handler.CombatLoggerHandler;
 import com.desiremc.hcf.handler.CrowbarHandler;
 import com.desiremc.hcf.handler.EnchantmentLimiterHandler;
+import com.desiremc.hcf.handler.EndHandler;
 import com.desiremc.hcf.handler.EnderchestHandler;
 import com.desiremc.hcf.handler.EnderpearlHandler;
 import com.desiremc.hcf.handler.FurnaceSpeedHandler;
@@ -162,6 +163,7 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new PotionLimiterHandler(), this);
         listenerManager.addListener(new SlowChatHandler(), this);
         listenerManager.addListener(new SpawnHandler(), this);
+        listenerManager.addListener(new EndHandler(), this);
     }
 
     private void registerCommands()

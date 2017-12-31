@@ -6,7 +6,8 @@ import com.desiremc.core.session.Rank;
 public class SetEndCommand extends ValidBaseCommand
 {
 
-    public SetEndCommand() {
+    public SetEndCommand()
+    {
         super("setend", "Sets end spawn and exit", Rank.ADMIN);
         addSubCommand(new SetEndSpawnCommand());
         addSubCommand(new SetEndExitCommand());

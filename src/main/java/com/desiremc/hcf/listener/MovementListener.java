@@ -2,16 +2,11 @@ package com.desiremc.hcf.listener;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World.Environment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
-import org.bukkit.event.player.PlayerTeleportEvent;
 
-import com.desiremc.core.utils.BukkitUtils;
-import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
@@ -66,23 +61,6 @@ public class MovementListener implements Listener
                     }
                 }
             }
-        }
-    }
-
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onTeleportMonitor(PlayerTeleportEvent event)
-    {
-        if (!event.isCancelled() && TagHandler.isTagged(event.getPlayer()))
-        {
-            TagHandler.setLastValidLocation(event.getPlayer().getUniqueId(), event.getTo());
-        }
-        if (event.getTo().getWorld().getEnvironment() == Environment.THE_END && event.getFrom().getWorld().getEnvironment() != Environment.THE_END)
-        {
-            event.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("endspawn")));
-        }
-        else if (event.getTo().getWorld().getEnvironment() != Environment.THE_END && event.getFrom().getWorld().getEnvironment() == Environment.THE_END)
-        {
-            event.setTo(BukkitUtils.toLocation(DesireHCF.getConfigHandler().getString("endexit")));
         }
     }
 
