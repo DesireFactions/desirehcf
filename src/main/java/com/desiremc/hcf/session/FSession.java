@@ -34,7 +34,6 @@ import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.Ticker;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.handler.SOTWHandler;
 import com.desiremc.hcf.session.faction.ClaimSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionChannel;
@@ -871,11 +870,9 @@ public class FSession implements Messageable
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
             }
 
-            if (!SOTWHandler.getSOTW())
-            {
-                safeTimer -= System.currentTimeMillis() - lastRunTime;
-                lastRunTime = System.currentTimeMillis();
-            }
+            safeTimer -= System.currentTimeMillis() - lastRunTime;
+            lastRunTime = System.currentTimeMillis();
+
             if (safeTimer <= 0)
             {
                 EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false));
