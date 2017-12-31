@@ -11,6 +11,7 @@ import com.desiremc.core.api.newcommands.ValidCommand;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.handler.SpawnHandler;
 
 public class SetSpawnCommand extends ValidCommand
 {
@@ -34,7 +35,7 @@ public class SetSpawnCommand extends ValidCommand
         config.setDouble("spawn.yaw", loc.getYaw());
         config.setString("spawn.world", loc.getWorld().getName());
 
-        SpawnCommand.getInstance().setSpawn(loc);
+        SpawnHandler.getInstance().setSpawn(loc);
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "spawn.set", true, false);
     }

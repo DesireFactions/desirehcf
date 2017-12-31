@@ -33,6 +33,8 @@ import com.desiremc.hcf.commands.lives.LivesCommand;
 import com.desiremc.hcf.commands.lives.ReviveCommand;
 import com.desiremc.hcf.commands.region.RegionCommand;
 import com.desiremc.hcf.commands.setend.SetEndCommand;
+import com.desiremc.hcf.commands.spawn.SetSpawnCommand;
+import com.desiremc.hcf.commands.spawn.SpawnCommand;
 import com.desiremc.hcf.handler.CombatLoggerHandler;
 import com.desiremc.hcf.handler.CrowbarHandler;
 import com.desiremc.hcf.handler.EnchantmentLimiterHandler;
@@ -185,6 +187,8 @@ public class DesireHCF extends JavaPlugin
         commandHandler.registerCommand(new CraftCommand());
         commandHandler.registerCommand(new ReclaimCommand());
         commandHandler.registerCommand(new HelpOpCommand());
+        commandHandler.registerCommand(new SetSpawnCommand());
+        commandHandler.registerCommand(new SpawnCommand());
     }
 
     public static WorldGuardPlugin getWorldGuard()
