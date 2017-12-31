@@ -866,7 +866,7 @@ public class FSession implements Messageable
                 return;
             }
 
-            if (!paused && safeTimer > 0 && !SOTWHandler.getSOTW())
+            if (!paused && safeTimer > 0)
             {
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
             }
