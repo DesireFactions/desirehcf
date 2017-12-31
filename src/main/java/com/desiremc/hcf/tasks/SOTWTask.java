@@ -17,8 +17,6 @@ public class SOTWTask extends BukkitRunnable
     {
         TIMER = DesireHCF.getConfigHandler().getInteger("sotw.time");
         start = System.currentTimeMillis();
-
-        run();
     }
 
     @Override
