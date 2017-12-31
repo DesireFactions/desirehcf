@@ -94,7 +94,7 @@ public class ClaimSession implements Runnable
         this.pointOne = pointOne;
         if (hasPointTwo())
         {
-            boundedArea = new BoundedArea(this.pointOne, this.pointTwo);
+            boundedArea = new BoundedArea(this.pointOne, this.pointTwo, pointOne.getWorld());
         }
     }
 
@@ -150,7 +150,7 @@ public class ClaimSession implements Runnable
         this.pointTwo = pointTwo;
         if (hasPointOne())
         {
-            boundedArea = new BoundedArea(this.pointOne, this.pointTwo);
+            boundedArea = new BoundedArea(this.pointOne, this.pointTwo, this.pointOne.getWorld());
         }
     }
 
