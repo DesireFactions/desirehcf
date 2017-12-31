@@ -1,13 +1,19 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.UUID;
 
 import com.desiremc.core.api.newcommands.CommandArgument;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.tasks.FactionMapTask;
 
 public class FactionMapCommand extends FactionValidCommand
 {
+
+    private static HashMap<UUID, FactionMapTask> tasks = new HashMap<>();
 
     public FactionMapCommand()
     {
@@ -17,8 +23,18 @@ public class FactionMapCommand extends FactionValidCommand
     @Override
     public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        // TODO Auto-generated method stub
-        
+        if (tasks.containsKey(sender.getUniqueId()))
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.map.cancel.early", true, false);
+            tasks.remove(sender.getUniqueId()).cancel();
+        }
+        else
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.map.cancel.early", true, false);
+            FactionMapTask task = new FactionMapTask(sender);
+            task.run();
+            tasks.put(sender.getUniqueId(), task);
+        }
     }
 
 }

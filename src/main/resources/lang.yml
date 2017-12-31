@@ -159,6 +159,11 @@ factions:
     - '  &8- &bAllies&7: &f{allies}'
     - '  &8- &bMembers&7: &f{members}'
     - '&8&m-----------------------------------------'
+  map:
+    start: '&7Faction map displayed for 30 seconds.'
+    cancel:
+      time: '&7Faction map timed out.'
+      early: '&7Faction map cancelled.'
   disband:
     confirm: '&7Run command again to confirm disbanding.'
     broadcast: '&b{faction} &7has been disbanded.'

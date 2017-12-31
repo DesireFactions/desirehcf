@@ -20,6 +20,8 @@ public class FactionMapTask implements Runnable
 
     private FSession fSession;
 
+    private int tick;
+
     private List<BlockColumn> current = new LinkedList<>();
 
     private boolean cancelled;
@@ -53,7 +55,7 @@ public class FactionMapTask implements Runnable
             // exit
             return;
         }
-        
+
         // what is going to be sent to the player
         List<BlockColumn> sending = new LinkedList<>();
         // where the player is
@@ -98,7 +100,14 @@ public class FactionMapTask implements Runnable
 
         // set the current to what was just sent
         current = sending;
-        
+
+        tick++;
+        if (tick >= 30)
+        {
+            cancel();
+            DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.map.cancel.time", true, false);
+        }
+
         // loop the event
         Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), this, 20L);
     }
