@@ -50,7 +50,7 @@ pvp:
   victim_safe: '&7That player is in a &fsafe zone&7.'
   disabled: '&7You have &fdisabled &7your &fpvp protection timer&7.'
   already-disabled: '&7You do not have an &factive &7PVP timer.'
-  scoreboard: '&b&lPVP Timer&7: '
+  scoreboard: '&bPVP Timer&7: '
 crowbar:
   new_crowbar: '&7You have recieved a &fcrowbar&7 for &b$15000&7.'
   not_yours: '&7You can''t &fbreak blocks &7in someone else''s &ffaction&7.'
