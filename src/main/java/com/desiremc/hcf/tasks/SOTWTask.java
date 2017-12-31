@@ -24,6 +24,7 @@ public class SOTWTask extends BukkitRunnable
     {
         EntryRegistry.getInstance().setAll(DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false), DateUtils.formatDateDiff(getRemainingSeconds() + System.currentTimeMillis()));
 
+        System.out.println(DateUtils.formatDateDiff(getRemainingSeconds() + System.currentTimeMillis()).length());
         if (getRemainingSeconds() <= 0)
         {
             cancel();
