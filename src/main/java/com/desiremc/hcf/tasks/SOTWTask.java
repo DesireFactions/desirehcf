@@ -36,7 +36,7 @@ public class SOTWTask extends BukkitRunnable
             return;
         }
 
-        runTaskLater(DesireHCF.getInstance(), 200L);
+        runTaskLater(DesireHCF.getInstance(), 20L);
     }
 
     private int getRemainingSeconds()

@@ -278,7 +278,7 @@ sotw:
   first: '&7Please run the command again to confirm &bSOTW&7.'
   confirmed: '&7Confirmed. Let &bSOTW &7commence.'
   pvp: '&7You can''t PVP during SOTW.'
-  scoreboard: '&bSOTW: '
+  scoreboard: '&bSOTW&7: '
   over: '&bSOTW PvP timer is now over!'
   already: '&7A SOTW timer is already running.'
 signs:
