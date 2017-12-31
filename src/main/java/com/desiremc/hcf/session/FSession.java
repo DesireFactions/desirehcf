@@ -32,6 +32,7 @@ import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.Ticker;
+import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.faction.ClaimSession;
@@ -620,13 +621,23 @@ public class FSession implements Messageable
     }
 
     /**
-     * Convenience method.
+     * Convenience method for {@link Session#isConsole()}.
      *
      * @return if an FSession is console or not.
      */
     public boolean isConsole()
     {
         return getSession().isConsole();
+    }
+
+    /**
+     * Convenience method for {@link Session#isPlayer()}.
+     * 
+     * @return {@code true} if this {@link FSession} is a player.
+     */
+    public boolean isPlayer()
+    {
+        return getSession().isPlayer();
     }
 
     /**
@@ -837,6 +848,15 @@ public class FSession implements Messageable
                 "{toColor}", getFaction().getRelationshipTo(factionTo).getChatColor(),
                 "{toName}", factionTo.getName(),
                 "{toType}", factionTo.getType().toString());
+    }
+
+    public BlockColumn getLocationColumn()
+    {
+        if (!isPlayer() || !isOnline())
+        {
+            return null;
+        }
+        return new BlockColumn(getLocation());
     }
 
     // ========================================================
