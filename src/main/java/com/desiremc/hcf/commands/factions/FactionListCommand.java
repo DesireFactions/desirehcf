@@ -7,6 +7,7 @@ import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.parsers.IntegerParser;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
@@ -65,7 +66,7 @@ public class FactionListCommand extends FactionValidCommand
                 .forEach(faction ->
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.list.message", false, false, "{faction}", faction.getName(),
-                            "{online}", faction.getOnlineMembers().size(), "{members}", faction.getMemberSize(), "{dtr}", faction.getDTR());
+                            "{online}", faction.getOnlineMembers().size(), "{members}", faction.getMemberSize(), "{dtr}", StringUtils.formatNumber(faction.getDTR(), 2, false));
                 });
     }
 }

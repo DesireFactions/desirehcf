@@ -4,6 +4,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.desiremc.core.scoreboard.EntryRegistry;
+import com.desiremc.core.utils.DateUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.handler.SOTWHandler;
 
@@ -21,8 +22,7 @@ public class SOTWTask extends BukkitRunnable
     @Override
     public void run()
     {
-        //EntryRegistry.getInstance().setAll(DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false), DateUtils.formatDateDiff(getRemainingSeconds() + System.currentTimeMillis()));
-        EntryRegistry.getInstance().setAll(DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false), "Test");
+        EntryRegistry.getInstance().setAll(DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false), DateUtils.formatDateDiff(getRemainingSeconds() + System.currentTimeMillis()));
         if (getRemainingSeconds() <= 0)
         {
             cancel();
