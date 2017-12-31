@@ -1,7 +1,6 @@
 package com.desiremc.hcf.tasks;
 
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import com.desiremc.core.scoreboard.EntryRegistry;
@@ -43,9 +42,6 @@ public class SOTWTask extends BukkitRunnable
         SOTWHandler.setSOTW(false);
         Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("sotw.over", true, false));
 
-        for (Player p : Bukkit.getOnlinePlayers())
-        {
-            EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false));
-        }
+        EntryRegistry.getInstance().removeAll(DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false));
     }
 }

@@ -1,5 +1,6 @@
 package com.desiremc.hcf.handler;
 
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.tasks.SOTWTask;
 
 public class SOTWHandler
@@ -26,7 +27,7 @@ public class SOTWHandler
     public void startSOTWTimer()
     {
         SOTWHandler.setSOTW(true);
-        new SOTWTask();
+        new SOTWTask().runTaskTimer(DesireHCF.getInstance(), 0L, 20L);
     }
 
     public static void initialize()
