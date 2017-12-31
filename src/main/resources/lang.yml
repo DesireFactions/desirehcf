@@ -39,9 +39,10 @@ lives:
     others: '&f{target} &7has &f{lives} &7lives.'
 revive: '&7Revived &f{target} &7early for reason ''&f{reason}&7''.'
 reclaim:
-  already_claimed: '&7You have already reclaimed for this SOTW.'
-  broadcast: '&7» &b{player} has reclaimed their rank!'
-  lives: '&7You have reclaimed &b{lives}&7 lives.'
+  already_claimed: '&7You have already claimed your rank for this map!'
+  broadcast: '&7» &b{player} &7has claimed their &b{rank} &7rank!'
+  lives: '&7You have claimed &b{lives}&7 lives.'
+  keys: '&7You have claimed &b{amount} {type}&7 keys.'
 pvp:
   target_protected: '&7That player has pvp &fdisabled&7.'
   damager_protected: '&7You have pvp &fdisabled&7.'

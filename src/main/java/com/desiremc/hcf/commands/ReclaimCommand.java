@@ -60,10 +60,12 @@ public class ReclaimCommand extends FactionValidCommand
 
         CrateHandler.getCrate(sender.getRank().getDisplayName()).addPendingKeys(sender.getUniqueId(), keys);
 
+        Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("reclaim.broadcast", false, false, "{player}", sender.getName(), "{rank}", sender.getRank().getDisplayName()));
+
         DesireHCF.getLangHandler().sendRenderMessage(sender, "reclaim.lives", true, false,
                 "{lives}", lives);
-
-        Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("reclaim.broadcast", false, false, "{player}", sender.getName()));
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "reclaim.keys", true, false,
+                "{lives}", lives, "{type}", sender.getRank().getDisplayName());
 
         sender.setClaimedRank(true);
         sender.save();
