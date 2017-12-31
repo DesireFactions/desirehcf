@@ -4,9 +4,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerTeleportEvent;
+import org.bukkit.event.player.PlayerPortalEvent;
 
 import com.desiremc.core.utils.BukkitUtils;
 import com.desiremc.hcf.DesireHCF;
@@ -29,8 +28,8 @@ public class EndHandler implements Listener
         return instance;
     }
 
-    @EventHandler(priority = EventPriority.MONITOR)
-    public void onTeleportMonitor(PlayerTeleportEvent event)
+    @EventHandler
+    public void onTeleport(PlayerPortalEvent event)
     {
         Bukkit.broadcastMessage("From: " + event.getFrom().getWorld().getEnvironment().name());
         Bukkit.broadcastMessage("To: " + event.getTo().getWorld().getEnvironment().name());
