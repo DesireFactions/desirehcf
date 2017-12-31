@@ -287,3 +287,8 @@ signs:
   buy_success: '&7You have bought 1 &b{item}&7 for &b{price}&7.'
   no_item: '&7You need 1 &b{item} &7to do that.'
   sell_success: '&7You have sold 1 &b{item}&7 for &b{price}&7.'
+spawn:
+  target: '&7Teleported &f{player} &7to spawn.'
+  force: '&7You have been teleported to spawn by a staff member.'
+  confirm: '&7You have teleported to spawn.'
+  set: '&7You have set the spawn to your location.'
