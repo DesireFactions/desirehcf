@@ -5,6 +5,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
 import com.desiremc.hcf.session.faction.Faction;
@@ -53,5 +54,11 @@ public class GeneralListener implements Listener
         }
 
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onTNTBreak(EntityExplodeEvent event)
+    {
+        event.blockList().clear();
     }
 }
