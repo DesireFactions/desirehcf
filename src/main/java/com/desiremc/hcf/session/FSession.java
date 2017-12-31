@@ -867,7 +867,7 @@ public class FSession implements Messageable
 
             if (!paused && safeTimer > 0)
             {
-                Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 5);
+                Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 20L);
             }
 
             safeTimer -= System.currentTimeMillis() - lastRunTime;
