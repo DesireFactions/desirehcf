@@ -22,12 +22,6 @@
 			<artifactId>DesireCore</artifactId>
 			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
-		<!-- KOTH API -->
-		<dependency>
-			<groupId>com.desiremc</groupId>
-			<artifactId>koth</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
 		<!-- Desire NPC -->
 		<dependency>
 			<groupId>com.desiremc.npc</groupId>
