@@ -907,6 +907,11 @@ public class FSession implements Messageable
             run();
         }
 
+        public boolean getPaused()
+        {
+            return paused;
+        }
+
     }
 
     public PVPClass getPvpClass()

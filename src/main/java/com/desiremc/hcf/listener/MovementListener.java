@@ -57,7 +57,10 @@ public class MovementListener implements Listener
                     }
                     else
                     {
-                        fSession.getSafeTimer().resume();
+                        if (fSession.getSafeTimer().getPaused())
+                        {
+                            fSession.getSafeTimer().resume();
+                        }
                     }
                 }
             }
