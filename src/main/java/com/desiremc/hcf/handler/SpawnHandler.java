@@ -17,12 +17,13 @@ import com.desiremc.hcf.DesireHCF;
 public class SpawnHandler implements Listener
 {
     private Location spawn;
-    private static List<UUID> firstJoin = new ArrayList<>();
+    private static List<UUID> firstJoin;
     private static SpawnHandler instance;
 
     public SpawnHandler()
     {
         instance = this;
+        firstJoin = new ArrayList<>();
     }
 
     public static SpawnHandler getInstance()
