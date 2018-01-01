@@ -21,6 +21,7 @@ import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
+import com.desiremc.hcf.util.FactionsUtils;
 
 public class BarrierTask implements Runnable
 {
@@ -86,9 +87,13 @@ public class BarrierTask implements Runnable
 
             for (Faction faction : FactionHandler.getFactions())
             {
+                if (faction == FactionsUtils.getFaction(p))
+                {
+                    continue;
+                }
                 for (BoundedArea area : faction.getClaims())
                 {
-                    for (Block b : area.getWalls())
+                    for (Block b : area.getWalls(area.getWorld()))
                     {
                         if (b.getType() == Material.AIR)
                         {
