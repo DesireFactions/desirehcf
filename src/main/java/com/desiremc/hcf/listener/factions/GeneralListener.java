@@ -57,7 +57,7 @@ public class GeneralListener implements Listener
     }
 
     @EventHandler
-    public void onTNTBreak(EntityExplodeEvent event)
+    public void onTntExplode(EntityExplodeEvent event)
     {
         event.blockList().clear();
     }

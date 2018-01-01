@@ -58,14 +58,16 @@ public class ReclaimCommand extends FactionValidCommand
         }
         sender.addLives(lives);
 
-        CrateHandler.getCrate(sender.getRank().getDisplayName()).addPendingKeys(sender.getUniqueId(), keys);
+        String rank = sender.getRank() == Rank.BETA ? "Grandmaster" : sender.getRank().getDisplayName();
+
+        CrateHandler.getCrate(rank).addPendingKeys(sender.getUniqueId(), keys);
 
         Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("reclaim.broadcast", false, false, "{player}", sender.getName(), "{rank}", sender.getRank().getDisplayName()));
 
         DesireHCF.getLangHandler().sendRenderMessage(sender, "reclaim.lives", true, false,
                 "{lives}", lives);
         DesireHCF.getLangHandler().sendRenderMessage(sender, "reclaim.keys", true, false,
-                "{amount}", keys, "{type}", sender.getRank().getDisplayName());
+                "{amount}", keys, "{type}", rank);
 
         sender.setClaimedRank(true);
         sender.save();

@@ -63,6 +63,7 @@ import com.desiremc.hcf.listener.classes.ClassListener;
 import com.desiremc.hcf.listener.classes.MinerListener;
 import com.desiremc.hcf.listener.classes.RogueListener;
 import com.desiremc.hcf.listener.factions.FactionListener;
+import com.desiremc.hcf.listener.factions.GeneralListener;
 import com.desiremc.hcf.listener.factions.PlayerListener;
 import com.desiremc.hcf.listener.factions.TrophyListener;
 import com.desiremc.hcf.session.FSession;
@@ -145,6 +146,7 @@ public class DesireHCF extends JavaPlugin
         listenerManager.addListener(new FurnaceSpeedHandler(), this);
         listenerManager.addListener(new BlockListener(), this);
         listenerManager.addListener(new SignListener(), this);
+        listenerManager.addListener(new GeneralListener(), this);
 
         // faction listeners
         listenerManager.addListener(new com.desiremc.hcf.listener.factions.ConnectionListener(), this);
