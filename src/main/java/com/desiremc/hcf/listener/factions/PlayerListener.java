@@ -41,7 +41,7 @@ import com.github.davidmoten.rtree.Entry;
 /**
  * The listener in charge for ensuring that factions behave the way they are supposed to. It prevents players from going
  * places they shouldn't, announcing movement messages, and things of that nature.
- * 
+ *
  * @author Michael Ziluck
  */
 public class PlayerListener implements Listener
@@ -62,7 +62,7 @@ public class PlayerListener implements Listener
         Faction factionTo = FactionsUtils.getFaction(event.getTo());
 
         // if they managed to get into someone's claim, cancel the move
-        if (factionTo.isNormal() && fSession.getSafeTimeLeft() > 0)
+        if (factionTo.isNormal() && fSession.getSafeTimeLeft() > 0 && factionTo != fSession.getFaction())
         {
             event.setCancelled(true);
             return;
@@ -188,9 +188,9 @@ public class PlayerListener implements Listener
     /**
      * Processes the claim attempt being done by the player. The logic was moved out of the {@link EventHandler} to make
      * it from getting bloated.
-     * 
+     *
      * @param fSession the person claiming land.
-     * @param event the event that was fired.
+     * @param event    the event that was fired.
      */
     private void processClaim(FSession fSession, PlayerInteractEvent event)
     {
@@ -334,7 +334,7 @@ public class PlayerListener implements Listener
         }
         else
         {
-            columns = new BlockColumn[] { blockColumn };
+            columns = new BlockColumn[] {blockColumn};
         }
 
         int search = -1;

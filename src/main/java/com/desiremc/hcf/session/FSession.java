@@ -35,6 +35,7 @@ import com.desiremc.core.session.Ticker;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.BarrierTask;
 import com.desiremc.hcf.session.faction.ClaimSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionChannel;
@@ -905,6 +906,7 @@ public class FSession implements Messageable
                 EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false));
                 safeTimer = 0;
                 FSessionHandler.getSafeOnlineFSessions().remove(uuid);
+                BarrierTask.addToClear(uuid);
             }
             else
             {

@@ -15,10 +15,10 @@ import com.desiremc.hcf.session.RegionHandler;
 
 public class MovementListener implements Listener
 {
-    @EventHandler
+    @EventHandler(ignoreCancelled = true)
     public void onMove(PlayerMoveEvent e)
     {
-        if (!differentBlocks(e.getFrom(), e.getTo()) || e.isCancelled())
+        if (!differentBlocks(e.getFrom(), e.getTo()))
         {
             return;
         }
