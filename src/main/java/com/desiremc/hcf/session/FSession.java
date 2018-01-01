@@ -141,6 +141,11 @@ public class FSession implements Messageable
 
     public void applyValues(FSession fSession)
     {
+        if (fSession == null)
+        {
+            DesireHCF.getInstance().getLogger().severe("FSession.applyValues(FSession) was passed a null fSession.");
+            return;
+        }
         safeTimer = fSession.safeTimer;
         lives = fSession.lives;
         balance = fSession.balance;
