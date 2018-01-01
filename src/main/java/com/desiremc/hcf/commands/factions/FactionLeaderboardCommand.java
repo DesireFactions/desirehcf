@@ -64,8 +64,21 @@ public class FactionLeaderboardCommand extends FactionValidCommand
                 .filter(faction -> faction.getState() == FactionState.ACTIVE)
                 .forEach(faction ->
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.leaderboard.message", false, false, "{faction}", faction.getName(),
-                            "{points}", faction.getTrophyPoints());
+                    if (sender.getFaction() == faction)
+                    {
+                        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.leaderboard.message_own", false, false, "{faction}", faction.getName(),
+                                "{points}", faction.getTrophyPoints());
+                    }
+                    else if (sender.getFaction().getAllies().contains(faction))
+                    {
+                        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.leaderboard.message_ally", false, false, "{faction}", faction.getName(),
+                                "{points}", faction.getTrophyPoints());
+                    }
+                    else
+                    {
+                        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.leaderboard.message_enemy", false, false, "{faction}", faction.getName(),
+                                "{points}", faction.getTrophyPoints());
+                    }
                 });
     }
 }

@@ -270,8 +270,10 @@ factions:
     message_own: ' &8- &2{faction} &7{online}/{members} online {dtr} DTR'
     none: '&7There are currently no factions.'
   leaderboard:
-    header: '&7&m----------&r&b[ Faction Leaderboard {pagenumber}/{pagecount} ]&7&m----------'
-    message: ' {faction}: {points} points'
+    header: '&8&m-----[&r &bFaction Leaderboard ({pagenumber}/{pagecount}) &8&m]-----'
+    message_own: ' &8- &2{faction}&7: {points} points'
+    message_enemy: ' &8- &c{faction}&7: {points} points'
+    message_ally: ' &8- &9{faction}&7: {points} points'
     none: '&7There are currently no factions.'
   not_own: '&7You must do that in your own faction land.'
   trophies:
