@@ -80,6 +80,8 @@ public class TagHandler
         {
             damager.sendMessage(DesireHCF.getLangHandler().getString("tag.active"));
         }
+        System.out.println("TAGGED: " + p.getUniqueId());
+        System.out.println("TAGGED: " + damager.getUniqueId());
         tags.put(p.getUniqueId(), System.currentTimeMillis());
         tags.put(damager.getUniqueId(), System.currentTimeMillis());
         history.put(p.getUniqueId(), new Tag(damager.getUniqueId(), damager.getItemInHand()));
