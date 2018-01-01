@@ -37,4 +37,19 @@ public class FactionMapCommand extends FactionValidCommand
         }
     }
 
+    /**
+     * If this method is removed, or the task.cancel() is removed, you must also cancel it from the FactionMapTask.
+     * 
+     * @param uuid the map session to stop.
+     */
+    public static void stopMap(UUID uuid)
+    {
+        FactionMapTask task = tasks.remove(uuid);
+        if (task != null)
+        {
+            task.cancel();
+        }
+
+    }
+
 }

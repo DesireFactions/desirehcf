@@ -3,13 +3,16 @@ package com.desiremc.hcf.session;
 import java.text.DecimalFormat;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.block.Block;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.mongodb.morphia.annotations.Embedded;
@@ -33,6 +36,7 @@ import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
 import com.desiremc.core.session.Ticker;
 import com.desiremc.core.utils.BlockColumn;
+import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.faction.ClaimSession;
@@ -42,6 +46,7 @@ import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionRank;
 import com.desiremc.hcf.session.faction.FactionSetting;
 import com.desiremc.hcf.util.FactionsUtils;
+import com.github.davidmoten.rtree.Entry;
 
 @Entity(value = "hcf_sessions", noClassnameStored = true)
 public class FSession implements Messageable
@@ -141,6 +146,12 @@ public class FSession implements Messageable
 
     public void applyValues(FSession fSession)
     {
+        if (fSession == null)
+        {
+            // not debug code, error handling. Leave it in here
+            DesireHCF.getInstance().getLogger().severe("FSession.applyValues(FSession) was passed a null fSession.");
+            return;
+        }
         safeTimer = fSession.safeTimer;
         lives = fSession.lives;
         balance = fSession.balance;
@@ -868,45 +879,94 @@ public class FSession implements Messageable
     public class PVPTimer implements Runnable
     {
 
+        private Set<Block> current = new HashSet<>();
+
         private long lastRunTime;
 
         private boolean paused;
 
+        @SuppressWarnings("deprecation")
         @Override
         public void run()
         {
+            // if they aren't online, exit
             if (!isOnline())
             {
                 return;
             }
 
-            if (getPlayer() == null || !getPlayer().isOnline())
+            // should never happen, just in case
+            if (getPlayer() == null)
             {
                 return;
             }
 
+            // if we have not paused and the timer is not over, run it again.
             if (!paused && safeTimer > 0)
             {
                 Bukkit.getScheduler().runTaskLater(DesireCore.getInstance(), this, 20L);
             }
 
+            // decrement the safe timer and set when this last ran
             safeTimer -= System.currentTimeMillis() - lastRunTime;
             lastRunTime = System.currentTimeMillis();
 
+            // if it's less than 0, stop everything and clear their scoreboard and clear their blocks
             if (safeTimer <= 0)
             {
                 EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false));
                 safeTimer = 0;
+                // clear their  blocks too
+                for (Block block : current)
+                {
+                    getPlayer().sendBlockChange(block.getLocation(), block.getType(), block.getData());
+                }
             }
             else
             {
                 setScoreboard();
+                setBlocks();
             }
         }
 
         public void setScoreboard()
         {
             EntryRegistry.getInstance().setValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false), getTimeLeftFormatted());
+        }
+
+        @SuppressWarnings("deprecation")
+        public void setBlocks()
+        {
+            Set<Block> sending = new HashSet<>();
+            // get nearby claims
+            Iterable<Entry<Faction, BoundedArea>> contents = FactionHandler.getNearbyFactions(getLocationColumn(), 10);
+
+            // go through the claims
+            for (Entry<Faction, BoundedArea> entry : contents)
+            {
+                // go through the blocks in the walls
+                for (Block block : entry.geometry().getWalls())
+                {
+                    // if their distance is <= 64...
+                    if (block.getLocation().distanceSquared(getLocation()) <= 64)
+                    {
+                        // send it!
+                        sending.add(block);
+                    }
+                }
+            }
+
+            // wipe out the ones we already sent, we don't care about them from the old set
+            current.removeAll(sending);
+
+            // clear what's left
+            for (Block block : current)
+            {
+                getPlayer().sendBlockChange(block.getLocation(), block.getType(), block.getData());
+            }
+
+            // set the current = what we just sent
+            current = sending;
         }
 
         public String getTimeLeftFormatted()

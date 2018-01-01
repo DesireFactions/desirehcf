@@ -13,6 +13,7 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerTeleportEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -60,6 +61,14 @@ public class PlayerListener implements Listener
         }
         Faction factionTo = FactionsUtils.getFaction(event.getTo());
 
+        // if they managed to get into someone's claim, cancel the move
+        if (factionTo.isNormal() && fSession.getSafeTimeLeft() > 0)
+        {
+            event.setCancelled(true);
+            return;
+        }
+
+        // set where they were last seen to be used elsewhere.
         fSession.setLastLocation(factionTo);
 
         // cancel the home task if one exists
@@ -69,6 +78,26 @@ public class PlayerListener implements Listener
             DesireHCF.getLangHandler().sendRenderMessage(event.getPlayer(), "factions.home.cancelled", true, false);
             task.cancel();
         }
+
+    }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent event)
+    {
+        FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
+        if (fSession == null)
+        {
+            fSession = FSessionHandler.initializeFSession(event.getPlayer().getUniqueId());
+        }
+        Faction factionTo = FactionsUtils.getFaction(event.getTo());
+
+        // if they managed to get into someone's claim, cancel the move
+        if (factionTo.isNormal() && fSession.getSafeTimeLeft() > 0)
+        {
+            event.setCancelled(true);
+            return;
+        }
+
     }
 
     @EventHandler
