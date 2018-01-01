@@ -1,13 +1,18 @@
 package com.desiremc.hcf.listener.factions;
 
 import org.bukkit.Material;
+import org.bukkit.entity.Animals;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.util.FactionsUtils;
 
@@ -24,7 +29,9 @@ public class GeneralListener implements Listener
         }
 
         Faction faction = FactionsUtils.getFaction(event.getBlock().getLocation());
-        if (faction.isNormal() || faction.isWilderness())
+        FSession session = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
+
+        if ((faction.isNormal() && faction.getMembers().contains(session)) || faction.isWilderness())
         {
             return;
         }
@@ -36,7 +43,9 @@ public class GeneralListener implements Listener
     public void onBlockBreak(BlockBreakEvent event)
     {
         Faction faction = FactionsUtils.getFaction(event.getBlock().getLocation());
-        if (faction.isNormal() || faction.isWilderness())
+        FSession session = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
+
+        if ((faction.isNormal() && faction.getMembers().contains(session)) || faction.isWilderness())
         {
             return;
         }
@@ -47,7 +56,13 @@ public class GeneralListener implements Listener
     @EventHandler
     public void onMobSpawn(EntitySpawnEvent event)
     {
+        if (!(event.getEntity() instanceof Animals))
+        {
+            return;
+        }
+
         Faction faction = FactionsUtils.getFaction(event.getLocation());
+
         if (faction.isNormal() || faction.isWilderness())
         {
             return;
@@ -60,5 +75,25 @@ public class GeneralListener implements Listener
     public void onTntExplode(EntityExplodeEvent event)
     {
         event.blockList().clear();
+    }
+
+    @EventHandler
+    public void onInteract(PlayerInteractEvent event)
+    {
+        if (event.getItem().getType() == Material.FISHING_ROD)
+        {
+            return;
+        }
+
+        Player player = event.getPlayer();
+        Faction faction = FactionsUtils.getFaction(player.getLocation());
+        FSession session = FSessionHandler.getOnlineFSession(player.getUniqueId());
+
+        if ((faction.isNormal() && faction.getMembers().contains(session)) || faction.isWilderness())
+        {
+            return;
+        }
+
+        event.setCancelled(true);
     }
 }
