@@ -904,6 +904,7 @@ public class FSession implements Messageable
             {
                 EntryRegistry.getInstance().removeValue(getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false));
                 safeTimer = 0;
+                FSessionHandler.getSafeOnlineFSessions().remove(uuid);
             }
             else
             {
