@@ -152,6 +152,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
     public static FSession initializeFSession(UUID uuid)
     {
         FSession fSession = fSessions.get(uuid);
+        System.out.println(uuid.toString());
         if (fSession == null)
         {
             fSession = createFSession(uuid);
