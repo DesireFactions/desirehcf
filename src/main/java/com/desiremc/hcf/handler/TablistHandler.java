@@ -128,6 +128,8 @@ public class TablistHandler implements Listener
         }
         tabList.setSlot(6, 0, session.getLastFactionLocation().getName());
         tabList.setSlot(7, 0, "§8(§7" + loc.getBlockX() + "§8,§7" + loc.getBlockZ() + "§8)");
+        System.out.println(loc.getBlockX());
+        System.out.println(loc.getBlockZ());
     }
 
 }
