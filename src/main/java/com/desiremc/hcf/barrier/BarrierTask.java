@@ -97,7 +97,7 @@ public class BarrierTask implements Runnable
                     {
                         if (b.getType() == Material.AIR)
                         {
-                            if (b.getLocation().distanceSquared(p.getLocation()) <= 400)
+                            if (b.getLocation().distanceSquared(p.getLocation()) <= 200)
                             {
                                 p.sendBlockChange(b.getLocation(), 20, (byte) 14);
                                 localCache.add(b);
