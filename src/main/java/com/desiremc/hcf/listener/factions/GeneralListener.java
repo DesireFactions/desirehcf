@@ -3,6 +3,7 @@ package com.desiremc.hcf.listener.factions;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,6 +11,7 @@ import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
+import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
 import com.desiremc.hcf.session.FSession;
@@ -71,6 +73,7 @@ public class GeneralListener implements Listener
     {
         if (!(event.getEntity() instanceof Animals))
         {
+            event.setCancelled(true);
             return;
         }
 
@@ -108,5 +111,14 @@ public class GeneralListener implements Listener
         }
 
         event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onTarget(EntityTargetEvent event)
+    {
+        if (event.getEntityType().equals(EntityType.CREEPER))
+        {
+            event.setCancelled(true);
+        }
     }
 }

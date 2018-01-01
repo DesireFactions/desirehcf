@@ -4,7 +4,6 @@ import java.util.UUID;
 import java.util.concurrent.Callable;
 
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -55,11 +54,10 @@ public class CombatLoggerHandler implements Listener
                     if (p != null)
                     {
                         EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
-                        DesireHCF.getLangHandler().sendRenderMessage(p, ChatColor.GRAY + "You are tagged for another {time}s.", true, false, "{time]", TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000));
                     }
                 }
             }
-        }, 0, 60);
+        }, 0, 20L);
     }
 
     @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)

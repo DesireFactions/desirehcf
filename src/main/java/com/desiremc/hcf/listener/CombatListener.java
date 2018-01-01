@@ -130,6 +130,7 @@ public class CombatListener implements Listener
                 if (StaffHandler.getInstance().isFrozen(damager) || StaffHandler.getInstance().isFrozen(victim))
                 {
                     e.setCancelled(true);
+                    return;
                 }
 
                 // 0 = valid, 1 = damager in region, 2 = victim in region

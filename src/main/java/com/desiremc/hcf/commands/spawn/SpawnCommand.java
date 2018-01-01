@@ -38,7 +38,7 @@ public class SpawnCommand extends ValidCommand
         if (args.get(0).hasValue())
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "spawn.target", true, false,
-                    "{target}", player.getName());
+                    "{player}", player.getName());
             DesireHCF.getLangHandler().sendRenderMessage(player, "spawn.force", true, false);
         }
         else
