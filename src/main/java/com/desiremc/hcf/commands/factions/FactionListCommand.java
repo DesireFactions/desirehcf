@@ -65,8 +65,21 @@ public class FactionListCommand extends FactionValidCommand
                 .filter(faction -> faction.getState() == FactionState.ACTIVE)
                 .forEach(faction ->
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.list.message", false, false, "{faction}", faction.getName(),
-                            "{online}", faction.getOnlineMembers().size(), "{members}", faction.getMemberSize(), "{dtr}", StringUtils.formatNumber(faction.getDTR(), 2, false));
+                    if (sender.getFaction() == faction)
+                    {
+                        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.list.message_own", false, false, "{faction}", faction.getName(),
+                                "{online}", faction.getOnlineMembers().size(), "{members}", faction.getMemberSize(), "{dtr}", StringUtils.formatNumber(faction.getDTR(), 2, false));
+                    }
+                    else if (sender.getFaction().getAllies().contains(faction))
+                    {
+                        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.list.message_ally", false, false, "{faction}", faction.getName(),
+                                "{online}", faction.getOnlineMembers().size(), "{members}", faction.getMemberSize(), "{dtr}", StringUtils.formatNumber(faction.getDTR(), 2, false));
+                    }
+                    else
+                    {
+                        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.list.message_enemy", false, false, "{faction}", faction.getName(),
+                                "{online}", faction.getOnlineMembers().size(), "{members}", faction.getMemberSize(), "{dtr}", StringUtils.formatNumber(faction.getDTR(), 2, false));
+                    }
                 });
     }
 }

@@ -264,8 +264,10 @@ factions:
     no_invites: '&7Your faction has no outgoing invites.'
     valid: '&7Your faction has outgoing invites to &b{players}&7.'
   list:
-    header: '&7&m----------&r&b[ Faction List {pagenumber}/{pagecount} ]&7&m----------'
-    message: ' {faction}: {online}/{members} online, {dtr} DTR'
+    header: '&8&m-----[&r &bFaction List ({pagenumber}/{pagecount}) &8&m]-----'
+    message_ally: ' &8- &9{faction} &7{online}/{members} online {dtr} DTR'
+    message_enemy: ' &8- &c{faction} &7{online}/{members} online {dtr} DTR'
+    message_own: ' &8- &2{faction} &7{online}/{members} online {dtr} DTR'
     none: '&7There are currently no factions.'
   leaderboard:
     header: '&7&m----------&r&b[ Faction Leaderboard {pagenumber}/{pagecount} ]&7&m----------'

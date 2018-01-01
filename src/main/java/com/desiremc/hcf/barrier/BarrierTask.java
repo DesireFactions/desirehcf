@@ -100,7 +100,7 @@ public class BarrierTask implements Runnable
                 }
                 for (BoundedArea area : faction.getClaims())
                 {
-                    for (Block b : area.getWalls(area.getWorld()))
+                    for (Block b : area.getWalls())
                     {
                         if (b.getType() == Material.AIR)
                         {
