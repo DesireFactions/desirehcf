@@ -8,11 +8,13 @@ import java.util.Set;
 import java.util.UUID;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.Region;
@@ -27,7 +29,6 @@ public class BarrierTask implements Runnable
 
     private HashMap<UUID, Set<Block>> cache = new HashMap<>();
 
-    @SuppressWarnings("deprecation")
     @Override
     public void run()
     {
@@ -53,12 +54,12 @@ public class BarrierTask implements Runnable
                     {
                         if (b.getLocation().distanceSquared(p.getLocation()) <= region.getViewDistance() * region.getViewDistance())
                         {
-                            p.sendBlockChange(b.getLocation(), region.getBarrierMaterial(), (byte) region.getBarrierMaterialData());
+                            sendBlockChange(p, b.getLocation(), region.getBarrierMaterial(), (byte) 0);
                             localCache.add(b);
                         }
                         else if (localCache.contains(b))
                         {
-                            p.sendBlockChange(b.getLocation(), 0, (byte) 0);
+                            sendBlockChange(p, b.getLocation(), Material.AIR, (byte) 0);
                             localCache.remove(b);
                         }
                     }
@@ -69,23 +70,19 @@ public class BarrierTask implements Runnable
 
         for (UUID uuid : toClear)
         {
-            System.out.println("Toclear ran with UUID: " + uuid);
             Player pl = PlayerUtils.getPlayer(uuid);
             if (pl != null)
             {
-                System.out.println("Toclear ran with player: " + pl.getName());
                 Set<Block> localCache = cache.get(uuid);
                 if (localCache == null)
                 {
-                    System.out.println("Toclear, localcache null");
                     continue;
                 }
                 for (Block block : localCache)
                 {
                     if (block.getType() == Material.AIR)
                     {
-                        System.out.println("Toclear sent block change");
-                        pl.sendBlockChange(block.getLocation(), 0, (byte) 0);
+                        sendBlockChange(pl, block.getLocation(), Material.AIR, (byte) 0);
                     }
                 }
             }
@@ -108,6 +105,19 @@ public class BarrierTask implements Runnable
         task = Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(), new BarrierTask(),
                 DesireHCF.getConfigHandler().getInteger("barrier.refresh.ticks"),
                 DesireHCF.getConfigHandler().getInteger("barrier.refresh.ticks"));
+    }
+
+    @SuppressWarnings("deprecation")
+    private void sendBlockChange(Player p, Location loc, Material type, byte data)
+    {
+        Bukkit.getScheduler().runTaskAsynchronously(DesireCore.getInstance(), new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                p.sendBlockChange(loc, type, data);
+            }
+        });
     }
 
 }

@@ -40,13 +40,8 @@ public class TagHandler
                 {
                     UUID uuid = UUID.fromString(entry.getKey());
                     Player p = PlayerUtils.getPlayer(uuid);
-                    if (p == null)
-                    {
-                        System.out.println(entry.getCause() + ": NULL");
-                    }
                     if (p != null)
                     {
-                        System.out.println(entry.getCause() + ": " + p.getUniqueId());
                         BarrierTask.addToClear(uuid);
                         DesireHCF.getLangHandler().sendRenderMessage(p, "tag.expire", true, false);
                         EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false));
@@ -69,7 +64,7 @@ public class TagHandler
 
     public static boolean isTagged(Player p)
     {
-        return tags.containsKey(p.getUniqueId());
+        return tags.containsKey(p.getUniqueId().toString());
     }
 
     public static void tagPlayer(Player p, Player damager)
@@ -82,8 +77,6 @@ public class TagHandler
         {
             damager.sendMessage(DesireHCF.getLangHandler().getString("tag.active"));
         }
-        System.out.println("TAGGED: " + p.getUniqueId());
-        System.out.println("TAGGED: " + damager.getUniqueId());
         tags.put(p.getUniqueId().toString(), System.currentTimeMillis());
         tags.put(damager.getUniqueId().toString(), System.currentTimeMillis());
         history.put(p.getUniqueId(), new Tag(damager.getUniqueId(), damager.getItemInHand()));
