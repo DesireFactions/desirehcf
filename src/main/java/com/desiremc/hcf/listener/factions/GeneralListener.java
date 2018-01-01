@@ -80,7 +80,7 @@ public class GeneralListener implements Listener
     @EventHandler
     public void onInteract(PlayerInteractEvent event)
     {
-        if (event.getItem().getType() == Material.FISHING_ROD)
+        if (event.getItem() != null && event.getItem().getType().equals(Material.FISHING_ROD))
         {
             return;
         }
