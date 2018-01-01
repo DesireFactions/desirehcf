@@ -372,10 +372,10 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      */
     public static void renameFaction(Faction faction, String name)
     {
-        factionsByName.remove(faction.getName());
+        factionsByName.remove(faction.getStub());
         faction.setName(name);
         faction.save();
-        factionsByName.put(name, faction);
+        factionsByName.put(faction.getStub(), faction);
     }
 
     /**
