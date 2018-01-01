@@ -99,7 +99,7 @@ public class BarrierTask implements Runnable
                         {
                             if (b.getLocation().distanceSquared(p.getLocation()) <= 400)
                             {
-                                p.sendBlockChange(b.getLocation(), Material.GLASS, (byte) 14);
+                                p.sendBlockChange(b.getLocation(), 20, (byte) 14);
                                 localCache.add(b);
                             }
                             else if (localCache.contains(b))
