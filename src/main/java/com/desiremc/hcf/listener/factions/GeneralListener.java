@@ -13,6 +13,7 @@ import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.weather.WeatherChangeEvent;
 
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
@@ -109,7 +110,6 @@ public class GeneralListener implements Listener
         {
             return;
         }
-
         event.setCancelled(true);
     }
 
@@ -120,5 +120,11 @@ public class GeneralListener implements Listener
         {
             event.setCancelled(true);
         }
+    }
+
+    @EventHandler
+    public void onWeatherChange(WeatherChangeEvent event)
+    {
+        event.setCancelled(event.toWeatherState());
     }
 }

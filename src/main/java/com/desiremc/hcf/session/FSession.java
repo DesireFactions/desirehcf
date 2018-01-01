@@ -477,7 +477,7 @@ public class FSession implements Messageable
 
     /**
      * @return {@code true} if this player is in a faction.<br>
-     *         {@code false} if this player is not in a faction.
+     * {@code false} if this player is not in a faction.
      */
     public boolean hasFaction()
     {
@@ -581,7 +581,7 @@ public class FSession implements Messageable
     /**
      * @param setting the setting to check if it's enabled.
      * @return {@code true} if the settings contains the parameter.<br>
-     *         {@code false} if the settings does not contain the parameter.
+     * {@code false} if the settings does not contain the parameter.
      */
     public boolean hasSetting(FactionSetting setting)
     {
@@ -615,7 +615,14 @@ public class FSession implements Messageable
     {
         if (session == null)
         {
-            session = SessionHandler.getGeneralSession(uuid);
+            if (Bukkit.getPlayer(uuid) != null && Bukkit.getPlayer(uuid).isOnline())
+            {
+                session = SessionHandler.getOnlineSession(uuid);
+            }
+            else
+            {
+                session = SessionHandler.getGeneralSession(uuid);
+            }
         }
         return session;
     }
@@ -792,7 +799,7 @@ public class FSession implements Messageable
      * A convenience method for {@link Session#awardAchievement(Achievement, boolean)}.
      *
      * @param achievement the achievement.
-     * @param inform whether to inform the player.
+     * @param inform      whether to inform the player.
      */
     public void awardAchievement(Achievement achievement, boolean inform)
     {

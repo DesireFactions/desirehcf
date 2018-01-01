@@ -56,6 +56,7 @@ public class ReclaimCommand extends FactionValidCommand
         {
             return;
         }
+
         sender.addLives(lives);
 
         String rank = sender.getRank() == Rank.BETA ? "Grandmaster" : sender.getRank().getDisplayName();
