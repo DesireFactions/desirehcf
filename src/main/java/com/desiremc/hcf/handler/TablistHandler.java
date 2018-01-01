@@ -94,14 +94,14 @@ public class TablistHandler implements Listener
     public void onBlockMove(PlayerBlockMoveEvent event)
     {
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
-        updateLocation(fSession, event.getTo());
+        updateLocation(fSession);
     }
 
     @EventHandler
     public void onTeleport(PlayerTeleportEvent event)
     {
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
-        updateLocation(fSession, event.getTo());
+        updateLocation(fSession);
     }
 
     @EventHandler
@@ -117,9 +117,10 @@ public class TablistHandler implements Listener
         tabList.setSlot(2, 0, "§bKills: §c" + fSession.getTotalKills());
     }
 
-    public static void updateLocation(FSession session, Location loc)
+    public static void updateLocation(FSession session)
     {
         Player player = session.getPlayer();
+        Location loc = player.getLocation();
         TabList tabList = TabAPI.getPlayerTabList(player);
         if (session.getLastFactionLocation() == null)
         {
