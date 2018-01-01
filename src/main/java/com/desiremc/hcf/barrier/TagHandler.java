@@ -1,6 +1,7 @@
 package com.desiremc.hcf.barrier;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
@@ -24,20 +25,21 @@ public class TagHandler
 
     private static HashMap<UUID, Location> lastValidLocation = new HashMap<>();
 
-    private static Cache<UUID, Long> tags;
+    private static Cache<String, Long> tags;
 
     private static Cache<UUID, Tag> history;
 
     public static void initialize()
     {
-        tags = new Cache<>(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS, new RemovalListener<UUID, Long>()
+        tags = new Cache<>(DesireHCF.getConfigHandler().getInteger("tag.time"), TimeUnit.SECONDS, new RemovalListener<String, Long>()
         {
             @Override
-            public void onRemoval(RemovalNotification<UUID, Long> entry)
+            public void onRemoval(RemovalNotification<String, Long> entry)
             {
                 if (entry.getCause() == Cause.EXPIRE || entry.getCause() == Cause.REMOVE)
                 {
-                    Player p = PlayerUtils.getPlayer(entry.getKey());
+                    UUID uuid = UUID.fromString(entry.getKey());
+                    Player p = PlayerUtils.getPlayer(uuid);
                     if (p == null)
                     {
                         System.out.println(entry.getCause() + ": NULL");
@@ -45,7 +47,7 @@ public class TagHandler
                     if (p != null)
                     {
                         System.out.println(entry.getCause() + ": " + p.getUniqueId());
-                        BarrierTask.addToClear(entry.getKey());
+                        BarrierTask.addToClear(uuid);
                         DesireHCF.getLangHandler().sendRenderMessage(p, "tag.expire", true, false);
                         EntryRegistry.getInstance().removeValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false));
                     }
@@ -82,8 +84,8 @@ public class TagHandler
         }
         System.out.println("TAGGED: " + p.getUniqueId());
         System.out.println("TAGGED: " + damager.getUniqueId());
-        tags.put(p.getUniqueId(), System.currentTimeMillis());
-        tags.put(damager.getUniqueId(), System.currentTimeMillis());
+        tags.put(p.getUniqueId().toString(), System.currentTimeMillis());
+        tags.put(damager.getUniqueId().toString(), System.currentTimeMillis());
         history.put(p.getUniqueId(), new Tag(damager.getUniqueId(), damager.getItemInHand()));
 
         SafeLogoutTask.cancel(p);
@@ -132,7 +134,12 @@ public class TagHandler
 
     public static Set<UUID> getTaggedPlayers()
     {
-        return tags.keySet();
+        Set<UUID> set = new HashSet<>();
+        for (String s : tags.keySet())
+        {
+            set.add(UUID.fromString(s));
+        }
+        return set;
     }
 
     public static class Tag
