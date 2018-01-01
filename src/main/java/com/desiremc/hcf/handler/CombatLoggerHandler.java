@@ -51,7 +51,7 @@ public class CombatLoggerHandler implements Listener
                         }
                         TagHandler.clearTag(uuid);
                     }
-                    if (p != null)
+                    else if (p != null)
                     {
                         EntryRegistry.getInstance().setValue(p, DesireHCF.getLangHandler().renderMessage("tag.scoreboard", false, false), String.valueOf(TIMER - ((System.currentTimeMillis() - TagHandler.getTagTime(uuid)) / 1000)));
                     }
