@@ -10,6 +10,7 @@ import org.bukkit.block.Block;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.commands.factions.FactionMapCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
@@ -91,13 +92,8 @@ public class FactionMapTask implements Runnable
                 }
             }
         }
-        System.out.println("Sending: " + sending.size());
-        System.out.println("Current before:" + current.size());
-
         // remove anything not close by
         current.removeAll(sending);
-
-        System.out.println("Current after:" + current.size());
 
         // send the player the actual blocks
         wipeCurrent();
@@ -108,8 +104,8 @@ public class FactionMapTask implements Runnable
         tick++;
         if (tick >= 30)
         {
-            cancel();
             DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.map.cancel.time", true, false);
+            FactionMapCommand.stopMap(fSession.getUniqueId());
         }
 
         // loop the event
