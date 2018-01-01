@@ -24,7 +24,7 @@ public class GeneralListener implements Listener
         }
 
         Faction faction = FactionsUtils.getFaction(event.getBlock().getLocation());
-        if (faction.isNormal())
+        if (faction.isNormal() || faction.isWilderness())
         {
             return;
         }
@@ -36,7 +36,7 @@ public class GeneralListener implements Listener
     public void onBlockBreak(BlockBreakEvent event)
     {
         Faction faction = FactionsUtils.getFaction(event.getBlock().getLocation());
-        if (faction.isNormal())
+        if (faction.isNormal() || faction.isWilderness())
         {
             return;
         }
@@ -48,7 +48,7 @@ public class GeneralListener implements Listener
     public void onMobSpawn(EntitySpawnEvent event)
     {
         Faction faction = FactionsUtils.getFaction(event.getLocation());
-        if (faction.isNormal())
+        if (faction.isNormal() || faction.isWilderness())
         {
             return;
         }
