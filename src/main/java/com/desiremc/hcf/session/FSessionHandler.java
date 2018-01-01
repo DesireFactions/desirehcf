@@ -1,8 +1,10 @@
 package com.desiremc.hcf.session;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.UUID;
 
 import org.bukkit.command.CommandSender;
@@ -24,6 +26,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
 
     private static HashMap<UUID, FSession> fSessions;
     private static HashMap<UUID, FSession> onlineFSessions;
+    private static List<UUID> safeSessions;
 
     private static int nextId = 0;
 
@@ -45,6 +48,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
 
         fSessions = new HashMap<>();
         onlineFSessions = new HashMap<>();
+        safeSessions = new ArrayList<>();
 
         for (FSession fSession : instance.find(instance.createQuery().field("server").equal(DesireCore.getCurrentServer())))
         {
@@ -110,6 +114,11 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         return Collections.unmodifiableCollection(onlineFSessions.values());
     }
 
+    public static List<UUID> getSafeOnlineFSessions()
+    {
+        return safeSessions;
+    }
+
     public static FSession getConsoleFSession()
     {
         return console;
@@ -155,6 +164,14 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
             fSession.save();
         }
         onlineFSessions.put(fSession.getUniqueId(), fSession);
+
+        if (fSession.getSafeTimeLeft() > 0)
+        {
+            if (!safeSessions.contains(fSession.getUniqueId()))
+            {
+                safeSessions.add(fSession.getUniqueId());
+            }
+        }
         return fSession;
     }
 
@@ -162,6 +179,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
     {
         fSession.save();
         onlineFSessions.remove(fSession.getUniqueId());
+        safeSessions.remove(fSession.getUniqueId());
         // TODO change this over
         return true;
     }

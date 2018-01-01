@@ -13,10 +13,14 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
+import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionHandler;
 
 public class BarrierTask implements Runnable
 {
@@ -65,6 +69,43 @@ public class BarrierTask implements Runnable
                 }
             }
             cache.put(uuid, localCache);
+        }
+
+        for (UUID uuid : FSessionHandler.getSafeOnlineFSessions())
+        {
+            p = PlayerUtils.getPlayer(uuid);
+            if (p == null)
+            {
+                continue;
+            }
+            Set<Block> localCache = cache.get(uuid);
+            if (localCache == null)
+            {
+                localCache = new HashSet<>();
+            }
+
+            for (Faction faction : FactionHandler.getFactions())
+            {
+                for (BoundedArea area : faction.getClaims())
+                {
+                    for (Block b : area.getWalls())
+                    {
+                        if (b.getType() == Material.AIR)
+                        {
+                            if (b.getLocation().distanceSquared(p.getLocation()) <= 100)
+                            {
+                                p.sendBlockChange(b.getLocation(), Material.GLASS, (byte) 14);
+                                localCache.add(b);
+                            }
+                            else if (localCache.contains(b))
+                            {
+                                p.sendBlockChange(b.getLocation(), 0, (byte) 0);
+                                localCache.remove(b);
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         for (UUID uuid : toClear)
