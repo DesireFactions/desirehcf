@@ -1,6 +1,7 @@
 package com.desiremc.hcf.listener.factions;
 
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,12 @@ public class GeneralListener implements Listener
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
+        if (event.getBlock().getLocation().getWorld().getEnvironment() == World.Environment.THE_END)
+        {
+            event.setCancelled(true);
+            return;
+        }
+
         if (event.getBlock().getType() == Material.TNT)
         {
             event.setCancelled(true);
@@ -42,6 +49,12 @@ public class GeneralListener implements Listener
     @EventHandler
     public void onBlockBreak(BlockBreakEvent event)
     {
+        if (event.getBlock().getLocation().getWorld().getEnvironment() == World.Environment.THE_END)
+        {
+            event.setCancelled(true);
+            return;
+        }
+
         Faction faction = FactionsUtils.getFaction(event.getBlock().getLocation());
         FSession session = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
 
