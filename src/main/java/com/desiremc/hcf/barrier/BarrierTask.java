@@ -36,34 +36,6 @@ public class BarrierTask implements Runnable
     @Override
     public void run()
     {
-        regionsTask();
-        factionsTask();
-
-        for (UUID uuid : toClear)
-        {
-            Player pl = PlayerUtils.getPlayer(uuid);
-            if (pl != null)
-            {
-                Set<Block> localCache = cache.get(uuid);
-                if (localCache == null)
-                {
-                    continue;
-                }
-                for (Block block : localCache)
-                {
-                    if (block.getType() == Material.AIR)
-                    {
-                        pl.sendBlockChange(block.getLocation(), 0, (byte) 0);
-                    }
-                }
-            }
-        }
-        toClear.clear();
-
-    }
-
-    public void regionsTask()
-    {
         Player p;
         for (UUID uuid : TagHandler.getTaggedPlayers())
         {
@@ -97,13 +69,16 @@ public class BarrierTask implements Runnable
                     }
                 }
             }
-            cache.put(uuid, localCache);
+            if (cache.containsKey(uuid))
+            {
+                cache.get(uuid).addAll(localCache);
+            }
+            else
+            {
+                cache.put(uuid, localCache);
+            }
         }
-    }
 
-    public void factionsTask()
-    {
-        Player p;
         for (UUID uuid : FSessionHandler.getSafeOnlineFSessions())
         {
             p = PlayerUtils.getPlayer(uuid);
@@ -129,7 +104,7 @@ public class BarrierTask implements Runnable
                     {
                         if (b.getType() == Material.AIR)
                         {
-                            if (b.getLocation().distanceSquared(p.getLocation()) <= 200)
+                            if (b.getLocation().distanceSquared(p.getLocation()) <= 400)
                             {
                                 p.sendBlockChange(b.getLocation(), 20, (byte) 14);
                                 localCache.add(b);
@@ -143,7 +118,37 @@ public class BarrierTask implements Runnable
                     }
                 }
             }
+            if (cache.containsKey(uuid))
+            {
+                cache.get(uuid).addAll(localCache);
+            }
+            else
+            {
+                cache.put(uuid, localCache);
+            }
         }
+
+        for (UUID uuid : toClear)
+        {
+            Player pl = PlayerUtils.getPlayer(uuid);
+            if (pl != null)
+            {
+                Set<Block> localCache = cache.get(uuid);
+                if (localCache == null)
+                {
+                    continue;
+                }
+                for (Block block : localCache)
+                {
+                    if (block.getType() == Material.AIR)
+                    {
+                        pl.sendBlockChange(block.getLocation(), 0, (byte) 0);
+                    }
+                }
+            }
+        }
+        toClear.clear();
+
     }
 
     public static void addToClear(UUID uuid)
