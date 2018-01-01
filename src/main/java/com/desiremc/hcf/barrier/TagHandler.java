@@ -109,7 +109,7 @@ public class TagHandler
 
     public static Long getTagTime(UUID uuid)
     {
-        return tags.get(uuid);
+        return tags.get(uuid.toString());
     }
 
     public static UUID getTagger(UUID uuid)
