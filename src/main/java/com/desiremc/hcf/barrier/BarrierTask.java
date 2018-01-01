@@ -66,20 +66,25 @@ public class BarrierTask implements Runnable
             }
             cache.put(uuid, localCache);
         }
+
         for (UUID uuid : toClear)
         {
+            System.out.println("Toclear ran with UUID: " + uuid);
             Player pl = PlayerUtils.getPlayer(uuid);
             if (pl != null)
             {
+                System.out.println("Toclear ran with player: " + pl.getName());
                 Set<Block> localCache = cache.get(uuid);
                 if (localCache == null)
                 {
+                    System.out.println("Toclear, localcache null");
                     continue;
                 }
                 for (Block block : localCache)
                 {
                     if (block.getType() == Material.AIR)
                     {
+                        System.out.println("Toclear sent block change");
                         pl.sendBlockChange(block.getLocation(), 0, (byte) 0);
                     }
                 }
