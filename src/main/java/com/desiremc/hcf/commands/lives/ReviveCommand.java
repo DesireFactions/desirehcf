@@ -29,6 +29,7 @@ public class ReviveCommand extends ValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(String.class)
                 .setName("reason")
                 .setParser(new StringParser())
+                .setVariableLength()
                 .build());
     }
 
