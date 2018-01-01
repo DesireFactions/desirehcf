@@ -30,7 +30,7 @@ public class FactionMapCommand extends FactionValidCommand
         }
         else
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.map.cancel.early", true, false);
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.map.start", true, false);
             FactionMapTask task = new FactionMapTask(sender);
             task.run();
             tasks.put(sender.getUniqueId(), task);

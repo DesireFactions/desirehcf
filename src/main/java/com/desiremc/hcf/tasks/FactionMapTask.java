@@ -91,9 +91,13 @@ public class FactionMapTask implements Runnable
                 }
             }
         }
+        System.out.println("Sending: " + sending.size());
+        System.out.println("Current before:" + current.size());
 
         // remove anything not close by
         current.removeAll(sending);
+
+        System.out.println("Current after:" + current.size());
 
         // send the player the actual blocks
         wipeCurrent();
