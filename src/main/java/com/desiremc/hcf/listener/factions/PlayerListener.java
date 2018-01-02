@@ -506,6 +506,7 @@ public class PlayerListener implements Listener
         // if the player is in bypass mode, they can do anything.
         if (FactionHandler.isBypassing(fSession))
         {
+            System.out.println("Bypass");
             return true;
         }
 
@@ -514,11 +515,13 @@ public class PlayerListener implements Listener
         // if the faction is raidable or they're a member, they can do stuff.
         if (otherFaction.isRaidable() || otherFaction == fSession.getFaction())
         {
+            System.out.println("Raidable or mine");
             return true;
         }
         // only continue if we care
         if (!useItems.contains(material))
         {
+            System.out.println("Not in list");
             return true;
         }
 
@@ -532,6 +535,7 @@ public class PlayerListener implements Listener
         // wilderness you can do anything
         else if (otherFaction.getType() == FactionType.WILDERNESS)
         {
+            System.out.println("Wilderness");
             return true;
         }
 
