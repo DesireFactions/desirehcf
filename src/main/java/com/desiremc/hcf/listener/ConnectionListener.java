@@ -1,6 +1,8 @@
 package com.desiremc.hcf.listener;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -9,6 +11,7 @@ import org.bukkit.event.player.AsyncPlayerPreLoginEvent;
 import org.bukkit.event.player.AsyncPlayerPreLoginEvent.Result;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.inventory.ItemStack;
 
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Achievement;
@@ -66,6 +69,13 @@ public class ConnectionListener implements Listener
                 @Override
                 public void run()
                 {
+                    ItemStack steak = new ItemStack(Material.COOKED_BEEF, 16);
+                    ItemStack rod = new ItemStack(Material.FISHING_ROD);
+                    rod.addEnchantment(Enchantment.LURE, 1);
+
+                    player.getInventory().addItem(steak);
+                    player.getInventory().addItem(rod);
+
                     player.teleport(SpawnHandler.getInstance().getSpawn());
                 }
             }, 20L);
