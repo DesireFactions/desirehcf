@@ -43,6 +43,10 @@ public class EndHandler implements Listener
         {
             event.setTo(getEndExit());
         }
+        else if (event.getTo().getWorld().getEnvironment() == World.Environment.NORMAL && event.getFrom().getWorld().getEnvironment() == World.Environment.NETHER)
+        {
+            event.setTo(SpawnHandler.getInstance().getSpawn());
+        }
     }
 
     public Location getEndExit()

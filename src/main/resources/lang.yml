@@ -23,7 +23,7 @@ region:
 enderpearl:
   ended: '&7You may now use an &5EnderPearl&7.'
   message: '&7You can not use an &5EnderPearl&7 for &e{time} &7seconds.'
-  scoreboard: '&5&lEnderpearl&7: '
+  scoreboard: '&5&lPearl&7: '
 lives:
   add: '&7You have added &a{amount} &7lives to &c{player}&7.'
   send: '&7You have sent &a{amount} &7lives to &c{player}&7.'
