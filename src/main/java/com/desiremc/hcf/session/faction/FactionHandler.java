@@ -292,7 +292,6 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     public static Faction getFaction(Location location)
     {
         BlockColumn blockColumn = new BlockColumn(location.getBlockX(), location.getBlockZ(), location.getWorld());
-        System.out.println(location.getWorld().getName());
 
         try
         {
@@ -301,6 +300,20 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         catch (InterruptedException | ExecutionException ex)
         {
             return wilderness;
+        }
+    }
+
+    public static BoundedArea getArea(Location location)
+    {
+        BlockColumn blockColumn = new BlockColumn(location.getBlockX(), location.getBlockZ(), location.getWorld());
+
+        try
+        {
+            return claims.search(blockColumn).toBlocking().toFuture().get().geometry();
+        }
+        catch (InterruptedException | ExecutionException ex)
+        {
+            return null;
         }
     }
 

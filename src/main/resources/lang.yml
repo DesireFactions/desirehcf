@@ -283,6 +283,9 @@ factions:
     mine: '&7Your faction gained &b{points} &7trophies by mining &b{ore}&7.'
     raidable: '&7Your factions trophy points was set to &b0&7 for going raidable.'
     ender_egg: '&b{faction} &7has captured the Dragon Egg and gained &b{points} &7trophies.'
+  unclaim:
+    success: '&b{player} &7has unclaimed land for your faction.'
+    not_touching: '&7You can''t unclaim as it would make your claims not touch.'
 sotw:
   first: '&7Please run the command again to confirm &bSOTW&7.'
   confirmed: '&7Confirmed. Let &bSOTW &7commence.'

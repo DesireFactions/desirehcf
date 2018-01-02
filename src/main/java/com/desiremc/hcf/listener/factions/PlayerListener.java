@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -95,7 +96,6 @@ public class PlayerListener implements Listener
         if (factionTo.isNormal() && fSession.getSafeTimeLeft() > 0)
         {
             event.setCancelled(true);
-            return;
         }
 
     }
@@ -157,7 +157,6 @@ public class PlayerListener implements Listener
         if (!playerCanUseItem(fSession, block.getLocation(), event.getMaterial()))
         {
             event.setCancelled(true);
-            return;
         }
     }
 
@@ -298,8 +297,11 @@ public class PlayerListener implements Listener
                 return;
             }
 
-            claim.getBoundedArea().setWorld(fSession.getPlayer().getWorld());
-            System.out.println(fSession.getPlayer().getWorld() + " CLAIMED");
+            World world = fSession.getPlayer().getWorld();
+
+            claim.getBoundedArea().setWorld(world);
+            claim.getPointOne().setWorld(world);
+            claim.getPointTwo().setWorld(world);
             faction.addClaim(claim.getBoundedArea());
             faction.withdrawBalance(claim.getCost());
             faction.save();
@@ -339,7 +341,7 @@ public class PlayerListener implements Listener
             columns = new BlockColumn[] {blockColumn};
         }
 
-        int search = -1;
+        int search;
         boolean borders = false;
         for (BlockColumn col : columns)
         {
@@ -447,7 +449,7 @@ public class PlayerListener implements Listener
             Material.POWERED_MINECART,
             Material.CAULDRON);
 
-    public static boolean playerCanUseBlock(FSession fSession, Block block)
+    private static boolean playerCanUseBlock(FSession fSession, Block block)
     {
         // if the player is in bypass mode, they can do anything.
         if (FactionHandler.isBypassing(fSession))
@@ -493,13 +495,13 @@ public class PlayerListener implements Listener
         return true;
     }
 
-    protected static final Set<Material> useItems = EnumSet.of(Material.FIREBALL,
+    private static final Set<Material> useItems = EnumSet.of(Material.FIREBALL,
             Material.FLINT_AND_STEEL,
             Material.BUCKET,
             Material.WATER_BUCKET,
             Material.LAVA_BUCKET);
 
-    public static boolean playerCanUseItem(FSession fSession, Location location, Material material)
+    private static boolean playerCanUseItem(FSession fSession, Location location, Material material)
     {
         // if the player is in bypass mode, they can do anything.
         if (FactionHandler.isBypassing(fSession))

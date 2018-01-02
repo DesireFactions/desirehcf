@@ -546,6 +546,17 @@ public class Faction
     }
 
     /**
+     * Remove a claim that is owned by the faction.
+     *
+     * @param boundedArea the bounded area to remove.
+     */
+    public void removeClaim(BoundedArea boundedArea)
+    {
+        claims.remove(boundedArea);
+    }
+
+
+    /**
      * @return all claims owned by this faction.
      */
     public List<BoundedArea> getClaims()
