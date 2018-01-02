@@ -36,6 +36,11 @@ public class FactionLeaveCommand extends FactionValidCommand
         sender.setChannel(FactionChannel.GENERAL);
         sender.save();
 
+        if (sender.hasClaimSession())
+        {
+            sender.clearClaimSession();
+        }
+
         faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.leave.all", true, false, "{player}", sender.getName()));
 
         DesireHCF.getLangHandler().sendRenderMessage(sender.getSender(), "factions.leave.sender", true, false, "{faction}", faction.getName());
