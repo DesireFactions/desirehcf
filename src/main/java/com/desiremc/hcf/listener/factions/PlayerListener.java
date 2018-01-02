@@ -516,17 +516,9 @@ public class PlayerListener implements Listener
         {
             return true;
         }
-
-        FactionRelationship rel = otherFaction.getRelationshipTo(fSession.getFaction());
-
         // only continue if we care
         if (!useItems.contains(material))
         {
-            if (!rel.canBuild())
-            {
-                DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.use_items", true, false);
-                return false;
-            }
             return true;
         }
 
@@ -543,6 +535,7 @@ public class PlayerListener implements Listener
             return true;
         }
 
+        FactionRelationship rel = otherFaction.getRelationshipTo(fSession.getFaction());
         if (!rel.canBuild())
         {
             DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.use_items", true, false);
