@@ -16,6 +16,7 @@ public class SenderCanUnclaimLocation extends FactionSenderValidator
 
         for (BoundedArea area : sender.getFaction().getClaims())
         {
+            System.out.print(area.distance(claim));
             if (area.distance(claim) > 1)
             {
                 DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.unclaim.not_touching", true, false);
