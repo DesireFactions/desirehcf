@@ -2,7 +2,7 @@ hcfreload: '&7Reloaded the lang files.'
 tag:
   active: '&7You are now &fcombat tagged &7and can not enter spawn.'
   expire: '&7You are no longer &fcombat tagged&7.'
-  scoreboard: '&6&lCombat Tag&7: '
+  scoreboard: '&6&lCombat&7: '
 enderchest:
   disabled: '&7enderchest &fdisabled&7!'
   enabled: '&7enderchest &fenabled&7!'
