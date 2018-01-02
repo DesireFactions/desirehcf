@@ -5,12 +5,14 @@ import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 import org.bukkit.event.entity.EntityTargetEvent;
@@ -38,7 +40,7 @@ public class GeneralListener implements Listener
     }
 
     @EventHandler
-    public void onMobSpawn(EntitySpawnEvent event)
+    public void onEntitySpawnEvent(EntitySpawnEvent event)
     {
         if (!(event.getEntity() instanceof Animals))
         {
@@ -61,13 +63,13 @@ public class GeneralListener implements Listener
     }
 
     @EventHandler
-    public void onTntExplode(EntityExplodeEvent event)
+    public void onEntityExplodeEvent(EntityExplodeEvent event)
     {
         event.blockList().clear();
     }
 
     @EventHandler
-    public void onTarget(EntityTargetEvent event)
+    public void onEntityTargetEvent(EntityTargetEvent event)
     {
         if (event.getEntityType().equals(EntityType.CREEPER))
         {
@@ -82,7 +84,7 @@ public class GeneralListener implements Listener
     }
 
     @EventHandler
-    public void onTeleport(PlayerPortalEvent event)
+    public void onPlayerPortalEvent(PlayerPortalEvent event)
     {
         Player player = event.getPlayer();
         FSession fSession = FSessionHandler.getOnlineFSession(player.getUniqueId());
@@ -95,7 +97,7 @@ public class GeneralListener implements Listener
     }
 
     @EventHandler
-    public void onFlow(BlockFromToEvent event)
+    public void onBlockFromToEvent(BlockFromToEvent event)
     {
         Block block = event.getBlock();
         if (block.getType() == Material.WATER || block.getType() == Material.LAVA)
@@ -106,6 +108,16 @@ public class GeneralListener implements Listener
             {
                 event.setCancelled(true);
             }
+        }
+    }
+
+    @EventHandler
+    public void onEntityDamageEvent(EntityDamageEvent event)
+    {
+        Entity entity = event.getEntity();
+        if (entity.getType().equals(EntityType.ENDER_CRYSTAL))
+        {
+            event.setCancelled(true);
         }
     }
 }

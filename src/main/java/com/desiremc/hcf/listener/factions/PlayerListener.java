@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockBreakEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
@@ -191,7 +192,19 @@ public class PlayerListener implements Listener
         Block block = event.getBlock();
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
 
-        if (!playerCanBuild(fSession, block.getLocation(), block))
+        if (!playerCanBuildBreak(fSession, block.getLocation()))
+        {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBlockBreak(BlockBreakEvent event)
+    {
+        Block block = event.getBlock();
+        FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
+
+        if (!playerCanBuildBreak(fSession, block.getLocation()))
         {
             event.setCancelled(true);
         }
@@ -558,7 +571,7 @@ public class PlayerListener implements Listener
         return true;
     }
 
-    private static boolean playerCanBuild(FSession fSession, Location location, Block block)
+    private static boolean playerCanBuildBreak(FSession fSession, Location location)
     {
         // if the player is in bypass mode, they can do anything.
         if (FactionHandler.isBypassing(fSession))
@@ -596,5 +609,4 @@ public class PlayerListener implements Listener
 
         return true;
     }
-
 }
