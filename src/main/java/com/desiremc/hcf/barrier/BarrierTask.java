@@ -101,7 +101,7 @@ public class BarrierTask implements Runnable
                 }
                 for (BoundedArea area : faction.getClaims())
                 {
-                    if (area.getWorld() != p.getWorld())
+                    if (area.getWorld().getName().equalsIgnoreCase(p.getWorld().getName()))
                     {
                         continue;
                     }
