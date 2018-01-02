@@ -1,13 +1,14 @@
 package com.desiremc.hcf.listener.factions;
 
+import org.bukkit.Location;
 import org.bukkit.Material;
-import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockBreakEvent;
+import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
@@ -20,6 +21,8 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.session.faction.FactionHandler;
+import com.desiremc.hcf.session.faction.FactionType;
 import com.desiremc.hcf.util.FactionsUtils;
 
 public class GeneralListener implements Listener
@@ -28,47 +31,10 @@ public class GeneralListener implements Listener
     @EventHandler
     public void onBlockPlace(BlockPlaceEvent event)
     {
-        if (event.getBlock().getLocation().getWorld().getEnvironment() == World.Environment.THE_END)
-        {
-            event.setCancelled(true);
-            return;
-        }
-
         if (event.getBlock().getType() == Material.TNT)
         {
             event.setCancelled(true);
-            return;
         }
-
-        Faction faction = FactionsUtils.getFaction(event.getBlock().getLocation());
-        FSession session = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
-
-        if ((faction.isNormal() && faction.getMembers().contains(session)) || faction.isWilderness())
-        {
-            return;
-        }
-
-        event.setCancelled(true);
-    }
-
-    @EventHandler
-    public void onBlockBreak(BlockBreakEvent event)
-    {
-        if (event.getBlock().getLocation().getWorld().getEnvironment() == World.Environment.THE_END)
-        {
-            event.setCancelled(true);
-            return;
-        }
-
-        Faction faction = FactionsUtils.getFaction(event.getBlock().getLocation());
-        FSession session = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
-
-        if ((faction.isNormal() && faction.getMembers().contains(session)) || faction.isWilderness())
-        {
-            return;
-        }
-
-        event.setCancelled(true);
     }
 
     @EventHandler
@@ -136,7 +102,25 @@ public class GeneralListener implements Listener
         Player player = event.getPlayer();
         FSession fSession = FSessionHandler.getOnlineFSession(player.getUniqueId());
 
-        DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.cancel", true, false);
-        fSession.clearClaimSession();
+        if (fSession.hasClaimSession())
+        {
+            fSession.clearClaimSession();
+            DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.cancel", true, false);
+        }
+    }
+
+    @EventHandler
+    public void onFlow(BlockFromToEvent event)
+    {
+        Block block = event.getBlock();
+        if (block.getType() == Material.WATER || block.getType() == Material.LAVA)
+        {
+            Location loc = event.getToBlock().getLocation();
+            Faction faction = FactionHandler.getFaction(loc);
+            if (faction.getType() != FactionType.PLAYER)
+            {
+                event.setCancelled(true);
+            }
+        }
     }
 }
