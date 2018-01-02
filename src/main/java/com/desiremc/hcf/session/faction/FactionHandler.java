@@ -292,6 +292,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     public static Faction getFaction(Location location)
     {
         BlockColumn blockColumn = new BlockColumn(location.getBlockX(), location.getBlockZ(), location.getWorld());
+        System.out.println(location.getWorld().getName());
 
         try
         {

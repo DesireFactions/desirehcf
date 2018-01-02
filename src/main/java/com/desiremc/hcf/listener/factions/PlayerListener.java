@@ -216,8 +216,6 @@ public class PlayerListener implements Listener
             Block block = event.getClickedBlock();
             BlockColumn blockColumn = new BlockColumn(block);
 
-            blockColumn.setWorld(fSession.getPlayer().getWorld());
-
             int checkStatus = checkPoint(blockColumn, fSession, event.getAction() == Action.LEFT_CLICK_BLOCK ? 1 : 2);
 
             if (checkStatus == 0)
@@ -301,6 +299,7 @@ public class PlayerListener implements Listener
             }
 
             claim.getBoundedArea().setWorld(fSession.getPlayer().getWorld());
+            System.out.println(fSession.getPlayer().getWorld() + " CLAIMED");
             faction.addClaim(claim.getBoundedArea());
             faction.withdrawBalance(claim.getCost());
             faction.save();
