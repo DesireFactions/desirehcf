@@ -141,7 +141,7 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
     {
         for (FSession fSession : fSessions.values())
         {
-            if (fSession.getName().equals(name))
+            if (fSession.getName().equalsIgnoreCase(name))
             {
                 return fSession;
             }

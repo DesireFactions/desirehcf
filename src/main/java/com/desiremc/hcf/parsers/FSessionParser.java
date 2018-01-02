@@ -1,14 +1,15 @@
 package com.desiremc.hcf.parsers;
 
+import java.util.List;
+
+import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
+
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
-
-import java.util.List;
 
 public class FSessionParser implements Parser<FSession>
 {
@@ -16,7 +17,7 @@ public class FSessionParser implements Parser<FSession>
     @Override
     public FSession parseArgument(Session sender, String[] label, String rawArgument)
     {
-        FSession arg = null;
+        FSession arg;
 
         // try to find an online player by name
         Player p = Bukkit.getPlayerExact(rawArgument);
