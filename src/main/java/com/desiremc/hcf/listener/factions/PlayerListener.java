@@ -298,6 +298,7 @@ public class PlayerListener implements Listener
                 return;
             }
 
+            claim.getBoundedArea().setWorld(fSession.getPlayer().getWorld());
             faction.addClaim(claim.getBoundedArea());
             faction.withdrawBalance(claim.getCost());
             faction.save();
