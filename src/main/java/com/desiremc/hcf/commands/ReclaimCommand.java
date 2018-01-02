@@ -47,7 +47,7 @@ public class ReclaimCommand extends FactionValidCommand
             lives = 15;
             keys = 8;
         }
-        else if (sender.getRank() == Rank.BETA)
+        else if (sender.getRank() == Rank.BETA || sender.getRank() == Rank.PARTNER)
         {
             lives = 20;
             keys = 15;
@@ -59,7 +59,7 @@ public class ReclaimCommand extends FactionValidCommand
 
         sender.addLives(lives);
 
-        String rank = sender.getRank() == Rank.BETA ? "Grandmaster" : sender.getRank().getDisplayName();
+        String rank = sender.getRank() == Rank.BETA || sender.getRank() == Rank.PARTNER ? "Grandmaster" : sender.getRank().getDisplayName();
 
         CrateHandler.getCrate(rank).addPendingKeys(sender.getUniqueId(), keys);
 
