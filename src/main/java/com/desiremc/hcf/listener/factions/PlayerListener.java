@@ -11,6 +11,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerBucketEmptyEvent;
 import org.bukkit.event.player.PlayerBucketFillEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -179,6 +180,18 @@ public class PlayerListener implements Listener
         FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
 
         if (!playerCanUseItem(fSession, block.getLocation(), event.getBucket()))
+        {
+            event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onBlockPlace(BlockPlaceEvent event)
+    {
+        Block block = event.getBlock();
+        FSession fSession = FSessionHandler.getOnlineFSession(event.getPlayer().getUniqueId());
+
+        if (!playerCanBuild(fSession, block.getLocation(), block))
         {
             event.setCancelled(true);
         }
@@ -506,7 +519,6 @@ public class PlayerListener implements Listener
         // if the player is in bypass mode, they can do anything.
         if (FactionHandler.isBypassing(fSession))
         {
-            System.out.println("Bypass");
             return true;
         }
 
@@ -515,13 +527,11 @@ public class PlayerListener implements Listener
         // if the faction is raidable or they're a member, they can do stuff.
         if (otherFaction.isRaidable() || otherFaction == fSession.getFaction())
         {
-            System.out.println("Raidable or mine");
             return true;
         }
         // only continue if we care
         if (!useItems.contains(material))
         {
-            System.out.println("Not in list");
             return true;
         }
 
@@ -535,7 +545,45 @@ public class PlayerListener implements Listener
         // wilderness you can do anything
         else if (otherFaction.getType() == FactionType.WILDERNESS)
         {
-            System.out.println("Wilderness");
+            return true;
+        }
+
+        FactionRelationship rel = otherFaction.getRelationshipTo(fSession.getFaction());
+        if (!rel.canBuild())
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.use_items", true, false);
+            return false;
+        }
+
+        return true;
+    }
+
+    private static boolean playerCanBuild(FSession fSession, Location location, Block block)
+    {
+        // if the player is in bypass mode, they can do anything.
+        if (FactionHandler.isBypassing(fSession))
+        {
+            return true;
+        }
+
+        Faction otherFaction = FactionsUtils.getFaction(location);
+
+        // if the faction is raidable or they're a member, they can do stuff.
+        if (otherFaction.isRaidable() || otherFaction == fSession.getFaction())
+        {
+            return true;
+        }
+
+        // safezones and warzones behave the same as far as item usage goes.
+        if (otherFaction.getType() == FactionType.SAFEZONE || otherFaction.getType() == FactionType.WARZONE)
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.build", true, false);
+            return false;
+        }
+
+        // wilderness you can do anything
+        else if (otherFaction.getType() == FactionType.WILDERNESS)
+        {
             return true;
         }
 
