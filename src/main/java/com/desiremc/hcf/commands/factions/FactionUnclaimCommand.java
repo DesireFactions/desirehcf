@@ -39,6 +39,7 @@ public class FactionUnclaimCommand extends FactionValidCommand
         if (claim != null)
         {
             faction.removeClaim(claim);
+            FactionHandler.removeClaim(faction, claim);
         }
 
         faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.unclaim.success", true, false, "{player}", sender.getName()));
