@@ -11,7 +11,7 @@ public class SenderFactionLeaderValidator extends FactionSenderValidator
     @Override
     public boolean factionsValidate(FSession sender)
     {
-        if (sender.getFactionRank() != FactionRank.LEADER)
+        if (sender.getFactionRank() != FactionRank.LEADER && !sender.getRank().isManager())
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.not_leader", true, false);
             return false;

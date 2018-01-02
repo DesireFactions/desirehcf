@@ -395,7 +395,7 @@ public class PlayerListener implements Listener
             {
                 if (entry.geometry().intersects(blockColumn))
                 {
-                    DesireHCF.getLangHandler().sendRenderMessage(fSession, "faction.claims.overlap.self", true, false);
+                    DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.claims.overlap.self", true, false);
                     return INVALID;
                 }
                 else if (entry.geometry().distance(blockColumn) == 1)
