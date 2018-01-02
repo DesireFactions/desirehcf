@@ -2,6 +2,7 @@ package com.desiremc.hcf.listener.factions;
 
 import org.bukkit.Location;
 import org.bukkit.Material;
+import org.bukkit.World;
 import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.EntityType;
@@ -42,7 +43,11 @@ public class GeneralListener implements Listener
     {
         if (!(event.getEntity() instanceof Animals))
         {
-            event.setCancelled(true);
+            if (event.getEntity().getType() != EntityType.CREEPER && event.getEntity().getType() != EntityType.ENDERMAN
+                    && event.getEntity().getLocation().getWorld().getEnvironment() != World.Environment.THE_END)
+            {
+                event.setCancelled(true);
+            }
             return;
         }
 
