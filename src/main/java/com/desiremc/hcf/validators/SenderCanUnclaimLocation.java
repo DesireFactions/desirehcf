@@ -26,7 +26,7 @@ public class SenderCanUnclaimLocation extends FactionSenderValidator
                 {
                     continue;
                 }
-                if (area2.distance(area1) > 0)
+                if (area2.distance(area1) > 1)
                 {
                     DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.unclaim.not_touching", true, false);
                     return false;
