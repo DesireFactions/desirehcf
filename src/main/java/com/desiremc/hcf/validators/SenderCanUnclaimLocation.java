@@ -14,13 +14,23 @@ public class SenderCanUnclaimLocation extends FactionSenderValidator
     {
         BoundedArea claim = FactionHandler.getArea(sender.getLocation());
 
-        for (BoundedArea area : sender.getFaction().getClaims())
+        for (BoundedArea area1 : sender.getFaction().getClaims())
         {
-            System.out.print(area.distance(claim));
-            if (area.distance(claim) > 1)
+            if (area1 == claim)
             {
-                DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.unclaim.not_touching", true, false);
-                return false;
+                continue;
+            }
+            for (BoundedArea area2 : sender.getFaction().getClaims())
+            {
+                if (area2 == claim)
+                {
+                    continue;
+                }
+                if (area2.distance(area1) > 0)
+                {
+                    DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.unclaim.not_touching", true, false);
+                    return false;
+                }
             }
         }
 
