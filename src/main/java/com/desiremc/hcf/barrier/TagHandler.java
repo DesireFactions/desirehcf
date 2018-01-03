@@ -36,7 +36,7 @@ public class TagHandler
             @Override
             public void onRemoval(RemovalNotification<String, Long> entry)
             {
-                if (entry.getCause() == Cause.EXPIRE || entry.getCause() == Cause.REMOVE)
+                if (entry.getCause() == Cause.EXPIRE || entry.getCause() == Cause.REMOVE && entry.getKey() != null)
                 {
                     UUID uuid = UUID.fromString(entry.getKey());
                     Player p = PlayerUtils.getPlayer(uuid);
