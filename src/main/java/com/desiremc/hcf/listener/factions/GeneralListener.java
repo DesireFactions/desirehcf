@@ -104,7 +104,7 @@ public class GeneralListener implements Listener
         {
             Location loc = event.getToBlock().getLocation();
             Faction faction = FactionHandler.getFaction(loc);
-            if (faction.getType() != FactionType.PLAYER)
+            if (faction.getType() != FactionType.PLAYER && !faction.isWilderness())
             {
                 event.setCancelled(true);
             }
