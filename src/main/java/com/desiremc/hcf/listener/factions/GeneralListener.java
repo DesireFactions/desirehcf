@@ -12,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
+import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.EntityExplodeEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
@@ -118,6 +119,15 @@ public class GeneralListener implements Listener
         if (entity.getType().equals(EntityType.ENDER_CRYSTAL))
         {
             event.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onEntityChangeBlock(EntityChangeBlockEvent e)
+    {
+        if (e.getEntity() != null && e.getEntity().getType() == EntityType.ENDERMAN)
+        {
+            e.setCancelled(true);
         }
     }
 }
