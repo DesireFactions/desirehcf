@@ -122,7 +122,7 @@ public class TagHandler
 
     public static void clearTag(UUID uuid)
     {
-        tags.remove(uuid);
+        tags.remove(uuid.toString());
     }
 
     public static Set<UUID> getTaggedPlayers()
