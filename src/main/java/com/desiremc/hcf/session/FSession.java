@@ -325,6 +325,7 @@ public class FSession implements Messageable
 
     public DeathBan getActiveDeathBan()
     {
+        Bukkit.broadcastMessage(DesireHCF.getInstance().getServer().getName());
         return DeathBanHandler.getDeathBan(getSession(), DesireHCF.getInstance().getServer().getName());
     }
 
