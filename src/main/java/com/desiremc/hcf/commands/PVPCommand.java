@@ -31,7 +31,7 @@ public class PVPCommand extends FactionValidCommand
     @Override
     public void validFactionRun(FSession sender, String label[], List<CommandArgument<?>> args)
     {
-        if (!args.get(0).hasValue() || ((String) args.get(0).getValue()).equalsIgnoreCase("enable"))
+        if (!args.get(0).hasValue() || !((String) args.get(0).getValue()).equalsIgnoreCase("enable"))
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "pvp.time", true, false, "{time}", sender.getSafeTimer().getTimeLeftFormatted());
         }
