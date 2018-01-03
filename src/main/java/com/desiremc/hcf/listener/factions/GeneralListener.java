@@ -108,7 +108,7 @@ public class GeneralListener implements Listener
             Faction faction = FactionHandler.getFaction(loc);
             if (faction.getType() != FactionType.PLAYER)
             {
-                event.setCancelled(true);
+                block.setType(Material.AIR);
             }
         }
     }
