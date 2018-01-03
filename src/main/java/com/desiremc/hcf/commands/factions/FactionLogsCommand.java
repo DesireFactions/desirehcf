@@ -42,13 +42,13 @@ public class FactionLogsCommand extends FactionValidCommand
         Faction faction;
         int page = arguments.get(0).hasValue() ? ((Number) arguments.get(0).getValue()).intValue() : 0;
 
-        if (!arguments.get(0).hasValue())
+        if (!arguments.get(1).hasValue())
         {
             faction = sender.getFaction();
         }
         else
         {
-            faction = (Faction) arguments.get(0).getValue();
+            faction = (Faction) arguments.get(1).getValue();
         }
 
         FactionHandler.sendLogList(sender, faction, page);
