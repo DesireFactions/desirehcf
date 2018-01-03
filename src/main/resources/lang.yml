@@ -295,8 +295,8 @@ sotw:
   first: '&7Please run the command again to confirm &bSOTW&7.'
   confirmed: '&7Confirmed. Let &bSOTW &7commence.'
   pvp: '&7You can''t PVP during SOTW.'
-  scoreboard: '&bSOTW&7: '
-  over: '&bSOTW PvP timer is now over!'
+  scoreboard: '&b&lSOTW&7: '
+  over: '&7The &bSOTW&7 timer is now over! &bImmunity &7timers are now active.'
   already: '&7A SOTW timer is already running.'
 signs:
   not_enough_money: '&7You don''t have enough money to buy that.'
