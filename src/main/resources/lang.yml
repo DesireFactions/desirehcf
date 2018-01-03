@@ -45,11 +45,12 @@ reclaim:
   keys: '&7You have claimed &b{amount} {type}&7 keys. Do &b/crates key claim {type}&7 to get them.'
 pvp:
   target_protected: '&7That player has pvp &fdisabled&7.'
-  damager_protected: '&7You have pvp &fdisabled&7.'
+  damager_protected: '&7You have pvp &fdisabled&7 do /pvp enable to enable it.'
   damager_safe: '&7You are in a &fsafe zone&7.'
   victim_safe: '&7That player is in a &fsafe zone&7.'
-  disabled: '&7You have &fdisabled &7your &fpvp protection timer&7.'
-  already-disabled: '&7You do not have an &factive &7PVP timer.'
+  disabled: '&7You have &fdisabled &7your &fImmunity timer&7.'
+  time: '&7You have Immunity for &b{time}.'
+  already-disabled: '&7You do not have an &factive &7Immunity timer.'
   scoreboard: '&e&lImmunity&7: '
 crowbar:
   new_crowbar: '&7You have recieved a &fcrowbar&7 for &b$15000&7.'
