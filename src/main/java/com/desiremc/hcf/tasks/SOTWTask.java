@@ -25,20 +25,16 @@ public class SOTWTask extends BukkitRunnable
         EntryRegistry.getInstance().setAll(DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false), DateUtils.formatDateDiff(getRemainingSeconds() + System.currentTimeMillis()));
         if (getRemainingSeconds() <= 0)
         {
-            cancel();
+            SOTWHandler.setSOTW(false);
+            Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("sotw.over", true, false));
+
+            EntryRegistry.getInstance().removeAll(DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false));
+            this.cancel();
         }
     }
 
     private int getRemainingSeconds()
     {
         return (int) (((TIMER * 1000) + start) - System.currentTimeMillis());
-    }
-
-    public void cancel()
-    {
-        SOTWHandler.setSOTW(false);
-        Bukkit.broadcastMessage(DesireHCF.getLangHandler().renderMessage("sotw.over", true, false));
-
-        EntryRegistry.getInstance().removeAll(DesireHCF.getLangHandler().renderMessage("sotw.scoreboard", false, false));
     }
 }
