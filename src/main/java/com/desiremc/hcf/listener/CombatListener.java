@@ -321,23 +321,45 @@ public class CombatListener implements Listener
         if (tag != null)
         {
             FSession killer = FSessionHandler.getOnlineFSession(tag.getUniqueId());
-            message.then(killer.getName())
-                    .tooltip(FactionsUtils.getMouseoverDetails(killer))
-                    .color(killer.getRank().getMain())
-                    .then("[")
-                    .color(ChatColor.WHITE)
-                    .then(Integer.toString(killer.getTotalKills()))
-                    .tooltip(killer.getKillDisplay())
-                    .color(ChatColor.WHITE)
-                    .then("]")
-                    .color(ChatColor.WHITE)
-                    .then(" using ")
-                    .color(ChatColor.WHITE)
-                    .then(ItemNames.lookup(tag.getItem()))
-                    .itemTooltip(tag.getItem())
-                    .color(ChatColor.BLUE)
-                    .then(".")
-                    .color(ChatColor.WHITE);
+            if (tag.getItem() != null)
+            {
+                message.then(killer.getName())
+                        .tooltip(FactionsUtils.getMouseoverDetails(killer))
+                        .color(killer.getRank().getMain())
+                        .then("[")
+                        .color(ChatColor.WHITE)
+                        .then(Integer.toString(killer.getTotalKills()))
+                        .tooltip(killer.getKillDisplay())
+                        .color(ChatColor.WHITE)
+                        .then("]")
+                        .color(ChatColor.WHITE)
+                        .then(" using ")
+                        .color(ChatColor.WHITE)
+                        .then(ItemNames.lookup(tag.getItem()))
+                        .itemTooltip(tag.getItem())
+                        .color(ChatColor.BLUE)
+                        .then(".")
+                        .color(ChatColor.WHITE);
+            }
+            else
+            {
+                message.then(killer.getName())
+                        .tooltip(FactionsUtils.getMouseoverDetails(killer))
+                        .color(killer.getRank().getMain())
+                        .then("[")
+                        .color(ChatColor.WHITE)
+                        .then(Integer.toString(killer.getTotalKills()))
+                        .tooltip(killer.getKillDisplay())
+                        .color(ChatColor.WHITE)
+                        .then("]")
+                        .color(ChatColor.WHITE)
+                        .then(" using ")
+                        .color(ChatColor.WHITE)
+                        .then(ItemNames.lookup(tag.getItem()))
+                        .color(ChatColor.BLUE)
+                        .then(".")
+                        .color(ChatColor.WHITE);
+            }
         }
 
         return message;
