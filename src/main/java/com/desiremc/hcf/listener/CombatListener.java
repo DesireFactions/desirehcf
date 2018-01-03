@@ -181,7 +181,7 @@ public class CombatListener implements Listener
         event.setRespawnLocation(SpawnHandler.getInstance().getSpawn());
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onPlayerDeath(PlayerDeathEvent event)
     {
         try
