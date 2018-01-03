@@ -32,7 +32,7 @@ public class FactionSethomeCommand extends FactionValidCommand
 
         Location location = sender.getPlayer().getLocation();
 
-        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.home.set", true, false,
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.home.set", false, false,
                 "{player}", sender.getName(),
                 "{x}", location.getBlockX(),
                 "{y}", location.getBlockY(),

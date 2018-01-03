@@ -40,7 +40,7 @@ public class FactionKickCommand extends FactionValidCommand
         Faction faction = sender.getFaction();
         FSession target = (FSession) arguments.get(0).getValue();
 
-        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.kick.all", true, false, "{player}", sender.getName(), "{target}", target.getName()));
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.kick.all", false, false, "{player}", sender.getName(), "{target}", target.getName()));
         faction.removeMember(target);
         faction.save();
 

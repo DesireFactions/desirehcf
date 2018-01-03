@@ -47,7 +47,7 @@ public class FactionDemoteCommand extends FactionValidCommand
         FactionRank rank = FactionRank.getLastRank(target.getFactionRank());
 
         target.setFactionRank(rank);
-        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.demote.valid", true, false, "{player}", sender.getName(), "{target}", target.getName(),
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.demote.valid", false, false, "{player}", sender.getName(), "{target}", target.getName(),
                 "{rank}", StringUtils.capitalize(rank.name().replace("_", " ").toLowerCase())));
         target.save();
 

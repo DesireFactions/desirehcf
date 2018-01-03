@@ -48,7 +48,7 @@ public class FactionWithdrawCommand extends FactionValidCommand
             amount = Doubles.tryParse(arg);
         }
 
-        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.withdraw", true, false, "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.withdraw", false, false, "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
         faction.withdrawBalance(amount);
         sender.depositBalance(amount);
 

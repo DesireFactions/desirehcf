@@ -38,7 +38,7 @@ public class FactionJoinCommand extends FactionValidCommand
         if (faction.isNormal())
         {
             faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.join.all", true, false, "{player}", sender.getName()));
-            faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.join.all", true, false, "{player}", sender.getName()));
+            faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.join.all", false, false, "{player}", sender.getName()));
             faction.removeInvite(sender);
         }
 

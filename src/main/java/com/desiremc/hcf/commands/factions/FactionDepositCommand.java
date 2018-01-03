@@ -50,7 +50,7 @@ public class FactionDepositCommand extends FactionValidCommand
         faction.depositBalance(amount);
         sender.withdrawBalance(amount);
 
-        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.deposit", true, false, "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.deposit", false, false, "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
 
         faction.save();
         sender.save();

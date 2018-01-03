@@ -37,7 +37,7 @@ public class FactionDeinviteCommand extends FactionValidCommand
         Faction faction = sender.getFaction();
         FSession target = (FSession) arguments.get(0).getValue();
 
-        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.invite.remove", true, false, "{player}", sender.getName(), "{target}", target.getName()));
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.invite.remove", false, false, "{player}", sender.getName(), "{target}", target.getName()));
         faction.removeInvite(target);
         faction.save();
 

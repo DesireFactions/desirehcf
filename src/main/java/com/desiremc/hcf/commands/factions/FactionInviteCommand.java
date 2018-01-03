@@ -41,7 +41,7 @@ public class FactionInviteCommand extends FactionValidCommand
         Faction faction = sender.getFaction();
         FSession target = (FSession) arguments.get(0).getValue();
 
-        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.invite.add", true, false, "{player}", sender.getName(), "{target}", target.getName()));
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.invite.add", false, false, "{player}", sender.getName(), "{target}", target.getName()));
         faction.addInvite(target);
         faction.save();
 

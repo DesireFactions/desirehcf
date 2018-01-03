@@ -45,7 +45,7 @@ public class FactionLeaderCommand extends FactionValidCommand
         target.setFactionRank(FactionRank.LEADER);
         sender.setFactionRank(FactionRank.OFFICER);
 
-        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.new_leader", true, false,
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.new_leader", false, false,
                 "{old}", sender.getName(),
                 "{new}", target.getName()));
 
