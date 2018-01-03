@@ -14,6 +14,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
 import com.desiremc.core.DesireCore;
+import com.desiremc.core.punishment.PunishmentHandler;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.DeathBan;
 import com.desiremc.core.utils.DateUtils;
@@ -118,6 +119,8 @@ public class ConnectionListener implements Listener
             // to handle it.
             return;
         }
+
+        PunishmentHandler.getInstance().refreshPunishments(fSession.getSession());
         DeathBan ban = fSession.getActiveDeathBan();
         if (ban != null)
         {
