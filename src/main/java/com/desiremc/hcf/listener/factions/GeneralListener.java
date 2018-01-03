@@ -3,7 +3,6 @@ package com.desiremc.hcf.listener.factions;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -100,14 +99,15 @@ public class GeneralListener implements Listener
     @EventHandler
     public void onBlockFromToEvent(BlockFromToEvent event)
     {
-        Block block = event.getToBlock();
-        if (block.getType() == Material.WATER || block.getType() == Material.LAVA || block.getType() == Material.STATIONARY_WATER || block.getType() == Material.STATIONARY_LAVA)
+        int id = event.getBlock().getTypeId();
+
+        if (id == 8 || id == 9)
         {
             Location loc = event.getToBlock().getLocation();
             Faction faction = FactionHandler.getFaction(loc);
             if (faction.getType() != FactionType.PLAYER)
             {
-                block.setType(Material.AIR);
+                event.setCancelled(true);
             }
         }
     }
