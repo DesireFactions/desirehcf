@@ -28,6 +28,7 @@ public class FactionLeaveCommand extends FactionValidCommand
     {
         Faction faction = sender.getFaction();
 
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.leave.all", true, false, "{player}", sender.getName()));
         faction.removeMember(sender);
         faction.save();
 

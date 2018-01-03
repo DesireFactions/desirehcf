@@ -88,6 +88,8 @@ public class Faction
 
     private double trophies;
 
+    private List<String> logs;
+
     public Faction()
     {
         members = new LinkedList<>();
@@ -96,6 +98,7 @@ public class Faction
         allies = new LinkedList<>();
         invites = new LinkedList<>();
         outgoingAllies = new LinkedList<>();
+        logs = new ArrayList<>();
     }
 
     /**
@@ -503,7 +506,7 @@ public class Faction
      * Adds an announcement for this player to get the next time they get on the server. If they have pending
      * announcements already it will take the new one on to the end of the list.
      *
-     * @param session the player to receive the announcement.
+     * @param session      the player to receive the announcement.
      * @param announcement the announcement.
      */
     public void addAnnouncement(FSession session, String announcement)
@@ -863,6 +866,42 @@ public class Faction
     public void removeTrophyPoints(double trophies)
     {
         this.trophies -= trophies;
+    }
+
+    /**
+     * @return the log list
+     */
+    public List<String> getLogs()
+    {
+        return logs;
+    }
+
+    /**
+     * Adds an entry to the log list.
+     *
+     * @param string the entry to enter.
+     */
+    public void addLog(String string)
+    {
+        logs.add(string);
+    }
+
+    /**
+     * Removes an entry from the log list.
+     *
+     * @param string the entry to remove.
+     */
+    public void removeLog(String string)
+    {
+        logs.remove(string);
+    }
+
+    /**
+     * Clears the factions logs.
+     */
+    public void clearLogs()
+    {
+        logs.clear();
     }
 
     /**

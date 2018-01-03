@@ -38,6 +38,7 @@ public class FactionNeutralCommand extends FactionValidCommand
 
         target.removeAlly(faction);
         faction.removeAlly(target);
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.neutral.sent", true, false, "{faction}", target.getName()));
 
         target.broadcast(DesireHCF.getLangHandler().renderMessage("factions.neutral.sent", true, false, "{faction}", faction.getName()));
         faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.neutral.sent", true, false, "{faction}", target.getName()));

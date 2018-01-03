@@ -36,11 +36,11 @@ public class FactionUnclaimCommand extends FactionValidCommand
 
         BoundedArea claim = FactionHandler.getArea(location);
 
-        if (claim != null)
-        {
-            faction.removeClaim(claim);
-            FactionHandler.removeClaim(faction, claim);
-        }
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.unclaim.success", true, false, "{player}", sender.getName()));
+        faction.removeClaim(claim);
+        faction.save();
+
+        FactionHandler.removeClaim(faction, claim);
 
         faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.unclaim.success", true, false, "{player}", sender.getName()));
 

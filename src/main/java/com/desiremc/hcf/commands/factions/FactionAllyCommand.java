@@ -46,6 +46,8 @@ public class FactionAllyCommand extends FactionValidCommand
 
             target.broadcast(DesireHCF.getLangHandler().renderMessage("factions.ally.now_allied", true, false, "{faction}", faction.getName()));
             faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.ally.now_allied", true, false, "{faction}", target.getName()));
+
+            faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.ally.now_allied", true, false, "{faction}", target.getName()));
         }
         else
         {
@@ -53,6 +55,8 @@ public class FactionAllyCommand extends FactionValidCommand
 
             faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.ally.sent", true, false, "{faction}", target.getName()));
             target.broadcast(DesireHCF.getLangHandler().renderMessage("factions.ally.received", true, false, "{faction}", faction.getName()));
+
+            faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.ally.sent", true, false, "{faction}", target.getName()));
         }
 
         faction.save();

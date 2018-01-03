@@ -37,6 +37,7 @@ public class FactionNameCommand extends FactionValidCommand
         Faction faction = sender.getFaction();
         String name = (String) arguments.get(0).getValue();
 
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.name.name_set", true, false, "{name}", name, "{player}", sender.getName()));
         FactionHandler.renameFaction(faction, name);
 
         faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.name.name_set", true, false, "{name}", name, "{player}", sender.getName()));

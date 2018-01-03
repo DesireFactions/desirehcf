@@ -1,5 +1,9 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.List;
+
+import org.apache.commons.lang.StringUtils;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.hcf.DesireHCF;
@@ -14,9 +18,6 @@ import com.desiremc.hcf.validators.SenderFactionSizeValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 import com.desiremc.hcf.validators.SenderNotTargetValidator;
 import com.desiremc.hcf.validators.TargetSameFactionValidator;
-import org.apache.commons.lang.StringUtils;
-
-import java.util.List;
 
 public class FactionPromoteCommand extends FactionValidCommand
 {
@@ -46,6 +47,10 @@ public class FactionPromoteCommand extends FactionValidCommand
         FactionRank rank = FactionRank.getNextRank(target.getFactionRank());
 
         target.setFactionRank(rank);
+
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.promote.valid", true, false, "{player}", sender.getName(), "{target}", target.getName(),
+                "{rank}", StringUtils.capitalize(rank.name().replace("_", " ").toLowerCase())));
+        faction.save();
 
         target.save();
 

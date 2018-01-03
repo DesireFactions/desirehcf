@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.hcf.DesireHCF;
@@ -10,8 +12,6 @@ import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionRank;
 import com.desiremc.hcf.validators.SenderHasFactionInviteValidator;
 import com.desiremc.hcf.validators.SenderHasNoFactionValidator;
-
-import java.util.List;
 
 public class FactionJoinCommand extends FactionValidCommand
 {
@@ -38,6 +38,7 @@ public class FactionJoinCommand extends FactionValidCommand
         if (faction.isNormal())
         {
             faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.join.all", true, false, "{player}", sender.getName()));
+            faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.join.all", true, false, "{player}", sender.getName()));
             faction.removeInvite(sender);
         }
 

@@ -269,6 +269,10 @@ factions:
     message_enemy: ' &8- &c{faction} &7{online}/{members} online {dtr} DTR'
     message_own: ' &8- &2{faction} &7{online}/{members} online {dtr} DTR'
     none: '&7There are currently no factions.'
+  logs:
+    header: '&8&m-----[&r &b{faction} Logs ({pagenumber}/{pagecount}) &8&m]-----'
+    log: '&b{count).&7 {log}'
+    none: '&b{faction} has no logs to view.'
   leaderboard:
     header: '&8&m-----[&r &bFaction Leaderboard ({pagenumber}/{pagecount}) &8&m]-----'
     message_own: ' &8- &2{faction}&7: {points} points'

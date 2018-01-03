@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.factions;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.session.Rank;
@@ -11,8 +13,6 @@ import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.PlayerHasFactionInviteValidator;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
-
-import java.util.List;
 
 public class FactionDeinviteCommand extends FactionValidCommand
 {
@@ -37,6 +37,7 @@ public class FactionDeinviteCommand extends FactionValidCommand
         Faction faction = sender.getFaction();
         FSession target = (FSession) arguments.get(0).getValue();
 
+        faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.invite.remove", true, false, "{player}", sender.getName(), "{target}", target.getName()));
         faction.removeInvite(target);
         faction.save();
 

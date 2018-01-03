@@ -625,6 +625,53 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         claims = claims.delete(faction, area);
     }
 
+    public static void sendLogList(FSession sender, Faction faction, int page)
+    {
+        List<String> logs = faction.getLogs();
+
+        if (logs.isEmpty())
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.logs.none", true, false, "{faction}", faction.getName());
+            return;
+        }
+
+        final int height = 9;
+        int pages = (logs.size() / height) + 1;
+
+        if (page > pages)
+        {
+            page = pages;
+        }
+        else if (page < 1)
+        {
+            page = 1;
+        }
+
+        int start = (page - 1) * height;
+        int end = start + height;
+
+        if (end > logs.size())
+        {
+            end = logs.size();
+        }
+
+        DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.logs.header", false, false, "{pagenumber}", page, "{pagecount}", pages, "{faction}", faction.getName());
+
+        int count = 1;
+
+        for (String s : logs.subList(start, end))
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.logs.log", false, false, "{log}", s, "{count}", count);
+            count++;
+        }
+    }
+
+    /**
+     * Saves a Faction entity to the database.
+     *
+     * @param entity entity to save.
+     * @return ??
+     */
     @Override
     public Key<Faction> save(Faction entity)
     {
