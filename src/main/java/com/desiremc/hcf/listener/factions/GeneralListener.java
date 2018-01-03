@@ -103,11 +103,14 @@ public class GeneralListener implements Listener
         Block block = event.getToBlock();
         if (block.getType().equals(Material.STATIONARY_WATER) || block.getType().equals(Material.STATIONARY_LAVA))
         {
-            Location loc = event.getToBlock().getLocation();
-            Faction faction = FactionHandler.getFaction(loc);
-            if (faction.getType() != FactionType.PLAYER)
+            if (block.getData() != 0)
             {
-                event.setCancelled(true);
+                Location loc = event.getToBlock().getLocation();
+                Faction faction = FactionHandler.getFaction(loc);
+                if (faction.getType() != FactionType.PLAYER)
+                {
+                    event.setCancelled(true);
+                }
             }
         }
     }
