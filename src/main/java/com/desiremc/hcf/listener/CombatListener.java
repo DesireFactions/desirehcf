@@ -192,7 +192,7 @@ public class CombatListener implements Listener
             FSession victim = FSessionHandler.getFSession(vPlayer);
             DamageCause cause = vPlayer.getLastDamageCause().getCause();
             Tag tag = TagHandler.getTag(vPlayer.getUniqueId());
-            TagHandler.clearTag(victim.getUniqueId());
+            TagHandler.clearTag(vPlayer.getUniqueId());
 
             System.out.println("Retrieving variables: " + (System.currentTimeMillis() - last) + "ms");
             last = System.currentTimeMillis();
