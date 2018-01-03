@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.session.Achievement;
@@ -9,8 +11,6 @@ import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.parsers.FactionParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
-
-import java.util.List;
 
 public class SetWinnerCommand extends FactionValidCommand
 {
@@ -31,10 +31,7 @@ public class SetWinnerCommand extends FactionValidCommand
 
         for (FSession player : faction.getMembers())
         {
-            if (!player.hasAchievement(Achievement.FIRST_SEASON_WIN))
-            {
-                player.awardAchievement(Achievement.FIRST_SEASON_WIN, true);
-            }
+            player.awardAchievement(Achievement.FIRST_SEASON_WIN, true);
         }
 
         DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "set_winner", true, false, "{faction}", faction.getName());

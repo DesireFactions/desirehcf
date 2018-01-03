@@ -74,18 +74,12 @@ public class CombatListener implements Listener
         if (event.getEntity() instanceof Creeper)
         {
             Session s = SessionHandler.getSession(player);
-            if (!s.hasAchievement(Achievement.FIRST_CREEPER))
-            {
-                s.awardAchievement(Achievement.FIRST_CREEPER, true);
-            }
+            s.awardAchievement(Achievement.FIRST_CREEPER, true);
         }
         else if (event.getEntity() instanceof Enderman)
         {
             Session s = SessionHandler.getSession(player);
-            if (!s.hasAchievement(Achievement.FIRST_ENDERMAN))
-            {
-                s.awardAchievement(Achievement.FIRST_ENDERMAN, true);
-            }
+            s.awardAchievement(Achievement.FIRST_ENDERMAN, true);
         }
     }
 
@@ -252,10 +246,7 @@ public class CombatListener implements Listener
                 TablistHandler.updateKills(kSession);
 
                 // give em an achievement
-                if (!kSession.hasAchievement(Achievement.FIRST_KILL))
-                {
-                    kSession.awardAchievement(Achievement.FIRST_KILL, true);
-                }
+                kSession.awardAchievement(Achievement.FIRST_KILL, true);
                 kSession.save();
             }
 

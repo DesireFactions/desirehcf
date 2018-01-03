@@ -1,10 +1,7 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.DesireHCF;
+import java.util.ArrayList;
+
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.HumanEntity;
@@ -22,7 +19,11 @@ import org.bukkit.potion.Potion;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 
-import java.util.ArrayList;
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.hcf.DesireHCF;
 
 public class PotionLimiterHandler implements Listener
 {
@@ -110,10 +111,7 @@ public class PotionLimiterHandler implements Listener
         {
             Session session = SessionHandler.getOnlineSession(event.getPlayer().getUniqueId());
 
-            if (!session.hasAchievement(Achievement.FIRST_POTION_USE))
-            {
-                session.awardAchievement(Achievement.FIRST_POTION_USE, true);
-            }
+            session.awardAchievement(Achievement.FIRST_POTION_USE, true);
         }
     }
 

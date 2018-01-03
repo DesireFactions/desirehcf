@@ -1,11 +1,8 @@
 package com.desiremc.hcf.handler;
 
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.Session;
-import com.desiremc.core.session.SessionHandler;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.session.faction.Faction;
-import com.desiremc.hcf.util.FactionsUtils;
+import java.util.Arrays;
+import java.util.List;
+
 import org.bukkit.Material;
 import org.bukkit.Sound;
 import org.bukkit.World;
@@ -21,8 +18,12 @@ import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.Arrays;
-import java.util.List;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.Session;
+import com.desiremc.core.session.SessionHandler;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.session.faction.Faction;
+import com.desiremc.hcf.util.FactionsUtils;
 
 public class CrowbarHandler implements Listener
 {
@@ -98,10 +99,7 @@ public class CrowbarHandler implements Listener
             }
 
             Session s = SessionHandler.getSession(player);
-            if (!s.hasAchievement(Achievement.FIRST_CROWBAR_USE))
-            {
-                s.awardAchievement(Achievement.FIRST_CROWBAR_USE, true);
-            }
+            s.awardAchievement(Achievement.FIRST_CROWBAR_USE, true);
         }
 
     }

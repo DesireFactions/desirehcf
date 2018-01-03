@@ -84,10 +84,7 @@ public class GappleHandler implements Listener
             history.put(uuid, System.currentTimeMillis());
 
             Session s = SessionHandler.getSession(event.getPlayer());
-            if (!s.hasAchievement(Achievement.FIRST_GAPPLE))
-            {
-                s.awardAchievement(Achievement.FIRST_GAPPLE, true);
-            }
+            s.awardAchievement(Achievement.FIRST_GAPPLE, true);
         }
         else
         {

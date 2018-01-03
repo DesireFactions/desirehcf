@@ -565,7 +565,7 @@ public class FSession implements Messageable
     /**
      * Sets this player's faction rank to the given value. This does nothing more than updating a value.
      *
-     * @param factionRank
+     * @param factionRank The faction rank to be set to.
      */
     public void setFactionRank(FactionRank factionRank)
     {
@@ -579,11 +579,7 @@ public class FSession implements Messageable
      */
     public boolean hasSetting(FactionSetting setting)
     {
-        if (factionSettings.contains(setting))
-        {
-            return true;
-        }
-        return false;
+        return factionSettings.contains(setting);
     }
 
     /**
@@ -666,11 +662,7 @@ public class FSession implements Messageable
     @Override
     public boolean equals(Object o)
     {
-        if (!(o instanceof FSession))
-        {
-            return false;
-        }
-        return ((FSession) o).getUniqueId().equals(uuid);
+        return (o instanceof FSession) && ((FSession) o).getUniqueId().equals(uuid);
     }
 
     public String[] getKillDisplay()
@@ -771,22 +763,11 @@ public class FSession implements Messageable
     /**
      * A convenience method for {@link Session#sendMessage(String)}.
      *
-     * @param message
+     * @param message The message to send
      */
     public void sendMessage(String message)
     {
         getSession().sendMessage(message);
-    }
-
-    /**
-     * A convenience method for {@link Session#hasAchievement(Achievement)}.
-     *
-     * @param achievement
-     * @return {@code true} if the player has the achievement.
-     */
-    public boolean hasAchievement(Achievement achievement)
-    {
-        return getSession().hasAchievement(achievement);
     }
 
     /**
@@ -840,7 +821,7 @@ public class FSession implements Messageable
      *
      * @param factionTo the faction the player is moving to.
      */
-    public void sendFactionLocationMessage(Faction factionTo)
+    private void sendFactionLocationMessage(Faction factionTo)
     {
         DesireHCF.getLangHandler().sendRenderMessage(getSender(), "factions.moved_location", false, false,
                 "{fromColor}", getFaction().getRelationshipTo(getLastFactionLocation()).getChatColor(),
@@ -961,7 +942,7 @@ public class FSession implements Messageable
     /**
      * Sets this player's faction channel to the given value. This does nothing more than updating a value.
      *
-     * @param channel
+     * @param channel The channel to switch to.
      */
     public void setChannel(FactionChannel channel)
     {

@@ -84,10 +84,7 @@ public class ConnectionListener implements Listener
             SpawnHandler.getInstance().removePlayer(player);
         }
 
-        if (!fSession.hasAchievement(Achievement.FIRST_LOGIN))
-        {
-            fSession.awardAchievement(Achievement.FIRST_LOGIN, true);
-        }
+        fSession.awardAchievement(Achievement.FIRST_LOGIN, true);
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
