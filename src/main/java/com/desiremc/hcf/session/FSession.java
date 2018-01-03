@@ -325,14 +325,7 @@ public class FSession implements Messageable
 
     public DeathBan getActiveDeathBan()
     {
-        for (DeathBan ban : deathBans)
-        {
-            if (!ban.wasStaffRevived() && !ban.isRevived() && ban.getStartTime() + session.getRank().getDeathBanTime() > System.currentTimeMillis())
-            {
-                return ban;
-            }
-        }
-        return null;
+        return DeathBanHandler.getDeathBan(getSession(), DesireHCF.getInstance().getServer().getName());
     }
 
     public void revive(String reson, boolean staffRevived, UUID reviver)
