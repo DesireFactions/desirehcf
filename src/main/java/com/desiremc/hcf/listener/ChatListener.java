@@ -12,6 +12,7 @@ import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.core.session.SessionSetting;
 import com.desiremc.core.utils.ChatUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSession;
@@ -92,6 +93,14 @@ public class ChatListener implements Listener
                     .color(s.getRank().getColor());
 
             Bukkit.getOnlinePlayers().stream().forEach(p -> message.send(p));
+            for (Player p : Bukkit.getOnlinePlayers())
+            {
+                Session session = SessionHandler.getOnlineSession(p.getUniqueId());
+                if (session.getSetting(SessionSetting.CHAT))
+                {
+                    message.send(p);
+                }
+            }
         }
     }
 
