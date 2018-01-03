@@ -3,6 +3,7 @@ package com.desiremc.hcf.listener.factions;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -10,6 +11,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockFromToEvent;
+import org.bukkit.event.block.BlockPistonExtendEvent;
 import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.entity.EntityChangeBlockEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
@@ -127,6 +129,20 @@ public class GeneralListener implements Listener
         if (e.getEntity() != null && e.getEntity().getType() == EntityType.ENDERMAN)
         {
             e.setCancelled(true);
+        }
+    }
+
+    @EventHandler
+    public void onPistonExtend(BlockPistonExtendEvent event)
+    {
+        for (Block block : event.getBlocks())
+        {
+            Location loc = block.getLocation();
+            Faction faction = FactionHandler.getFaction(loc);
+            if (faction.getType() != FactionType.PLAYER && !faction.isWilderness())
+            {
+                event.setCancelled(true);
+            }
         }
     }
 }
