@@ -101,7 +101,7 @@ public class GeneralListener implements Listener
     public void onBlockFromToEvent(BlockFromToEvent event)
     {
         Block block = event.getToBlock();
-        if (block.getType().equals(Material.WATER) || block.getType().equals(Material.LAVA))
+        if (block.getType().equals(Material.STATIONARY_WATER) || block.getType().equals(Material.STATIONARY_LAVA))
         {
             Location loc = event.getToBlock().getLocation();
             Faction faction = FactionHandler.getFaction(loc);
