@@ -101,7 +101,8 @@ public class GeneralListener implements Listener
     public void onBlockFromToEvent(BlockFromToEvent event)
     {
         Block block = event.getToBlock();
-        if (block.getType().equals(Material.STATIONARY_WATER) || block.getType().equals(Material.STATIONARY_LAVA))
+        if (block.getType().equals(Material.STATIONARY_WATER) || block.getType().equals(Material.STATIONARY_LAVA)
+                || block.getType().equals(Material.WATER) || block.getType().equals(Material.LAVA))
         {
             if (block.getData() != 0)
             {
