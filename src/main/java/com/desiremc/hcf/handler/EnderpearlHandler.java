@@ -5,6 +5,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -55,6 +56,11 @@ public class EnderpearlHandler implements Listener
         Player p = e.getPlayer();
 
         if (!(e.getAction() == Action.RIGHT_CLICK_AIR || e.getAction() == Action.RIGHT_CLICK_BLOCK))
+        {
+            return;
+        }
+
+        if (p.getGameMode() != GameMode.SURVIVAL)
         {
             return;
         }
