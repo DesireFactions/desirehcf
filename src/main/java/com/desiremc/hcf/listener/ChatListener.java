@@ -86,6 +86,7 @@ public class ChatListener implements Listener
                     .then(s.getName())
                     .color(s.getRank().getMain())
                     .tooltip(FactionsUtils.getMouseoverDetails(f))
+                    .command("f who " + f.getName())
                     .then(": ")
                     .then(parsedMessage)
                     .color(s.getRank().getColor());

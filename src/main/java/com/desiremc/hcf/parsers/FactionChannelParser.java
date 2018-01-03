@@ -1,11 +1,11 @@
 package com.desiremc.hcf.parsers;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.Parser;
 import com.desiremc.core.session.Session;
 import com.desiremc.hcf.session.faction.FactionChannel;
-
-import java.util.LinkedList;
-import java.util.List;
 
 public class FactionChannelParser implements Parser<FactionChannel>
 {
@@ -17,7 +17,7 @@ public class FactionChannelParser implements Parser<FactionChannel>
         {
             return FactionChannel.FACTION;
         }
-        if (rawArgument.equalsIgnoreCase("g") || rawArgument.equalsIgnoreCase("gen") || rawArgument.equalsIgnoreCase("general"))
+        if (rawArgument.equalsIgnoreCase("g") || rawArgument.equalsIgnoreCase("gen") || rawArgument.equalsIgnoreCase("general") || rawArgument.equalsIgnoreCase("p"))
         {
             return FactionChannel.GENERAL;
         }
