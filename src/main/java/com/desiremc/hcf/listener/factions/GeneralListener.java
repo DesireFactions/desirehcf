@@ -101,12 +101,15 @@ public class GeneralListener implements Listener
     public void onBlockFromToEvent(BlockFromToEvent event)
     {
         Block block = event.getToBlock();
+        System.out.println("To " + block.getType());
         if (block.getType() == Material.WATER || block.getType() == Material.LAVA || block.getType() == Material.STATIONARY_WATER || block.getType() == Material.STATIONARY_LAVA)
         {
+            System.out.println("If passed'");
             Location loc = event.getToBlock().getLocation();
             Faction faction = FactionHandler.getFaction(loc);
             if (faction.getType() != FactionType.PLAYER)
             {
+                System.out.println("Cancelled");
                 event.setCancelled(true);
             }
         }
