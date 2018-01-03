@@ -100,7 +100,7 @@ public class GeneralListener implements Listener
     @EventHandler
     public void onBlockFromToEvent(BlockFromToEvent event)
     {
-        Block block = event.getBlock();
+        Block block = event.getToBlock();
         if (block.getType() == Material.WATER || block.getType() == Material.LAVA)
         {
             Location loc = event.getToBlock().getLocation();
