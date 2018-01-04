@@ -537,14 +537,14 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      *         {@code false} if the player is already in the stuck list.
      * @see #getStuck()
      */
-    public static boolean setStuck(FSession fSession)
+    public static boolean setStuck(FSession fSession, boolean status)
     {
-        if (stuck.containsKey(fSession.getUniqueId()))
+        if (status)
         {
-            return false;
-        }
-        else
-        {
+            if (stuck.containsKey(fSession.getUniqueId()))
+            {
+                stuck.remove(fSession.getUniqueId()).cancel();
+            }
             stuck.put(fSession.getUniqueId(),
                     Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(),
                             new StuckTask(fSession,
@@ -552,6 +552,15 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
                                     "factions.stuck.success"),
                             DesireHCF.getConfigHandler().getLong("factions.stuck.time")));
             return true;
+        }
+        else
+        {
+            BukkitTask task = stuck.remove(fSession.getUniqueId());
+            if (task != null)
+            {
+                task.cancel();
+            }
+            return false;
         }
     }
 

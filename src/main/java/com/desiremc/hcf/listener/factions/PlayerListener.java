@@ -86,7 +86,7 @@ public class PlayerListener implements Listener
         if (FactionHandler.isStuck(fSession))
         {
             DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.stuck.cancelled.movement", true, false);
-            FactionHandler.setStuck(fSession);
+            FactionHandler.setStuck(fSession, false);
         }
 
     }

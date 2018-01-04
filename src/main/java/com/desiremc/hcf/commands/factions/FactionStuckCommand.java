@@ -24,13 +24,16 @@ public class FactionStuckCommand extends FactionValidCommand
     @Override
     public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        if (FactionHandler.setStuck(sender))
+        if (!FactionHandler.isStuck(sender))
         {
-            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.stuck.start", true, false);
+
+            DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.stuck.start", true, false);   
+            FactionHandler.setStuck(sender, true);
         }
         else
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender, "factions.stuck.cancelled.command", true, false);
+            FactionHandler.setStuck(sender, false);
         }
     }
 
