@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.StringLengthValidator;
 import com.desiremc.hcf.DesireHCF;
@@ -55,6 +56,8 @@ public class FactionCreateCommand extends FactionValidCommand
         FactionCreateEvent event = new FactionCreateEvent(faction, sender);
 
         Bukkit.getPluginManager().callEvent(event);
+
+        sender.awardAchievement(Achievement.FIRST_OWN_FACTION, true);
 
         if (faction.isNormal())
         {
