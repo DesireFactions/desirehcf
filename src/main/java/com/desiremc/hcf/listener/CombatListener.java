@@ -3,6 +3,7 @@ package com.desiremc.hcf.listener;
 import java.util.UUID;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.entity.Creeper;
 import org.bukkit.entity.EnderPearl;
 import org.bukkit.entity.Enderman;
@@ -343,7 +344,7 @@ public class CombatListener implements Listener
         if (tag != null)
         {
             FSession killer = FSessionHandler.getOnlineFSession(tag.getUniqueId());
-            if (tag.getItem() != null)
+            if (tag.getItem() != null && tag.getItem().getType() != Material.AIR)
             {
                 message.then(killer.getName())
                         .tooltip(FactionsUtils.getMouseoverDetails(killer))
