@@ -115,7 +115,12 @@ public class ConnectionListener implements Listener
             // to handle it.
             return;
         }
-        
+
+        if (fSession == null)
+        {
+            return;
+        }
+
         DeathBan ban = fSession.getActiveDeathBan();
         if (ban != null)
         {
