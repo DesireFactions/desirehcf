@@ -5,6 +5,7 @@ import org.bukkit.World;
 
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionSenderValidator;
+import com.desiremc.hcf.barrier.TagHandler;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
@@ -41,6 +42,12 @@ public class SenderCanFactionHome extends FactionSenderValidator
         if (faction.isNormal() && rel != FactionRelationship.ALLY)
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.invalid", true, false);
+            return false;
+        }
+
+        if (TagHandler.getTaggedPlayers().contains(sender.getUniqueId()))
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.pvp", true, false);
             return false;
         }
 

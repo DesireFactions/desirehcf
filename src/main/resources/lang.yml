@@ -178,6 +178,7 @@ factions:
     teleported: '&7Teleported you to your faction home.'
     cancelled: '&7Teleport cancelled&7.'
     invalid: '&7You can''t teleport home from here.'
+    pvp: '&7You can''t teleport home with a Combat Tag.'
   bypass:
     enable: '&7You have &benabled &7admin bypass mode. You are now able to interact with the world freely.'
     disable: '&7You have &bdisabled &7admin bypass mode.'
