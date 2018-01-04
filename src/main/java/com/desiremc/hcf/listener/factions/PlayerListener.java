@@ -102,7 +102,7 @@ public class PlayerListener implements Listener
         Faction factionTo = FactionsUtils.getFaction(event.getTo());
 
         // if they managed to get into someone's claim, cancel the move
-        if (factionTo.isNormal() && factionTo != fSession.getFaction() && fSession.getSafeTimeLeft() > 0)
+        if (factionTo.isNormal() && fSession.getSafeTimeLeft() > 0)
         {
             event.setCancelled(true);
         }

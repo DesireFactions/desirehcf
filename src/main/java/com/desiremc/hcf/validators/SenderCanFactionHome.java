@@ -51,6 +51,12 @@ public class SenderCanFactionHome extends FactionSenderValidator
             return false;
         }
 
+        if (sender.getSafeTimeLeft() > 0)
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.home.safe", true, false);
+            return false;
+        }
+
         return true;
     }
 
