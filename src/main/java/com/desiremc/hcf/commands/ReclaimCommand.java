@@ -6,12 +6,12 @@ import org.bukkit.Bukkit;
 
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.session.Rank;
-import com.desiremc.core.validators.SenderDonorValidator;
 import com.desiremc.core.validators.SenderHasFreeSlotValidator;
 import com.desiremc.crates.data.CrateHandler;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.validators.SenderCanReclaim;
 import com.desiremc.hcf.validators.SenderHasNotReclaimedValidator;
 
 public class ReclaimCommand extends FactionValidCommand
@@ -21,7 +21,7 @@ public class ReclaimCommand extends FactionValidCommand
     {
         super("reclaim", "Claim your rank items.");
 
-        addSenderValidator(new SenderDonorValidator());
+        addSenderValidator(new SenderCanReclaim());
         addSenderValidator(new SenderHasNotReclaimedValidator());
         addSenderValidator(new SenderHasFreeSlotValidator());
     }

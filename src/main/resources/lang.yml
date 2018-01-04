@@ -43,6 +43,7 @@ reclaim:
   broadcast: '&7» &b{player} &7has claimed their &b{rank} &7rank!'
   lives: '&7You have claimed &b{lives}&7 lives.'
   keys: '&7You have claimed &b{amount} {type}&7 keys. Do &b/crates key claim {type}&7 to get them.'
+  invalid: '&7Your rank is not able to reclaim.'
 pvp:
   target_protected: '&7That player has pvp &fdisabled&7.'
   damager_protected: '&7You have pvp &fdisabled&7 do /pvp enable to enable it.'
