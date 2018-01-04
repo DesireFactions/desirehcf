@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 
 import org.bukkit.Bukkit;
@@ -58,11 +59,11 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     /**
      * A map of factions referenced by the faction's name stub.
      */
-    private static HashMap<String, Faction> factionsByName;
+    private static ConcurrentHashMap<String, Faction> factionsByName;
     /**
      * A map of factions referenced by the faction's id.
      */
-    private static HashMap<Integer, Faction> factionsById;
+    private static ConcurrentHashMap<Integer, Faction> factionsById;
 
     /**
      * The wilderness's faction instance.
@@ -113,8 +114,8 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
         claims = RTree.create();
 
         // populate the faction map
-        factionsByName = new HashMap<>();
-        factionsById = new HashMap<>();
+        factionsByName = new ConcurrentHashMap<>();
+        factionsById = new ConcurrentHashMap<>();
         for (Faction faction : find())
         {
             if (faction.getState() == FactionState.ACTIVE)
