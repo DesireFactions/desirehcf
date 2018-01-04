@@ -100,6 +100,8 @@ cobble:
   disable: '&7Picking up cobblestone &fdisabled&7.'
 findore:
   notification: '&7[&bx&7] &b{player} &7has found a vein of &b{count} &b{ore}&7.'
+rename: "&7You have renamed the item in your hand to {name}."
+no_staff: '&7You can''t run that command while in staff mode.'
 coords:
 - '&8&m------------------------------'
 - '&b&lKoth Coords'
