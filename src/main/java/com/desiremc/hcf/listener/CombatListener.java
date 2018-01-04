@@ -248,6 +248,8 @@ public class CombatListener implements Listener
                 {
                     kSession.addFactionsRaidable();
 
+                    kSession.awardAchievement(Achievement.FIRST_RAIDABLE, true);
+
                     if (kSession.getFactionsRaidable() >= 5)
                     {
                         kSession.awardAchievement(Achievement.RAIDABLE_5, true);

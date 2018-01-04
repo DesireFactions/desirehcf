@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Rank;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
@@ -44,6 +45,8 @@ public class FactionInviteCommand extends FactionValidCommand
         faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.invite.add", false, false, "{player}", sender.getName(), "{target}", target.getName()));
         faction.addInvite(target);
         faction.save();
+
+        sender.awardAchievement(Achievement.FIRST_INVITE, true);
 
         faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.invite.add", true, false, "{player}", sender.getName(), "{target}", target.getName()));
 

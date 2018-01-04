@@ -12,6 +12,7 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.Region;
 import com.desiremc.hcf.session.RegionHandler;
+import com.desiremc.hcf.session.faction.FactionHandler;
 
 public class MovementListener implements Listener
 {
@@ -63,6 +64,15 @@ public class MovementListener implements Listener
                         }
                     }
                 }
+            }
+
+            if (fSession.getSafeTimer().getPaused())
+            {
+                if (FactionHandler.getFaction(fSession.getLocation()).isSafeZone())
+                {
+                    return;
+                }
+                fSession.getSafeTimer().resume();
             }
         }
     }
