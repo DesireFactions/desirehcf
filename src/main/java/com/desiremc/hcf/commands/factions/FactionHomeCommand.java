@@ -24,6 +24,7 @@ import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionRelationship;
 import com.desiremc.hcf.util.FactionsUtils;
+import com.desiremc.hcf.validators.SenderCanFactionHome;
 import com.desiremc.hcf.validators.SenderHasFactionHomeValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
 
@@ -38,12 +39,13 @@ public class FactionHomeCommand extends FactionValidCommand
 
         addSenderValidator(new SenderHasFactionValidator());
         addSenderValidator(new SenderHasFactionHomeValidator());
+        addSenderValidator(new SenderCanFactionHome());
     }
 
     @Override
     public void validFactionRun(FSession sender, String[] label, List<CommandArgument<?>> arguments)
     {
-        int time;
+        int time = 0;
         Location loc = sender.getLocation();
         Faction currentFaction = FactionsUtils.getFaction(loc);
         if (RegionHandler.getRegion(loc) != null || currentFaction.isSafeZone())
@@ -53,10 +55,6 @@ public class FactionHomeCommand extends FactionValidCommand
         else if (loc.getWorld().getEnvironment() == Environment.NETHER)
         {
             time = 20;
-        }
-        else if (loc.getWorld().getEnvironment() == Environment.THE_END)
-        {
-            time = -1;
         }
         else if (currentFaction.isWilderness())
         {
@@ -68,10 +66,6 @@ public class FactionHomeCommand extends FactionValidCommand
             if (rel == FactionRelationship.ALLY || rel == FactionRelationship.MEMBER)
             {
                 time = 10;
-            }
-            else
-            {
-                time = -1;
             }
             if (currentFaction.isRaidable())
             {
