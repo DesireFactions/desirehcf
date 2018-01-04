@@ -617,6 +617,7 @@ public class PlayerListener implements Listener
                 DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.build", true, false);
                 return false;
             }
+            return true;
         }
 
         // wilderness you can do anything
