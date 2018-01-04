@@ -38,7 +38,7 @@ public class FactionUnclaimCommand extends FactionValidCommand
 
         if (claim.contains(faction.getHomeLocation()))
         {
-            faction.setHomeLocation(null);
+            faction.deleteHomeLocation();
         }
 
         faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.unclaim.success", false, false, "{player}", sender.getName()));

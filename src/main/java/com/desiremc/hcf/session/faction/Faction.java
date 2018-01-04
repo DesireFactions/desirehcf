@@ -208,6 +208,15 @@ public class Faction
     }
 
     /**
+     * Deletes the home locaton.
+     */
+    public void deleteHomeLocation()
+    {
+        this.parsedHome = null;
+        this.home = null;
+    }
+
+    /**
      * @return the unix timestamp of when the faction was created.
      */
     public long getFounded()
