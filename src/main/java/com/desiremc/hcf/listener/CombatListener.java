@@ -244,6 +244,20 @@ public class CombatListener implements Listener
                     kSession.getFaction().save();
                 }
 
+                if (victim.getFaction().getDTR() + 1 >= 0)
+                {
+                    kSession.addFactionsRaidable();
+
+                    if (kSession.getFactionsRaidable() >= 5)
+                    {
+                        kSession.awardAchievement(Achievement.RAIDABLE_5, true);
+                    }
+                    else if (kSession.getFactionsRaidable() >= 10)
+                    {
+                        kSession.awardAchievement(Achievement.RAIDABLE_10, true);
+                    }
+                }
+
                 // add the kill stat to the player
                 kSession.addKill(vPlayer.getUniqueId());
 

@@ -118,6 +118,8 @@ public class FSession implements Messageable
     @Transient
     private Faction lastLocation;
 
+    private int factionsRaidable;
+
     public FSession()
     {
         deathBans = new LinkedList<>();
@@ -156,6 +158,7 @@ public class FSession implements Messageable
         channel = fSession.channel;
         factionSettings = fSession.factionSettings;
         claimedRank = fSession.claimedRank;
+        factionsRaidable = fSession.factionsRaidable;
     }
 
     protected void setId(int id)
@@ -702,6 +705,21 @@ public class FSession implements Messageable
             }
             this.lastLocation = lastLocation;
         }
+    }
+
+    public void setFactionsRaidable(int factionsRaidable)
+    {
+        this.factionsRaidable = factionsRaidable;
+    }
+
+    public void addFactionsRaidable()
+    {
+        factionsRaidable++;
+    }
+
+    public int getFactionsRaidable()
+    {
+        return factionsRaidable;
     }
 
     // ========================================================

@@ -15,7 +15,9 @@ import org.mongodb.morphia.dao.BasicDAO;
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
+import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.handler.SpawnHandler;
+import com.desiremc.hcf.tasks.AchievementTask;
 
 public class FSessionHandler extends BasicDAO<FSession, Integer>
 {
@@ -63,6 +65,8 @@ public class FSessionHandler extends BasicDAO<FSession, Integer>
         console = new FSession();
         console.setUniqueId(DesireCore.getConsoleUUID());
         console.setSession(SessionHandler.getConsoleSession());
+
+        new AchievementTask().runTaskTimerAsynchronously(DesireHCF.getInstance(), 200L, 400L);
     }
 
     /**
