@@ -218,6 +218,11 @@ public class CombatListener implements Listener
                     faction.setDTR(faction.getMinDTR());
                 }
 
+                if (faction.isRaidable() && victim.getFaction().isRaidable())
+                {
+                    victim.awardAchievement(Achievement.FINAL_PUSH, true);
+                }
+
                 // also set their last death time
                 faction.setLastDeathTime(System.currentTimeMillis());
 
@@ -247,6 +252,16 @@ public class CombatListener implements Listener
 
                 // give em an achievement
                 kSession.awardAchievement(Achievement.FIRST_KILL, true);
+
+                if (kSession.getTotalKills() >= 25)
+                {
+                    kSession.awardAchievement(Achievement.KILLS_25, true);
+                }
+                else if (kSession.getTotalKills() >= 100)
+                {
+                    kSession.awardAchievement(Achievement.KILLS_100, true);
+                }
+
                 kSession.save();
             }
 

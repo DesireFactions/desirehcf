@@ -5,6 +5,7 @@ import java.util.List;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.parsers.StringParser;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.utils.StringUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
@@ -49,6 +50,14 @@ public class FactionDepositCommand extends FactionValidCommand
 
         faction.depositBalance(amount);
         sender.withdrawBalance(amount);
+
+        if (faction.getBalance() >= 30000)
+        {
+            for (FSession fSession : faction.getMembers())
+            {
+                fSession.awardAchievement(Achievement.WEALTHY, true);
+            }
+        }
 
         faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.deposit", false, false, "{player}", sender.getName(), "{amount}", StringUtils.doubleFormat(amount)));
 

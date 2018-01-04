@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.parsers.FSessionParser;
@@ -44,6 +45,8 @@ public class FactionLeaderCommand extends FactionValidCommand
 
         target.setFactionRank(FactionRank.LEADER);
         sender.setFactionRank(FactionRank.OFFICER);
+
+        sender.awardAchievement(Achievement.NEW_LEADER, true);
 
         faction.addLog(DesireHCF.getLangHandler().renderMessage("factions.new_leader", false, false,
                 "{old}", sender.getName(),

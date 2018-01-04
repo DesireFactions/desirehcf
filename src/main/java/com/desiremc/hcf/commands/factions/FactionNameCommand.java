@@ -5,6 +5,7 @@ import java.util.List;
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.parsers.StringParser;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Rank;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
@@ -41,5 +42,7 @@ public class FactionNameCommand extends FactionValidCommand
         FactionHandler.renameFaction(faction, name);
 
         faction.broadcast(DesireHCF.getLangHandler().renderMessage("factions.name.name_set", true, false, "{name}", name, "{player}", sender.getName()));
+
+        sender.awardAchievement(Achievement.NEW_LOOK, true);
     }
 }

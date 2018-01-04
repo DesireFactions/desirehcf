@@ -9,6 +9,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import com.desiremc.core.fanciful.FancyMessage;
+import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.session.Session;
 import com.desiremc.core.session.SessionHandler;
@@ -101,6 +102,8 @@ public class ChatListener implements Listener
                     message.send(p);
                 }
             }
+
+            s.awardAchievement(Achievement.HELLO_WORLD, true);
         }
     }
 
