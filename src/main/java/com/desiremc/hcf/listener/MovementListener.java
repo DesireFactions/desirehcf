@@ -55,6 +55,7 @@ public class MovementListener implements Listener
                     if (region.getRegionBlocks().isWithin(e.getTo()))
                     {
                         fSession.getSafeTimer().pause();
+                        return;
                     }
                     else
                     {
