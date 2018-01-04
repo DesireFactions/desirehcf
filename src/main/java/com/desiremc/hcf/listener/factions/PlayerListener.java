@@ -566,7 +566,7 @@ public class PlayerListener implements Listener
         {
             double x = Math.abs(location.getX());
             double z = Math.abs(location.getZ());
-            if ((x < 350 && z < 350) || otherFaction.getName().contains("Road"))
+            if ((x < 350 && z < 350) || otherFaction.getName().endsWith("Road"))
             {
                 DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.build", true, false);
                 return false;
@@ -609,7 +609,7 @@ public class PlayerListener implements Listener
         {
             double x = Math.abs(location.getX());
             double z = Math.abs(location.getZ());
-            if ((x < 350 && z < 350) || otherFaction.getName().contains("Road"))
+            if ((x < 350 && z < 350) || otherFaction.getName().endsWith("Road"))
             {
                 DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.build", true, false);
                 return false;
