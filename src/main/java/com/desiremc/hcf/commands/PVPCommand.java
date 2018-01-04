@@ -40,7 +40,7 @@ public class PVPCommand extends FactionValidCommand
             sender.setSafeTimeLeft(0);
             sender.save();
             DesireHCF.getLangHandler().sendRenderMessage(sender, "pvp.disabled", true, false);
-            EntryRegistry.getInstance().removeValue(sender.getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", true, false));
+            EntryRegistry.getInstance().removeValue(sender.getPlayer(), DesireHCF.getLangHandler().renderMessage("pvp.scoreboard", false, false));
         }
     }
 
