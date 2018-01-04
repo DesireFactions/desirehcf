@@ -23,6 +23,6 @@ public class CraftCommand extends ValidCommand
     {
         Player player = sender.getPlayer();
 
-        player.openInventory(Bukkit.getServer().createInventory(null, InventoryType.CRAFTING));
+        player.openInventory(Bukkit.getServer().createInventory(null, InventoryType.WORKBENCH));
     }
 }
