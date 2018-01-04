@@ -10,7 +10,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
-import java.util.function.Predicate;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -29,6 +28,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.events.faction.FactionDisbandEvent;
 import com.desiremc.hcf.events.faction.FactionLeaveEvent;
 import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.tasks.StuckTask;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
 
@@ -400,7 +400,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * Renames a faction, replaces it's values in factionsByName.
      *
      * @param faction the faction to rename.
-     * @param name    the new name of the faction.
+     * @param name the new name of the faction.
      */
     public static void renameFaction(Faction faction, String name)
     {
@@ -414,7 +414,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * Creates a new {@link FactionType#PLAYER} faction. This will set the id as well as save it to the database.
      *
      * @param fSession the player creating the faction.
-     * @param name     the name of the faction.
+     * @param name the name of the faction.
      * @return the newly created faction.
      */
     public static Faction createFaction(FSession fSession, String name)
@@ -427,8 +427,8 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * add the given creator to the faction and set their {@link FactionRank} to {@link FactionRank#LEADER}.
      *
      * @param fSession the player creating the faction.
-     * @param name     the name of the faction.
-     * @param type     the type of faction.
+     * @param name the name of the faction.
+     * @param type the type of faction.
      * @return the newly created faction.
      */
     public static Faction createFaction(FSession fSession, String name, FactionType type)
@@ -487,7 +487,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      *
      * @param session the player to toggle.
      * @return {@code true} if the player is now bypassing.<br>
-     * {@code false} if the player is no longer bypassing.
+     *         {@code false} if the player is no longer bypassing.
      * @see #getBypassing()
      */
     public static boolean toggleBypassing(FSession session)
@@ -532,20 +532,25 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * Toggles stuck mode on for the given player. If they are already stuck, this method does nothing. See linked
      * method for more details of what that entails.
      *
-     * @param session the player to toggle.
+     * @param fSession the player to toggle.
      * @return {@code true} if the player is added to the stuck.<br>
-     * {@code false} if the player is already in the stuck list.
+     *         {@code false} if the player is already in the stuck list.
      * @see #getStuck()
      */
-    public static boolean setStuck(FSession session)
+    public static boolean setStuck(FSession fSession)
     {
-        if (stuck.containsKey(session.getUniqueId()))
+        if (stuck.containsKey(fSession.getUniqueId()))
         {
             return false;
         }
         else
         {
-            stuck.put(session.getUniqueId(), Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), new StuckTimer(), DesireHCF.getConfigHandler().getLong("factions.stuck.time")));
+            stuck.put(fSession.getUniqueId(),
+                    Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(),
+                            new StuckTask(fSession,
+                                    fSession.getLocationColumn(),
+                                    "factions.stuck.success"),
+                            DesireHCF.getConfigHandler().getLong("factions.stuck.time")));
             return true;
         }
     }
@@ -594,7 +599,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * Get all factions within a particular range of the given block column.
      *
      * @param blockColumn the block column.
-     * @param range       the range.
+     * @param range the range.
      * @return all nearby factions.
      */
     public static Iterable<Entry<Faction, BoundedArea>> getNearbyFactions(BlockColumn blockColumn, int range)
@@ -607,7 +612,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * saved to the database as well.
      *
      * @param faction the faction who has the new claim.
-     * @param area    the new claim area.
+     * @param area the new claim area.
      */
     public static void addClaim(Faction faction, BoundedArea area)
     {
@@ -618,7 +623,7 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
      * Removes a claim.
      *
      * @param faction the faction who has the claim removed.
-     * @param area    the removed claim area.
+     * @param area the removed claim area.
      */
     public static void removeClaim(Faction faction, BoundedArea area)
     {
@@ -696,116 +701,6 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
     {
         check();
         return instance;
-    }
-
-    /**
-     * The timer used to handle stuck players.
-     *
-     * @author Michael Ziluck
-     * @since 12/10/2017
-     */
-    public static class StuckTimer implements Runnable
-    {
-
-        @Override
-        public void run()
-        {
-            // TODO add implementation for un-sticking a player
-        }
-
-    }
-
-    /**
-     * Used to search for a particular condition of a {@link BlockColumn}.
-     *
-     * @author Michael Ziluck
-     */
-    public static class SpiralBlockSearch implements Runnable
-    {
-
-        private Predicate<? super BlockColumn> predicate;
-
-        private BlockColumn cursor;
-
-        private int count = 0;
-
-        private int length = 1;
-
-        private SpiralDirection direction;
-
-        /**
-         * Constructs a new SpiralBlockSearch that starts at the given location and searches for the given condition.
-         *
-         * @param cursor    the starting point.
-         * @param predicate the condition to fulfill.
-         */
-        public SpiralBlockSearch(BlockColumn cursor, Predicate<? super BlockColumn> predicate)
-        {
-            this.cursor = cursor.clone();
-            this.predicate = predicate;
-            this.direction = SpiralDirection.NEGATIVE_X;
-        }
-
-        @Override
-        public void run()
-        {
-            while (!predicate.test(cursor))
-            {
-                if (count == length)
-                {
-                    count = 0;
-                    length++;
-                    direction = direction.nextDirection();
-                }
-                switch (direction)
-                {
-                    case NEGATIVE_X:
-                        cursor.setX(cursor.getX() - 1);
-                        break;
-                    case POSITIVE_Z:
-                        cursor.setZ(cursor.getZ() + 1);
-                        break;
-                    case POSITIVE_X:
-                        cursor.setX(cursor.getX() + 1);
-                        break;
-                    case NEGATIVE_Z:
-                        cursor.setZ(cursor.getZ() - 1);
-                        break;
-                }
-                count++;
-            }
-        }
-
-        /**
-         * {@link #run()} must be called for the information to be changed.
-         *
-         * @return the destination of the spiral search.
-         */
-        public BlockColumn getDestination()
-        {
-            return cursor;
-        }
-
-        private static enum SpiralDirection
-        {
-            NEGATIVE_Z,
-            POSITIVE_X,
-            POSITIVE_Z,
-            NEGATIVE_X;
-
-            public SpiralDirection nextDirection()
-            {
-                if (ordinal() == values().length - 1)
-                {
-                    return values()[0];
-                }
-                else
-                {
-                    return values()[ordinal() + 1];
-                }
-            }
-        }
-
     }
 
 }

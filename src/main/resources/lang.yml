@@ -181,8 +181,14 @@ factions:
     enable: '&7You have &benabled &7admin bypass mode. You are now able to interact with the world freely.'
     disable: '&7You have &bdisabled &7admin bypass mode.'
   stuck:
+    start: '&7You will be un-stuck in &b3 minutes&7. Do not move.'
+    overflow: '&7Could not find an open location. Contact a staff member.'
+    success: '&7Stuck timer completed. Moved you to the wilderness.'
+    scoreboard: '&4&lStuck:'
     cancelled:
       quit: '&7The last time you were online you left while stuck.'
+      movement: '&7You moved and cancelled your stuck timer.'
+      command: '&7You have cancelled your stuck timer.'
   claims:
     start: '&7You have been given a claim wand.'
     usage: '&7Left-click and right-click to select the two points.'
@@ -282,6 +288,8 @@ factions:
     message_ally: ' &8- &9{faction}&7: {points} points'
     none: '&7There are currently no factions.'
   not_own: '&7You must do that in your own faction land.'
+  own: '&7Only usable in another faction''s claim.'
+  wilderness: '&7You can''t do that in the Wilderness.'
   trophies:
     koth: '&7Your faction gained &b{points} &7trophies by capturing a KOTH.'
     death: '&7Your faction lost &b{points} &7trophies by &b{player} &fbeing killed by &b{killer}&7.'

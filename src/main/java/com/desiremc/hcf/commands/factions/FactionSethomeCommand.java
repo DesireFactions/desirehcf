@@ -11,7 +11,7 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
-import com.desiremc.hcf.validators.SenderLandIsOwn;
+import com.desiremc.hcf.validators.SenderLandIsOwnValidator;
 
 public class FactionSethomeCommand extends FactionValidCommand
 {
@@ -22,7 +22,7 @@ public class FactionSethomeCommand extends FactionValidCommand
 
         addSenderValidator(new SenderHasFactionValidator());
         addSenderValidator(new SenderFactionOfficerValidator());
-        addSenderValidator(new SenderLandIsOwn());
+        addSenderValidator(new SenderLandIsOwnValidator());
     }
 
     @Override

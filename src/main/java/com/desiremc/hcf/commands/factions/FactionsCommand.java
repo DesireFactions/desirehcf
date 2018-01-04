@@ -7,7 +7,7 @@ public class FactionsCommand extends ValidBaseCommand
 
     public FactionsCommand()
     {
-        super("factions", "All factions commands.", new String[] {"f", "faction", "fact"});
+        super("factions", "All factions commands.", new String[] { "f", "faction", "fact" });
 
         addSubCommand(new FactionAnnounceCommand());
         addSubCommand(new FactionBypassCommand());

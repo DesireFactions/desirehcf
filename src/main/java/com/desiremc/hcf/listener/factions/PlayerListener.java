@@ -82,6 +82,13 @@ public class PlayerListener implements Listener
             task.cancel();
         }
 
+        // cancel the stuck task if one exists
+        if (FactionHandler.isStuck(fSession))
+        {
+            DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.stuck.cancelled.movement", true, false);
+            FactionHandler.setStuck(fSession);
+        }
+
     }
 
     @EventHandler
@@ -215,7 +222,7 @@ public class PlayerListener implements Listener
      * it from getting bloated.
      *
      * @param fSession the person claiming land.
-     * @param event    the event that was fired.
+     * @param event the event that was fired.
      */
     private void processClaim(FSession fSession, PlayerInteractEvent event)
     {
@@ -364,7 +371,7 @@ public class PlayerListener implements Listener
         }
         else
         {
-            columns = new BlockColumn[] {blockColumn};
+            columns = new BlockColumn[] { blockColumn };
         }
 
         int search;

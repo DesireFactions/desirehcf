@@ -14,7 +14,7 @@ import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.validators.SenderCanUnclaimLocation;
 import com.desiremc.hcf.validators.SenderFactionOfficerValidator;
 import com.desiremc.hcf.validators.SenderHasFactionValidator;
-import com.desiremc.hcf.validators.SenderLandIsOwn;
+import com.desiremc.hcf.validators.SenderLandIsOwnValidator;
 
 public class FactionUnclaimCommand extends FactionValidCommand
 {
@@ -24,7 +24,7 @@ public class FactionUnclaimCommand extends FactionValidCommand
 
         addSenderValidator(new SenderHasFactionValidator());
         addSenderValidator(new SenderFactionOfficerValidator());
-        addSenderValidator(new SenderLandIsOwn());
+        addSenderValidator(new SenderLandIsOwnValidator());
         addSenderValidator(new SenderCanUnclaimLocation());
     }
 

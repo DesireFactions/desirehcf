@@ -106,6 +106,7 @@ public class GeneralListener implements Listener
     @EventHandler
     public void onBlockFromToEvent(BlockFromToEvent event)
     {
+        @SuppressWarnings("deprecation")
         int id = event.getBlock().getTypeId();
         if (id == 8 || id == 9 || id == 10 || id == 11)
         {
