@@ -566,11 +566,12 @@ public class PlayerListener implements Listener
         {
             double x = Math.abs(location.getX());
             double z = Math.abs(location.getZ());
-            if ((x < 350 && z < 350) || otherFaction.getName().endsWith("Road"))
+            if ((x < 350 && z < 350) || otherFaction.getName().contains("Road"))
             {
                 DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.build", true, false);
                 return false;
             }
+            return true;
         }
 
         // wilderness you can do anything
@@ -609,9 +610,6 @@ public class PlayerListener implements Listener
         {
             double x = Math.abs(location.getX());
             double z = Math.abs(location.getZ());
-            System.out.println(x);
-            System.out.println(z);
-            System.out.println(otherFaction.getName().contains("Road"));
             if ((x < 350 && z < 350) || otherFaction.getName().contains("Road"))
             {
                 DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.build", true, false);
