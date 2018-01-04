@@ -12,6 +12,7 @@ public class SenderHasAmountMoney extends FactionValidator<String>
     public boolean factionsValidateArgument(FSession sender, String[] label, String arg)
     {
         double amount;
+
         if (arg.equalsIgnoreCase("all"))
         {
             amount = sender.getBalance();
@@ -29,8 +30,7 @@ public class SenderHasAmountMoney extends FactionValidator<String>
             }
         }
 
-
-        if (sender.getBalance() < amount)
+        if (sender.getBalance() < amount || amount <= 0)
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_money", true, false);
             return false;

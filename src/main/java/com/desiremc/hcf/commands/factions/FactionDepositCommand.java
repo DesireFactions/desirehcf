@@ -47,7 +47,6 @@ public class FactionDepositCommand extends FactionValidCommand
             amount = Doubles.tryParse(arg);
         }
 
-
         faction.depositBalance(amount);
         sender.withdrawBalance(amount);
 

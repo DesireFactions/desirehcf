@@ -1,5 +1,7 @@
 package com.desiremc.hcf.commands.region.modify;
 
+import java.util.List;
+
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.api.newcommands.ValidCommand;
@@ -10,8 +12,6 @@ import com.desiremc.core.validators.NumberSizeValidator;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.parsers.RegionParser;
 import com.desiremc.hcf.session.Region;
-
-import java.util.List;
 
 public class RegionModifyDistanceCommand extends ValidCommand
 {
@@ -28,7 +28,7 @@ public class RegionModifyDistanceCommand extends ValidCommand
         addArgument(CommandArgumentBuilder.createBuilder(Integer.class)
                 .setName("distnace")
                 .setParser(new PositiveIntegerParser())
-                .addValidator(new NumberSizeValidator<Integer>(1, DesireHCF.getConfigHandler().getInteger("barrier.max-distance")))
+                .addValidator(new NumberSizeValidator<>(1, DesireHCF.getConfigHandler().getInteger("barrier.max-distance")))
                 .build());
     }
 

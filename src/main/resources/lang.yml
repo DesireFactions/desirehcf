@@ -261,6 +261,7 @@ factions:
   name:
     name_taken: '&7The faction name &b{name}&7 is already taken.'
     name_set: '&7Your faction''s name was changed to &b{name}&7 by &b{player}&7.'
+    not_allowed: '&7That name contains the word &b{word}&7 which is not allowed.'
   invites:
     no_invites: '&7Your faction has no outgoing invites.'
     valid: '&7Your faction has outgoing invites to &b{players}&7.'
