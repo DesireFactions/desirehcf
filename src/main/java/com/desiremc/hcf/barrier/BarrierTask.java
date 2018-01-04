@@ -22,7 +22,6 @@ import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionType;
-import com.desiremc.hcf.util.FactionsUtils;
 
 public class BarrierTask implements Runnable
 {
@@ -95,7 +94,7 @@ public class BarrierTask implements Runnable
 
             for (Faction faction : FactionHandler.getFactions())
             {
-                if (faction == FactionsUtils.getFaction(p) || faction.getType() != FactionType.PLAYER)
+                if (faction.getType() != FactionType.PLAYER)
                 {
                     continue;
                 }
