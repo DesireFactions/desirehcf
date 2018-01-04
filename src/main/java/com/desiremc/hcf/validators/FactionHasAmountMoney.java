@@ -32,7 +32,7 @@ public class FactionHasAmountMoney extends FactionValidator<String>
         }
 
 
-        if (faction.getBalance() < amount)
+        if (faction.getBalance() < amount || amount <= 0)
         {
             DesireHCF.getLangHandler().sendRenderMessage(sender.getSession(), "factions.no_money_faction", true, false);
             return false;
