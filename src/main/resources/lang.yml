@@ -310,3 +310,6 @@ spawn:
   force: '&7You have been teleported to spawn by a staff member.'
   confirm: '&7You have teleported to spawn.'
   set: '&7You have set the spawn to your location.'
+helpop:
+  target: '&b[Request] &7{player}&f: {message}'
+  self: '&7You have requested help from the server staff. We''ll be right with you!'
