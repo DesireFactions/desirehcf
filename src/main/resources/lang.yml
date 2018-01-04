@@ -214,9 +214,9 @@ factions:
     set:
       point_one: '&7Set point &fone&7.'
   protection:
-    use_blocks: '&7You aren''t &fallowed to use that.'
-    use_items: '&7You aren''t &fallowed to use that here.'
-    use_chests: '&7You aren''t &fallowed to open that.'
+    use_blocks: '&7You aren''t allowed to use that.'
+    use_items: '&7You aren''t allowed to use that here.'
+    use_chests: '&7You aren''t allowed to open that.'
     build: '&7You aren''t allowed to build here.'
   config:
     header: '&8&m------------------------------'
