@@ -6,12 +6,12 @@ import org.bukkit.Bukkit;
 
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
-import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.StringLengthValidator;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.events.faction.FactionCreateEvent;
+import com.desiremc.hcf.parsers.FactionStringParser;
 import com.desiremc.hcf.parsers.FactionTypeParser;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.Faction;
@@ -31,7 +31,7 @@ public class FactionCreateCommand extends FactionValidCommand
 
         addArgument(CommandArgumentBuilder.createBuilder(String.class)
                 .setName("name")
-                .setParser(new StringParser())
+                .setParser(new FactionStringParser())
                 .addValidator(new StringLengthValidator(DesireHCF.getConfigHandler().getInteger("factions.names.length.min"), DesireHCF.getConfigHandler().getInteger("factions.names.length.max")))
                 .addValidator(new FactionNameNotTaken())
                 .build());
