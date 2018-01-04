@@ -92,8 +92,7 @@ public class ChatListener implements Listener
                     .then(": ")
                     .then(parsedMessage)
                     .color(s.getRank().getColor());
-
-            Bukkit.getOnlinePlayers().stream().forEach(p -> message.send(p));
+            
             for (Player p : Bukkit.getOnlinePlayers())
             {
                 Session session = SessionHandler.getOnlineSession(p.getUniqueId());
