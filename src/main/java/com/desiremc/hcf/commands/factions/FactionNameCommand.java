@@ -7,6 +7,7 @@ import com.desiremc.core.api.newcommands.CommandArgumentBuilder;
 import com.desiremc.core.parsers.StringParser;
 import com.desiremc.core.session.Achievement;
 import com.desiremc.core.session.Rank;
+import com.desiremc.core.validators.StringLengthValidator;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
@@ -29,6 +30,7 @@ public class FactionNameCommand extends FactionValidCommand
                 .setName("name")
                 .setParser(new StringParser())
                 .addValidator(new FactionNameNotTaken())
+                .addValidator(new StringLengthValidator(DesireHCF.getConfigHandler().getInteger("factions.names.length.min"), DesireHCF.getConfigHandler().getInteger("factions.names.length.max")))
                 .build());
     }
 
