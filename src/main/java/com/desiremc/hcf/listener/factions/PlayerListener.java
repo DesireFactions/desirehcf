@@ -556,10 +556,21 @@ public class PlayerListener implements Listener
         }
 
         // safezones and warzones behave the same as far as item usage goes.
-        if (otherFaction.getType() == FactionType.SAFEZONE || otherFaction.getType() == FactionType.WARZONE)
+        if (otherFaction.getType() == FactionType.SAFEZONE)
         {
-            DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.use_items", true, false);
+            DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.build", true, false);
             return false;
+        }
+
+        else if (otherFaction.getType() == FactionType.WARZONE)
+        {
+            double x = Math.abs(location.getX());
+            double z = Math.abs(location.getZ());
+            if (x < 350 || z < 350)
+            {
+                DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.build", true, false);
+                return false;
+            }
         }
 
         // wilderness you can do anything
@@ -595,10 +606,21 @@ public class PlayerListener implements Listener
         }
 
         // safezones and warzones behave the same as far as item usage goes.
-        if (otherFaction.getType() == FactionType.SAFEZONE || otherFaction.getType() == FactionType.WARZONE)
+        if (otherFaction.getType() == FactionType.SAFEZONE)
         {
             DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.build", true, false);
             return false;
+        }
+
+        else if (otherFaction.getType() == FactionType.WARZONE)
+        {
+            double x = Math.abs(location.getX());
+            double z = Math.abs(location.getZ());
+            if (x < 350 || z < 350)
+            {
+                DesireHCF.getLangHandler().sendRenderMessage(fSession.getSession(), "factions.protection.build", true, false);
+                return false;
+            }
         }
 
         // wilderness you can do anything
