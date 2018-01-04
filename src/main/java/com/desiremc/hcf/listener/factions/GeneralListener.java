@@ -7,6 +7,7 @@ import org.bukkit.block.Block;
 import org.bukkit.entity.Animals;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -44,6 +45,10 @@ public class GeneralListener implements Listener
     @EventHandler
     public void onEntitySpawnEvent(EntitySpawnEvent event)
     {
+        if (event.getEntity() instanceof Item)
+        {
+            return;
+        }
         if (!(event.getEntity() instanceof Animals))
         {
             if (event.getEntity().getType() != EntityType.CREEPER && event.getEntity().getType() != EntityType.ENDERMAN
