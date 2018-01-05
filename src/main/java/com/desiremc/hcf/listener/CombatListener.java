@@ -1,23 +1,5 @@
 package com.desiremc.hcf.listener;
 
-import java.util.UUID;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Material;
-import org.bukkit.entity.Creeper;
-import org.bukkit.entity.EnderPearl;
-import org.bukkit.entity.Enderman;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Projectile;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
-import org.bukkit.event.Listener;
-import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
-import org.bukkit.event.entity.EntityDeathEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.fanciful.FancyMessage;
 import com.desiremc.core.session.Achievement;
@@ -42,6 +24,19 @@ import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.util.FactionsUtils;
 import com.desiremc.npc.NPCLib;
 import com.desiremc.npc.NPCRegistry;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
+import org.bukkit.entity.*;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
+import org.bukkit.event.entity.EntityDeathEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
+
+import java.util.UUID;
 
 public class CombatListener implements Listener
 {
@@ -92,13 +87,22 @@ public class CombatListener implements Listener
             return;
         }
 
-        if (!(e.getDamager() instanceof Player))
+        if (!(e.getDamager() instanceof Player) && !(e.getDamager() instanceof Projectile) && !(e.getDamager() instanceof FishHook))
         {
             return;
         }
 
-        Player damager = (Player) (e.getDamager() instanceof Projectile ? ((Projectile) e.getDamager())
-                .getShooter() : e.getDamager());
+        Player damager;
+
+        if (e.getDamager() instanceof Player) {
+            damager = (Player) e.getDamager();
+        } else if (e.getDamager() instanceof Projectile) {
+            damager = (Player) ((Projectile) e.getDamager()).getShooter();
+        } else if (e.getDamager() instanceof FishHook) {
+            damager = (Player) ((FishHook) e.getDamager()).getShooter();
+        } else {
+            return;
+        }
 
         if (SOTWHandler.getSOTW())
         {
