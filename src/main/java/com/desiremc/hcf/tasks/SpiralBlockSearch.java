@@ -83,7 +83,7 @@ public abstract class SpiralBlockSearch implements Runnable
             {
                 cursor = null;
                 onOverflow();
-                break;
+                return;
             }
         }
         onSuccess(cursor);

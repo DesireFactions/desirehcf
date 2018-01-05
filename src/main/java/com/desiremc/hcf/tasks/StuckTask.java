@@ -6,6 +6,7 @@ import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 import java.util.function.Predicate;
 
@@ -60,6 +61,12 @@ public class StuckTask implements Runnable
                 @Override
                 public void onSuccess(BlockColumn column)
                 {
+                    Location playerLoc = fSession.getPlayer().getLocation();
+
+                    Location loc = new Location(column.getWorld(), column.getX(), 0, column.getZ(), playerLoc.getYaw(), playerLoc.getPitch());
+
+                    fSession.getPlayer().teleport(column.getSafeLocation(loc));
+
                     DesireHCF.getLangHandler().sendRenderMessage(fSession, message, true, false);
                 }
 
