@@ -11,7 +11,7 @@ public class SenderCanReclaim implements SenderValidator
     @Override
     public boolean validate(Session sender)
     {
-        if (sender.getRank().isDonor() || sender.getRank() == Rank.PARTNER)
+        if (sender.getRank().isDonor() || sender.getRank() == Rank.PARTNER || sender.getRank() == Rank.YOUTUBER)
         {
             return true;
         }
