@@ -112,7 +112,7 @@ public class CombatListener implements Listener
         }
 
         FSession p = FSessionHandler.getFSession((Player) e.getEntity());
-        FSession k = FSessionHandler.getFSession((Player) e.getDamager());
+        FSession k = FSessionHandler.getFSession(damager);
 
         if (!p.getFaction().getRelationshipTo(k.getFaction()).canAttack())
         {
