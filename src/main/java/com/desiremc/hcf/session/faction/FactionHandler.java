@@ -538,11 +538,10 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
                 stuck.remove(fSession.getUniqueId()).cancel();
             }
             stuck.put(fSession.getUniqueId(),
-                    Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(),
+                    Bukkit.getScheduler().runTask(DesireHCF.getInstance(),
                             new StuckTask(fSession,
                                     fSession.getLocationColumn(),
-                                    "factions.stuck.success"),
-                            0L, 20L));
+                                    "factions.stuck.success")));
             return true;
         }
         else
