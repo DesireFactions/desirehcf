@@ -1,6 +1,19 @@
 package com.desiremc.hcf.listener;
 
+import com.desiremc.core.DesireCore;
+import com.desiremc.core.session.Achievement;
+import com.desiremc.core.session.DeathBan;
+import com.desiremc.core.utils.DateUtils;
+import com.desiremc.hcf.DesireHCF;
+import com.desiremc.hcf.barrier.TagHandler;
+import com.desiremc.hcf.handler.SOTWHandler;
+import com.desiremc.hcf.handler.SpawnHandler;
+import com.desiremc.hcf.session.FSession;
+import com.desiremc.hcf.session.FSessionHandler;
+import com.desiremc.hcf.session.Region;
+import com.desiremc.hcf.session.RegionHandler;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
@@ -13,18 +26,6 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.ItemStack;
 
-import com.desiremc.core.DesireCore;
-import com.desiremc.core.session.Achievement;
-import com.desiremc.core.session.DeathBan;
-import com.desiremc.core.utils.DateUtils;
-import com.desiremc.hcf.DesireHCF;
-import com.desiremc.hcf.barrier.TagHandler;
-import com.desiremc.hcf.handler.SpawnHandler;
-import com.desiremc.hcf.session.FSession;
-import com.desiremc.hcf.session.FSessionHandler;
-import com.desiremc.hcf.session.Region;
-import com.desiremc.hcf.session.RegionHandler;
-
 public class ConnectionListener implements Listener
 {
 
@@ -35,13 +36,20 @@ public class ConnectionListener implements Listener
         Player player = e.getPlayer();
         FSessionHandler.initializeFSession(e.getPlayer().getUniqueId());
         FSession fSession = FSessionHandler.getOnlineFSession(e.getPlayer().getUniqueId());
+        Location loc = player.getLocation();
 
         boolean safe = false;
-        for (Region region : RegionHandler.getRegions())
-        {
-            if (region.getWorld() == player.getLocation().getWorld() && region.getRegionBlocks().isWithin(player.getLocation()))
-            {
-                safe = true;
+        
+        if (SOTWHandler.getSOTW()) {
+            safe = true;
+        }
+        if (fSession.getSafeTimeLeft() > 0) {
+            for (Region region : RegionHandler.getRegions()) {
+                if (region.getWorld().equals(loc.getWorld())) {
+                    if (region.getRegionBlocks().isWithin(loc)) {
+                        safe = true;
+                    }
+                }
             }
         }
         // TODO Look into a better solution for isOnGround.
