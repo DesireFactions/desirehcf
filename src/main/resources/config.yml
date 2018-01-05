@@ -366,7 +366,7 @@ classes:
         - FAST_DIGGING-3
 factions:
   stuck:
-    time: 3600
+    time: 180
   claim_wand:
     name: '§6§lClaim Wand'
     lore:

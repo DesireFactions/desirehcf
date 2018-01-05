@@ -1,27 +1,5 @@
 package com.desiremc.hcf.session.faction;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.UUID;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.scheduler.BukkitTask;
-import org.mongodb.morphia.Key;
-import org.mongodb.morphia.dao.BasicDAO;
-
 import com.desiremc.core.DesireCore;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.BoundedArea;
@@ -32,6 +10,19 @@ import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.tasks.StuckTask;
 import com.github.davidmoten.rtree.Entry;
 import com.github.davidmoten.rtree.RTree;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.scheduler.BukkitTask;
+import org.mongodb.morphia.Key;
+import org.mongodb.morphia.dao.BasicDAO;
+
+import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Used to manage all the factions and base faction systems such as stuck players and admin bypass mode.
@@ -547,11 +538,11 @@ public class FactionHandler extends BasicDAO<Faction, Integer>
                 stuck.remove(fSession.getUniqueId()).cancel();
             }
             stuck.put(fSession.getUniqueId(),
-                    Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(),
+                    Bukkit.getScheduler().runTaskTimer(DesireHCF.getInstance(),
                             new StuckTask(fSession,
                                     fSession.getLocationColumn(),
                                     "factions.stuck.success"),
-                            DesireHCF.getConfigHandler().getLong("factions.stuck.time")));
+                            0L, 20L));
             return true;
         }
         else
