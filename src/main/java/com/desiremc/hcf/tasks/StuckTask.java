@@ -65,9 +65,10 @@ public class StuckTask implements Runnable
 
                     Location loc = new Location(column.getWorld(), column.getX(), 0, column.getZ(), playerLoc.getYaw(), playerLoc.getPitch());
 
+                    System.out.println("yay");
                     fSession.getPlayer().teleport(column.getSafeLocation(loc));
 
-                    DesireHCF.getLangHandler().sendRenderMessage(fSession, message, true, false);
+                    DesireHCF.getLangHandler().sendRenderMessage(fSession.getPlayer(), message, true, false);
                 }
 
                 @Override
