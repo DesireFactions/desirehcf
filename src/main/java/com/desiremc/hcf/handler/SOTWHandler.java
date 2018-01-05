@@ -26,7 +26,7 @@ public class SOTWHandler
 
     public void startSOTWTimer()
     {
-        SOTWHandler.setSOTW(true);
+        sotw = true;
         new SOTWTask().runTaskTimer(DesireHCF.getInstance(), 0L, 20L);
     }
 
