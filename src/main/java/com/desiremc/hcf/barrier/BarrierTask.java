@@ -46,11 +46,11 @@ public class BarrierTask implements Runnable
 
             for (Region region : RegionHandler.getRegions())
             {
+                if (!region.getWorld().getName().equalsIgnoreCase(p.getWorld().getName())) {
+                    continue;
+                }
                 for (Block b : region.getRegionBlocks().getWallBlocks(region.getWorld()))
                 {
-                    if (!b.getWorld().getName().equalsIgnoreCase(p.getWorld().getName())) {
-                        continue;
-                    }
                     if (b.getType() == Material.AIR)
                     {
                         if (b.getLocation().distanceSquared(p.getLocation()) <= region.getViewDistance() * region.getViewDistance())
