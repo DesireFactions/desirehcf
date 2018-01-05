@@ -43,6 +43,7 @@ public class StuckTask implements Runnable
             return;
         }
         count++;
+        System.out.println("Count: " + count + " Max: " + max);
         if (count >= max)
         {
             cancel();
