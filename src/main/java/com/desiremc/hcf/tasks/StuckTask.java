@@ -65,7 +65,6 @@ public class StuckTask implements Runnable
 
                     Location loc = new Location(column.getWorld(), column.getX(), 0, column.getZ(), playerLoc.getYaw(), playerLoc.getPitch());
 
-                    System.out.println("yay");
                     fSession.getPlayer().teleport(column.getSafeLocation(loc));
 
                     DesireHCF.getLangHandler().sendRenderMessage(fSession.getPlayer(), message, true, false);
@@ -80,6 +79,7 @@ public class StuckTask implements Runnable
 
             EntryRegistry.getInstance().removeValue(fSession.getPlayer(),
                     DesireHCF.getLangHandler().renderMessage("factions.stuck.scoreboard", false, false));
+            FactionHandler.setStuck(fSession, false);
         }
         else
         {
