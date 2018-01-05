@@ -52,7 +52,7 @@ public class StuckTask implements Runnable
                 @Override
                 public boolean test(BlockColumn column)
                 {
-                    System.out.println("Test");
+                    System.out.println(FactionHandler.getFaction(column).isWilderness() || FactionHandler.getFaction(column).isSafeZone());
                     return FactionHandler.getFaction(column).isWilderness() || FactionHandler.getFaction(column).isSafeZone();
                 }
             })
