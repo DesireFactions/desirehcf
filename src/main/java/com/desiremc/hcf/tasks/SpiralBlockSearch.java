@@ -1,8 +1,8 @@
 package com.desiremc.hcf.tasks;
 
-import java.util.function.Predicate;
-
 import com.desiremc.core.utils.BlockColumn;
+
+import java.util.function.Predicate;
 
 /**
  * Used to search for a particular condition of a {@link BlockColumn}.
@@ -86,6 +86,7 @@ public abstract class SpiralBlockSearch implements Runnable
                 break;
             }
         }
+        onSuccess(cursor);
     }
 
     public abstract void onSuccess(BlockColumn column);
