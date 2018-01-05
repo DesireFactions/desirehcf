@@ -8,7 +8,6 @@ import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.barrier.BarrierTask;
-import com.desiremc.hcf.handler.SOTWHandler;
 import com.desiremc.hcf.session.faction.*;
 import com.desiremc.hcf.util.FactionsUtils;
 import org.bukkit.Bukkit;
@@ -852,11 +851,6 @@ public class FSession implements Messageable
         public void run()
         {
             if (!isOnline())
-            {
-                return;
-            }
-
-            if (SOTWHandler.getSOTW())
             {
                 return;
             }
