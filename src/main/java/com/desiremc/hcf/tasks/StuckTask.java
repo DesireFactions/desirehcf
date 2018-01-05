@@ -43,7 +43,6 @@ public class StuckTask implements Runnable
             return;
         }
         count++;
-        System.out.println("Count: " + count + " Max: " + max);
         if (count >= max)
         {
             cancel();
@@ -53,7 +52,7 @@ public class StuckTask implements Runnable
                 @Override
                 public boolean test(BlockColumn column)
                 {
-                    return FactionHandler.getFaction(column).isWilderness();
+                    return FactionHandler.getFaction(column).isWilderness() || FactionHandler.getFaction(column).isSafeZone();
                 }
             })
             {
@@ -70,6 +69,8 @@ public class StuckTask implements Runnable
                     DesireHCF.getLangHandler().sendRenderMessage(fSession, "factions.stuck.overflow", true, false);
                 }
             });
+            EntryRegistry.getInstance().removeValue(fSession.getPlayer(),
+                    DesireHCF.getLangHandler().renderMessage("factions.stuck.scoreboard", false, false));
         }
         else
         {
