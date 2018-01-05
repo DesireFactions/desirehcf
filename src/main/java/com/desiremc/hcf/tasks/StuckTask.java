@@ -1,14 +1,13 @@
 package com.desiremc.hcf.tasks;
 
-import java.util.function.Predicate;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.FactionHandler;
+import org.bukkit.Bukkit;
+
+import java.util.function.Predicate;
 
 public class StuckTask implements Runnable
 {
@@ -73,7 +72,7 @@ public class StuckTask implements Runnable
         }
         else
         {
-            Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), this, 20l);
+            Bukkit.getScheduler().runTaskLater(DesireHCF.getInstance(), this, 20L);
         }
     }
 

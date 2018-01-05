@@ -39,7 +39,7 @@ public class ConnectionListener implements Listener
         Location loc = player.getLocation();
 
         boolean safe = false;
-        
+
         if (SOTWHandler.getSOTW()) {
             safe = true;
         }

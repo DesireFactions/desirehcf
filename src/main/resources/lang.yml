@@ -190,7 +190,7 @@ factions:
     start: '&7You will be un-stuck in &b3 minutes&7. Do not move.'
     overflow: '&7Could not find an open location. Contact a staff member.'
     success: '&7Stuck timer completed. Moved you to the wilderness.'
-    scoreboard: '&4&lStuck:'
+    scoreboard: '&4&lStuck: '
     invalid: '&7You can''t use the command here.'
     cancelled:
       quit: '&7The last time you were online you left while stuck.'
