@@ -1,18 +1,5 @@
 package com.desiremc.hcf.barrier;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitTask;
-
 import com.desiremc.core.utils.BoundedArea;
 import com.desiremc.core.utils.PlayerUtils;
 import com.desiremc.hcf.DesireHCF;
@@ -22,6 +9,13 @@ import com.desiremc.hcf.session.RegionHandler;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionType;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
+import org.bukkit.scheduler.BukkitTask;
+
+import java.util.*;
 
 public class BarrierTask implements Runnable
 {
@@ -54,6 +48,9 @@ public class BarrierTask implements Runnable
             {
                 for (Block b : region.getRegionBlocks().getWallBlocks(region.getWorld()))
                 {
+                    if (!b.getWorld().getName().equalsIgnoreCase(p.getWorld().getName())) {
+                        continue;
+                    }
                     if (b.getType() == Material.AIR)
                     {
                         if (b.getLocation().distanceSquared(p.getLocation()) <= region.getViewDistance() * region.getViewDistance())
