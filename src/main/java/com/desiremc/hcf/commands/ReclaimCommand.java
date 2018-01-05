@@ -1,9 +1,5 @@
 package com.desiremc.hcf.commands;
 
-import java.util.List;
-
-import org.bukkit.Bukkit;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.session.Rank;
 import com.desiremc.core.validators.SenderHasFreeSlotValidator;
@@ -13,6 +9,9 @@ import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.validators.SenderCanReclaim;
 import com.desiremc.hcf.validators.SenderHasNotReclaimedValidator;
+import org.bukkit.Bukkit;
+
+import java.util.List;
 
 public class ReclaimCommand extends FactionValidCommand
 {
@@ -32,7 +31,7 @@ public class ReclaimCommand extends FactionValidCommand
         int lives;
         int keys;
 
-        if (sender.getRank() == Rank.COMMODORE)
+        if (sender.getRank() == Rank.COMMODORE || sender.getRank() == Rank.YOUTUBER)
         {
             lives = 5;
             keys = 8;
@@ -59,7 +58,13 @@ public class ReclaimCommand extends FactionValidCommand
 
         sender.addLives(lives);
 
-        String rank = sender.getRank() == Rank.BETA || sender.getRank() == Rank.PARTNER ? "Grandmaster" : sender.getRank().getDisplayName();
+        String rank = sender.getRank().getDisplayName();
+
+        if (sender.getRank() == Rank.BETA || sender.getRank() == Rank.PARTNER) {
+            rank = "Grandmaster";
+        } else if (sender.getRank() == Rank.YOUTUBER) {
+            rank = "Commodore";
+        }
 
         CrateHandler.getCrate(rank).addPendingKeys(sender.getUniqueId(), keys);
 
