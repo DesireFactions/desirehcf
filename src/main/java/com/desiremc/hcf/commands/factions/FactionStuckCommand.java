@@ -1,14 +1,13 @@
 package com.desiremc.hcf.commands.factions;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.hcf.DesireHCF;
 import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.faction.FactionHandler;
-import com.desiremc.hcf.validators.SenderLandIsNotOwnValidator;
-import com.desiremc.hcf.validators.SenderLandIsNotWildernessValidator;
+import com.desiremc.hcf.validators.SenderCanFactionStuck;
+
+import java.util.List;
 
 public class FactionStuckCommand extends FactionValidCommand
 {
@@ -17,8 +16,7 @@ public class FactionStuckCommand extends FactionValidCommand
     {
         super("Stuck", "Teleport you to a safe location.");
 
-        addSenderValidator(new SenderLandIsNotOwnValidator());
-        addSenderValidator(new SenderLandIsNotWildernessValidator());
+        addSenderValidator(new SenderCanFactionStuck());
     }
 
     @Override
