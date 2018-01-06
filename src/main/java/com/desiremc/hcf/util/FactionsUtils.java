@@ -1,16 +1,5 @@
 package com.desiremc.hcf.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
-import org.bukkit.ChatColor;
-import org.bukkit.Location;
-import org.bukkit.entity.Player;
-
 import com.desiremc.core.session.Session;
 import com.desiremc.core.utils.BlockColumn;
 import com.desiremc.hcf.session.FSession;
@@ -18,6 +7,11 @@ import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.session.faction.Faction;
 import com.desiremc.hcf.session.faction.FactionHandler;
 import com.desiremc.hcf.session.faction.FactionType;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Player;
+
+import java.util.*;
 
 public class FactionsUtils
 {
@@ -209,12 +203,15 @@ public class FactionsUtils
             return inRange;
         }
 
+        System.out.println("Faction: " + faction.getName());
+
         for (FSession member : faction.getOnlineMembers())
         {
             if (member.getPlayer() != player)
             {
                 if (player.getLocation().distanceSquared(member.getPlayer().getLocation()) <= (range * range))
                 {
+                    System.out.println("Player: " + member.getName());
                     inRange.add(member.getPlayer());
                 }
             }

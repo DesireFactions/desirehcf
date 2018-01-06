@@ -620,11 +620,6 @@ public class ClassListener implements Listener
                     section.getBoolean("other"));
         }
 
-        System.out.println("Faction: " + section.getBoolean("faction"));
-        System.out.println("Self: " + section.getBoolean("self"));
-        System.out.println("Allies: " + section.getBoolean("allies"));
-        System.out.println("other: " + section.getBoolean("other"));
-
         if (item.getAmount() > 1)
         {
             item.setAmount(player.getItemInHand().getAmount() - 1);
