@@ -244,7 +244,9 @@ public class FactionsUtils
         {
             if (session.getFaction().getRelationshipTo(faction).canAttack())
             {
-                inRange.add(session.getPlayer());
+                if (player.getLocation().distanceSquared(session.getPlayer().getLocation()) <= (range * range)) {
+                    inRange.add(session.getPlayer());
+                }
             }
         }
 
@@ -276,14 +278,6 @@ public class FactionsUtils
                 {
                     inRange.add(fSession.getPlayer());
                 }
-            }
-        }
-
-        for (FSession member : faction.getOnlineMembers())
-        {
-            if (member.getPlayer() != player && member.getPlayer().getLocation().distanceSquared(player.getLocation()) <= (range * range))
-            {
-                inRange.add(member.getPlayer());
             }
         }
 
