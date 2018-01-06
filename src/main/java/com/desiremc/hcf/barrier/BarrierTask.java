@@ -16,13 +16,14 @@ import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitTask;
 
 import java.util.*;
+import java.util.concurrent.*;
 
 public class BarrierTask implements Runnable
 {
 
     private static BukkitTask task;
 
-    private static List<UUID> toClear = new ArrayList<>();
+    private static List<UUID> toClear = new CopyOnWriteArrayList<>();
 
     private HashMap<UUID, Set<Block>> cache = new HashMap<>();
 
