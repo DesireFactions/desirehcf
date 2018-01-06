@@ -203,15 +203,12 @@ public class FactionsUtils
             return inRange;
         }
 
-        System.out.println("Faction: " + faction.getName());
-
         for (FSession member : faction.getOnlineMembers())
         {
             if (member.getPlayer() != player)
             {
                 if (player.getLocation().distanceSquared(member.getPlayer().getLocation()) <= (range * range))
                 {
-                    System.out.println("Player: " + member.getName());
                     inRange.add(member.getPlayer());
                 }
             }
