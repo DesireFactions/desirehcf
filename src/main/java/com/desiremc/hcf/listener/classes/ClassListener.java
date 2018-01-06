@@ -1,28 +1,5 @@
 package com.desiremc.hcf.listener.classes;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.UUID;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.configuration.ConfigurationSection;
-import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.block.Action;
-import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.event.player.PlayerItemConsumeEvent;
-import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
-import org.bukkit.potion.PotionEffect;
-import org.bukkit.potion.PotionEffectType;
-
 import com.desiremc.core.api.FileHandler;
 import com.desiremc.core.scoreboard.EntryRegistry;
 import com.desiremc.core.session.Achievement;
@@ -34,6 +11,20 @@ import com.desiremc.hcf.events.ArmorEquipEvent;
 import com.desiremc.hcf.session.FSession;
 import com.desiremc.hcf.session.FSessionHandler;
 import com.desiremc.hcf.util.FactionsUtils;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
+import org.bukkit.event.player.*;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.PlayerInventory;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
+
+import java.util.*;
 
 public class ClassListener implements Listener
 {
@@ -628,6 +619,11 @@ public class ClassListener implements Listener
                     section.getBoolean("allies"),
                     section.getBoolean("other"));
         }
+
+        System.out.println("Faction: " + section.getBoolean("faction"));
+        System.out.println("Self: " + section.getBoolean("self"));
+        System.out.println("Allies: " + section.getBoolean("allies"));
+        System.out.println("other: " + section.getBoolean("other"));
 
         if (item.getAmount() > 1)
         {
