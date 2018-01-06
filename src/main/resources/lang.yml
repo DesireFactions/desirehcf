@@ -65,6 +65,7 @@ crowbar:
   not_enough_money: '&7You need &b$15000&7 to purchase a Crowbar.'
 gapple:
   scoreboard: '&e&lGapple Timer&7: &f'
+  message: '&7You can''t eat another Gapple yet.'
 potion:
   blocked: '&7That &fpotion &7is blocked.'
 trophy_points: '&7Trophy Points &f{points}'
