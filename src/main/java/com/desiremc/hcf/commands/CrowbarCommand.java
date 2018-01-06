@@ -1,7 +1,5 @@
 package com.desiremc.hcf.commands;
 
-import java.util.List;
-
 import com.desiremc.core.api.newcommands.CommandArgument;
 import com.desiremc.core.session.Rank;
 import com.desiremc.hcf.DesireHCF;
@@ -9,12 +7,14 @@ import com.desiremc.hcf.api.commands.FactionValidCommand;
 import com.desiremc.hcf.handler.CrowbarHandler;
 import com.desiremc.hcf.session.FSession;
 
+import java.util.List;
+
 public class CrowbarCommand extends FactionValidCommand
 {
 
     public CrowbarCommand()
     {
-        super("crowbar", "Spawn in a new crowbar.", Rank.MODERATOR, true, new String[] {});
+        super("crowbar", "Spawn in a new crowbar.", Rank.GUEST, true, new String[]{});
     }
 
     @Override
